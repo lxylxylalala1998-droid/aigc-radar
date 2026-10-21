@@ -1,12 +1,14 @@
 import { http, clean, parseCount, sleep, HOUR, DAY } from '../util.js';
 import { YT_QUERIES } from '../config.js';
 
-// "3 days ago" / "5 hours ago" → 大概的发布时间
-function agoToTs(s = '') {
-  const m = s.match(/(\d+)\s*(second|minute|hour|day|week|month|year)/i);
+// "3 days ago" / "5d ago" / "4h ago" / "2mo ago" → 大概的发布时间（YouTube 现在多用缩写）
+export function agoToTs(s = '', now = Date.now()) {
+  const m = s.match(/(\d+)\s*([a-z]+)/i);
   if (!m) return undefined;
-  const unit = { second: 1e3, minute: 60e3, hour: HOUR, day: DAY, week: 7 * DAY, month: 30 * DAY, year: 365 * DAY }[m[2].toLowerCase()];
-  return Date.now() - (+m[1]) * unit;
+  const u = m[2].toLowerCase();
+  const unit = u.startsWith('mo') ? 30 * DAY : (u === 'm' || u.startsWith('mi')) ? 60e3 : u.startsWith('s') ? 1e3
+    : u.startsWith('h') ? HOUR : u.startsWith('d') ? DAY : u.startsWith('w') ? 7 * DAY : u.startsWith('y') ? 365 * DAY : 0;
+  return unit ? now - (+m[1]) * unit : undefined;
 }
 
 function findAll(node, key, out = []) {
@@ -22,8 +24,8 @@ function findAll(node, key, out = []) {
 const text = (t) => t?.simpleText ?? (t?.runs || []).map((r) => r.text).join('');
 
 async function viaScrape(q) {
-  // sp = 按播放量排序 + 本周上传 + 只要视频
-  const html = await http(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}&sp=CAMSBAgDEAE%253D`, {
+  // sp = 本周上传 + 只要视频，按相关性（按播放量排序会被大热的普通 MV 淹没，播放和蹿升由我们自己算）
+  const html = await http(`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}&sp=EgQIAxAB&hl=en&gl=US`, {
     type: 'text', headers: { 'Accept-Language': 'en-US,en;q=0.9', Cookie: 'CONSENT=YES+1; SOCS=CAI' },
   });
   const m = html.match(/var ytInitialData\s*=\s*(\{.+?\});\s*<\/script>/s) || html.match(/ytInitialData"\]\s*=\s*(\{.+?\});/s);
@@ -52,7 +54,7 @@ async function viaApi(q, key) {
   }));
 }
 
-// YouTube AI 视频（本周上传，按播放量）。配了 YT_API_KEY 就走官方 API，否则解析搜索页
+// YouTube AI 视频（本周上传，按相关性取前 20）。配了 YT_API_KEY 就走官方 API，否则解析搜索页
 export async function youtube() {
   const key = process.env.YT_API_KEY;
   const out = [];
