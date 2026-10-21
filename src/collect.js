@@ -13,9 +13,9 @@ import { rss, hackerNews, hfTrending } from './sources/news.js';
 
 export const SOURCES = [
   { key: 'weibo', name: '微博热搜', fn: weibo },
-  { key: 'douyinHot', name: '抖音热榜', fn: douyinHot },
+  { key: 'douyinHot', name: '抖音热榜+话题视频', fn: douyinHot },
   { key: 'biliHot', name: 'B站热搜', fn: biliHot },
-  { key: 'biliAI', name: 'B站 AI 稿件', fn: biliAI },
+  { key: 'biliAI', name: 'B站 AI 稿件', fn: (o) => biliAI({ long: o.daily }) },
   { key: 'youtube', name: 'YouTube AI 视频', fn: youtube },
   { key: 'qqmusic', name: 'QQ音乐榜', fn: qqMusic },
   { key: 'netease', name: '网易云音乐榜', fn: netease },
@@ -29,14 +29,14 @@ export const SOURCES = [
 const dayFile = (d) => path.join(DATA, 'days', `${d}.json`);
 const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(`超时 ${ms / 1000}s`)), ms))]);
 
-async function runSources(only) {
+async function runSources(only, opts = {}) {
   const list = only ? SOURCES.filter((s) => only.includes(s.key)) : SOURCES;
   const status = {};
   const items = [];
   await Promise.all(list.map(async (s) => {
     const t0 = Date.now();
     try {
-      const got = await withTimeout(s.fn(), 240e3);
+      const got = await withTimeout(s.fn(opts), 240e3);
       items.push(...got);
       status[s.key] = { name: s.name, ok: true, count: got.length, ms: Date.now() - t0, warnings: got.warnings?.slice(0, 5) };
     } catch (e) {
@@ -95,9 +95,9 @@ function prune(now) {
   }
 }
 
-export async function collect(only) {
+export async function collect(only, opts = {}) {
   const now = Date.now();
-  const { items, status } = await runSources(only);
+  const { items, status } = await runSources(only, opts);
   const r = merge(items, now);
   // 状态文件：记录每个源这次是否成功、上次成功是什么时候
   const old = readJSON(path.join(DATA, 'status.json'), { sources: {} });
@@ -113,6 +113,8 @@ export async function collect(only) {
 
 if (isMain(import.meta.url)) {
   loadEnv();
-  const only = process.argv[2]?.split(',');
-  collect(only).catch((e) => { console.error(e); process.exit(1); });
+  // node src/collect.js [源1,源2] [--daily]   --daily：早报那次运行，B站多查近 30 天
+  const args = process.argv.slice(2);
+  const only = args.find((a) => !a.startsWith('--'))?.split(',');
+  collect(only, { daily: args.includes('--daily') }).catch((e) => { console.error(e); process.exit(1); });
 }

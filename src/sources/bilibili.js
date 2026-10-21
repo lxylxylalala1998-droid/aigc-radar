@@ -53,8 +53,8 @@ export async function biliHot() {
   }));
 }
 
-// B站 AI 稿件：关键词搜索（近 3 天 / 近 7 天，按播放） + 分区排行 + 综合热门里挑 AI 相关
-export async function biliAI() {
+// B站 AI 稿件：关键词搜索（近 3 天 / 近 7 天，早报那次再加近 30 天，按播放） + 分区排行 + 综合热门里挑 AI 相关
+export async function biliAI({ long = false } = {}) {
   const now = Math.floor(Date.now() / 1000);
   const out = [];
   const errors = [];
@@ -63,6 +63,7 @@ export async function biliAI() {
     jobs.push({ kw: k.kw, days: 3 });
     if (k.core) jobs.push({ kw: k.kw, days: 7 });
   }
+  if (long) for (const k of BILI_KEYWORDS) if (k.core) jobs.push({ kw: k.kw, days: 30 });
   let blocked = false;
   for (const job of jobs) {
     if (blocked) break;
@@ -95,27 +96,36 @@ export async function biliAI() {
     await sleep(400);
   }
   // 太老的稿件（分区排行里偶尔混进来）不要
-  const fresh = out.filter((v) => v.pubAt > Date.now() - 10 * DAY);
+  const fresh = out.filter((v) => v.pubAt > Date.now() - (long ? 31 : 10) * DAY);
   if (!fresh.length && errors.length) throw new Error(errors.slice(0, 3).join('; '));
   fresh.warnings = errors;
   return fresh;
 }
 
-// B站全站音乐榜（周榜，每周五更新）
+// B站全站音乐榜（周榜，每周五更新）。B站没有单独的飙升榜，用 last_rank 算：新上榜 + 排名升得最多的
 export async function biliMusic() {
   const p = await bili('https://api.bilibili.com/x/copyright-music-publicity/toplist/all_period?list_type=1');
   const all = Object.values(p?.list || {}).flat().sort((a, b) => b.publish_time - a.publish_time);
   if (!all.length) throw new Error('B站音乐榜期数为空');
   const latest = all[0];
   const d = await bili(`https://api.bilibili.com/x/copyright-music-publicity/toplist/music_list?list_id=${latest.ID}`);
-  return (d?.list || []).map((x) => ({
-    id: `bili:音乐榜:${x.music_id}`,
-    cat: 'music', src: 'bilibili', board: 'B站音乐榜(周)',
+  const list = d?.list || [];
+  const song = (x, board, rank, label) => ({
+    id: `bili:${board}:${x.music_id}`,
+    cat: 'music', src: 'bilibili', board,
     title: clean(x.music_title), author: clean(x.singer),
     url: x.creation_bvid ? `https://www.bilibili.com/video/${x.creation_bvid}` : 'https://music.bilibili.com/pc/music-center/',
     cover: fixPic(x.mv_cover || x.creation_cover),
-    heat: x.heat || 0, rank: x.rank,
-    desc: x.creation_title ? `代表稿件：${clean(x.creation_title)}` : '',
-    m: { period: latest.priod },
-  }));
+    heat: x.heat || 0, rank, label,
+    // 分析「为什么火」的依据：代表稿件、榜单推荐理由、被多少稿件当素材
+    desc: [x.creation_title && `代表稿件：${clean(x.creation_title)}`, x.creation_reason && `推荐理由：${clean(x.creation_reason)}`, x.material_use_num && `${x.material_use_num} 个稿件用作素材`].filter(Boolean).join('；'),
+    m: { period: latest.priod, lastRank: x.last_rank || 0 },
+  });
+  const hot = list.map((x) => song(x, 'B站热歌榜', x.rank, x.last_rank ? (x.last_rank > x.rank ? `↑${x.last_rank - x.rank}` : x.last_rank < x.rank ? `↓${x.rank - x.last_rank}` : '') : '新'));
+  const rise = list
+    .map((x) => ({ x, up: x.last_rank ? x.last_rank - x.rank : 100 - x.rank })) // 新上榜排在最前，其中名次越高越靠前
+    .filter((r) => r.up > 0)
+    .sort((a, b) => b.up - a.up)
+    .map((r, i) => song(r.x, 'B站飙升榜', i + 1, r.x.last_rank ? `↑${r.up}` : '新'));
+  return [...hot, ...rise];
 }

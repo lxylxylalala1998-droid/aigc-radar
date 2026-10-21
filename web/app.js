@@ -1,11 +1,12 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const PLAT = { weibo: '微博', douyin: '抖音', bilibili: 'B站', youtube: 'YouTube', qqmusic: 'QQ音乐', netease: '网易云' };
-  const VTYPES = ['AI音乐', 'AI MV', 'AI动画', 'AI剧情', 'AI短片', 'AI整活', 'AI教程测评'];
+  const VTYPES = ['AI音乐', 'AI MV', 'AI动画', 'AI剧情', 'AI短片', 'AI特效玩法', 'AI整活', 'AI教程测评'];
   const TTAGS = ['热梗', 'AI相关', '可借势'];
+  const MPLAT = ['抖音', 'B站', 'QQ音乐', '网易云'];
   const PAGE = 40;
 
-  const state = { w: 1, tab: 'news', f1: '', f2: '', q: '', sort: '', pickDay: 0, shown: PAGE };
+  const state = { w: 1, tab: 'video', f1: '', f2: '', q: '', sort: '', pickDay: 0, shown: PAGE };
   const cache = {};
 
   // ---------- 工具 ----------
@@ -23,14 +24,17 @@
   const pb = (src) => (PLAT[src] ? `<span class="badge p ${src}">${PLAT[src]}</span>` : `<span class="badge">${esc(src)}</span>`);
   const link = (url, inner) => `<a href="${esc(url)}" target="_blank" rel="noopener">${inner}</a>`;
   const cover = (u, src) => (!u ? '' : src === 'bilibili' && /hdslb\.com/.test(u) && !u.includes('@') ? `${u}@320w_200h_1c.webp` : u);
-  const match = (x, q) => !q || [x.title, x.author, x.desc, x.ai?.note, x.ai?.why, x.ai?.event, x.board].join(' ').toLowerCase().includes(q);
+  const ana = (label, text) => (text ? `<div class="ana"><b>${label}</b>${esc(text)}</div>` : '');
+  const match = (x, q) => !q || [x.title, x.author, x.desc, x.board, x.ai?.why, x.ai?.hook, x.ai?.tip, x.ai?.idea, x.ai?.use, x.ai?.event].join(' ').toLowerCase().includes(q);
+  const musicPlat = (x) => PLAT[x.src];
+  const musicKind = (x) => (x.board.includes('飙升') ? '飙升榜' : '热歌榜');
 
   async function load(w) {
     if (!cache[w]) cache[w] = fetch(`data/w${w}.json?t=${Math.floor(Date.now() / 6e5)}`).then((r) => r.json());
     return cache[w];
   }
 
-  // ---------- 选题 ----------
+  // ---------- 1. 今日选题 ----------
   function renderPicks(d) {
     const ds = d.digests || [];
     if (!ds.length) { $('#picks').innerHTML = '<div class="empty-picks">这个时间段还没有 AI 选题日报（每天早上生成）。</div>'; return; }
@@ -40,8 +44,9 @@
     const cards = (dg.picks || []).map((p, k) => `
       <article class="pick">
         <span class="no">0${k + 1}</span>
+        <div class="meta">${p.horizon ? `<span class="badge hz">${esc(p.horizon)}</span>` : ''}${p.platform ? `<span class="badge">${esc(p.platform)}</span>` : ''}</div>
         <h3>${esc(p.title)}</h3>
-        <p><b>为什么</b>${esc(p.why)}</p>
+        <p><b>为什么能火</b>${esc(p.why)}</p>
         <p><b>怎么做</b>${esc(p.how)}</p>
         ${p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : ''}
       </article>`).join('');
@@ -51,15 +56,102 @@
       ${cards ? `<div class="pick-grid">${cards}</div>` : '<div class="empty-picks">这一天没有生成选题（AI 点评未开启或出错）。</div>'}`;
   }
 
-  // ---------- 各分类 ----------
+  // ---------- 2~5 各分类 ----------
   const TABS = {
+    video: {
+      chips: (d) => counts(d.videos, (x) => PLAT[x.src] || x.src, ['抖音', 'B站', 'YouTube']),
+      chips2: (d) => counts(d.videos, (x) => x.ai?.type || '未分类', VTYPES.concat('未分类')),
+      sorts: [['vel', '飙升最快'], ['heat', '热度最高'], ['time', '最新发布']],
+      render(d) {
+        let items = d.videos.filter((x) => (!state.f1 || PLAT[x.src] === state.f1) && (!state.f2 || (x.ai?.type || '未分类') === state.f2) && match(x, state.q));
+        const s = state.sort || (state.w === 1 ? 'vel' : 'heat');
+        // 抖音按点赞、B站/YouTube 按播放，量级不同：混排时按平台内名次交错
+        const key = s === 'vel' ? (x) => x.vel || 0 : s === 'heat' ? (x) => x.heat || 0 : (x) => x.pubAt || 0;
+        if (s === 'time' || state.f1) items.sort((a, b) => key(b) - key(a));
+        else {
+          const byP = {};
+          for (const x of items.sort((a, b) => key(b) - key(a))) (byP[x.src] ||= []).push(x);
+          const lists = Object.values(byP);
+          items = [];
+          for (let i = 0; lists.some((l) => l[i]); i++) for (const l of lists) if (l[i]) items.push(l[i]);
+        }
+        return page(items, (x) => {
+          const dy = x.src === 'douyin';
+          return `
+          <article class="card vid">
+            <a class="th ${x.cover ? '' : `ph ${x.src}`}" href="${esc(x.url)}" target="_blank" rel="noopener">${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="">` : `<span>${PLAT[x.src] || ''}</span>`}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
+            <div class="bd">
+              <div class="tt">${link(x.url, esc(x.title))}</div>
+              <div class="meta">${pb(x.src)}${x.ai?.top ? '<span class="badge hot">今日精选</span>' : ''}${x.m?.aiCorner ? '<span class="badge">AI角标</span>' : ''}<span>${esc(x.author || '')}</span><span>${ago(x.pubAt)}</span></div>
+              <div class="stat"><span>${dy ? '❤' : '▶'} ${num(x.heat)}</span>${x.vel ? `<span class="up">🔥 +${num(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>👍 ${num(x.m.like)}</span>` : ''}${dy && x.m?.share ? `<span>↗ ${num(x.m.share)}</span>` : ''}</div>
+              ${ana('爆点', x.ai?.hook)}${ana('参考', x.ai?.tip)}
+            </div>
+          </article>`;
+        });
+      },
+    },
+    trend: {
+      chips: (d) => counts(d.trends, (x) => PLAT[x.src], ['抖音', 'B站', '微博']),
+      chips2: (d) => counts(d.trends, (x) => x.ai?.tag || '', TTAGS),
+      sorts: [['rank', '排名'], ['heat', '热度'], ['days', '在榜天数']],
+      render(d) {
+        let items = d.trends.filter((x) => (!state.f1 || PLAT[x.src] === state.f1) && (!state.f2 || x.ai?.tag === state.f2) && match(x, state.q));
+        const s = state.sort || 'rank';
+        if (s === 'heat') items.sort((a, b) => (b.peakHeat || b.heat || 0) - (a.peakHeat || a.heat || 0));
+        else if (s === 'days') items.sort((a, b) => (b.daysSeen || 0) - (a.daysSeen || 0) || (a.peakRank || 99) - (b.peakRank || 99));
+        else if (!state.f1) items.sort((a, b) => (a.peakRank || 99) - (b.peakRank || 99) || (b.heat || 0) - (a.heat || 0));
+        // 有 AI 标签的（热梗 / AI相关 / 可借势）先看
+        if (!state.f2 && s === 'rank') items.sort((a, b) => (b.ai?.tag ? 1 : 0) - (a.ai?.tag ? 1 : 0));
+        return page(items, (x) => {
+          const r = x.peakRank || x.rank;
+          return `
+          <article class="card row">
+            <div class="rk ${r <= 3 ? 'top' : ''}">${r || '↑'}</div>
+            <div class="bd">
+              <div class="tt">${link(x.url, esc(x.title))}</div>
+              <div class="meta">${pb(x.src)}${x.ai?.tag ? `<span class="badge ai">${esc(x.ai.tag)}</span>` : ''}${x.label ? `<span class="badge hot">${esc(x.label)}</span>` : ''}${x.heat ? `<span>热度 ${num(x.peakHeat || x.heat)}</span>` : ''}${state.w > 1 && x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}${state.w > 1 ? `<span>${ago(x.lastSeen)}</span>` : ''}</div>
+              ${ana('为什么火', x.ai?.why)}${ana('AI 做法', x.ai?.idea)}
+            </div>
+          </article>`;
+        });
+      },
+    },
+    music: {
+      chips: (d) => counts(d.music, musicPlat, MPLAT),
+      chips2: (d) => counts(d.music.filter((x) => !state.f1 || musicPlat(x) === state.f1), musicKind, ['热歌榜', '飙升榜']),
+      sorts: [['rank', '排名'], ['days', '在榜天数']],
+      render(d) {
+        let items = d.music.filter((x) => (!state.f1 || musicPlat(x) === state.f1) && (!state.f2 || musicKind(x) === state.f2) && match(x, state.q));
+        if (state.sort === 'days') items.sort((a, b) => (b.daysSeen || 0) - (a.daysSeen || 0));
+        // 没选平台时按「平台 → 榜单 → 名次」分组展示
+        let html = '';
+        let group = '';
+        const body = items.slice(0, state.shown).map((x) => {
+          const g = `${musicPlat(x)} · ${x.board.replace(/^(抖音|B站|QQ音乐|网易云)/, '')}`;
+          const head = g !== group && state.sort !== 'days' ? `<div class="group-h">${esc(g)}${/B站/.test(x.board) ? '（周榜）' : /抖音/.test(x.board) ? '（周榜）' : ''}</div>` : '';
+          group = g;
+          const r = state.w > 1 ? (x.peakRank || x.rank) : x.rank;
+          return `${head}
+          <article class="card row">
+            <div class="rk ${r <= 3 ? 'top' : ''}">${r}</div>
+            <div class="bd">
+              <div class="tt">${link(x.url, esc(x.title))} <small>— ${esc(x.author)}</small></div>
+              <div class="meta">${pb(x.src)}${x.label ? `<span class="badge hot">${esc(x.label)}</span>` : ''}${state.w > 1 ? `<span>最高第 ${x.peakRank || x.rank} 名</span>${x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}` : ''}</div>
+              ${ana('为什么火', x.ai?.why)}${ana('可以做', x.ai?.use)}
+            </div>
+          </article>`;
+        }).join('');
+        html += items.length ? body : '<div class="none">没有符合条件的内容</div>';
+        if (items.length > state.shown) html += `<button class="more" data-more>再看 ${Math.min(PAGE, items.length - state.shown)} 首（共 ${items.length}）</button>`;
+        return html;
+      },
+    },
     news: {
       chips: (d) => counts(d.news, (x) => x.src),
       chips2: () => [],
       sorts: [['time', '最新发布'], ['heat', '热度']],
       render(d) {
         const q = state.q;
-        // 先放 AI 归并好的事件，再放全部资讯
         let html = '';
         if (!state.f1) {
           const evs = (d.digests || []).flatMap((g) => (g.news || []).map((e) => ({ ...e, date: g.date }))).filter((e) => match({ title: e.title, desc: e.summary }, q));
@@ -82,86 +174,6 @@
             <div class="meta"><span class="badge">${esc(x.src)}</span><span>${ago(x.pubAt || x.firstSeen)}</span>${x.heat ? `<span>${x.board === 'HF 热门模型' ? '❤' : '▲'} ${num(x.heat)}</span>` : ''}${x.ai?.level ? `<span class="badge ai">${esc(x.ai.kind || 'AI 事件')}</span>` : ''}</div>
           </article>`);
         return html;
-      },
-    },
-    video: {
-      chips: (d) => counts(d.videos, (x) => x.ai?.type || '未分类', VTYPES.concat('未分类')),
-      chips2: (d) => counts(d.videos, (x) => PLAT[x.src] || x.src),
-      sorts: [['vel', '蹿升最快'], ['heat', '播放最多'], ['time', '最新发布']],
-      render(d) {
-        let items = d.videos.filter((x) => (!state.f1 || (x.ai?.type || '未分类') === state.f1) && (!state.f2 || PLAT[x.src] === state.f2) && match(x, state.q));
-        const s = state.sort || (state.w === 1 ? 'vel' : 'heat');
-        items.sort(s === 'vel' ? (a, b) => (b.vel || 0) - (a.vel || 0) : s === 'heat' ? (a, b) => (b.heat || 0) - (a.heat || 0) : (a, b) => (b.pubAt || 0) - (a.pubAt || 0));
-        return page(items, (x) => `
-          <article class="card vid">
-            <a class="th" href="${esc(x.url)}" target="_blank" rel="noopener">${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="">` : ''}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
-            <div class="bd">
-              <div class="tt">${link(x.url, esc(x.title))}</div>
-              <div class="meta">${pb(x.src)}<span>${esc(x.author || '')}</span><span>${ago(x.pubAt)}</span></div>
-              <div class="stat"><span>▶ ${num(x.heat)}</span>${x.vel ? `<span class="up">🔥 +${num(x.vel)}/小时</span>` : ''}${x.m?.like ? `<span>👍 ${num(x.m.like)}</span>` : ''}</div>
-              ${x.ai?.why ? `<div class="note">${esc(x.ai.why)}</div>` : ''}
-            </div>
-          </article>`);
-      },
-    },
-    trend: {
-      chips: (d) => counts(d.trends, (x) => PLAT[x.src]),
-      chips2: (d) => counts(d.trends, (x) => x.ai?.tag || '', TTAGS),
-      sorts: [['rank', '排名'], ['heat', '热度'], ['days', '在榜天数']],
-      render(d) {
-        let items = d.trends.filter((x) => (!state.f1 || PLAT[x.src] === state.f1) && (!state.f2 || x.ai?.tag === state.f2) && match(x, state.q));
-        const s = state.sort || 'rank';
-        if (s === 'heat') items.sort((a, b) => (b.peakHeat || b.heat || 0) - (a.peakHeat || a.heat || 0));
-        else if (s === 'days') items.sort((a, b) => (b.daysSeen || 0) - (a.daysSeen || 0) || (a.peakRank || 99) - (b.peakRank || 99));
-        else if (!state.f1) items.sort((a, b) => (a.peakRank || 99) - (b.peakRank || 99) || (b.heat || 0) - (a.heat || 0));
-        // 有 AI 标签的先看
-        if (!state.f2 && s === 'rank') items.sort((a, b) => (b.ai?.tag ? 1 : 0) - (a.ai?.tag ? 1 : 0));
-        return page(items, (x) => {
-          const r = x.peakRank || x.rank;
-          return `
-          <article class="card row">
-            <div class="rk ${r <= 3 ? 'top' : ''}">${r || '·'}</div>
-            <div class="bd">
-              <div class="tt">${link(x.url, esc(x.title))}</div>
-              <div class="meta">${pb(x.src)}${x.label ? `<span class="badge hot">${esc(x.label)}</span>` : ''}${x.heat ? `<span>热度 ${num(x.peakHeat || x.heat)}</span>` : ''}${state.w > 1 && x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}${state.w > 1 ? `<span>${ago(x.lastSeen)}</span>` : ''}${x.ai?.tag ? `<span class="badge ai">${esc(x.ai.tag)}</span>` : ''}</div>
-              ${x.ai?.note ? `<div class="note">${esc(x.ai.note)}</div>` : ''}
-            </div>
-          </article>`;
-        });
-      },
-    },
-    music: {
-      chips: (d) => counts(d.music, (x) => x.board),
-      chips2: () => [],
-      sorts: [['rank', '排名'], ['days', '在榜天数']],
-      render(d) {
-        let html = '';
-        const songs = (d.digests || [])[0]?.songs || [];
-        if (!state.f1 && songs.length && !state.q) {
-          html += `<div class="group-h">AI 推荐：适合做 AI 翻唱 / MV 的歌</div>` + songs.map((x) => `
-            <article class="card row">
-              <div class="rk">♪</div>
-              <div class="bd">
-                <div class="tt">${link(x.url, esc(x.title))} <small>— ${esc(x.author)}</small></div>
-                <div class="meta">${pb(x.src)}<span>${esc(x.board)} 第 ${x.rank} 名</span>${x.label ? `<span class="badge hot">${esc(x.label)}</span>` : ''}</div>
-                ${x.note ? `<div class="note">${esc(x.note)}</div>` : ''}
-              </div>
-            </article>`).join('');
-          html += '<div class="group-h">各平台榜单</div>';
-        }
-        let items = d.music.filter((x) => (!state.f1 || x.board === state.f1) && match(x, state.q));
-        if (state.sort === 'days') items.sort((a, b) => (b.daysSeen || 0) - (a.daysSeen || 0));
-        return html + page(items, (x) => {
-          const r = state.w > 1 ? (x.peakRank || x.rank) : x.rank;
-          return `
-          <article class="card row">
-            <div class="rk ${r <= 3 ? 'top' : ''}">${r}</div>
-            <div class="bd">
-              <div class="tt">${link(x.url, esc(x.title))} <small>— ${esc(x.author)}</small></div>
-              <div class="meta">${state.f1 ? '' : pb(x.src)}${state.f1 ? '' : `<span>${esc(x.board)}</span>`}${x.label ? `<span class="badge hot">${esc(x.label)}</span>` : ''}${state.w > 1 ? `<span>最高第 ${x.peakRank || x.rank} 名</span>${x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}` : ''}${x.ai?.note ? `<span class="badge ai">AI 推荐</span>` : ''}</div>
-            </div>
-          </article>`;
-        });
       },
     },
   };
@@ -215,7 +227,7 @@
     if (!b) return;
     if (b.dataset.w) { state.w = +b.dataset.w; state.pickDay = 0; state.shown = PAGE; render(); }
     else if (b.dataset.tab) { state.tab = b.dataset.tab; reset(); render(); }
-    else if ('f1' in b.dataset) { state.f1 = b.dataset.f1; state.shown = PAGE; render(); }
+    else if ('f1' in b.dataset) { state.f1 = b.dataset.f1; if (state.tab === 'music') state.f2 = ''; state.shown = PAGE; render(); }
     else if ('f2' in b.dataset) { state.f2 = b.dataset.f2; state.shown = PAGE; render(); }
     else if ('pickday' in b.dataset) { state.pickDay = +b.dataset.pickday; render(); }
     else if ('more' in b.dataset) { state.shown += PAGE; render(); }

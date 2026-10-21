@@ -1,6 +1,7 @@
 // 生成并发送每日早报邮件
 //   node src/mail.js --dry    只生成 out/mail.html 预览，不发送
 //   node src/mail.js --wait   等到 SEND_AT（默认 09:00 北京时间）再发
+// 顺序：今日选题 → AIGC 爆款 → 热梗热搜 → 热歌 / 飙升 → AI 圈大事件。每条都带「为什么能火」的分析
 import fs from 'node:fs';
 import path from 'node:path';
 import nodemailer from 'nodemailer';
@@ -8,106 +9,113 @@ import { ROOT, DATA, DAY, HOUR, bjDate, readJSON, loadEnv, isMain, fmtNum, sleep
 import { SEND_AT, TZ } from './config.js';
 import { PLATFORM } from './rank.js';
 
-const C = { text: '#191c22', muted: '#6b7280', line: '#e6e8ec', bg: '#f5f6f8', accent: '#5b5bd6', soft: '#ececfb', hot: '#e5484d', warm: '#f0820f' };
-const PCOLOR = { weibo: '#e6162d', douyin: '#111111', bilibili: '#fb7299', youtube: '#ff0033', qqmusic: '#20b363', netease: '#d43c33' };
+// 用 <style> 里的短类名而不是逐个元素写内联样式：内容多，Gmail 超过 102KB 会截断
+const CSS = `
+body{margin:0;padding:0;background:#f5f6f8;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;color:#191c22}
+a{color:#191c22;text-decoration:none}
+.w{max-width:640px;margin:0 auto;background:#fff;border:1px solid #e6e8ec;border-radius:14px;word-break:break-word}
+.hd{padding:22px 20px 6px}.k{font-size:12px;color:#6b7280;letter-spacing:1px}.dt{font-size:22px;font-weight:800;margin-top:4px}.cv{font-size:12px;color:#6b7280;margin-top:4px}
+.btn{display:inline-block;margin-top:14px;background:#5b5bd6;color:#fff!important;font-size:14px;padding:8px 18px;border-radius:8px}
+.s{padding:22px 20px 0}.s h2{font-size:17px;margin:0 0 4px}.s h2 small{font-size:12px;font-weight:400;color:#6b7280;margin-left:6px}
+.sub{font-size:14px;font-weight:700;margin:14px 0 2px;color:#191c22}
+.pk{background:#ececfb;border-radius:10px;padding:12px 14px;margin:8px 0}.pk .t{font-size:15px;font-weight:700;line-height:1.45;margin-top:4px}
+.it{padding:10px 0;border-bottom:1px solid #e6e8ec}
+.tt{font-size:14.5px;line-height:1.45}.tt small{color:#6b7280;font-size:13px}
+.m{font-size:12px;color:#6b7280;margin-top:3px}
+.a{font-size:13px;line-height:1.55;margin-top:4px;color:#374151}.a b{color:#5b5bd6;font-weight:600;margin-right:4px}
+.b{display:inline-block;font-size:11px;line-height:16px;padding:0 5px;border-radius:4px;margin-right:4px;background:#eef0f3;color:#6b7280}
+.hot{background:#e5484d;color:#fff}.ai{background:#ececfb;color:#5b5bd6}.hz{background:#5b5bd6;color:#fff}.warm{background:#f0820f;color:#fff}
+.p-douyin{background:#111;color:#fff}.p-bilibili{background:#fb7299;color:#fff}.p-weibo{background:#e6162d;color:#fff}.p-qqmusic{background:#20b363;color:#fff}.p-netease{background:#d43c33;color:#fff}
+.r{display:inline-block;width:20px;color:#9aa1ad;font-weight:600}.r.top{color:#e5484d}
+.up{color:#e5484d;font-weight:600}.refs a{color:#5b5bd6;font-size:12px;margin-right:10px}
+.ft{padding:24px 20px 22px;font-size:12px;color:#9aa1ad;line-height:1.7}.warn{color:#f0820f}
+`;
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const a = (url, text, style = '') => `<a href="${esc(url)}" style="color:${C.text};text-decoration:none;${style}">${text}</a>`;
-const badge = (text, bg, color = '#fff') => `<span style="display:inline-block;font-size:11px;line-height:16px;padding:0 5px;border-radius:4px;background:${bg};color:${color};margin-right:4px;white-space:nowrap">${esc(text)}</span>`;
-const pbadge = (src) => badge(PLATFORM[src] || src, PCOLOR[src] || '#888');
+const a = (url, text) => `<a href="${esc(url)}">${text}</a>`;
+const b = (text, cls = '') => `<span class="b ${cls}">${esc(text)}</span>`;
+const pb = (src) => b(PLATFORM[src] || src, `p-${src}`);
+const an = (label, text) => (text ? `<div class="a"><b>${label}</b>${esc(text)}</div>` : '');
+const cut = (s, n) => (s.length > n ? s.slice(0, n) + '…' : s);
 const fmtDay = (ts) => new Intl.DateTimeFormat('zh-CN', { timeZone: TZ, month: 'numeric', day: 'numeric', weekday: 'short' }).format(ts);
 const fmtHM = (ts) => new Intl.DateTimeFormat('zh-CN', { timeZone: TZ, month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }).format(ts);
-
-function section(title, sub, body) {
-  return `
-  <tr><td style="padding:22px 20px 6px">
-    <div style="font-size:17px;font-weight:700;color:${C.text}">${title}${sub ? `<span style="font-size:12px;font-weight:400;color:${C.muted};margin-left:8px">${sub}</span>` : ''}</div>
-  </td></tr>
-  <tr><td style="padding:0 20px">${body}</td></tr>`;
-}
-const item = (inner, last) => `<div style="padding:10px 0;${last ? '' : `border-bottom:1px solid ${C.line}`}">${inner}</div>`;
-const list = (arr, fn) => arr.map((x, i) => item(fn(x, i), i === arr.length - 1)).join('');
-const ai = (t) => (t ? `<div style="font-size:13px;color:${C.accent};margin-top:3px">AI · ${esc(t)}</div>` : '');
+const sec = (title, sub, body) => `<div class="s"><h2>${title}${sub ? `<small>${sub}</small>` : ''}</h2>${body}</div>`;
+const items = (arr, fn) => arr.map((x, i) => `<div class="it">${fn(x, i)}</div>`).join('');
+const rk = (n) => `<span class="r ${n <= 3 ? 'top' : ''}">${n}</span>`;
 
 export function render(d, { siteUrl } = {}) {
   const site = siteUrl || process.env.SITE_URL || '';
   const parts = [];
 
+  // 1. 今日选题
   if (d.picks?.length) {
-    parts.push(section('🎯 今日选题', 'AI 根据下面所有热点给的建议', d.picks.map((p, i) => `
-      <div style="background:${C.soft};border-radius:10px;padding:12px 14px;margin:8px 0">
-        <div style="font-size:15px;font-weight:700;color:${C.text};line-height:1.45"><span style="color:${C.accent};margin-right:6px">${i + 1}</span>${esc(p.title)}</div>
-        <div style="font-size:13px;color:${C.muted};margin-top:5px;line-height:1.55"><b style="color:${C.text}">为什么</b>　${esc(p.why)}</div>
-        <div style="font-size:13px;color:${C.muted};margin-top:3px;line-height:1.55"><b style="color:${C.text}">怎么做</b>　${esc(p.how)}</div>
-        ${p.refs?.length ? `<div style="font-size:12px;margin-top:6px;line-height:1.7">${p.refs.map((r) => a(r.url, `↗ ${esc(r.title.length > 22 ? r.title.slice(0, 22) + '…' : r.title)}`, `color:${C.accent};margin-right:10px`)).join(' ')}</div>` : ''}
+    parts.push(sec('🎯 今日选题', '基于抖音 / B站 AIGC 热点', d.picks.map((p, i) => `
+      <div class="pk">
+        <div>${b(`0${i + 1}`, 'hz')}${p.horizon ? b(p.horizon, 'ai') : ''}${p.platform ? b(p.platform) : ''}</div>
+        <div class="t">${esc(p.title)}</div>
+        ${an('为什么能火', p.why)}${an('怎么做', p.how)}
+        ${p.refs?.length ? `<div class="refs">${p.refs.map((r) => a(r.url, `↗ ${esc(cut(r.title, 20))}`)).join(' ')}</div>` : ''}
       </div>`).join('')));
   }
 
+  // 2. AIGC 爆款（抖音 / B站）
+  const vids = d.videos || {};
+  const vBlock = ['douyin', 'bilibili'].filter((s) => vids[s]?.length).map((s) => `<div class="sub">${pb(s)}${s === 'douyin' ? '热度按点赞（抖音不公开播放数）' : ''}</div>` + items(vids[s], (v) => `
+    <div class="tt">${a(v.url, esc(cut(v.title, 60)))}</div>
+    <div class="m">${b(v.ai?.type || 'AIGC', 'ai')}${v.m?.aiCorner ? b('AI角标') : ''}${s === 'douyin' ? '❤' : '▶'} ${fmtNum(v.heat)}${v.vel ? `　<span class="up">+${fmtNum(v.vel)}${s === 'douyin' ? '赞' : ''}/小时</span>` : ''}　${esc(v.author || '')}</div>
+    ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}`)).join('');
+  if (vBlock) parts.push(sec('🔥 最新 AIGC 爆款', '过去 24 小时飙升', vBlock));
+
+  // 3. 热梗热搜
+  const memes = d.memes || [];
+  const tr = d.trends || {};
+  const memeHtml = memes.length ? `<div class="sub">AI 挑出的热梗 / 可借势</div>` + items(memes, (t) => `
+    <div class="tt">${b(t.ai.tag, t.ai.tag === '热梗' ? 'warm' : 'ai')}${a(t.url, esc(t.title))} ${pb(t.src)}</div>
+    ${an('为什么火', t.ai.why)}${an('AI 做法', t.ai.idea)}`) : '';
+  const trendHtml = ['douyin', 'bilibili', 'weibo'].filter((s) => tr[s]?.length).map((s) => `<div class="sub">${pb(s)}热搜前 ${tr[s].length}</div>` + items(tr[s], (t, i) => `
+    <div class="tt">${rk(i + 1)}${a(t.url, esc(t.title))}${t.ai?.tag ? ` ${b(t.ai.tag, 'ai')}` : ''}</div>
+    ${t.ai?.why ? `<div class="a">${esc(t.ai.why)}</div>` : ''}`)).join('');
+  if (memeHtml || trendHtml) parts.push(sec('😂 最新热梗热搜', '抖音 / B站 / 微博', memeHtml + trendHtml));
+
+  // 4. 热歌 / 飙升
+  const mu = d.music || {};
+  const musicHtml = ['抖音', 'B站', 'QQ音乐', '网易云'].filter((p) => mu[p]).map((p) => ['热歌榜', '飙升榜'].filter((k) => mu[p][k]?.length).map((k) => {
+    const src = mu[p][k][0].src;
+    const weekly = p === '抖音' || p === 'B站' ? '（周榜）' : '';
+    return `<div class="sub">${pb(src)}${k}${weekly}</div>` + items(mu[p][k].slice(0, 5), (m) => `
+      <div class="tt">${rk(m.rank)}${a(m.url, esc(m.title))} <small>— ${esc(cut(m.author || '', 24))}</small>${m.label ? ` <span class="up">${esc(m.label)}</span>` : ''}</div>
+      ${m.ai?.why ? `<div class="a">${esc(m.ai.why)}${m.ai.use ? `　<b>可以做</b>${esc(m.ai.use)}` : ''}</div>` : ''}`);
+  }).join('')).join('');
+  if (musicHtml) parts.push(sec('🎵 热歌榜 & 飙升榜', '各榜前 5', musicHtml));
+
+  // 5. AI 圈大事件
   if (d.news?.length) {
     const ev = d.news.slice(0, 10);
-    parts.push(section('🤖 AI 圈大事件', `${d.news.length} 件，显示前 ${ev.length}`, list(ev, (e) => `
-      <div>${e.level === '重磅' ? badge('重磅', C.hot) : ''}${e.kind ? badge(e.kind, C.bg, C.muted) : ''}</div>
-      <div style="font-size:15px;font-weight:600;line-height:1.45;margin-top:4px">${a(e.refs[0]?.url, esc(e.title))}</div>
-      ${e.summary ? `<div style="font-size:13px;color:${C.muted};line-height:1.55;margin-top:2px">${esc(e.summary)}</div>` : ''}
-      <div style="font-size:12px;color:#9aa1ad;margin-top:3px">来源：${[...new Set(e.refs.map((r) => r.src))].join(' / ')}</div>`)));
-  }
-
-  if (d.videos?.length) {
-    const vs = d.videos.slice(0, 10);
-    parts.push(section('🔥 AIGC 爆款', '过去 24 小时增长最快', list(vs, (v) => `
-      <div style="font-size:14.5px;line-height:1.45">${a(v.url, esc(v.title))}</div>
-      <div style="font-size:12px;color:${C.muted};margin-top:4px">${pbadge(v.src)}${badge(v.ai?.type || 'AIGC', C.soft, C.accent)}▶ ${fmtNum(v.heat)}${v.vel ? `　<b style="color:${C.hot}">+${fmtNum(v.vel)}/小时</b>` : ''}　${esc(v.author || '')}</div>
-      ${ai(v.why)}`)));
-  }
-
-  if (d.memes?.length) {
-    const ms = d.memes.slice(0, 12);
-    // 窄屏上三栏会挤爆，改成每个平台一段可折行的文字
-    const top = (src) => (d.trends?.[src] || []).slice(0, 10).map((x, i) => `<span style="color:${i < 3 ? C.hot : '#9aa1ad'};margin-right:3px">${i + 1}</span>${a(x.url, esc(x.title))}`).join(`<span style="color:#c9cdd4">　|　</span>`);
-    parts.push(section('😂 热梗 & 可借势热搜', 'AI 从微博 / 抖音 / B站热搜里挑的', list(ms, (t) => `
-      <div style="font-size:14.5px;line-height:1.45">${badge(t.ai.tag, t.ai.tag === '热梗' ? C.warm : C.soft, t.ai.tag === '热梗' ? '#fff' : C.accent)}${a(t.url, esc(t.title))}　${pbadge(t.src)}</div>
-      ${ai(t.ai.note)}`) + `
-      <div style="margin-top:14px;font-size:13px;font-weight:600;color:${C.text}">各平台热搜前 10</div>
-      ${['weibo', 'douyin', 'bilibili'].filter((s) => d.trends?.[s]?.length).map((s) => `<div style="font-size:13px;line-height:1.9;margin-top:8px">${pbadge(s)} ${top(s)}</div>`).join('')}`));
-  }
-
-  const hl = d.music?.highlights || [];
-  const boards = d.music?.boards || {};
-  // 邮件里只放变化快的三个榜，其它榜在网页上看
-  const pick = ['抖音热歌榜', 'QQ音乐飙升榜', '网易云飙升榜'].filter((b) => boards[b]?.length);
-  if (hl.length || pick.length) {
-    const boardHtml = pick.map((b) => `
-      <div style="margin-top:12px;font-size:13px;font-weight:600">${esc(b)}</div>
-      ${boards[b].slice(0, b.includes('抖音') ? 8 : 5).map((m) => `<div style="font-size:13px;line-height:1.6;padding:2px 0"><span style="color:${m.rank <= 3 ? C.hot : '#9aa1ad'};display:inline-block;width:20px">${m.rank}</span>${a(m.url, esc(m.title))}<span style="color:${C.muted}"> — ${esc(m.author)}</span>${m.label ? ` <span style="color:${C.hot};font-size:12px">${esc(m.label)}</span>` : ''}</div>`).join('')}`).join('');
-    parts.push(section('🎵 热歌', '', (hl.length ? `<div style="font-size:13px;font-weight:600;margin-top:4px">AI 推荐：适合做 AI 翻唱 / MV</div>` + list(hl, (m) => `
-      <div style="font-size:14.5px">${a(m.url, `${esc(m.title)}<span style="color:${C.muted}"> — ${esc(m.author)}</span>`)}</div>
-      <div style="font-size:12px;color:${C.muted};margin-top:3px">${pbadge(m.src)}${esc(m.board)} 第 ${m.rank} 名</div>
-      ${ai(m.note)}`) : '') + boardHtml));
+    parts.push(sec('🤖 今日 AI 圈大事件', `${d.news.length} 件，显示前 ${ev.length}`, items(ev, (e) => `
+      <div>${e.level === '重磅' ? b('重磅', 'hot') : ''}${e.kind ? b(e.kind) : ''}</div>
+      <div class="tt" style="font-weight:600;margin-top:3px">${a(e.refs[0]?.url, esc(e.title))}</div>
+      ${e.summary ? `<div class="a">${esc(e.summary)}</div>` : ''}
+      <div class="m">来源：${[...new Set(e.refs.map((r) => r.src))].join(' / ')}</div>`)));
   }
 
   const st = readJSON(path.join(DATA, 'status.json'), { sources: {} });
   const bad = Object.values(st.sources).filter((s) => !s.ok).map((s) => s.name);
-  const btn = site ? `<a href="${esc(site)}" style="display:inline-block;background:${C.accent};color:#fff;text-decoration:none;font-size:14px;padding:8px 18px;border-radius:8px">打开网页版，按 3 天 / 7 天 / 30 天查</a>` : '';
 
-  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIGC 热点早报</title></head>
-<body style="margin:0;padding:0;background:${C.bg};font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;color:${C.text}">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:${C.bg}"><tr><td align="center" style="padding:16px 8px">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:640px;table-layout:fixed;word-break:break-word;background:#fff;border-radius:14px;border:1px solid ${C.line}">
-  <tr><td style="padding:22px 20px 4px">
-    <div style="font-size:12px;color:${C.muted};letter-spacing:1px">AIGC 热点雷达 · 早报</div>
-    <div style="font-size:22px;font-weight:800;margin-top:4px">${fmtDay(d.generatedAt)}</div>
-    <div style="font-size:12px;color:${C.muted};margin-top:4px">覆盖 ${fmtHM(d.window[0])} — ${fmtHM(d.window[1])}${d.ai ? `　·　AI 点评：${esc(d.ai)}` : ''}</div>
-    ${btn ? `<div style="margin-top:14px">${btn}</div>` : ''}
-  </td></tr>
-  ${parts.join('')}
-  <tr><td style="padding:24px 20px 22px;font-size:12px;color:#9aa1ad;line-height:1.7">
-    ${bad.length ? `<div style="color:${C.warm}">⚠ 本次未采集到：${bad.join('、')}（下次会自动重试）</div>` : ''}
-    ${d.errors?.length ? `<div style="color:${C.warm}">⚠ AI 点评部分出错，相关板块用规则兜底</div>` : ''}
-    <div>数据来自微博、抖音、B站、YouTube、QQ音乐、网易云及多家 AI 媒体的公开榜单。小红书暂未接入。</div>
-  </td></tr>
-</table>
-</td></tr></table>
-</body></html>`;
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIGC 热点早报</title><style>${CSS.replace(/\n/g, '')}</style></head>
+<body><div style="padding:16px 8px"><div class="w">
+<div class="hd">
+  <div class="k">AIGC 热点雷达 · 早报</div>
+  <div class="dt">${fmtDay(d.generatedAt)}</div>
+  <div class="cv">覆盖 ${fmtHM(d.window[0])} — ${fmtHM(d.window[1])}${d.ai ? `　·　AI 分析：${esc(d.ai)}` : ''}</div>
+  ${site ? `<a class="btn" href="${esc(site)}">打开网页版，看全部 + 按 3 天 / 7 天 / 30 天查</a>` : ''}
+</div>
+${parts.join('\n')}
+<div class="ft">
+  ${bad.length ? `<div class="warn">⚠ 本次未采集到：${bad.join('、')}（下次会自动重试）</div>` : ''}
+  ${d.errors?.length ? '<div class="warn">⚠ AI 分析部分出错，相关板块用规则兜底</div>' : ''}
+  <div>标「推测」的分析是 AI 根据有限信息做的判断，仅供参考。小红书暂未接入。</div>
+</div>
+</div></div></body></html>`;
 }
 
 export function subject(d) {

@@ -6,14 +6,14 @@ import { loadWindow, slim } from './rank.js';
 
 const SITE = path.join(ROOT, 'site');
 const WINDOWS = [1, 3, 7, 30];
-const LIMIT = { news: 400, video: 400, trend: 120, music: 60 };
+const LIMIT = { news: 400, video: 500, trend: 120, music: 50 };
 
 function digestsIn(days, now) {
   const out = [];
   for (let i = 0; i < days + 1 && out.length < days; i++) {
     const d = readJSON(path.join(DATA, 'digests', `${bjDate(now - i * DAY)}.json`));
     if (d && d.generatedAt > now - (days + 1) * DAY) {
-      out.push({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news, memes: d.memes, songs: d.music?.highlights || [] });
+      out.push({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news });
     }
   }
   return out;

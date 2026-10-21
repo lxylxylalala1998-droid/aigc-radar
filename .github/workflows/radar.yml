@@ -73,7 +73,7 @@ jobs:
 
       - name: 采集
         if: steps.mode.outputs.mode != 'mail-test'
-        run: node src/collect.js
+        run: node src/collect.js ${{ startsWith(steps.mode.outputs.mode, 'daily') && '--daily' || '' }}
 
       - name: AI 标注
         if: steps.mode.outputs.mode != 'mail-test'

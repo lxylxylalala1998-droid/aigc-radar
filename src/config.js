@@ -16,7 +16,8 @@ export const AI_RE = new RegExp([
   '智谱', 'GLM', 'MiniMax', '数字人', '虚拟人', '智能体', 'Nano ?Banana', 'LLM', 'AGI',
 ].join('|'), 'i');
 
-// B站 AI 稿件搜索关键词。core=true 的额外查一次近 7 天，用来兜住前几天发、今天还在涨的爆款
+// B站 AI 稿件搜索关键词。core=true 的额外查一次近 7 天（兜住前几天发、今天还在涨的爆款）；
+// 每天早报那次运行还会对 core 关键词查近 30 天，作为「长期热点」的依据
 export const BILI_KEYWORDS = [
   { kw: 'AI音乐', core: true }, { kw: 'AI MV', core: true }, { kw: 'AI动画', core: true },
   { kw: 'AI短剧', core: true }, { kw: 'AI漫剧' }, { kw: 'AI短片', core: true }, { kw: 'AI翻唱', core: true },
@@ -47,13 +48,11 @@ export const RSS_FEEDS = [
 ];
 
 // 音乐榜单
-export const QQ_TOPS = [
-  { id: 26, name: '热歌榜' }, { id: 62, name: '飙升榜' }, { id: 27, name: '新歌榜' },
-];
-export const NETEASE_TOPS = [
-  { id: 3778678, name: '热歌榜' }, { id: 19723756, name: '飙升榜' }, { id: 3779629, name: '新歌榜' },
-];
-export const DOUYIN_MUSIC_CHART = '6853972723954146568';
+// 每个平台都取「热歌榜 + 飙升榜」
+export const QQ_TOPS = [{ id: 26, name: '热歌榜' }, { id: 62, name: '飙升榜' }];
+export const NETEASE_TOPS = [{ id: 3778678, name: '热歌榜' }, { id: 19723756, name: '飙升榜' }];
+// 抖音音乐榜（周更）。ID 来自开源项目 hutaolv/hutao-music 等
+export const DOUYIN_MUSIC_CHARTS = [{ id: '6853972723954146568', name: '热歌榜' }, { id: '6854399861215730952', name: '飙升榜' }];
 export const MUSIC_TOP_N = 50;
 
 // DeepSeek

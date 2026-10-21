@@ -59,7 +59,8 @@ h1 { font-size: 17px; margin: 0; line-height: 1.2; letter-spacing: .5px; }
 .pick-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
 .pick { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; box-shadow: var(--shadow); position: relative; }
 .pick .no { position: absolute; top: 12px; right: 14px; font: 700 22px/1 ui-monospace, Menlo, monospace; color: var(--accent); opacity: .25; }
-.pick h3 { font-size: 15px; margin: 0 28px 8px 0; line-height: 1.4; }
+.pick h3 { font-size: 15px; margin: 8px 28px 8px 0; line-height: 1.4; }
+.pick .meta { margin-top: 0; }
 .pick p { margin: 4px 0; font-size: 13px; color: var(--muted); }
 .pick p b { color: var(--text); font-weight: 600; margin-right: 4px; }
 .pick .refs { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
@@ -100,8 +101,10 @@ h1 { font-size: 17px; margin: 0; line-height: 1.2; letter-spacing: .5px; }
 .badge.lv-重磅 { background: var(--hot); color: #fff; } .badge.lv-值得关注 { background: color-mix(in srgb, var(--warm) 18%, transparent); color: var(--warm); }
 .badge.ai { background: var(--accent-soft); color: var(--accent); }
 .badge.hot { color: var(--hot); background: color-mix(in srgb, var(--hot) 12%, transparent); }
-.note { margin-top: 6px; font-size: 13px; color: var(--accent); }
-.note::before { content: "AI · "; font-weight: 600; }
+/* AI 分析：爆点 / 参考 / 为什么火 / AI 做法 */
+.ana { margin-top: 5px; font-size: 13px; line-height: 1.55; color: var(--text); }
+.ana b { display: inline-block; font-weight: 600; font-size: 11.5px; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0 5px; margin-right: 6px; line-height: 18px; vertical-align: 1px; }
+.badge.hz { background: var(--accent); color: #fff; }
 
 /* 事件 */
 .event h3 { margin: 6px 0 4px; font-size: 15px; line-height: 1.45; }
@@ -122,6 +125,10 @@ h1 { font-size: 17px; margin: 0; line-height: 1.2; letter-spacing: .5px; }
 .vid { display: flex; gap: 12px; }
 .vid .th { flex: none; width: 132px; aspect-ratio: 16/10; border-radius: 8px; background: var(--chip) center/cover no-repeat; position: relative; overflow: hidden; }
 .vid .th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 抖音封面链接会过期，不存封面，用平台色占位 */
+.vid .th.ph { display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 15px; letter-spacing: 1px; }
+.vid .th.ph.douyin { background: linear-gradient(135deg, #25f4ee 0%, #111 45%, #111 55%, #fe2c55 100%); }
+.vid .th.ph.bilibili { background: var(--bilibili); } .vid .th.ph.youtube { background: var(--youtube); }
 .vid .th .ty { position: absolute; left: 5px; top: 5px; background: rgba(0,0,0,.62); color: #fff; font-size: 11px; padding: 2px 5px; border-radius: 4px; }
 .vid .bd { flex: 1; min-width: 0; }
 .vid .tt { font-size: 14.5px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
