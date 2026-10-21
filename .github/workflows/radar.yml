@@ -1,0 +1,117 @@
+name: AIGC 热点雷达
+
+on:
+  schedule:
+    # GitHub 用 UTC 时间。北京 08:20 跑早报（跑完等到 09:00 再发邮件）
+    - cron: '20 0 * * *'
+    # 其余每 3 小时采集一次：北京 11:40 / 14:40 / 17:40 / 20:40 / 23:40 / 02:40 / 05:40
+    - cron: '40 3,6,9,12,15,18,21 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'collect=只采集更新网页；daily=完整早报（等到 9 点发）；daily-now=完整早报立刻发；mail-test=用最近一份日报立刻发一封测试邮件'
+        type: choice
+        options: [collect, daily, daily-now, mail-test]
+        default: daily-now
+
+permissions:
+  contents: write   # 推送 data 分支
+  pages: write      # 发布网页
+  id-token: write
+  actions: write    # 定时任务续命
+
+concurrency:
+  group: radar
+  cancel-in-progress: false
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+      YT_API_KEY: ${{ secrets.YT_API_KEY }}
+      SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: 判断运行模式
+        id: mode
+        run: |
+          M="${{ inputs.mode }}"
+          if [ -z "$M" ]; then
+            if [ "${{ github.event.schedule }}" = "20 0 * * *" ]; then M=daily; else M=collect; fi
+          fi
+          echo "mode=$M" >> "$GITHUB_OUTPUT"
+          echo "运行模式：$M"
+
+      - name: 取回历史数据（data 分支）
+        run: |
+          mkdir -p data
+          if git ls-remote --exit-code --heads origin data > /dev/null; then
+            git fetch --depth=1 origin data
+            git archive FETCH_HEAD | tar -x -C data
+            echo "已取回 $(ls data/days 2>/dev/null | wc -l) 天的数据"
+          else
+            echo "还没有 data 分支，从零开始"
+          fi
+
+      - name: 采集
+        if: steps.mode.outputs.mode != 'mail-test'
+        run: node src/collect.js
+
+      - name: AI 标注
+        if: steps.mode.outputs.mode != 'mail-test'
+        run: node src/curate.js annotate
+
+      - name: AI 日报
+        if: startsWith(steps.mode.outputs.mode, 'daily')
+        run: node src/curate.js digest
+
+      - name: 保存数据（覆盖写入 data 分支，不留历史）
+        if: steps.mode.outputs.mode != 'mail-test'
+        run: |
+          cd data
+          git init -q -b data
+          git add -A
+          git -c user.name="radar-bot" -c user.email="radar-bot@users.noreply.github.com" commit -qm "data $(TZ=Asia/Shanghai date '+%F %R')"
+          git push -fq "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" data
+          rm -rf .git
+
+      - name: 生成网页
+        run: node src/build.js
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: 发布网页
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: 发邮件
+        if: steps.mode.outputs.mode != 'collect'
+        run: |
+          if [ "${{ steps.mode.outputs.mode }}" = "daily" ]; then node src/mail.js --wait; else node src/mail.js; fi
+
+      - name: 定时任务续命（防止 60 天无提交被 GitHub 自动停用）
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/radar.yml/enable"
