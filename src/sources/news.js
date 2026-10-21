@@ -13,7 +13,7 @@ function linkOf(e) {
 }
 
 async function feed(f) {
-  const xml = await http(f.url, { type: 'text', retries: 1 });
+  const xml = await http(f.url, { type: 'text', retries: 3, timeout: 30000 }); // 国内站从海外服务器访问偶尔超时，多试几次
   const doc = parser.parse(xml);
   const entries = doc.rss ? arr(doc.rss.channel?.item) : arr(doc.feed?.entry);
   const since = Date.now() - 3 * DAY;
