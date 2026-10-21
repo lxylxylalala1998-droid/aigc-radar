@@ -258,7 +258,7 @@ ${hfLines.join('\n') || '（无）'}`);
 async function pickHits(list, now) {
   const lines = list.map((x, i) => `${i}|${PLATFORM[x.src]}|${x.ai.type}|${x.title}|${stats(x)}|发布${hoursAgo(x.pubAt, now)}h|每小时+${fmtNum(x.vel)}${x.src === 'douyin' ? '赞' : '播放'}${x.tags ? `|话题:${x.tags}` : ''}`);
   const r = await ask(`下面是过去 24 小时增长最快的 AIGC 作品（编号|平台|类型|标题|数据|发布时长|增速|话题）。
-从【抖音】和【B站】里各挑最多 6 个最值得 AI 自媒体参考的爆款（优先增长快、有代表性、可复制；同一系列 / 同一个特效模板只选一个代表）。
+从【抖音】和【B站】里各挑 6 个最值得 AI 自媒体参考的爆款（某个平台候选不足 6 个就全选）（优先增长快、有代表性、可复制；同一系列 / 同一个特效模板只选一个代表）。
 对每个写：
 - hook：爆点分析——这条具体为什么能火，结合数据说（比如几小时涨了多少），≤50 字
 - tip：怎么参考——同类内容怎么做、用什么工具、关键镜头 / 节奏 / 文案怎么设计，≤45 字
@@ -314,7 +314,17 @@ export async function digest(now = Date.now()) {
   const cand = ['douyin', 'bilibili'].flatMap((s) => fresh.filter((x) => x.src === s).sort((a, b) => b.vel - a.vel).slice(0, 25));
   const top = await step('爆款点评', () => pickHits(cand, now),
     () => ['douyin', 'bilibili'].flatMap((s) => cand.filter((x) => x.src === s).slice(0, 6).map((x) => ({ i: cand.indexOf(x), hook: x.ai.hook, tip: x.ai.tip }))), errors);
-  const hits = top.map((t) => cand[+t.i] && { ...cand[+t.i], ai: { ...cand[+t.i].ai, hook: t.hook || cand[+t.i].ai.hook, tip: t.tip || cand[+t.i].ai.tip } }).filter(Boolean);
+  const hits = top.map((t) => cand[+t.i] && { ...cand[+t.i], ai: { ...cand[+t.i].ai, hook: t.hook || cand[+t.i].ai.hook, tip: t.tip || cand[+t.i].ai.tip } }).filter(Boolean)
+    .filter((x, i, arr) => arr.findIndex((y) => y.id === x.id) === i);
+  // AI 有时挑得少，每个平台不满 6 条就按增速补齐（补上的沿用标注时写好的爆点 / 参考）
+  for (const s of ['douyin', 'bilibili']) {
+    let have = hits.filter((x) => x.src === s).length;
+    for (const x of cand.filter((c) => c.src === s && !hits.some((h) => h.id === c.id))) {
+      if (have >= 6) break;
+      hits.push(x);
+      have++;
+    }
+  }
   const videos = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, hits.filter((x) => x.src === s).slice(0, 6).map((x) => slim(x, now))]));
 
   // ---- 选题素材：四个时间段 ----
