@@ -61,7 +61,7 @@ export function render(d, { siteUrl } = {}) {
 
   // 2. AIGC 爆款（抖音 / B站）
   const vids = d.videos || {};
-  const vBlock = ['douyin', 'bilibili'].filter((s) => vids[s]?.length).map((s) => `<div class="sub">${pb(s)}${s === 'douyin' ? '热度按点赞（抖音不公开播放数）' : ''}</div>` + items(vids[s], (v) => `
+  const vBlock = ['douyin', 'bilibili'].filter((s) => vids[s]?.length).map((s) => `<div class="sub">${pb(s)}${s === 'douyin' ? '<span style="font-weight:400;font-size:12px;color:#6b7280">只含抖音热榜话题下的视频；没上热榜的爆款抓不到。热度按点赞（抖音不公开播放数）</span>' : ''}</div>` + items(vids[s], (v) => `
     <div class="tt">${a(v.url, esc(cut(v.title, 60)))}</div>
     <div class="m">${b(v.ai?.type || 'AIGC', 'ai')}${v.m?.aiCorner ? b('AI角标') : ''}${s === 'douyin' ? '❤' : '▶'} ${fmtNum(v.heat)}${v.vel ? `　<span class="up">+${fmtNum(v.vel)}${s === 'douyin' ? '赞' : ''}/小时</span>` : ''}　${esc(v.author || '')}</div>
     ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}`)).join('');
