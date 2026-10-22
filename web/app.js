@@ -5,7 +5,7 @@
   const VTYPES = ['AI音乐', 'AI MV', 'AI歌手/艺人', 'AI鬼畜', 'AI影视', 'AI换人', 'AI动画', 'AI特效玩法', 'AI整活', 'AI教程测评'];
   const PAGE = 40;
 
-  const state = { w: 1, tab: 'douyin', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: false, shown: PAGE };
+  const state = { w: 1, tab: 'douyin', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: {}, shown: PAGE };
   const cache = {};
 
   // ---------- 工具 ----------
@@ -40,40 +40,43 @@
     return cache[w];
   }
 
-  // ---------- 今日选题：前 5 个卡片（头号选题反白），6~10 紧凑列表；手机上 6~10 默认收起 ----------
+  // ---------- 今日选题：抖音 10 个在左、B站 10 个在右，各用平台代表色框住；手机上上下排、各展开前 5 个 ----------
   function renderPicks(d) {
     const ds = d.digests || [];
     if (!ds.length) { $('#picks').innerHTML = '<div class="empty-note">这个时间段还没有 AI 选题日报，每天早上 9 点前生成。</div>'; return; }
     const i = Math.min(state.pickDay, ds.length - 1);
     const dg = ds[i];
-    const picks = dg.picks || [];
+    // 旧日报是一个混合列表（带 platform 字段），新日报按平台分开
+    const byPlat = Array.isArray(dg.picks)
+      ? { douyin: dg.picks.filter((p) => p.platform !== 'B站'), bilibili: dg.picks.filter((p) => p.platform === 'B站' || p.platform === '双平台') }
+      : { douyin: dg.picks?.douyin || [], bilibili: dg.picks?.bilibili || [] };
     const dayChips = ds.length > 1 ? `<div class="day-chips">${ds.map((x, k) => `<button class="chip ${k === i ? 'on' : ''}" data-pickday="${k}">${+x.date.slice(5, 7)}月${+x.date.slice(8)}日</button>`).join('')}</div>` : '';
     const refs = (p) => (p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : '');
-    const cards = picks.slice(0, 5).map((p, k) => `
-      <article class="pick ${k === 0 ? 'lead' : ''}">
+    const item = (p, k) => `
+      <article class="pm ${k === 0 ? 'first' : ''}">
         <div class="no">${pad(k + 1)}</div>
-        <div class="tags">${tag(p.horizon, 'mark')}${tag(p.platform)}</div>
-        <h3>${esc(p.title)}</h3>
-        <p><span class="mk">为什么能火</span>${esc(p.why)}</p>
-        <p><span class="mk">怎么做</span>${esc(p.how)}</p>
-        ${refs(p)}
-      </article>`).join('');
-    const rest = picks.slice(5).map((p, k) => `
-      <article class="pm">
-        <div class="no">${pad(k + 6)}</div>
         <div>
-          <div class="tags">${tag(p.horizon, 'mark')}${tag(p.platform)}</div>
+          <div class="tags">${tag(p.horizon, 'mark')}</div>
           <h3>${esc(p.title)}</h3>
           <p><span class="mk">为什么能火</span>${esc(p.why)}</p>
           <p><span class="mk">怎么做</span>${esc(p.how)}</p>
           ${refs(p)}
         </div>
-      </article>`).join('');
+      </article>`;
+    const box = (s) => {
+      const list = byPlat[s];
+      const open = state.picksOpen[s];
+      return `
+      <section class="pbox ${s}">
+        <header class="pbox-h"><h3>${PLAT[s]} · 今日选题</h3><span><b class="num">${list.length}</b> 个</span></header>
+        ${list.length ? `<div class="pbox-list">${list.slice(0, 5).map(item).join('')}<div class="pbox-more ${open ? 'open' : ''}">${list.slice(5).map((p, k) => item(p, k + 5)).join('')}</div></div>
+        ${list.length > 5 ? `<button class="more picks-toggle" data-picks="${s}">${open ? '收起' : `展开其余 ${list.length - 5} 个`}</button>` : ''}` : '<div class="none">这一天没有生成选题（AI 分析未开启或出错）</div>'}
+      </section>`;
+    };
     $('#picks').innerHTML = `
-      <div class="sec-head"><h2>${ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>${picks.length} 个，AI 编辑${dg.ai ? `（${esc(dg.ai)}）` : ''}从抖音 / B站的 24 小时、3 天、7 天、30 天热点里挑的 · ${clock(dg.generatedAt)}</small></div>
+      <div class="sec-head"><h2>${ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>AI 编辑${dg.ai ? `（${esc(dg.ai)}）` : ''}分别从抖音、B站的 24 小时 / 3 天 / 7 天 / 30 天热点里挑 · ${clock(dg.generatedAt)}</small></div>
       ${dayChips}
-      ${cards ? `<div class="pick-grid">${cards}</div>` : '<div class="empty-note">这一天没有生成选题（AI 分析未开启或出错）。</div>'}
-      ${rest ? `<div class="sheet pick-more ${state.picksOpen ? 'open' : ''}">${rest}</div><button class="more picks-toggle" data-picks>${state.picksOpen ? '收起' : `展开其余 ${picks.length - 5} 个选题`}</button>` : ''}`;
+      <div class="pick-cols">${box('douyin')}${box('bilibili')}</div>`;
   }
 
   // ---------- 视频条目（抖音 / B站共用）----------
@@ -261,7 +264,7 @@
     else if ('sub' in b.dataset) { state.sub = b.dataset.sub; state.chip = ''; state.shown = PAGE; render(); }
     else if ('chip' in b.dataset) { state.chip = b.dataset.chip; state.shown = PAGE; render(); }
     else if ('pickday' in b.dataset) { state.pickDay = +b.dataset.pickday; render(); }
-    else if ('picks' in b.dataset) { state.picksOpen = !state.picksOpen; render(); }
+    else if ('picks' in b.dataset) { const k = b.dataset.picks; state.picksOpen[k] = !state.picksOpen[k]; render(); }
     else if ('more' in b.dataset) { state.shown += PAGE; render(); }
   });
   let t;

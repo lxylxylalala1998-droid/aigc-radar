@@ -1,7 +1,7 @@
 // 生成并发送每日早报邮件
 //   node src/mail.js --dry    只生成 out/mail.html 预览，不发送
 //   node src/mail.js --wait   等到 SEND_AT（默认 09:00 北京时间）再发
-// 顺序：今日选题 → AIGC 爆款 → 热梗热搜 → 热歌 / 飙升 → AI 圈大事件。每条都带「为什么能火」的分析
+// 顺序和网页一致：今日选题（抖音 10 / B站 10）→ 抖音热点 → B站热点 → 热梗热搜 → 热歌飙升 → AI 大事件。每条都带「为什么能火」的分析
 import fs from 'node:fs';
 import path from 'node:path';
 import nodemailer from 'nodemailer';
@@ -28,6 +28,9 @@ a{color:#191c22;text-decoration:none}
 .p-douyin{background:#111;color:#fff}.p-bilibili{background:#fb7299;color:#fff}.p-weibo{background:#e6162d;color:#fff}.p-qqmusic{background:#20b363;color:#fff}.p-netease{background:#d43c33;color:#fff}
 .r{display:inline-block;width:20px;color:#9aa1ad;font-weight:600}.r.top{color:#e5484d}
 .up{color:#e5484d;font-weight:600}.refs a{color:#5b5bd6;font-size:12px;margin-right:10px}
+.bx{border-radius:10px;overflow:hidden;margin:12px 0;background:#fff}.bx-dy{border:2px solid #161823}.bx-bl{border:2px solid #fb7299}
+.bh{padding:10px 14px;color:#fff;font-size:16px;font-weight:700;letter-spacing:.5px}.bh-dy{background:#161823;border-bottom:3px solid #fe2c55}.bh-bl{background:#fb7299;border-bottom:3px solid #00a1d6}
+.bi{padding:10px 14px;border-top:1px solid #eef0f3}.bi .t{font-size:15px;font-weight:700;line-height:1.45}.bn{font-weight:800;font-size:15px;margin-right:6px}.bn-dy{color:#fe2c55}.bn-bl{color:#00a1d6}
 .ft{padding:24px 20px 22px;font-size:12px;color:#9aa1ad;line-height:1.7}.warn{color:#f0820f}
 `;
 
@@ -47,52 +50,58 @@ export function render(d, { siteUrl } = {}) {
   const site = siteUrl || process.env.SITE_URL || '';
   const parts = [];
 
-  // 1. 今日选题
-  if (d.picks?.length) {
-    parts.push(sec('🎯 今日选题', `${d.picks.length} 个，按值得做的程度排，依据是抖音 / B站上的真实作品`, d.picks.map((p, i) => `
-      <div class="pk">
-        <div>${b(String(i + 1).padStart(2, '0'), 'hz')}${p.horizon ? b(p.horizon, 'ai') : ''}${p.platform ? b(p.platform) : ''}</div>
-        <div class="t">${esc(p.title)}</div>
+  // 1. 今日选题：抖音 10 个、B站 10 个，各用平台代表色框住（邮件太窄，上下排）
+  const byPlat = Array.isArray(d.picks)
+    ? { douyin: d.picks.filter((p) => p.platform !== 'B站'), bilibili: d.picks.filter((p) => p.platform === 'B站' || p.platform === '双平台') }
+    : { douyin: d.picks?.douyin || [], bilibili: d.picks?.bilibili || [] };
+  const pickBox = (s) => {
+    const list = byPlat[s];
+    if (!list.length) return '';
+    const k = s === 'douyin' ? 'dy' : 'bl';
+    return `<div class="bx bx-${k}"><div class="bh bh-${k}">${PLATFORM[s]} · 今日选题 ${list.length} 个</div>${list.map((p, i) => `
+      <div class="bi">
+        <div class="t"><span class="bn bn-${k}">${String(i + 1).padStart(2, '0')}</span>${p.horizon ? b(p.horizon, 'ai') : ''}${esc(p.title)}</div>
         ${an('为什么能火', p.why)}${an('怎么做', p.how)}
         ${p.refs?.length ? `<div class="refs">${p.refs.map((r) => a(r.url, `↗ ${esc(cut(r.title, 20))}`)).join(' ')}</div>` : ''}
-      </div>`).join('')));
-  }
+      </div>`).join('')}</div>`;
+  };
+  const pickHtml = pickBox('douyin') + pickBox('bilibili');
+  if (pickHtml) parts.push(sec('🎯 今日选题', '抖音、B站各 10 个，按值得做的程度排', pickHtml));
 
-  // 2. AIGC 爆款：先看近 30 天高赞榜（重点类型），再看 24 小时飙升
+  // 2 / 3. 抖音热点、B站热点：近 30 天高赞（重点类型）+ 24 小时飙升
   const vids = d.videos || {};
   const note = (t) => `<span style="font-weight:400;font-size:12px;color:#6b7280">${t}</span>`;
   const vRow = (v, s) => `
     <div class="tt">${a(v.url, esc(cut(v.title, 60)))}</div>
     <div class="m">${b(v.ai?.type || 'AIGC', 'ai')}${v.m?.aiCorner ? b('AI角标') : ''}${s === 'douyin' && v.m?.play ? `▶ ${fmtNum(v.m.play)}　` : ''}${s === 'douyin' ? '❤' : '▶'} ${fmtNum(v.heat)}${v.vel && v.vel > 1 ? `　<span class="up">+${fmtNum(v.vel)}${s === 'douyin' ? '赞' : ''}/小时</span>` : ''}　${esc(v.author || '')}${v.pubAt && !v.m?.noDate ? `　${Math.max(1, Math.round((d.generatedAt - v.pubAt) / DAY))} 天前` : ''}</div>
     ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}`;
-  const blocks = [
-    ['douyinTop', 'douyin', `高赞榜 · 近 30 天 ${note('按点赞；AI音乐 / MV / 歌手艺人 / 鬼畜 / 影视 / 换人')}`],
-    ['bilibiliTop', 'bilibili', `高播放榜 · 近 30 天 ${note('按播放；同上 6 类')}`],
-    ['douyin', 'douyin', `24 小时飙升 ${note('按每小时新增点赞')}`],
-    ['bilibili', 'bilibili', `24 小时飙升 ${note('按每小时新增播放')}`],
-  ];
-  const vBlock = blocks.filter(([k]) => vids[k]?.length).map(([k, s, title]) => `<div class="sub">${pb(s)}${title}</div>` + items(vids[k].slice(0, k.endsWith('Top') ? 8 : 5), (v) => vRow(v, s))).join('');
-  if (vBlock) parts.push(sec('🔥 AIGC 爆款', '高赞榜 + 24 小时飙升', vBlock));
+  const vSection = (s, emoji, topTitle, topNote, velNote) => {
+    const html = [[`${s}Top`, topTitle, topNote, 8], [s, '24 小时飙升', velNote, 5]]
+      .filter(([k]) => vids[k]?.length)
+      .map(([k, title, n, max]) => `<div class="sub">${title} ${note(n)}</div>` + items(vids[k].slice(0, max), (v) => vRow(v, s))).join('');
+    if (html) parts.push(sec(`${emoji} ${PLATFORM[s]}热点`, `${PLATFORM[s]}上的 AIGC 爆款`, html));
+  };
+  vSection('douyin', '🎬', '高赞榜 · 近 30 天', '按点赞；AI音乐 / MV / 歌手艺人 / 鬼畜 / 影视 / 换人', '按每小时新增点赞');
+  vSection('bilibili', '📺', '高播放榜 · 近 30 天', '按播放；同上 6 类', '按每小时新增播放');
 
-  // 3. 热梗热搜
-  const memes = d.memes || [];
+  // 4. 热梗热搜：抖音 / B站 / 微博各自一张榜，再是抖音挑战、热梗精选（和网页同序）
   const tr = d.trends || {};
-  const memeHtml = memes.length ? `<div class="sub">AI 挑出的热梗 / 可借势</div>` + items(memes, (t) => `
-    <div class="tt">${b(t.ai.tag, t.ai.tag === '热梗' ? 'warm' : 'ai')}${a(t.url, esc(t.title))} ${pb(t.src)}</div>
-    ${an('为什么火', t.ai.why)}${an('AI 做法', t.ai.idea)}`) : '';
-  // 抖音热门挑战 / 玩法：热榜里抖音官方归类为「站内玩法」「话题互动」的词条
+  const trendHtml = ['douyin', 'bilibili', 'weibo'].filter((s) => tr[s]?.length).map((s) => `<div class="sub">${pb(s)}${PLATFORM[s]}热搜 · 前 ${tr[s].length}</div>` + items(tr[s], (t, i) => `
+    <div class="tt">${rk(i + 1)}${a(t.url, esc(t.title))}${t.kind ? ` ${b(t.kind, 'warm')}` : ''}${t.ai?.tag ? ` ${b(t.ai.tag, 'ai')}` : ''}</div>
+    ${t.ai?.why ? `<div class="a">${esc(t.ai.why)}</div>` : ''}`)).join('');
   const ch = d.challenges || [];
-  const chHtml = ch.length ? `<div class="sub">${pb('douyin')}热门挑战 / 玩法<span style="font-weight:400;font-size:12px;color:#6b7280"> 抖音热榜里官方归类为玩法的词条</span></div>` + items(ch, (t) => `
+  const chHtml = ch.length ? `<div class="sub">${pb('douyin')}抖音挑战 / 玩法 ${note('抖音热榜里官方归类为玩法的词条')}</div>` + items(ch, (t) => `
     <div class="tt">${b(t.kind, t.kind === '抖音挑战' ? 'warm' : 'ai')}${a(t.url, esc(t.title))}${t.rank ? ` <span class="m">热榜第 ${t.rank}</span>` : ''}</div>
     ${t.m?.fetched ? `<div class="m">参与视频里 ${t.m.aiVideos || 0}/${t.m.fetched} 条是 AI 做的</div>` : ''}
     ${an('为什么火', t.ai?.why)}${an('AI 跟拍', t.ai?.idea)}
     ${(t.top || []).slice(0, 2).map((v) => `<div class="m">${a(v.url, `❤ ${fmtNum(v.like)}　${v.ai ? b('AI', 'ai') : ''}${esc(cut(v.title || '（无文案）', 36))}`)}</div>`).join('')}`) : '';
-  const trendHtml = ['douyin', 'bilibili', 'weibo'].filter((s) => tr[s]?.length).map((s) => `<div class="sub">${pb(s)}热搜前 ${tr[s].length}</div>` + items(tr[s], (t, i) => `
-    <div class="tt">${rk(i + 1)}${a(t.url, esc(t.title))}${t.kind ? ` ${b(t.kind, 'warm')}` : ''}${t.ai?.tag ? ` ${b(t.ai.tag, 'ai')}` : ''}</div>
-    ${t.ai?.why ? `<div class="a">${esc(t.ai.why)}</div>` : ''}`)).join('');
-  if (memeHtml || chHtml || trendHtml) parts.push(sec('😂 最新热梗热搜', '抖音 / B站 / 微博', memeHtml + chHtml + trendHtml));
+  const memes = d.memes || [];
+  const memeHtml = memes.length ? `<div class="sub">热梗精选 ${note('AI 从三个平台里挑的热梗 / AI 相关 / 可借势')}</div>` + items(memes, (t) => `
+    <div class="tt">${b(t.ai.tag, t.ai.tag === '热梗' ? 'warm' : 'ai')}${a(t.url, esc(t.title))} ${pb(t.src)}</div>
+    ${an('为什么火', t.ai.why)}${an('AI 做法', t.ai.idea)}`) : '';
+  if (trendHtml || chHtml || memeHtml) parts.push(sec('😂 热梗热搜', '抖音 / B站 / 微博 / 抖音挑战 / 热梗精选', trendHtml + chHtml + memeHtml));
 
-  // 4. 热歌 / 飙升
+  // 5. 热歌飙升：四个平台，热歌榜 / 飙升榜各前 5（完整 TOP20 在网页）
   const mu = d.music || {};
   const musicHtml = ['抖音', 'B站', 'QQ音乐', '网易云'].filter((p) => mu[p]).map((p) => ['热歌榜', '飙升榜'].filter((k) => mu[p][k]?.length).map((k) => {
     const src = mu[p][k][0].src;
@@ -101,12 +110,12 @@ export function render(d, { siteUrl } = {}) {
       <div class="tt">${rk(m.rank)}${a(m.url, esc(m.title))} <small>— ${esc(cut(m.author || '', 24))}</small>${m.label ? ` <span class="up">${esc(m.label)}</span>` : ''}</div>
       ${m.ai?.why ? `<div class="a">${esc(m.ai.why)}${m.ai.use ? `　<b>可以做</b>${esc(m.ai.use)}` : ''}</div>` : ''}`);
   }).join('')).join('');
-  if (musicHtml) parts.push(sec('🎵 热歌榜 & 飙升榜', '各榜前 5', musicHtml));
+  if (musicHtml) parts.push(sec('🎵 热歌飙升', '各榜前 5，完整 TOP20 在网页', musicHtml));
 
-  // 5. AI 圈大事件
+  // 6. AI 大事件：汇总全部资讯来源，同一件事的多篇报道合并
   if (d.news?.length) {
     const ev = d.news.slice(0, 10);
-    parts.push(sec('🤖 今日 AI 圈大事件', `${d.news.length} 件，显示前 ${ev.length}`, items(ev, (e) => `
+    parts.push(sec('🤖 AI 大事件', `${d.news.length} 件，显示前 ${ev.length}`, items(ev, (e) => `
       <div>${e.level === '重磅' ? b('重磅', 'hot') : ''}${e.kind ? b(e.kind) : ''}</div>
       <div class="tt" style="font-weight:600;margin-top:3px">${a(e.refs[0]?.url, esc(e.title))}</div>
       ${e.summary ? `<div class="a">${esc(e.summary)}</div>` : ''}
@@ -138,7 +147,7 @@ ${parts.join('\n')}
 }
 
 export function subject(d) {
-  const first = d.picks?.[0]?.title || d.news?.[0]?.title || '';
+  const first = (Array.isArray(d.picks) ? d.picks[0] : d.picks?.douyin?.[0] || d.picks?.bilibili?.[0])?.title || d.news?.[0]?.title || '';
   return `AIGC 热点早报 ${fmtDay(d.generatedAt)}${first ? `｜${first}` : ''}`;
 }
 

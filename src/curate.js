@@ -347,21 +347,28 @@ ${lines.join('\n')}`, { maxTokens: 3000 });
   return r.top || [];
 }
 
-async function makePicks(blocks) {
-  const r = await ask(`下面是抖音和 B站 AIGC 相关的热点数据，按时间段分组（方括号里是编号）。
-请给出「今日最值得做的 10 个选题」，按值得做的程度从高到低排：
-- 选题的依据必须是下面抖音、B站上的真实作品和热点（每个选题至少引用一个参考素材），题材是能在抖音 / B站发的 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
+// 平台特点：给 AI 定「怎么做」时参考
+const PLATFORM_STYLE = {
+  douyin: '抖音：竖屏，15~60 秒，前 3 秒定生死；擅长 AI 特效模板、卡点、BGM、挑战玩法、情绪向和反差向内容，文案 + 话题标签很关键',
+  bilibili: 'B站：横屏为主，1~5 分钟，适合有完整度的作品；擅长 AI MV、AI 剧情 / 短剧系列化、鬼畜、AI 翻唱，重视弹幕互动、标题封面和参加官方活动（如 AI MV 大赛、AI 全民制作人）',
+};
+
+async function makePicks(blocks, s) {
+  const name = PLATFORM[s];
+  const r = await ask(`下面是${name}上 AIGC 相关的热点数据，按时间段分组（方括号里是编号）。
+请给出「今天最值得在${name}上做的 10 个选题」，按值得做的程度从高到低排：
+- 选题的依据必须是下面${name}上的真实作品和热点（每个选题至少引用一个参考素材），题材是 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
 - 10 个选题要覆盖不同时间段：至少 3 个来自「24小时飙升」，至少 2 个来自「近3天爆款」，至少 2 个来自「本周热点」或「长期热点」
-- 抖音、B站都要有，类型尽量分散，不要两个选题做同一件事
+- 类型尽量分散，不要两个选题做同一件事
+- 做法要贴合平台：${PLATFORM_STYLE[s]}
 - 每个选题输出：
-  - title：选题标题，像一个能直接用的视频标题，≤24 字
+  - title：选题标题，像一个能直接发在${name}上的视频标题，≤24 字
   - horizon：24小时飙升 / 近3天爆款 / 本周热点 / 长期热点
-  - platform：抖音 / B站 / 双平台
   - why：这个题材为什么能火，引用数据（播放、点赞、增速、持续天数），≤50 字，不要出现方括号编号
   - how：具体怎么做（形式、时长、用什么工具、关键镜头 / 节奏 / 文案），≤60 字
   - refs：参考素材编号数组，如 ["A1","C3"]
 
-输出格式：{"picks":[{"title":"","horizon":"","platform":"","why":"","how":"","refs":[]}]}
+输出格式：{"picks":[{"title":"","horizon":"","why":"","how":"","refs":[]}]}
 
 ${blocks}`, { maxTokens: 6000 });
   return (r.picks || []).slice(0, 10);
@@ -430,43 +437,55 @@ export async function digest(now = Date.now()) {
   const challenges = all1.filter((x) => x.cat === 'trend' && x.kind && x.lastSeen >= since)
     .sort((a, b) => (a.kind === '抖音挑战' ? 0 : 1) - (b.kind === '抖音挑战' ? 0 : 1) || (b.m?.aiVideos || 0) - (a.m?.aiVideos || 0) || (a.peakRank || 99) - (b.peakRank || 99))
     .slice(0, 8);
-  const byHeat = (arr, s, n, exclude = new Set()) => arr.filter((x) => x.src === s && !exclude.has(x.id)).sort((a, b) => (b.heat || 0) - (a.heat || 0)).slice(0, n);
-  const h24 = ['douyin', 'bilibili'].flatMap((s) => fresh.filter((x) => x.src === s).sort((a, b) => b.vel - a.vel).slice(0, 12));
-  const used = new Set(h24.map((x) => x.id));
-  const w3 = all7.filter((x) => isWork(x) && x.pubAt > now - 3 * DAY).map(withVel);
-  const h3 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w3, s, 8, used));
-  h3.forEach((x) => used.add(x.id));
-  const w7 = all7.filter((x) => isWork(x) && x.pubAt > now - 7 * DAY);
-  const h7 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w7, s, 8, used));
-  h7.forEach((x) => used.add(x.id));
-  const lastingTrends = all7.filter((x) => x.cat === 'trend' && x.daysSeen >= 3 && x.ai?.tag).sort((a, b) => b.daysSeen - a.daysSeen).slice(0, 8);
-  const w30 = all30.filter((x) => isWork(x));
-  const h30 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w30, s, 10, used));
-  const typeCount = Object.entries(w30.reduce((c, x) => ((c[typeOf(x)] = (c[typeOf(x)] || 0) + 1), c), {})).sort((a, b) => b[1] - a[1]);
-  const lastingSongs = all30.filter((x) => x.cat === 'music' && x.daysSeen >= 7).sort((a, b) => b.daysSeen - a.daysSeen).slice(0, 5);
-
-  const refs = {};
-  const line = (code, x) => {
-    refs[code] = x;
-    const what = x.cat === 'video' ? `${PLATFORM[x.src]}｜${typeOf(x)}｜${x.title}｜${stats(x)}${x.vel ? `｜每小时+${fmtNum(x.vel)}` : ''}${x.ai.hook ? `｜爆点：${x.ai.hook}` : ''}`
-      : x.cat === 'trend' ? `${PLATFORM[x.src]}热搜｜${x.kind || x.ai?.tag || ''}｜${x.title}${x.daysSeen > 1 ? `｜在榜${x.daysSeen}天` : ''}${x.kind && x.m?.fetched ? `｜参与视频 ${x.m.aiVideos || 0}/${x.m.fetched} 条是 AI 做的` : ''}｜${x.ai?.why || ''}`
-        : `${x.board}｜${x.title} - ${x.author}${x.daysSeen > 1 ? `｜在榜${x.daysSeen}天` : ''}｜${x.ai?.why || ''}`;
-    return `[${code}] ${what}`;
-  };
-  const tags7 = topTags(w7);
+  const byHeat = (arr, n, exclude) => arr.filter((x) => !exclude.has(x.id)).sort((a, b) => (b.heat || 0) - (a.heat || 0)).slice(0, n);
+  const lastingTrends = all7.filter((x) => x.cat === 'trend' && x.daysSeen >= 3 && x.ai?.tag).sort((a, b) => b.daysSeen - a.daysSeen);
+  const lastingSongs = all30.filter((x) => x.cat === 'music' && x.daysSeen >= 7).sort((a, b) => b.daysSeen - a.daysSeen);
   // AI 最近 3 天发现的新兴玩法（annotate 里维护）
   const tk = readJSON(path.join(DATA, 'trend-keywords.json'), {});
   const trendKw = Object.entries(tk).filter(([, v]) => v.last > now - 3 * DAY)
     .sort((a, b) => b[1].n - a[1].n || b[1].last - a[1].last).slice(0, 8)
     .map(([kw, v]) => ({ kw, why: v.why, first: v.first, n: v.n }));
-  const blocks = [
-    `【24小时飙升】\n${[...h24.map((x, i) => line(`A${i}`, x)), ...memes.map((x, i) => line(`T${i}`, x)), ...challenges.filter((x) => !memes.includes(x)).map((x, i) => line(`K${i}`, x))].join('\n') || '（无）'}`,
-    `【近3天爆款】\n${h3.map((x, i) => line(`B${i}`, x)).join('\n') || '（无）'}`,
-    `【本周热点】\n${[...h7.map((x, i) => line(`C${i}`, x)), ...lastingTrends.map((x, i) => line(`L${i}`, x))].join('\n') || '（无）'}${tags7.length ? `\n抖音 AIGC 话题标签（7天内视频数/总赞）：${tags7.map(([t, e]) => `#${t} ${e.n}条/${fmtNum(e.likes)}赞`).join('，')}` : ''}`,
-    `【长期热点（30天）】\n${[...h30.map((x, i) => line(`D${i}`, x)), ...lastingSongs.map((x, i) => line(`S${i}`, x))].join('\n') || '（无）'}${typeCount.length ? `\n30 天 AIGC 作品类型分布：${typeCount.map(([t, n]) => `${t} ${n}`).join('，')}` : ''}`,
-    trendKw.length ? `【近期新冒出的 AIGC 玩法】\n${trendKw.map((t) => `${t.kw}：${t.why || ''}（${Math.max(1, Math.round((now - t.first) / DAY))} 天内出现 ${t.n} 次）`).join('\n')}` : '',
-  ].filter(Boolean).join('\n\n');
-  console.log(`选题素材：24h ${h24.length}+热梗 ${memes.length}+挑战 ${challenges.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lastingTrends.length}，30天 ${h30.length}+长热歌 ${lastingSongs.length}`);
+
+  // 抖音、B站各准备一份素材：只放本平台的作品 / 热搜 / 热歌，微博热梗两边都可以借势
+  function platformBlocks(s) {
+    const refs = {};
+    const line = (code, x) => {
+      refs[code] = x;
+      const what = x.cat === 'video' ? `${typeOf(x)}｜${x.title}｜${stats(x)}${x.vel ? `｜每小时+${fmtNum(x.vel)}` : ''}${x.ai.hook ? `｜爆点：${x.ai.hook}` : ''}`
+        : x.cat === 'trend' ? `${PLATFORM[x.src]}热搜｜${x.kind || x.ai?.tag || ''}｜${x.title}${x.daysSeen > 1 ? `｜在榜${x.daysSeen}天` : ''}${x.kind && x.m?.fetched ? `｜参与视频 ${x.m.aiVideos || 0}/${x.m.fetched} 条是 AI 做的` : ''}｜${x.ai?.why || ''}`
+          : `${x.board}#${x.rank || '-'}｜${x.title} - ${x.author}${x.daysSeen > 1 ? `｜在榜${x.daysSeen}天` : ''}｜${x.ai?.why || ''}`;
+      return `[${code}] ${what}`;
+    };
+    const mine = (x) => x.src === s;
+    const used = new Set();
+    const h24 = fresh.filter(mine).sort((a, b) => b.vel - a.vel).slice(0, 15);
+    h24.forEach((x) => used.add(x.id));
+    const h3 = byHeat(all7.filter((x) => mine(x) && isWork(x) && x.pubAt > now - 3 * DAY).map(withVel), 10, used);
+    h3.forEach((x) => used.add(x.id));
+    const w7 = all7.filter((x) => mine(x) && isWork(x) && x.pubAt > now - 7 * DAY);
+    const h7 = byHeat(w7, 10, used);
+    h7.forEach((x) => used.add(x.id));
+    const w30 = all30.filter((x) => mine(x) && isWork(x));
+    const h30 = byHeat(w30, 12, used);
+    const pm = memes.filter((x) => x.src === s || x.src === 'weibo');
+    const pc = s === 'douyin' ? challenges.filter((x) => !pm.includes(x)) : [];
+    const lt = lastingTrends.filter((x) => x.src === s || x.src === 'weibo').slice(0, 8);
+    // 本平台正在飙升的歌（借势做 AI 翻唱 / MV）+ 长期在榜的歌
+    const songs = [...all1.filter((x) => x.cat === 'music' && mine(x) && x.board.includes('飙升') && (x.rank || 99) <= 6), ...lastingSongs.filter(mine).slice(0, 4)];
+    const tags7 = s === 'douyin' ? topTags(w7) : [];
+    const typeCount = Object.entries(w30.reduce((c, x) => ((c[typeOf(x)] = (c[typeOf(x)] || 0) + 1), c), {})).sort((a, b) => b[1] - a[1]);
+    const blocks = [
+      `【24小时飙升】\n${[...h24.map((x, i) => line(`A${i}`, x)), ...pm.map((x, i) => line(`T${i}`, x)), ...pc.map((x, i) => line(`K${i}`, x))].join('\n') || '（无）'}`,
+      `【近3天爆款】\n${h3.map((x, i) => line(`B${i}`, x)).join('\n') || '（无）'}`,
+      `【本周热点】\n${[...h7.map((x, i) => line(`C${i}`, x)), ...lt.map((x, i) => line(`L${i}`, x))].join('\n') || '（无）'}${tags7.length ? `\n抖音 AIGC 话题标签（7天内视频数/总赞）：${tags7.map(([t, e]) => `#${t} ${e.n}条/${fmtNum(e.likes)}赞`).join('，')}` : ''}`,
+      `【长期热点（30天）】\n${h30.map((x, i) => line(`D${i}`, x)).join('\n') || '（无）'}${typeCount.length ? `\n30 天 AIGC 作品类型分布：${typeCount.map(([t, n]) => `${t} ${n}`).join('，')}` : ''}`,
+      songs.length ? `【可借势的热歌】\n${songs.map((x, i) => line(`S${i}`, x)).join('\n')}` : '',
+      trendKw.length ? `【近期新冒出的 AIGC 玩法】\n${trendKw.map((t) => `${t.kw}：${t.why || ''}（${Math.max(1, Math.round((now - t.first) / DAY))} 天内出现 ${t.n} 次）`).join('\n')}` : '',
+    ].filter(Boolean).join('\n\n');
+    console.log(`${PLATFORM[s]}选题素材：24h ${h24.length}+热梗 ${pm.length}+挑战 ${pc.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lt.length}，30天 ${h30.length}，热歌 ${songs.length}`);
+    return { blocks, refs };
+  }
+  const pb = { douyin: platformBlocks('douyin'), bilibili: platformBlocks('bilibili') };
 
   // ---- AI 圈大事件 ----
   const news = all1
@@ -478,8 +497,9 @@ export async function digest(now = Date.now()) {
     .sort((a, b) => (a.rank || 99) - (b.rank || 99))
     .slice(0, 12);
 
-  const [picks, events] = await Promise.all([
-    step('今日选题', () => makePicks(blocks), () => [], errors),
+  const [dyPicks, blPicks, events] = await Promise.all([
+    step('抖音选题', () => makePicks(pb.douyin.blocks, 'douyin'), () => [], errors),
+    step('B站选题', () => makePicks(pb.bilibili.blocks, 'bilibili'), () => [], errors),
     step('资讯归并', () => mergeNews(news, hf, now), () => news.filter((x) => isAI(x.title)).slice(0, 12).map((x) => ({ title: x.title, summary: '', ids: [news.indexOf(x)] })), errors),
   ]);
   const refOf = (id) => (String(id).startsWith('H') ? hf[+String(id).slice(1)] : news[+id]);
@@ -504,10 +524,11 @@ export async function digest(now = Date.now()) {
   const out = {
     date: bjDate(now), generatedAt: now, window: [since, now],
     ai: hasKey() ? DEEPSEEK_MODEL : null, errors,
-    picks: picks.map((p) => ({
-      title: p.title, horizon: p.horizon, platform: p.platform, why: p.why, how: p.how,
-      refs: (p.refs || []).map((c) => refs[c]).filter(Boolean).map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url })),
-    })),
+    // 今日选题：抖音 10 个、B站 10 个
+    picks: Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, list.map((p) => ({
+      title: p.title, horizon: p.horizon, why: p.why, how: p.how,
+      refs: (p.refs || []).map((c) => pb[s].refs[c]).filter(Boolean).map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url })),
+    }))])),
     trendKeywords: trendKw.map(({ kw, why }) => ({ kw, why })),
     videos,
     // 热梗里已经单列的抖音挑战不重复放
@@ -528,7 +549,7 @@ export async function digest(now = Date.now()) {
     newsOut.forEach((e) => e.refs.forEach((r) => put(r.id, { event: e.title, kind: e.kind, level: e.level })));
     writeJSON(file, day);
   }
-  console.log(`日报完成：选题 ${out.picks.length}，高赞榜 抖音 ${videos.douyinTop?.length || 0} / B站 ${videos.bilibiliTop?.length || 0}，抖音挑战 ${out.challenges.length}，爆款 抖音 ${videos.douyin.length} / B站 ${videos.bilibili.length}，热梗 ${out.memes.length}，事件 ${newsOut.length}${errors.length ? `；AI 出错 ${errors.length} 处` : ''}`);
+  console.log(`日报完成：选题 抖音 ${out.picks.douyin.length} / B站 ${out.picks.bilibili.length}，高赞榜 抖音 ${videos.douyinTop?.length || 0} / B站 ${videos.bilibiliTop?.length || 0}，抖音挑战 ${out.challenges.length}，爆款 抖音 ${videos.douyin.length} / B站 ${videos.bilibili.length}，热梗 ${out.memes.length}，事件 ${newsOut.length}${errors.length ? `；AI 出错 ${errors.length} 处` : ''}`);
   return out;
 }
 

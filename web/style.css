@@ -240,10 +240,30 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 .col .group-h { margin-top: 8px; }
 @media (max-width: 760px) { .cols { grid-template-columns: minmax(0, 1fr); } .col + .col .group-h { margin-top: 24px; } }
 
-/* ---------- 今日选题第 6~10 个：手机上默认收起 ---------- */
-.picks-toggle { display: none; }
+/* ---------- 今日选题：抖音（左）/ B站（右）各一个框，用平台代表色 ---------- */
+:root { --dy-ink: #161823; --dy-cyan: #25f4ee; --dy-red: #fe2c55; --bl-pink: #fb7299; --bl-blue: #00a1d6; }
+.pick-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: start; }
+.pbox { min-width: 0; background: var(--sheet); border-radius: var(--r); overflow: hidden; }
+/* 抖音：黑框 + logo 那种青 / 红错位描边 */
+.pbox.douyin { border: 2px solid var(--dy-ink); box-shadow: -3px -3px 0 var(--dy-cyan), 3px 3px 0 var(--dy-red); }
+.pbox.douyin .pbox-h { background: var(--dy-ink); }
+.pbox.douyin .pbox-h h3 { text-shadow: -1.5px -1px 0 var(--dy-cyan), 1.5px 1px 0 var(--dy-red); }
+.pbox.douyin .pm .no { color: var(--dy-red); }
+/* B站：粉框，序号用 B站蓝 */
+.pbox.bilibili { border: 2px solid var(--bl-pink); box-shadow: 0 4px 0 color-mix(in srgb, var(--bl-pink) 25%, transparent); }
+.pbox.bilibili .pbox-h { background: var(--bl-pink); }
+.pbox.bilibili .pm .no { color: var(--bl-blue); }
+.pbox-h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 12px 18px 11px; color: #ffffff; }
+.pbox-h h3 { margin: 0; font: 400 21px/1.2 var(--font-display); letter-spacing: 1px; }
+.pbox-h span { font-size: 13px; opacity: .9; }
+.pbox-h .num { font-size: 20px; margin-right: 2px; }
+.pbox .pm .no { font-size: 32px; }
+.pbox .pm.first h3 { font-size: 19.5px; }
+.pbox .picks-toggle { display: none; }
+.pbox-more .pm:first-child { border-top: 1px solid var(--rule); }
 @media (max-width: 860px) {
-  .pick-more { display: none; }
-  .pick-more.open { display: block; }
-  .picks-toggle { display: block; margin: 12px auto 0; width: fit-content; }
+  .pick-cols { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .pbox-more { display: none; }
+  .pbox-more.open { display: block; }
+  .pbox .picks-toggle { display: block; margin: 4px auto 14px; width: fit-content; }
 }
