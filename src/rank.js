@@ -46,6 +46,7 @@ export function slim(it, now = Date.now()) {
     id: it.id, cat: it.cat, src: it.src, board: it.board, title: it.title, url: it.url,
     author: it.author, cover: it.cover, desc: it.desc, heat: it.heat, rank: it.rank, peakRank: it.peakRank,
     label: it.label, pubAt: it.pubAt, daysSeen: it.daysSeen, firstSeen: it.firstSeen, lastSeen: it.lastSeen, m: it.m, ai: it.ai,
+    kind: it.kind, top: it.top, // 抖音挑战 / 话题互动，及其热门参与视频
   };
   if (it.cat === 'video') o.vel = Math.round(velocity(it, now).perHour);
   for (const k of Object.keys(o)) if (o[k] === undefined || o[k] === '') delete o[k];

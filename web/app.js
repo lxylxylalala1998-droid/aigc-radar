@@ -3,6 +3,8 @@
   const PLAT = { weibo: '微博', douyin: '抖音', bilibili: 'B站', youtube: 'YouTube', qqmusic: 'QQ音乐', netease: '网易云' };
   const VTYPES = ['AI音乐', 'AI MV', 'AI动画', 'AI剧情', 'AI短片', 'AI特效玩法', 'AI整活', 'AI教程测评'];
   const TTAGS = ['热梗', 'AI相关', '可借势'];
+  const TKINDS = ['抖音挑战', '话题互动'];
+  const trendHas = (x, k) => x.kind === k || x.ai?.tag === k;
   const MPLAT = ['抖音', 'B站', 'QQ音乐', '网易云'];
   const PAGE = 40;
 
@@ -92,16 +94,17 @@
     },
     trend: {
       chips: (d) => counts(d.trends, (x) => PLAT[x.src], ['抖音', 'B站', '微博']),
-      chips2: (d) => counts(d.trends, (x) => x.ai?.tag || '', TTAGS),
+      // 抖音挑战 / 话题互动是抖音官方的分类，热梗 / AI相关 / 可借势是 AI 打的标签，一条可能两种都有
+      chips2: (d) => TKINDS.concat(TTAGS).map((k) => [k, d.trends.filter((x) => trendHas(x, k)).length]).filter(([, n]) => n),
       sorts: [['rank', '排名'], ['heat', '热度'], ['days', '在榜天数']],
       render(d) {
-        let items = d.trends.filter((x) => (!state.f1 || PLAT[x.src] === state.f1) && (!state.f2 || x.ai?.tag === state.f2) && match(x, state.q));
+        let items = d.trends.filter((x) => (!state.f1 || PLAT[x.src] === state.f1) && (!state.f2 || trendHas(x, state.f2)) && match(x, state.q));
         const s = state.sort || 'rank';
         if (s === 'heat') items.sort((a, b) => (b.peakHeat || b.heat || 0) - (a.peakHeat || a.heat || 0));
         else if (s === 'days') items.sort((a, b) => (b.daysSeen || 0) - (a.daysSeen || 0) || (a.peakRank || 99) - (b.peakRank || 99));
         else if (!state.f1) items.sort((a, b) => (a.peakRank || 99) - (b.peakRank || 99) || (b.heat || 0) - (a.heat || 0));
         // 有 AI 标签的（热梗 / AI相关 / 可借势）先看
-        if (!state.f2 && s === 'rank') items.sort((a, b) => (b.ai?.tag ? 1 : 0) - (a.ai?.tag ? 1 : 0));
+        if (!state.f2 && s === 'rank') items.sort((a, b) => (b.ai?.tag || b.kind ? 1 : 0) - (a.ai?.tag || a.kind ? 1 : 0));
         return page(items, (x) => {
           const r = x.peakRank || x.rank;
           return `
@@ -109,8 +112,9 @@
             <div class="rk ${r <= 3 ? 'top' : ''}">${r || '↑'}</div>
             <div class="bd">
               <div class="tt">${link(x.url, esc(x.title))}</div>
-              <div class="meta">${pb(x.src)}${x.ai?.tag ? `<span class="badge ai">${esc(x.ai.tag)}</span>` : ''}${x.label ? `<span class="badge hot">${esc(x.label)}</span>` : ''}${x.heat ? `<span>热度 ${num(x.peakHeat || x.heat)}</span>` : ''}${state.w > 1 && x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}${state.w > 1 ? `<span>${ago(x.lastSeen)}</span>` : ''}</div>
-              ${ana('为什么火', x.ai?.why)}${ana('AI 做法', x.ai?.idea)}
+              <div class="meta">${pb(x.src)}${x.kind ? `<span class="badge hz">${esc(x.kind)}</span>` : ''}${x.ai?.tag ? `<span class="badge ai">${esc(x.ai.tag)}</span>` : ''}${x.kind && x.m?.fetched ? `<span>参与视频 ${x.m.aiVideos || 0}/${x.m.fetched} 条 AI 做</span>` : ''}${x.label ? `<span class="badge hot">${esc(x.label)}</span>` : ''}${x.heat ? `<span>热度 ${num(x.peakHeat || x.heat)}</span>` : ''}${state.w > 1 && x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}${state.w > 1 ? `<span>${ago(x.lastSeen)}</span>` : ''}</div>
+              ${ana('为什么火', x.ai?.why)}${ana(x.kind ? 'AI 跟拍' : 'AI 做法', x.ai?.idea)}
+              ${(x.top || []).map((v) => `<div class="tv">${link(v.url, `❤ ${num(v.like)} ${v.ai ? '<span class="badge ai">AI</span>' : ''}${esc(v.title || '（无文案）')}`)}</div>`).join('')}
             </div>
           </article>`;
         });

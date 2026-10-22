@@ -5,6 +5,9 @@ const LABEL = { 1: '新', 2: '荐', 3: '热', 4: '首发', 5: '独家', 8: '辟�
 // 抖音移动端接口（aweme.snssdk.com）对热点相关的请求不要求签名；搜索、话题页都要签名，拿不到
 const API = 'https://aweme.snssdk.com/aweme/v1';
 
+// 热榜词条的分类编号（sentence_tag）：1000~1004 是抖音标的「站内玩法」（挑战、玩法、BGM 文案梗），20000~20006 是「话题互动」
+const KIND = (t) => (t >= 1000 && t <= 1004 ? '抖音挑战' : t >= 20000 && t <= 20006 ? '话题互动' : undefined);
+
 const hashtags = (a) => (a.text_extra || []).map((t) => t.hashtag_name).filter(Boolean);
 // 文案去掉 #话题 和 @，留下正文当标题
 const plain = (desc = '') => clean(desc.replace(/#\S+/g, ' ').replace(/@\S+/g, ' ')) || clean(desc);
@@ -53,6 +56,8 @@ export async function douyinHot() {
     await sleep(300);
 
     const top = [...videos].sort((a, b) => (b.statistics?.digg_count || 0) - (a.statistics?.digg_count || 0));
+    const kind = KIND(w.sentence_tag);
+    const aiish = (a) => a.video_control?.show_ai_corner || isAI(`${a.desc} ${hashtags(a).join(' ')}`);
     out.push({
       id: `douyin:${w.word}`,
       cat: 'trend', src: 'douyin', board: w._rising ? '抖音实时上升' : '抖音热榜',
@@ -63,7 +68,10 @@ export async function douyinHot() {
       label: w._rising ? '上升' : LABEL[w.label] || '',
       pubAt: w.event_time ? w.event_time * 1000 : undefined,
       ctx: top.slice(0, 3).map((a) => clean(a.desc).slice(0, 60)).filter(Boolean),
-      m: { videos: w.video_count || videos.length },
+      kind,
+      // 挑战 / 玩法类：存参与视频里点赞最高的 3 条，以及其中有几条是 AI 做的
+      top: kind ? top.slice(0, 3).map((a) => ({ title: plain(a.desc).slice(0, 50), url: `https://www.douyin.com/video/${a.aweme_id}`, like: a.statistics?.digg_count || 0, ai: aiish(a) ? 1 : 0 })) : undefined,
+      m: { videos: w.video_count || videos.length, stag: w.sentence_tag, fetched: videos.length, aiVideos: kind ? videos.filter(aiish).length : undefined },
     });
 
     for (const a of videos) {

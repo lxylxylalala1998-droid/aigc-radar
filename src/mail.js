@@ -72,10 +72,17 @@ export function render(d, { siteUrl } = {}) {
   const memeHtml = memes.length ? `<div class="sub">AI 挑出的热梗 / 可借势</div>` + items(memes, (t) => `
     <div class="tt">${b(t.ai.tag, t.ai.tag === '热梗' ? 'warm' : 'ai')}${a(t.url, esc(t.title))} ${pb(t.src)}</div>
     ${an('为什么火', t.ai.why)}${an('AI 做法', t.ai.idea)}`) : '';
+  // 抖音热门挑战 / 玩法：热榜里抖音官方归类为「站内玩法」「话题互动」的词条
+  const ch = d.challenges || [];
+  const chHtml = ch.length ? `<div class="sub">${pb('douyin')}热门挑战 / 玩法<span style="font-weight:400;font-size:12px;color:#6b7280"> 抖音热榜里官方归类为玩法的词条</span></div>` + items(ch, (t) => `
+    <div class="tt">${b(t.kind, t.kind === '抖音挑战' ? 'warm' : 'ai')}${a(t.url, esc(t.title))}${t.rank ? ` <span class="m">热榜第 ${t.rank}</span>` : ''}</div>
+    ${t.m?.fetched ? `<div class="m">参与视频里 ${t.m.aiVideos || 0}/${t.m.fetched} 条是 AI 做的</div>` : ''}
+    ${an('为什么火', t.ai?.why)}${an('AI 跟拍', t.ai?.idea)}
+    ${(t.top || []).slice(0, 2).map((v) => `<div class="m">${a(v.url, `❤ ${fmtNum(v.like)}　${v.ai ? b('AI', 'ai') : ''}${esc(cut(v.title || '（无文案）', 36))}`)}</div>`).join('')}`) : '';
   const trendHtml = ['douyin', 'bilibili', 'weibo'].filter((s) => tr[s]?.length).map((s) => `<div class="sub">${pb(s)}热搜前 ${tr[s].length}</div>` + items(tr[s], (t, i) => `
-    <div class="tt">${rk(i + 1)}${a(t.url, esc(t.title))}${t.ai?.tag ? ` ${b(t.ai.tag, 'ai')}` : ''}</div>
+    <div class="tt">${rk(i + 1)}${a(t.url, esc(t.title))}${t.kind ? ` ${b(t.kind, 'warm')}` : ''}${t.ai?.tag ? ` ${b(t.ai.tag, 'ai')}` : ''}</div>
     ${t.ai?.why ? `<div class="a">${esc(t.ai.why)}</div>` : ''}`)).join('');
-  if (memeHtml || trendHtml) parts.push(sec('😂 最新热梗热搜', '抖音 / B站 / 微博', memeHtml + trendHtml));
+  if (memeHtml || chHtml || trendHtml) parts.push(sec('😂 最新热梗热搜', '抖音 / B站 / 微博', memeHtml + chHtml + trendHtml));
 
   // 4. 热歌 / 飙升
   const mu = d.music || {};

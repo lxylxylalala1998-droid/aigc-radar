@@ -108,7 +108,10 @@ ${lines.join('\n')}`, { maxTokens: 7000 });
 
 async function annotateTrends(list) {
   const lines = list.map((x, i) => {
-    const extra = [x.label && `标签:${x.label}`, x.desc && `分类:${x.desc}`, x.ctx?.length && `话题下热门视频文案:${x.ctx.join(' / ').slice(0, 150)}`].filter(Boolean).join('；');
+    const extra = [
+      x.kind && `【${x.kind}】${x.m?.fetched ? `参与视频里 ${x.m.aiVideos || 0}/${x.m.fetched} 条是 AI 做的` : ''}`,
+      x.label && `标签:${x.label}`, x.desc && `分类:${x.desc}`, x.ctx?.length && `话题下热门视频文案:${x.ctx.join(' / ').slice(0, 150)}`,
+    ].filter(Boolean).join('；');
     return `${i}|${PLATFORM[x.src]}|${x.rank || '上升'}|${x.title}${extra ? `|${extra}` : ''}`;
   });
   const r = await ask(`下面是微博、抖音、B站热搜上新出现的词条（编号|平台|排名|词条|补充信息）。补充信息里有抖音话题下热门视频的文案、微博分类，是判断的主要依据。
@@ -118,6 +121,7 @@ async function annotateTrends(list) {
 - tag：热梗（流行梗、名场面、魔性台词 / BGM、新造词、全网模仿的段子）/ AI相关（词条本身在说 AI 或机器人；普通数码产品不算）/ 可借势（热度高的影视剧、综艺、游戏、体育、节日，适合用 AI 做同人、恶搞、MV）
 - idea：可以怎么用 AI 来做，≤30 字
 纯政治、外交、灾难、刑事、负面社会新闻不加 tag（但仍要写 why）。
+标了【抖音挑战】【话题互动】的是抖音官方归类的站内玩法 / 挑战：why 要说清楚这个挑战怎么玩、为什么大家爱跟；idea 必须写，说怎么用 AI 跟拍 / 参与（用什么工具、拍什么），≤35 字。
 
 输出格式：{"items":[{"i":编号,"why":"","tag":"","idea":""}]}
 
@@ -179,7 +183,8 @@ export async function annotate(now = Date.now()) {
     .slice(0, 400)
     .map((v) => v.x);
   const trends = items
-    .filter((x) => x.cat === 'trend' && fresh(x) && x.lastSeen >= now - 2 * HOUR)
+    // 挑战类如果之前标注时没给 AI 做法（加这个功能之前标的），补一次
+    .filter((x) => x.cat === 'trend' && (fresh(x) || (x.kind && !x.ai?.idea && !x.ai?.kv)) && x.lastSeen >= now - 2 * HOUR)
     .sort((a, b) => (a.rank || 99) - (b.rank || 99));
   // 同一首歌可能同时在好几个榜上，合并成一组只问一次
   const bgm = items.filter((x) => x.cat === 'bgm');
@@ -228,7 +233,7 @@ export async function annotate(now = Date.now()) {
     const by = new Map(tres[k].items.map((x) => [+x.i, x]));
     b.forEach((x, i) => {
       const a = by.get(i);
-      if (a || tres[k].ok) put(x.id, { why: dropEcho(a?.why, x.title) || undefined, tag: a?.tag || undefined, idea: dropEcho(a?.idea, x.title) || undefined }, tres[k].ok);
+      if (a || tres[k].ok) put(x.id, { why: dropEcho(a?.why, x.title) || undefined, tag: a?.tag || undefined, idea: dropEcho(a?.idea, x.title) || undefined, kv: x.kind && tres[k].ok ? 1 : undefined }, tres[k].ok);
     });
   });
   sb.forEach((b, k) => {
@@ -369,6 +374,10 @@ export async function digest(now = Date.now()) {
   const memes = all1.filter((x) => x.cat === 'trend' && x.lastSeen >= since && x.ai?.tag)
     .sort((a, b) => ({ 热梗: 0, AI相关: 1, 可借势: 2 }[a.ai.tag] ?? 9) - ({ 热梗: 0, AI相关: 1, 可借势: 2 }[b.ai.tag] ?? 9) || (a.peakRank || 99) - (b.peakRank || 99))
     .slice(0, 15);
+  // 抖音热门挑战 / 玩法：热榜里抖音官方归类为「站内玩法」「话题互动」的词条，挑战排前面，AI 参与多的排前面
+  const challenges = all1.filter((x) => x.cat === 'trend' && x.kind && x.lastSeen >= since)
+    .sort((a, b) => (a.kind === '抖音挑战' ? 0 : 1) - (b.kind === '抖音挑战' ? 0 : 1) || (b.m?.aiVideos || 0) - (a.m?.aiVideos || 0) || (a.peakRank || 99) - (b.peakRank || 99))
+    .slice(0, 8);
   const byHeat = (arr, s, n, exclude = new Set()) => arr.filter((x) => x.src === s && !exclude.has(x.id)).sort((a, b) => (b.heat || 0) - (a.heat || 0)).slice(0, n);
   const h24 = ['douyin', 'bilibili'].flatMap((s) => fresh.filter((x) => x.src === s).sort((a, b) => b.vel - a.vel).slice(0, 8));
   const used = new Set(h24.map((x) => x.id));
@@ -388,7 +397,7 @@ export async function digest(now = Date.now()) {
   const line = (code, x) => {
     refs[code] = x;
     const what = x.cat === 'video' ? `${PLATFORM[x.src]}｜${x.ai.type}｜${x.title}｜${stats(x)}${x.vel ? `｜每小时+${fmtNum(x.vel)}` : ''}${x.ai.hook ? `｜爆点：${x.ai.hook}` : ''}`
-      : x.cat === 'trend' ? `${PLATFORM[x.src]}热搜｜${x.ai.tag}｜${x.title}${x.daysSeen > 1 ? `｜在榜${x.daysSeen}天` : ''}｜${x.ai.why || ''}`
+      : x.cat === 'trend' ? `${PLATFORM[x.src]}热搜｜${x.kind || x.ai?.tag || ''}｜${x.title}${x.daysSeen > 1 ? `｜在榜${x.daysSeen}天` : ''}${x.kind && x.m?.fetched ? `｜参与视频 ${x.m.aiVideos || 0}/${x.m.fetched} 条是 AI 做的` : ''}｜${x.ai?.why || ''}`
         : `${x.board}｜${x.title} - ${x.author}${x.daysSeen > 1 ? `｜在榜${x.daysSeen}天` : ''}｜${x.ai?.why || ''}`;
     return `[${code}] ${what}`;
   };
@@ -399,13 +408,13 @@ export async function digest(now = Date.now()) {
     .sort((a, b) => b[1].n - a[1].n || b[1].last - a[1].last).slice(0, 8)
     .map(([kw, v]) => ({ kw, why: v.why, first: v.first, n: v.n }));
   const blocks = [
-    `【24小时飙升】\n${[...h24.map((x, i) => line(`A${i}`, x)), ...memes.map((x, i) => line(`T${i}`, x))].join('\n') || '（无）'}`,
+    `【24小时飙升】\n${[...h24.map((x, i) => line(`A${i}`, x)), ...memes.map((x, i) => line(`T${i}`, x)), ...challenges.filter((x) => !memes.includes(x)).map((x, i) => line(`K${i}`, x))].join('\n') || '（无）'}`,
     `【近3天爆款】\n${h3.map((x, i) => line(`B${i}`, x)).join('\n') || '（无）'}`,
     `【本周热点】\n${[...h7.map((x, i) => line(`C${i}`, x)), ...lastingTrends.map((x, i) => line(`L${i}`, x))].join('\n') || '（无）'}${tags7.length ? `\n抖音 AIGC 话题标签（7天内视频数/总赞）：${tags7.map(([t, e]) => `#${t} ${e.n}条/${fmtNum(e.likes)}赞`).join('，')}` : ''}`,
     `【长期热点（30天）】\n${[...h30.map((x, i) => line(`D${i}`, x)), ...lastingSongs.map((x, i) => line(`S${i}`, x))].join('\n') || '（无）'}${typeCount.length ? `\n30 天 AIGC 作品类型分布：${typeCount.map(([t, n]) => `${t} ${n}`).join('，')}` : ''}`,
     trendKw.length ? `【近期新冒出的 AIGC 玩法】\n${trendKw.map((t) => `${t.kw}：${t.why || ''}（${Math.max(1, Math.round((now - t.first) / DAY))} 天内出现 ${t.n} 次）`).join('\n')}` : '',
   ].filter(Boolean).join('\n\n');
-  console.log(`选题素材：24h ${h24.length}+热梗 ${memes.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lastingTrends.length}，30天 ${h30.length}+长热歌 ${lastingSongs.length}`);
+  console.log(`选题素材：24h ${h24.length}+热梗 ${memes.length}+挑战 ${challenges.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lastingTrends.length}，30天 ${h30.length}+长热歌 ${lastingSongs.length}`);
 
   // ---- AI 圈大事件 ----
   const news = all1
@@ -449,7 +458,9 @@ export async function digest(now = Date.now()) {
     })),
     trendKeywords: trendKw.map(({ kw, why }) => ({ kw, why })),
     videos,
-    memes: memes.slice(0, 10).map((x) => slim(x, now)),
+    // 热梗里已经单列的抖音挑战不重复放
+    memes: memes.filter((x) => !x.kind).slice(0, 10).map((x) => slim(x, now)),
+    challenges: challenges.map((x) => slim(x, now)),
     trends,
     music,
     news: newsOut,
@@ -465,7 +476,7 @@ export async function digest(now = Date.now()) {
     newsOut.forEach((e) => e.refs.forEach((r) => put(r.id, { event: e.title, kind: e.kind, level: e.level })));
     writeJSON(file, day);
   }
-  console.log(`日报完成：选题 ${out.picks.length}，爆款 抖音 ${videos.douyin.length} / B站 ${videos.bilibili.length}，热梗 ${out.memes.length}，事件 ${newsOut.length}${errors.length ? `；AI 出错 ${errors.length} 处` : ''}`);
+  console.log(`日报完成：选题 ${out.picks.length}，抖音挑战 ${out.challenges.length}，爆款 抖音 ${videos.douyin.length} / B站 ${videos.bilibili.length}，热梗 ${out.memes.length}，事件 ${newsOut.length}${errors.length ? `；AI 出错 ${errors.length} 处` : ''}`);
   return out;
 }
 
