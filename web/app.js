@@ -100,7 +100,7 @@
           const dy = x.src === 'douyin';
           return `
           <article class="item vid">
-            <a class="th ${x.cover ? '' : `ph ${x.src}`}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频">${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="">` : `<span>${PLAT[x.src] || ''}</span>`}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
+            <a class="th ph ${x.src}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频"><span>${PLAT[x.src] || ''}</span>${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="" onerror="this.remove()">` : ''}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
             <div>
               <div class="tt">${link(x.url, esc(x.title))}</div>
               <div class="meta">${pb(x.src)}${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiCorner ? tag('AI角标', 'solid') : ''}<span>${esc(x.author || '')}</span>${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${dy && /^(话题|热门视频榜)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>

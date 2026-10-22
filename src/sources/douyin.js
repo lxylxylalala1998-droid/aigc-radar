@@ -21,6 +21,8 @@ function videoItem(a, topic) {
     title: plain(a.desc).slice(0, 80) || '（无文案）',
     url: `https://www.douyin.com/video/${a.aweme_id}`,
     author: a.author?.nickname || '',
+    // 封面链接带签名，约 14 天有效；同一条视频每次抓到都会刷新
+    cover: a.video?.cover?.url_list?.[0] || a.video?.origin_cover?.url_list?.[0],
     heat: st.digg_count || 0, // 抖音隐藏播放数，热度用点赞
     pubAt: (a.create_time || 0) * 1000,
     tags: tags.slice(0, 8).join(','),

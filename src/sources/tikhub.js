@@ -54,6 +54,7 @@ function videoItem(a, board, hint) {
     title: plain(a.desc).slice(0, 80) || '（无文案）',
     url: `https://www.douyin.com/video/${a.aweme_id}`,
     author: a.author?.nickname || '',
+    cover: a.video?.cover?.url_list?.[0] || a.video?.origin_cover?.url_list?.[0], // 约 14 天有效
     heat: st.digg_count || 0,
     pubAt: (a.create_time || 0) * 1000,
     tags: hashtags(a).slice(0, 8).join(','),
@@ -142,7 +143,7 @@ export async function douyinAigc({ daily = false } = {}) {
         push({
           id: `dy:${x.item_id}`, cat: 'video', src: 'douyin', board: `热门视频榜·${b.name}`,
           title: plain(x.title || '').slice(0, 80) || '（无文案）', url: `https://www.douyin.com/video/${x.item_id}`,
-          author: x.author_name || '', heat: x.like_count || 0,
+          author: x.author_name || '', heat: x.like_count || 0, cover: x.cover?.url_list?.[0],
           // 榜单不给发布时间，但抖音视频 ID 的高 32 位就是发布时间戳（实测误差十几秒）
           pubAt: idTime(x.item_id) || now,
           desc: clean(x.title || '').slice(0, 120), tags: (x.key_words || []).slice(0, 6).join(','),
