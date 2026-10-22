@@ -27,7 +27,7 @@ function windowData(days, now) {
 
   // 24 小时看蹿升，更长的窗口看总播放；只要窗口内发布的
   const videos = by('video')
-    .filter((x) => x.pubAt >= now - Math.max(days, 3) * DAY && x.ai?.type !== '非AIGC') // 没有发布时间的不展示，蹿升算不准
+    .filter((x) => x.pubAt >= now - Math.max(days, 3) * DAY && x.ai?.type !== '非AIGC' && (x.src !== 'douyin' || x.m?.aiLabel)) // 抖音只展示官方标了 AI 的
     .sort(days === 1 ? (a, b) => (b.vel || 0) - (a.vel || 0) : (a, b) => (b.heat || 0) - (a.heat || 0))
     .slice(0, LIMIT.video);
 

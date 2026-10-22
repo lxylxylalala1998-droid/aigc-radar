@@ -17,8 +17,10 @@ export const AIGC_TYPES = [...FOCUS_TYPES, 'AI动画', 'AI特效玩法', 'AI整�
 // 视频分类改过一次（AI剧情 / AI短片 并进 AI影视），旧数据先按新名字读，再由 annotate 重新标
 const OLD_TYPE = { AI剧情: 'AI影视', AI短片: 'AI影视' };
 const typeOf = (x) => OLD_TYPE[x.ai?.type] || x.ai?.type;
-const isWork = (x) => x.cat === 'video' && AIGC_TYPES.includes(typeOf(x));
-const isFocus = (x) => x.cat === 'video' && FOCUS_TYPES.includes(typeOf(x));
+// 抖音视频只认官方 AI 标（作者声明 / 平台识别 / AI 特效），没标的不算 AIGC
+const dyOk = (x) => x.src !== 'douyin' || !!x.m?.aiLabel;
+const isWork = (x) => x.cat === 'video' && AIGC_TYPES.includes(typeOf(x)) && dyOk(x);
+const isFocus = (x) => x.cat === 'video' && FOCUS_TYPES.includes(typeOf(x)) && dyOk(x);
 const VV = 3; // 视频标注版本
 
 const SYSTEM = `你是一位资深的 AIGC 自媒体选题编辑，服务对象是在抖音、B站做 AI 内容的博主。
@@ -90,7 +92,7 @@ const dropEcho = (s = '', title = '') => (title && s.startsWith(title) ? s.slice
 
 function stats(x) {
   const m = x.m || {};
-  if (x.src === 'douyin') return `${m.play ? `播放${fmtNum(m.play)} ` : ''}点赞${fmtNum(m.like)} 评论${fmtNum(m.comment)} 分享${fmtNum(m.share)}${m.fav ? ` 收藏${fmtNum(m.fav)}` : ''}${m.aiCorner ? ' 【抖音AI角标】' : ''}${m.hint ? ` 【来自 #${x.board.replace('话题·#', '')} 话题】` : ''}`;
+  if (x.src === 'douyin') return `${m.play ? `播放${fmtNum(m.play)} ` : ''}点赞${fmtNum(m.like)} 评论${fmtNum(m.comment)} 分享${fmtNum(m.share)}${m.fav ? ` 收藏${fmtNum(m.fav)}` : ''}${m.aiLabel ? ` 【抖音官方AI标：${m.aiLabel}】` : ''}${m.hint ? ` 【来自 #${x.board.replace('话题·#', '')} 话题】` : ''}`;
   if (x.src === 'bilibili') return `播放${fmtNum(m.play)} 点赞${fmtNum(m.like)} 弹幕${fmtNum(m.danmaku)}`;
   return `播放${fmtNum(x.heat)}`;
 }
@@ -112,6 +114,7 @@ async function annotateVideos(list, now) {
    AI换人（把视频里的人换成另一个人，比如让黄仁勋替代迈克尔·杰克逊在演唱会上唱歌；AI 换脸）、
    AI动画（非剧情向的 AI 动画）、AI特效玩法（抖音 AI 特效模板、AI 滑镜、AI 变身、AI 换装这类一键玩法）、AI整活（其它恶搞、梗视频）
    视频来自某个 AI 话题（比如 #ai短剧）只说明它带了这个标签，还是要看内容判断
+   带【抖音官方AI标】的视频平台已确认是 AI 生成，不要判成「非AIGC」，只判断属于哪一类
 2. 讲 AI 的教程、评测、新闻解读：type 为「AI教程测评」，不用写分析
 3. 跟 AI 生成无关的不要输出
 4. 每个 AIGC 作品再写两句：
@@ -197,7 +200,7 @@ export async function annotate(now = Date.now()) {
   const fresh = (x) => x.ai?.v !== V;
 
   const videos = items
-    .filter((x) => x.cat === 'video' && x.ai?.vv !== VV && x.pubAt > now - 31 * DAY)
+    .filter((x) => x.cat === 'video' && x.ai?.vv !== VV && x.pubAt > now - 31 * DAY && dyOk(x))
     .map((x) => ({ x, vel: velocity(x, now).perHour }))
     .sort((a, b) => b.vel - a.vel)
     .slice(0, 400)
@@ -246,7 +249,9 @@ export async function annotate(now = Date.now()) {
     const by = new Map(vres[k].items.map((x) => [+x.i, x]));
     b.forEach((x, i) => {
       const a = by.get(i);
-      if (a || vres[k].ok) put(x.id, { type: a?.type || '非AIGC', hook: a?.hook || undefined, tip: a?.tip || undefined, vv: vres[k].ok ? VV : undefined }, vres[k].ok);
+      // 带官方 AI 标的抖音视频一定是 AIGC，AI 没归类就记「未分类」
+      const type = a?.type || (x.src === 'douyin' ? '未分类' : '非AIGC');
+      if (a || vres[k].ok) put(x.id, { type: x.src === 'douyin' && type === '非AIGC' ? '未分类' : type, hook: a?.hook || undefined, tip: a?.tip || undefined, vv: vres[k].ok ? VV : undefined }, vres[k].ok);
     });
   });
   tb.forEach((b, k) => {

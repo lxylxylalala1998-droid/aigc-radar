@@ -87,7 +87,7 @@
         <a class="th ph ${x.src}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频"><span>${PLAT[x.src] || ''}</span>${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="" onerror="this.remove()">` : ''}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
         <div>
           <div class="tt">${link(x.url, esc(x.title))}</div>
-          <div class="meta">${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiCorner ? tag('AI角标', 'solid') : ''}<span>${esc(x.author || '')}</span>${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${dy && /^(话题|热门视频榜)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>
+          <div class="meta">${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiLabel ? tag({ 作者声明: '作者声明AI', 平台识别: '平台识别AI', AI特效: 'AI特效角标' }[x.m.aiLabel] || 'AI标', 'solid') : ''}<span>${esc(x.author || '')}</span>${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${dy && /^(话题|热门视频榜)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>
           <div class="stat">${dy && x.m?.play ? `<span>${N(x.m.play)}播放</span>` : ''}<span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}</div>
           ${ana('爆点', x.ai?.hook)}${ana('参考', x.ai?.tip)}
         </div>
@@ -98,7 +98,7 @@
     const dy = src === 'douyin';
     return {
       lede: dy
-        ? '抖音上的 AIGC 爆款：热榜话题下的视频 + 32 个 AIGC 话题（近 30 天高赞 + 最近新发）+ 热门视频榜。抖音不公开播放数，热度按点赞。'
+        ? '抖音上的 AIGC 爆款，只收抖音官方标了 AI 的视频（作者声明「内容由 AI 生成」、平台识别为 AI 内容、AI 特效角标）。来源：热榜话题下的视频 + 32 个 AIGC 话题 + 热门视频榜。抖音不公开播放数，热度按点赞。'
         : 'B站上的 AIGC 爆款：关键词搜索 + 分区排行 + 综合热门。热度按播放。',
       subs: (d) => {
         const list = d.videos.filter((x) => x.src === src);

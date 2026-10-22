@@ -8,6 +8,17 @@ const API = 'https://aweme.snssdk.com/aweme/v1';
 // 热榜词条的分类编号（sentence_tag）：1000~1004 是抖音标的「站内玩法」（挑战、玩法、BGM 文案梗），20000~20006 是「话题互动」
 const KIND = (t) => (t >= 1000 && t <= 1004 ? '抖音挑战' : t >= 20000 && t <= 20006 ? '话题互动' : undefined);
 
+// 抖音官方的 AI 标记，三种任一即算 AIGC：
+//   作者声明：视频底部「作者声明：内容由 AI 生成」（risk_infos）
+//   平台识别：平台判定含 AI 生成内容、禁止下载（download_info.fail_info.reason = aigc_forbidden）
+//   AI 特效：AI 特效模板的角标（show_ai_corner）
+export function aiLabel(a) {
+  if (/AI\s*生成/.test(a.risk_infos?.content || '')) return '作者声明';
+  if (a.video_control?.download_info?.fail_info?.reason === 'aigc_forbidden') return '平台识别';
+  if (a.video_control?.show_ai_corner) return 'AI特效';
+  return '';
+}
+
 export const hashtags = (a) => (a.text_extra || []).map((t) => t.hashtag_name).filter(Boolean);
 // 文案去掉 #话题 和 @，留下正文当标题
 export const plain = (desc = '') => clean(desc.replace(/#\S+/g, ' ').replace(/@\S+/g, ' ')) || clean(desc);
@@ -29,7 +40,8 @@ function videoItem(a, topic) {
     desc: clean(a.desc).slice(0, 120),
     m: {
       like: st.digg_count || 0, comment: st.comment_count || 0, share: st.share_count || 0, fav: st.collect_count || 0,
-      aiCorner: a.video_control?.show_ai_corner ? 1 : 0, // 抖音官方「AI 生成」角标
+      aiCorner: a.video_control?.show_ai_corner ? 1 : 0,
+      aiLabel: aiLabel(a) || undefined, // 抖音官方 AI 标：只有带标的才算 AIGC
       bgm: a.music?.title ? clean(a.music.title) : undefined,
     },
   };
@@ -59,7 +71,7 @@ export async function douyinHot() {
 
     const top = [...videos].sort((a, b) => (b.statistics?.digg_count || 0) - (a.statistics?.digg_count || 0));
     const kind = KIND(w.sentence_tag);
-    const aiish = (a) => a.video_control?.show_ai_corner || isAI(`${a.desc} ${hashtags(a).join(' ')}`);
+    const aiish = (a) => !!aiLabel(a);
     out.push({
       id: `douyin:${w.word}`,
       cat: 'trend', src: 'douyin', board: w._rising ? '抖音实时上升' : '抖音热榜',
@@ -79,8 +91,8 @@ export async function douyinHot() {
     for (const a of videos) {
       if (seen.has(a.aweme_id)) continue;
       seen.add(a.aweme_id);
-      const tags = hashtags(a).join(' ');
-      if (a.video_control?.show_ai_corner || isAI(`${a.desc} ${tags}`)) out.push(videoItem(a, w.word));
+      // 只收抖音官方标了 AI 的视频
+      if (aiLabel(a)) out.push(videoItem(a, w.word));
       const t = a.music?.title && clean(a.music.title);
       if (t && !/原声|创作的/.test(t)) {
         const k = `${t}|${clean(a.music.author || '')}`;

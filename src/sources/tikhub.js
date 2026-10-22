@@ -5,7 +5,7 @@
 import path from 'node:path';
 import { clean, isAI, sleep, DAY, DATA, readJSON, writeJSON } from '../util.js';
 import { DY_HASHTAGS, DY_BILLBOARD_TAGS, DY_RECENT_PAGE, TIKHUB_NEW_TAGS_PER_DAY, TIKHUB_MIN_BALANCE } from '../config.js';
-import { plain, hashtags } from './douyin.js';
+import { plain, hashtags, aiLabel } from './douyin.js';
 
 const BASE = 'https://api.tikhub.io';
 const TAG_FILE = path.join(DATA, 'dy-hashtags.json'); // AI 发现的新话题
@@ -59,7 +59,7 @@ function videoItem(a, board, hint) {
     pubAt: (a.create_time || 0) * 1000,
     tags: hashtags(a).slice(0, 8).join(','),
     desc: clean(a.desc).slice(0, 120),
-    m: { like: st.digg_count || 0, comment: st.comment_count || 0, share: st.share_count || 0, fav: st.collect_count || 0, hint },
+    m: { like: st.digg_count || 0, comment: st.comment_count || 0, share: st.share_count || 0, fav: st.collect_count || 0, hint, aiLabel: aiLabel(a) || undefined },
   };
 }
 
@@ -127,7 +127,8 @@ export async function douyinAigc({ daily = false } = {}) {
       try {
         const j = await th(`/api/v1/douyin/app/v3/fetch_hashtag_video_list?ch_id=${q.t.id}&cursor=${q.cursor}&sort_type=${q.sort}&count=10`);
         spent += 0.001;
-        for (const a of awemes(j)) push(videoItem(a, `话题·#${q.t.name}`, q.t.type));
+        // 只收抖音官方标了 AI 的（作者声明 / 平台识别 / AI 特效）
+        for (const a of awemes(j)) if (aiLabel(a)) push(videoItem(a, `话题·#${q.t.name}`, q.t.type));
       } catch (e) { warnings.push(`#${q.t.name}：${e.message}`); if (e.broke) broke = true; }
     }
   }));
@@ -140,6 +141,11 @@ export async function douyinAigc({ daily = false } = {}) {
       for (const x of firstList(j?.data) || []) {
         const text = `${x.title || ''} ${(x.key_words || []).join(' ')}`;
         if (!isAI(text) || !x.item_id) continue;
+        // 榜单不带 AI 标记，查一次详情（0.001 美元）确认是不是官方标了 AI
+        let detail = null;
+        try { detail = awemes(await th(`/api/v1/douyin/app/v3/fetch_one_video?aweme_id=${x.item_id}`))[0]; spent += 0.001; } catch (e) { warnings.push(`详情 ${x.item_id}：${e.message}`); }
+        const lbl = detail ? aiLabel(detail) : '';
+        if (!lbl) continue;
         push({
           id: `dy:${x.item_id}`, cat: 'video', src: 'douyin', board: `热门视频榜·${b.name}`,
           title: plain(x.title || '').slice(0, 80) || '（无文案）', url: `https://www.douyin.com/video/${x.item_id}`,
@@ -147,7 +153,7 @@ export async function douyinAigc({ daily = false } = {}) {
           // 榜单不给发布时间，但抖音视频 ID 的高 32 位就是发布时间戳（实测误差十几秒）
           pubAt: idTime(x.item_id) || now,
           desc: clean(x.title || '').slice(0, 120), tags: (x.key_words || []).slice(0, 6).join(','),
-          m: { play: x.play_count || 0, like: x.like_count || 0, comment: x.comment_count || 0, share: x.share_count || 0, noDate: idTime(x.item_id) ? undefined : 1 },
+          m: { play: x.play_count || 0, like: x.like_count || 0, comment: x.comment_count || 0, share: x.share_count || 0, noDate: idTime(x.item_id) ? undefined : 1, aiLabel: lbl },
         });
       }
     } catch (e) { warnings.push(`热门视频榜·${b.name}：${e.message}`); if (e.broke) break; }
