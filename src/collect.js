@@ -7,7 +7,6 @@ import { KEEP_DAYS } from './config.js';
 import { weibo } from './sources/weibo.js';
 import { douyinHot, douyinMusic } from './sources/douyin.js';
 import { biliHot, biliAI, biliMusic } from './sources/bilibili.js';
-import { youtube } from './sources/youtube.js';
 import { qqMusic, netease } from './sources/music.js';
 import { rss, hackerNews, hfTrending } from './sources/news.js';
 import { douyinAigc } from './sources/tikhub.js';
@@ -17,8 +16,8 @@ export const SOURCES = [
   { key: 'douyinHot', name: '抖音热榜+话题视频', fn: douyinHot },
   { key: 'biliHot', name: 'B站热搜', fn: biliHot },
   { key: 'biliAI', name: 'B站 AI 稿件', fn: (o) => biliAI({ long: o.daily }) },
-  { key: 'tikhub', name: '抖音高赞 AIGC（每天一次）', fn: (o) => douyinAigc({ daily: o.daily }) },
-  { key: 'youtube', name: 'YouTube AI 视频', fn: youtube },
+  // 付费源：超时也不能半路放弃（请求照样扣费），所以给足 10 分钟
+  { key: 'tikhub', name: '抖音高赞 AIGC（每天一次）', fn: (o) => douyinAigc({ daily: o.daily }), timeout: 600e3 },
   { key: 'qqmusic', name: 'QQ音乐榜', fn: qqMusic },
   { key: 'netease', name: '网易云音乐榜', fn: netease },
   { key: 'douyinMusic', name: '抖音热歌榜', fn: douyinMusic },
@@ -38,7 +37,7 @@ async function runSources(only, opts = {}) {
   await Promise.all(list.map(async (s) => {
     const t0 = Date.now();
     try {
-      const got = await withTimeout(s.fn(opts), 240e3);
+      const got = await withTimeout(s.fn(opts), s.timeout || 240e3);
       items.push(...got);
       status[s.key] = { name: s.name, ok: true, count: got.length, ms: Date.now() - t0, warnings: got.warnings?.slice(0, 5), info: got.info };
     } catch (e) {
@@ -70,7 +69,6 @@ function merge(items, now) {
     const cur = store.items[it.id];
     const rec = {
       ...it,
-      pubAt: old?.pubAt && it.src === 'youtube' ? old.pubAt : it.pubAt, // YouTube 只有「x 天前」，以第一次看到的为准
       boards: [...new Set([...(old?.boards || []), ...it.boards])],
       firstSeen: old?.firstSeen ?? now,
       lastSeen: now,
@@ -106,7 +104,9 @@ export async function collect(only, opts = {}) {
   for (const [k, st] of Object.entries(status)) {
     st.lastOk = st.ok ? now : old.sources[k]?.lastOk;
   }
-  writeJSON(path.join(DATA, 'status.json'), { runAt: now, sources: { ...old.sources, ...status } }, true);
+  // 只保留现在还在用的数据源（删掉的源不再挂在状态里）
+  const live = Object.fromEntries(SOURCES.map((s) => [s.key, status[s.key] || old.sources[s.key]]).filter(([, v]) => v));
+  writeJSON(path.join(DATA, 'status.json'), { runAt: now, sources: live }, true);
   prune(now);
   const failed = Object.values(status).filter((s) => !s.ok).map((s) => s.name);
   console.log(`\n${r.today}：本次 ${r.added} 条，当天累计 ${r.total} 条${failed.length ? `；失败：${failed.join('、')}` : ''}`);

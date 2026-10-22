@@ -32,12 +32,6 @@ export const WATCH_KEYWORDS = ['古人开麦'];
 // B站分区排行（rid）。只保留标题或分区跟 AI 有关的
 export const BILI_RANK_RIDS = [3, 1, 119, 181, 188, 160];
 
-// YouTube 搜索词（按播放量排序、限本周上传、只要视频）
-export const YT_QUERIES = [
-  'AI music video', 'AI animation', 'AI short film', 'AI generated video', 'Suno AI song',
-  'Sora 2', 'Veo 3', 'Kling AI', 'AI cover song', 'AI movie trailer',
-];
-
 // AI 资讯 RSS。filter=true 的是综合媒体，只留标题带 AI 关键词的
 export const RSS_FEEDS = [
   { name: '量子位', url: 'https://www.qbitai.com/feed', filter: false },
@@ -83,9 +77,26 @@ export const DY_HASHTAGS = [
   { name: 'ai真人短剧', id: '7532695948107974675', pages: 2, type: 'AI影视' },
   { name: 'ai演唱会', id: '1716481052643339', pages: 1, type: 'AI换人' },
   { name: '抖音ai创作', id: '1776715988162624', pages: 2, type: null },
+  { name: 'ai翻唱', id: '1716868688759811', pages: 2, type: 'AI音乐' },
+  { name: '虚拟偶像', id: '1596727512379396', pages: 2, type: 'AI歌手/艺人' },
+  { name: 'ai换人', id: '1734969483413507', pages: 1, type: 'AI换人' },
+  { name: 'ai漫剧推荐', id: '7579212100241721378', pages: 1, type: 'AI影视' },
+  { name: 'ai短剧推荐', id: '7422129998527465499', pages: 1, type: 'AI影视' },
+  { name: 'ai动画', id: '1663471029690371', pages: 1, type: null },
+  { name: 'aigc', id: '1722895911293971', pages: 1, type: null },
+  { name: 'ai视频', id: '1617402745256973', pages: 1, type: null },
+  { name: 'ai创作', id: '1641397594586119', pages: 1, type: null },
+  { name: 'ai创作浪潮', id: '7552088959354931251', pages: 1, type: null },
+  { name: '即梦ai', id: '7366978146019346483', pages: 1, type: null },
+  { name: '可灵ai', id: '7377253049573574668', pages: 1, type: null },
 ];
+// 每个话题另外按「综合」拉一页：主要是最近几天新发的视频（点赞还不高），抖音每天新出的 AIGC 靠这一路
+export const DY_RECENT_PAGE = true;
 // 创作者中心热门视频榜（近 30 天按播放）要拉的分类：只有这里能拿到抖音的真实播放量
-export const DY_BILLBOARD_TAGS = [{ tag: 337, name: '娱乐' }, { tag: 308, name: '剧情' }, { tag: 296, name: '二次元' }];
+export const DY_BILLBOARD_TAGS = [
+  { tag: 337, name: '娱乐' }, { tag: 308, name: '剧情' }, { tag: 296, name: '二次元' },
+  { tag: 306, name: '才艺' }, { tag: 310, name: '创意' }, { tag: 336, name: '科技' },
+];
 // AI 发现新玩法后，每天最多花几次「话题搜索」（每次 0.01 美元）去拿它的话题 ID
 export const TIKHUB_NEW_TAGS_PER_DAY = 2;
 // 余额低于这个数就暂停，不会把钱扣成负数

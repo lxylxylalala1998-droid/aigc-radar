@@ -4,7 +4,7 @@
 //   3. AI 发现的新玩法：搜一次拿到话题 ID，之后自动加进第 1 条
 import path from 'node:path';
 import { clean, isAI, sleep, DAY, DATA, readJSON, writeJSON } from '../util.js';
-import { DY_HASHTAGS, DY_BILLBOARD_TAGS, TIKHUB_NEW_TAGS_PER_DAY, TIKHUB_MIN_BALANCE } from '../config.js';
+import { DY_HASHTAGS, DY_BILLBOARD_TAGS, DY_RECENT_PAGE, TIKHUB_NEW_TAGS_PER_DAY, TIKHUB_MIN_BALANCE } from '../config.js';
 import { plain, hashtags } from './douyin.js';
 
 const BASE = 'https://api.tikhub.io';
@@ -40,6 +40,11 @@ const firstList = (o) => {
   if (o && typeof o === 'object') for (const x of Object.values(o)) { const f = firstList(x); if (f) return f; }
   return null;
 };
+
+// 抖音视频 ID 的高 32 位是发布时间（秒），用来补榜单里缺的发布时间
+export function idTime(id) {
+  try { const ms = Number(BigInt(id) >> 32n) * 1000; return ms > Date.UTC(2016, 0) && ms <= Date.now() + 864e5 ? ms : 0; } catch { return 0; }
+}
 
 function videoItem(a, board, hint) {
   const st = a.statistics || {};
@@ -106,20 +111,25 @@ export async function douyinAigc({ daily = false } = {}) {
   const since = now - 31 * DAY;
   const push = (item) => { if (!seen.has(item.id) && item.pubAt > since) { seen.add(item.id); out.push(item); } };
 
-  // 1. 话题：按最多点赞翻页
+  // 1. 话题：按最多点赞翻页（高赞），再按综合拉一页（最近新发的）
   const tags = [...DY_HASHTAGS, ...(await resolveNewTags(now, warnings))];
   let broke = false;
-  for (const t of tags) {
-    if (broke) break;
-    for (let page = 0; page < (t.pages || 1); page++) {
+  // 所有话题请求排成一队，同时跑 4 个（TikHub 限速每秒 10 次），88 次请求约 1 分钟
+  const jobs = tags.flatMap((t) => [
+    ...Array.from({ length: t.pages || 1 }, (_, p) => ({ t, sort: 1, cursor: p * 10 })),
+    ...(DY_RECENT_PAGE ? [{ t, sort: 0, cursor: 0 }] : []),
+  ]);
+  let next = 0;
+  await Promise.all(Array.from({ length: 4 }, async () => {
+    while (next < jobs.length && !broke) {
+      const q = jobs[next++];
       try {
-        const j = await th(`/api/v1/douyin/app/v3/fetch_hashtag_video_list?ch_id=${t.id}&cursor=${page * 10}&sort_type=1&count=10`);
+        const j = await th(`/api/v1/douyin/app/v3/fetch_hashtag_video_list?ch_id=${q.t.id}&cursor=${q.cursor}&sort_type=${q.sort}&count=10`);
         spent += 0.001;
-        for (const a of awemes(j)) push(videoItem(a, `话题·#${t.name}`, t.type));
-      } catch (e) { warnings.push(`#${t.name}：${e.message}`); if (e.broke) broke = true; break; }
-      await sleep(150);
+        for (const a of awemes(j)) push(videoItem(a, `话题·#${q.t.name}`, q.t.type));
+      } catch (e) { warnings.push(`#${q.t.name}：${e.message}`); if (e.broke) broke = true; }
     }
-  }
+  }));
 
   // 2. 创作者热门视频榜（近 30 天按播放），只留看起来跟 AI 有关的，交给 AI 再判断
   for (const b of broke ? [] : DY_BILLBOARD_TAGS) {
@@ -133,10 +143,10 @@ export async function douyinAigc({ daily = false } = {}) {
           id: `dy:${x.item_id}`, cat: 'video', src: 'douyin', board: `热门视频榜·${b.name}`,
           title: plain(x.title || '').slice(0, 80) || '（无文案）', url: `https://www.douyin.com/video/${x.item_id}`,
           author: x.author_name || '', heat: x.like_count || 0,
-          // 榜单不给发布时间：有上榜时间就用上榜时间，否则记为今天看到，并标 noDate 不展示天数
-          pubAt: (x.hot_onboard_time || 0) * 1000 || now,
+          // 榜单不给发布时间，但抖音视频 ID 的高 32 位就是发布时间戳（实测误差十几秒）
+          pubAt: idTime(x.item_id) || now,
           desc: clean(x.title || '').slice(0, 120), tags: (x.key_words || []).slice(0, 6).join(','),
-          m: { play: x.play_count || 0, like: x.like_count || 0, comment: x.comment_count || 0, share: x.share_count || 0, noDate: x.hot_onboard_time ? undefined : 1 },
+          m: { play: x.play_count || 0, like: x.like_count || 0, comment: x.comment_count || 0, share: x.share_count || 0, noDate: idTime(x.item_id) ? undefined : 1 },
         });
       }
     } catch (e) { warnings.push(`热门视频榜·${b.name}：${e.message}`); if (e.broke) break; }

@@ -49,9 +49,9 @@ export function render(d, { siteUrl } = {}) {
 
   // 1. 今日选题
   if (d.picks?.length) {
-    parts.push(sec('🎯 今日选题', '基于抖音 / B站 AIGC 热点', d.picks.map((p, i) => `
+    parts.push(sec('🎯 今日选题', `${d.picks.length} 个，按值得做的程度排，依据是抖音 / B站上的真实作品`, d.picks.map((p, i) => `
       <div class="pk">
-        <div>${b(`0${i + 1}`, 'hz')}${p.horizon ? b(p.horizon, 'ai') : ''}${p.platform ? b(p.platform) : ''}</div>
+        <div>${b(String(i + 1).padStart(2, '0'), 'hz')}${p.horizon ? b(p.horizon, 'ai') : ''}${p.platform ? b(p.platform) : ''}</div>
         <div class="t">${esc(p.title)}</div>
         ${an('为什么能火', p.why)}${an('怎么做', p.how)}
         ${p.refs?.length ? `<div class="refs">${p.refs.map((r) => a(r.url, `↗ ${esc(cut(r.title, 20))}`)).join(' ')}</div>` : ''}

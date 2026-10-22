@@ -12,6 +12,7 @@ export function loadWindow(days, now = Date.now()) {
     const f = dayFile(bjDate(now - i * DAY));
     if (!fs.existsSync(f)) continue;
     for (const it of Object.values(readJSON(f).items)) {
+      if (it.src === 'youtube') continue; // YouTube 已下线，旧数据不再展示
       const had = map.get(it.id);
       map.set(it.id, had
         ? { ...it, firstSeen: Math.min(had.firstSeen, it.firstSeen), peakRank: Math.min(had.peakRank ?? 1e9, it.peakRank ?? 1e9), peakHeat: Math.max(had.peakHeat || 0, it.peakHeat || 0), ai: it.ai || had.ai, daysSeen: had.daysSeen + 1 }
@@ -37,7 +38,7 @@ export function velocity(it, now = Date.now()) {
 }
 
 export const PLATFORM = {
-  weibo: '微博', douyin: '抖音', bilibili: 'B站', youtube: 'YouTube', qqmusic: 'QQ音乐', netease: '网易云',
+  weibo: '微博', douyin: '抖音', bilibili: 'B站', qqmusic: 'QQ音乐', netease: '网易云',
 };
 
 const OLD_TYPE = { AI剧情: 'AI影视', AI短片: 'AI影视' };

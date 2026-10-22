@@ -28,7 +28,11 @@ const SYSTEM = `你是一位资深的 AIGC 自媒体选题编辑，服务对象�
 
 const hasKey = () => !!process.env.DEEPSEEK_API_KEY;
 
+// 截断标题时可能把 emoji 切成半个（孤立的代理项），DeepSeek 会直接拒收整个请求，发送前清掉
+const fixText = (s) => s.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '');
+
 async function ask(prompt, { maxTokens = 6000 } = {}) {
+  prompt = fixText(prompt);
   let lastErr;
   for (let i = 0; i < 2; i++) {
     try {
@@ -44,8 +48,10 @@ async function ask(prompt, { maxTokens = 6000 } = {}) {
         }),
         signal: AbortSignal.timeout(240e3),
       });
-      const j = await res.json();
-      if (!res.ok) throw new Error(`DeepSeek ${res.status}: ${j?.error?.message || JSON.stringify(j).slice(0, 200)}`);
+      const text = await res.text();
+      let j;
+      try { j = JSON.parse(text); } catch { throw new Error(`DeepSeek ${res.status}: ${text.slice(0, 160)}`); }
+      if (!res.ok) throw new Error(`DeepSeek ${res.status}: ${j?.error?.message || text.slice(0, 200)}`);
       return JSON.parse(j.choices[0].message.content);
     } catch (e) { lastErr = e; }
   }
@@ -95,7 +101,7 @@ async function annotateVideos(list, now) {
     i, PLATFORM[x.src], x.m?.part || '', x.title, x.tags ? `话题:${x.tags}` : '', x.desc && x.desc !== x.title ? `简介:${x.desc.slice(0, 60)}` : '',
     stats(x), (x.m?.noDate ? '发布时间未知' : `发布${hoursAgo(x.pubAt, now)}h`),
   ].filter(Boolean).join('|'));
-  const r = await ask(`下面是抖音 / B站 / YouTube 上近期可能跟 AI 有关的视频（编号|平台|分区|标题|话题|简介|数据|发布时长）。
+  const r = await ask(`下面是抖音 / B站上近期可能跟 AI 有关的视频（编号|平台|分区|标题|话题|简介|数据|发布时长）。
 关键词搜索会混进很多不是 AI 生成的视频，请严格判断：
 1. 「内容本身主要由 AI 生成 / AI 参与创作」的 AIGC 作品，给出 type（选最贴切的一个）：
    AI音乐（AI 作曲 / AI 翻唱 / AI 说唱，比如让古人开麦唱歌说唱）、
@@ -343,9 +349,10 @@ ${lines.join('\n')}`, { maxTokens: 3000 });
 
 async function makePicks(blocks) {
   const r = await ask(`下面是抖音和 B站 AIGC 相关的热点数据，按时间段分组（方括号里是编号）。
-请给出「今日最值得做的 5 个选题」：
-- 选题必须是能在抖音 / B站发的 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
-- 5 个选题要覆盖不同时间段：至少 1 个来自「24小时飙升」，至少 1 个来自「近3天爆款」，至少 1 个来自「本周热点」或「长期热点」
+请给出「今日最值得做的 10 个选题」，按值得做的程度从高到低排：
+- 选题的依据必须是下面抖音、B站上的真实作品和热点（每个选题至少引用一个参考素材），题材是能在抖音 / B站发的 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
+- 10 个选题要覆盖不同时间段：至少 3 个来自「24小时飙升」，至少 2 个来自「近3天爆款」，至少 2 个来自「本周热点」或「长期热点」
+- 抖音、B站都要有，类型尽量分散，不要两个选题做同一件事
 - 每个选题输出：
   - title：选题标题，像一个能直接用的视频标题，≤24 字
   - horizon：24小时飙升 / 近3天爆款 / 本周热点 / 长期热点
@@ -356,8 +363,8 @@ async function makePicks(blocks) {
 
 输出格式：{"picks":[{"title":"","horizon":"","platform":"","why":"","how":"","refs":[]}]}
 
-${blocks}`, { maxTokens: 3000 });
-  return r.picks || [];
+${blocks}`, { maxTokens: 6000 });
+  return (r.picks || []).slice(0, 10);
 }
 
 // 抖音 AIGC 视频里出现最多的话题标签（看 AI 特效 / 玩法趋势）
@@ -424,17 +431,17 @@ export async function digest(now = Date.now()) {
     .sort((a, b) => (a.kind === '抖音挑战' ? 0 : 1) - (b.kind === '抖音挑战' ? 0 : 1) || (b.m?.aiVideos || 0) - (a.m?.aiVideos || 0) || (a.peakRank || 99) - (b.peakRank || 99))
     .slice(0, 8);
   const byHeat = (arr, s, n, exclude = new Set()) => arr.filter((x) => x.src === s && !exclude.has(x.id)).sort((a, b) => (b.heat || 0) - (a.heat || 0)).slice(0, n);
-  const h24 = ['douyin', 'bilibili'].flatMap((s) => fresh.filter((x) => x.src === s).sort((a, b) => b.vel - a.vel).slice(0, 8));
+  const h24 = ['douyin', 'bilibili'].flatMap((s) => fresh.filter((x) => x.src === s).sort((a, b) => b.vel - a.vel).slice(0, 12));
   const used = new Set(h24.map((x) => x.id));
   const w3 = all7.filter((x) => isWork(x) && x.pubAt > now - 3 * DAY).map(withVel);
-  const h3 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w3, s, 6, used));
+  const h3 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w3, s, 8, used));
   h3.forEach((x) => used.add(x.id));
   const w7 = all7.filter((x) => isWork(x) && x.pubAt > now - 7 * DAY);
-  const h7 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w7, s, 6, used));
+  const h7 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w7, s, 8, used));
   h7.forEach((x) => used.add(x.id));
   const lastingTrends = all7.filter((x) => x.cat === 'trend' && x.daysSeen >= 3 && x.ai?.tag).sort((a, b) => b.daysSeen - a.daysSeen).slice(0, 8);
   const w30 = all30.filter((x) => isWork(x));
-  const h30 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w30, s, 8, used));
+  const h30 = ['douyin', 'bilibili'].flatMap((s) => byHeat(w30, s, 10, used));
   const typeCount = Object.entries(w30.reduce((c, x) => ((c[typeOf(x)] = (c[typeOf(x)] || 0) + 1), c), {})).sort((a, b) => b[1] - a[1]);
   const lastingSongs = all30.filter((x) => x.cat === 'music' && x.daysSeen >= 7).sort((a, b) => b.daysSeen - a.daysSeen).slice(0, 5);
 
