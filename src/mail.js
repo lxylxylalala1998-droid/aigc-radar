@@ -49,7 +49,8 @@ export function render(d, { siteUrl } = {}) {
 
   // 1. 今日选题
   if (d.picks?.length) {
-    parts.push(sec('🎯 今日选题', '基于抖音 / B站 AIGC 热点', d.picks.map((p, i) => `
+    const tk = d.trendKeywords?.length ? `<div class="a"><b>近期新兴玩法</b>${d.trendKeywords.map((t) => `#${esc(t.kw)}${t.why ? `<span style="color:#9aa1ad">（${esc(t.why)}）</span>` : ''}`).join('　')}</div>` : '';
+    parts.push(sec('🎯 今日选题', '基于抖音 / B站 AIGC 热点', tk + d.picks.map((p, i) => `
       <div class="pk">
         <div>${b(`0${i + 1}`, 'hz')}${p.horizon ? b(p.horizon, 'ai') : ''}${p.platform ? b(p.platform) : ''}</div>
         <div class="t">${esc(p.title)}</div>

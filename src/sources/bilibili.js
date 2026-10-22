@@ -1,5 +1,12 @@
-import { http, clean, isAI, sleep, DAY } from '../util.js';
-import { BILI_KEYWORDS, BILI_RANK_RIDS } from '../config.js';
+import path from 'node:path';
+import { http, clean, isAI, sleep, DAY, DATA, readJSON } from '../util.js';
+import { BILI_KEYWORDS, BILI_RANK_RIDS, WATCH_KEYWORDS } from '../config.js';
+
+// AI 从最近数据里发现的新兴玩法（curate.js 维护），取最近 3 天还在出现的前 8 个
+export function trendKeywords(now = Date.now()) {
+  const t = readJSON(path.join(DATA, 'trend-keywords.json'), {});
+  return Object.entries(t).filter(([, v]) => v.last > now - 3 * DAY).sort((a, b) => b[1].last - a[1].last || b[1].n - a[1].n).slice(0, 8).map(([k]) => k);
+}
 
 let cookie = '';
 async function bili(url) {
@@ -64,6 +71,9 @@ export async function biliAI({ long = false } = {}) {
     if (k.core) jobs.push({ kw: k.kw, days: 7 });
   }
   if (long) for (const k of BILI_KEYWORDS) if (k.core) jobs.push({ kw: k.kw, days: 30 });
+  // 关注的玩法 + AI 发现的新玩法：这类题材标题里常常不带「AI」，固定关键词搜不到
+  const fixed = new Set(BILI_KEYWORDS.map((k) => k.kw));
+  for (const kw of new Set([...WATCH_KEYWORDS, ...trendKeywords()])) if (!fixed.has(kw)) jobs.push({ kw, days: 7 });
   let blocked = false;
   for (const job of jobs) {
     if (blocked) break;

@@ -13,7 +13,7 @@ function digestsIn(days, now) {
   for (let i = 0; i < days + 1 && out.length < days; i++) {
     const d = readJSON(path.join(DATA, 'digests', `${bjDate(now - i * DAY)}.json`));
     if (d && d.generatedAt > now - (days + 1) * DAY) {
-      out.push({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news });
+      out.push({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news, trendKeywords: d.trendKeywords || [] });
     }
   }
   return out;

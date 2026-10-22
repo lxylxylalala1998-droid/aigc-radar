@@ -140,6 +140,23 @@ ${lines.join('\n')}`, { maxTokens: 6000 });
   return r.items || [];
 }
 
+async function discoverTrends(works, memes) {
+  const lines = [
+    ...works.slice(0, 120).map((x) => `作品|${PLATFORM[x.src]}|${x.ai.type}|${x.title}${x.tags ? `|话题:${x.tags}` : ''}`),
+    ...memes.slice(0, 40).map((x) => `热搜|${PLATFORM[x.src]}|${x.ai.tag}|${x.title}`),
+  ];
+  const r = await ask(`下面是刚抓到的 AIGC 作品（含话题标签）和带标签的热搜。请找出其中正在流行的【具体】AIGC 玩法 / 题材名称，用来去抖音、B站搜索更多同类爆款。
+例如「古人开麦」（AI 让古人说唱 / 唱歌）、「AI趣味滑镜」（抖音 AI 特效）、「AI老照片动起来」这种有辨识度、别人会拿来当话题的名字。
+不要泛泛的词（AI音乐、AI视频、AIGC、AI动画这种不要），不要单个作品名或人名，最多 6 个，没有就返回空数组。
+- kw：玩法名，≤10 字，就是会被拿去搜索的词
+- why：这是什么玩法，≤20 字
+
+输出格式：{"keywords":[{"kw":"","why":""}]}
+
+${lines.join('\n')}`, { maxTokens: 800 });
+  return r.keywords || [];
+}
+
 const TYPE_RE = [
   ['AI MV', /MV/i], ['AI音乐', /音乐|翻唱|歌|song|music|cover|Suno|Udio/i], ['AI动画', /动画|animation|anime/i],
   ['AI剧情', /短剧|漫剧|剧情|剧场/], ['AI特效玩法', /滑镜|特效|变身|抖音ai创作/i], ['AI短片', /短片|film|trailer|预告|Sora|Veo|可灵|Kling|即梦|Seedance/i],
@@ -222,6 +239,27 @@ export async function annotate(now = Date.now()) {
     });
   });
   writeJSON(file, day);
+
+  // 发现新兴玩法：从这次新标注的 AIGC 作品和带标签的热搜里提炼，下一轮加进搜索词
+  const newWorks = videos.map((x) => day.items[x.id]).filter(isWork);
+  const newMemes = trends.map((x) => day.items[x.id]).filter((x) => x.ai?.tag);
+  if (hasKey() && (newWorks.length || newMemes.length)) {
+    await step('发现新玩法', async () => {
+      const found = await discoverTrends(newWorks, newMemes);
+      const tf = path.join(DATA, 'trend-keywords.json');
+      const t = readJSON(tf, {});
+      for (const f of found) {
+        const kw = String(f.kw || '').trim();
+        if (!kw || kw.length > 12) continue;
+        t[kw] = { first: t[kw]?.first || now, last: now, n: (t[kw]?.n || 0) + 1, why: f.why || t[kw]?.why };
+      }
+      // 7 天没再出现的玩法就淘汰，最多留 30 个
+      const kept = Object.entries(t).filter(([, v]) => v.last > now - 7 * DAY).sort((a, b) => b[1].last - a[1].last).slice(0, 30);
+      writeJSON(tf, Object.fromEntries(kept), true);
+      console.log(`    新玩法：${found.map((f) => f.kw).join('、') || '无'}`);
+    }, () => {}, errors);
+  }
+
   const n = Object.values(day.items);
   console.log(`  当天 AIGC 作品 ${n.filter(isWork).length}（抖音 ${n.filter((x) => isWork(x) && x.src === 'douyin').length}），有分析的热搜 ${n.filter((x) => x.cat === 'trend' && x.ai?.why).length}，有分析的歌 ${n.filter((x) => x.cat === 'music' && x.ai?.why).length}`);
   return errors;
@@ -355,12 +393,18 @@ export async function digest(now = Date.now()) {
     return `[${code}] ${what}`;
   };
   const tags7 = topTags(w7);
+  // AI 最近 3 天发现的新兴玩法（annotate 里维护）
+  const tk = readJSON(path.join(DATA, 'trend-keywords.json'), {});
+  const trendKw = Object.entries(tk).filter(([, v]) => v.last > now - 3 * DAY)
+    .sort((a, b) => b[1].n - a[1].n || b[1].last - a[1].last).slice(0, 8)
+    .map(([kw, v]) => ({ kw, why: v.why, first: v.first, n: v.n }));
   const blocks = [
     `【24小时飙升】\n${[...h24.map((x, i) => line(`A${i}`, x)), ...memes.map((x, i) => line(`T${i}`, x))].join('\n') || '（无）'}`,
     `【近3天爆款】\n${h3.map((x, i) => line(`B${i}`, x)).join('\n') || '（无）'}`,
     `【本周热点】\n${[...h7.map((x, i) => line(`C${i}`, x)), ...lastingTrends.map((x, i) => line(`L${i}`, x))].join('\n') || '（无）'}${tags7.length ? `\n抖音 AIGC 话题标签（7天内视频数/总赞）：${tags7.map(([t, e]) => `#${t} ${e.n}条/${fmtNum(e.likes)}赞`).join('，')}` : ''}`,
     `【长期热点（30天）】\n${[...h30.map((x, i) => line(`D${i}`, x)), ...lastingSongs.map((x, i) => line(`S${i}`, x))].join('\n') || '（无）'}${typeCount.length ? `\n30 天 AIGC 作品类型分布：${typeCount.map(([t, n]) => `${t} ${n}`).join('，')}` : ''}`,
-  ].join('\n\n');
+    trendKw.length ? `【近期新冒出的 AIGC 玩法】\n${trendKw.map((t) => `${t.kw}：${t.why || ''}（${Math.max(1, Math.round((now - t.first) / DAY))} 天内出现 ${t.n} 次）`).join('\n')}` : '',
+  ].filter(Boolean).join('\n\n');
   console.log(`选题素材：24h ${h24.length}+热梗 ${memes.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lastingTrends.length}，30天 ${h30.length}+长热歌 ${lastingSongs.length}`);
 
   // ---- AI 圈大事件 ----
@@ -403,6 +447,7 @@ export async function digest(now = Date.now()) {
       title: p.title, horizon: p.horizon, platform: p.platform, why: p.why, how: p.how,
       refs: (p.refs || []).map((c) => refs[c]).filter(Boolean).map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url })),
     })),
+    trendKeywords: trendKw.map(({ kw, why }) => ({ kw, why })),
     videos,
     memes: memes.slice(0, 10).map((x) => slim(x, now)),
     trends,

@@ -25,6 +25,9 @@ export const BILI_KEYWORDS = [
   { kw: '即梦' }, { kw: 'Seedance' }, { kw: 'Veo' }, { kw: 'AI 特效' },
 ];
 
+// 关注的 AIGC 玩法：你点名要盯的，每次都搜（近 7 天）。AI 自动发现的新玩法存在 data/trend-keywords.json，不用写在这里
+export const WATCH_KEYWORDS = ['古人开麦'];
+
 // B站分区排行（rid）。只保留标题或分区跟 AI 有关的
 export const BILI_RANK_RIDS = [3, 1, 119, 181, 188, 160];
 

@@ -53,6 +53,7 @@
     $('#picks').innerHTML = `
       <div class="sec-h"><h2>${ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>${dg.ai ? `由 ${esc(dg.ai)} 生成 · ` : ''}${clock(dg.generatedAt)}</small></div>
       ${dayChips}
+      ${dg.trendKeywords?.length ? `<div class="ana tk"><b>近期新兴玩法</b>${dg.trendKeywords.map((t) => `<span title="${esc(t.why || '')}">#${esc(t.kw)}</span>`).join(' ')}</div>` : ''}
       ${cards ? `<div class="pick-grid">${cards}</div>` : '<div class="empty-picks">这一天没有生成选题（AI 点评未开启或出错）。</div>'}`;
   }
 
