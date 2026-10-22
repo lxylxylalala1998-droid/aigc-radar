@@ -1,14 +1,11 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const PLAT = { weibo: '微博', douyin: '抖音', bilibili: 'B站', qqmusic: 'QQ音乐', netease: '网易云' };
+  const PSRC = { 抖音: 'douyin', B站: 'bilibili', 微博: 'weibo', QQ音乐: 'qqmusic', 网易云: 'netease' };
   const VTYPES = ['AI音乐', 'AI MV', 'AI歌手/艺人', 'AI鬼畜', 'AI影视', 'AI换人', 'AI动画', 'AI特效玩法', 'AI整活', 'AI教程测评'];
-  const TTAGS = ['热梗', 'AI相关', '可借势'];
-  const TKINDS = ['抖音挑战', '话题互动'];
-  const trendHas = (x, k) => x.kind === k || x.ai?.tag === k;
-  const MPLAT = ['抖音', 'B站', 'QQ音乐', '网易云'];
   const PAGE = 40;
 
-  const state = { w: 1, tab: 'video', f1: '', f2: '', q: '', sort: '', pickDay: 0, shown: PAGE };
+  const state = { w: 1, tab: 'douyin', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: false, shown: PAGE };
   const cache = {};
 
   // ---------- 工具 ----------
@@ -29,26 +26,28 @@
   const WEEK = '日一二三四五六';
   const pb = (src) => (PLAT[src] ? `<span class="tag p ${src}">${PLAT[src]}</span>` : `<span class="tag">${esc(src)}</span>`);
   const tag = (text, cls = '') => (text ? `<span class="tag ${cls}">${esc(text)}</span>` : '');
-  const link = (url, inner) => `<a href="${esc(url)}" target="_blank" rel="noopener">${inner}</a>`;
+  const link = (url, inner, cls = '') => `<a href="${esc(url)}" target="_blank" rel="noopener"${cls ? ` class="${cls}"` : ''}>${inner}</a>`;
   const cover = (u, src) => (!u ? '' : src === 'bilibili' && /hdslb\.com/.test(u) && !u.includes('@') ? `${u}@320w_200h_1c.webp` : u);
   const ana = (label, text) => (text ? `<div class="ana"><span class="mk">${label}</span>${esc(text)}</div>` : '');
-  const match = (x, q) => !q || [x.title, x.author, x.desc, x.board, x.ai?.why, x.ai?.hook, x.ai?.tip, x.ai?.idea, x.ai?.use, x.ai?.event].join(' ').toLowerCase().includes(q);
-  const musicPlat = (x) => PLAT[x.src];
-  const musicKind = (x) => (x.board.includes('飙升') ? '飙升榜' : '热歌榜');
+  const match = (x, q) => !q || [x.title, x.author, x.desc, x.board, x.ai?.why, x.ai?.hook, x.ai?.tip, x.ai?.idea, x.ai?.use, x.ai?.event, x.summary].join(' ').toLowerCase().includes(q);
+  const vtype = (x) => x.ai?.type || '未分类';
+  const rankOf = (x) => x.peakRank || x.rank || 999;
+  const more = (total, unit = '条') => (total > state.shown ? `<button class="more" data-more>再看 ${Math.min(PAGE, total - state.shown)} ${unit}（共 ${total} ${unit}）</button>` : '');
+  const sheet = (rows) => (rows ? `<div class="sheet">${rows}</div>` : '<div class="none">没有符合条件的内容</div>');
 
   async function load(w) {
     if (!cache[w]) cache[w] = fetch(`data/w${w}.json?t=${Math.floor(Date.now() / 6e5)}`).then((r) => r.json());
     return cache[w];
   }
 
-  // ---------- 今日选题：头号选题整块反白，其余四个排在右侧 ----------
+  // ---------- 今日选题：前 5 个卡片（头号选题反白），6~10 紧凑列表；手机上 6~10 默认收起 ----------
   function renderPicks(d) {
     const ds = d.digests || [];
     if (!ds.length) { $('#picks').innerHTML = '<div class="empty-note">这个时间段还没有 AI 选题日报，每天早上 9 点前生成。</div>'; return; }
     const i = Math.min(state.pickDay, ds.length - 1);
     const dg = ds[i];
-    const dayChips = ds.length > 1 ? `<div class="day-chips">${ds.map((x, k) => `<button class="chip ${k === i ? 'on' : ''}" data-pickday="${k}">${+x.date.slice(5, 7)}月${+x.date.slice(8)}日</button>`).join('')}</div>` : '';
     const picks = dg.picks || [];
+    const dayChips = ds.length > 1 ? `<div class="day-chips">${ds.map((x, k) => `<button class="chip ${k === i ? 'on' : ''}" data-pickday="${k}">${+x.date.slice(5, 7)}月${+x.date.slice(8)}日</button>`).join('')}</div>` : '';
     const refs = (p) => (p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : '');
     const cards = picks.slice(0, 5).map((p, k) => `
       <article class="pick ${k === 0 ? 'lead' : ''}">
@@ -59,7 +58,7 @@
         <p><span class="mk">怎么做</span>${esc(p.how)}</p>
         ${refs(p)}
       </article>`).join('');
-    const more = picks.slice(5).map((p, k) => `
+    const rest = picks.slice(5).map((p, k) => `
       <article class="pm">
         <div class="no">${pad(k + 6)}</div>
         <div>
@@ -71,178 +70,179 @@
         </div>
       </article>`).join('');
     $('#picks').innerHTML = `
-      <div class="sec-head"><h2>${ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>AI 编辑${dg.ai ? `（${esc(dg.ai)}）` : ''}按 24 小时 / 3 天 / 7 天 / 30 天热度挑的 · ${clock(dg.generatedAt)}</small></div>
+      <div class="sec-head"><h2>${ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>${picks.length} 个，AI 编辑${dg.ai ? `（${esc(dg.ai)}）` : ''}从抖音 / B站的 24 小时、3 天、7 天、30 天热点里挑的 · ${clock(dg.generatedAt)}</small></div>
       ${dayChips}
       ${cards ? `<div class="pick-grid">${cards}</div>` : '<div class="empty-note">这一天没有生成选题（AI 分析未开启或出错）。</div>'}
-      ${more ? `<div class="sheet pick-more">${more}</div>` : ''}`;
+      ${rest ? `<div class="sheet pick-more ${state.picksOpen ? 'open' : ''}">${rest}</div><button class="more picks-toggle" data-picks>${state.picksOpen ? '收起' : `展开其余 ${picks.length - 5} 个选题`}</button>` : ''}`;
   }
 
-  // ---------- 各分类 ----------
-  const TABS = {
-    video: {
-      chips: (d) => counts(d.videos, (x) => PLAT[x.src] || x.src, ['抖音', 'B站']),
-      chips2: (d) => counts(d.videos, (x) => x.ai?.type || '未分类', VTYPES.concat('未分类')),
-      sorts: [['vel', '飙升最快'], ['heat', '点赞 / 播放最高'], ['time', '最新发布']],
-      render(d) {
-        let items = d.videos.filter((x) => (!state.f1 || PLAT[x.src] === state.f1) && (!state.f2 || (x.ai?.type || '未分类') === state.f2) && match(x, state.q));
-        const s = state.sort || (state.w === 1 ? 'vel' : 'heat');
-        // 抖音按点赞、B站按播放，量级不同：混排时按平台内名次交错
-        const key = s === 'vel' ? (x) => x.vel || 0 : s === 'heat' ? (x) => x.heat || 0 : (x) => x.pubAt || 0;
-        if (s === 'time' || state.f1) items.sort((a, b) => key(b) - key(a));
-        else {
-          const byP = {};
-          for (const x of items.sort((a, b) => key(b) - key(a))) (byP[x.src] ||= []).push(x);
-          const lists = Object.values(byP);
-          items = [];
-          for (let i = 0; lists.some((l) => l[i]); i++) for (const l of lists) if (l[i]) items.push(l[i]);
-        }
-        return page(items, (x) => {
-          const dy = x.src === 'douyin';
-          return `
-          <article class="item vid">
-            <a class="th ph ${x.src}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频"><span>${PLAT[x.src] || ''}</span>${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="" onerror="this.remove()">` : ''}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
-            <div>
-              <div class="tt">${link(x.url, esc(x.title))}</div>
-              <div class="meta">${pb(x.src)}${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiCorner ? tag('AI角标', 'solid') : ''}<span>${esc(x.author || '')}</span>${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${dy && /^(话题|热门视频榜)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>
-              <div class="stat">${x.m?.play && dy ? `<span>${N(x.m.play)}播放</span>` : ''}<span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}</div>
-              ${ana('爆点', x.ai?.hook)}${ana('参考', x.ai?.tip)}
-            </div>
-          </article>`;
-        });
+  // ---------- 视频条目（抖音 / B站共用）----------
+  function videoRow(x) {
+    const dy = x.src === 'douyin';
+    return `
+      <article class="item vid">
+        <a class="th ph ${x.src}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频"><span>${PLAT[x.src] || ''}</span>${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="" onerror="this.remove()">` : ''}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
+        <div>
+          <div class="tt">${link(x.url, esc(x.title))}</div>
+          <div class="meta">${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiCorner ? tag('AI角标', 'solid') : ''}<span>${esc(x.author || '')}</span>${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${dy && /^(话题|热门视频榜)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>
+          <div class="stat">${dy && x.m?.play ? `<span>${N(x.m.play)}播放</span>` : ''}<span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}</div>
+          ${ana('爆点', x.ai?.hook)}${ana('参考', x.ai?.tip)}
+        </div>
+      </article>`;
+  }
+
+  function videoTab(src) {
+    const dy = src === 'douyin';
+    return {
+      lede: dy
+        ? '抖音上的 AIGC 爆款：热榜话题下的视频 + 32 个 AIGC 话题（近 30 天高赞 + 最近新发）+ 热门视频榜。抖音不公开播放数，热度按点赞。'
+        : 'B站上的 AIGC 爆款：关键词搜索 + 分区排行 + 综合热门。热度按播放。',
+      subs: (d) => {
+        const list = d.videos.filter((x) => x.src === src);
+        return [['', '全部', list.length], ...VTYPES.concat('未分类').map((t) => [t, t, list.filter((x) => vtype(x) === t).length]).filter(([, , n]) => n)];
       },
-    },
-    trend: {
-      chips: (d) => counts(d.trends, (x) => PLAT[x.src], ['抖音', 'B站', '微博']),
-      // 抖音挑战 / 话题互动是抖音官方的分类，热梗 / AI相关 / 可借势是 AI 打的标签，一条可能两种都有
-      chips2: (d) => TKINDS.concat(TTAGS).map((k) => [k, d.trends.filter((x) => trendHas(x, k)).length]).filter(([, n]) => n),
-      sorts: [['rank', '排名'], ['heat', '热度'], ['days', '在榜天数']],
+      sorts: [['vel', '飙升最快'], ['heat', dy ? '点赞最高' : '播放最高'], ['time', '最新发布']],
       render(d) {
-        let items = d.trends.filter((x) => (!state.f1 || PLAT[x.src] === state.f1) && (!state.f2 || trendHas(x, state.f2)) && match(x, state.q));
-        const s = state.sort || 'rank';
-        if (s === 'heat') items.sort((a, b) => (b.peakHeat || b.heat || 0) - (a.peakHeat || a.heat || 0));
-        else if (s === 'days') items.sort((a, b) => (b.daysSeen || 0) - (a.daysSeen || 0) || (a.peakRank || 99) - (b.peakRank || 99));
-        else if (!state.f1) items.sort((a, b) => (a.peakRank || 99) - (b.peakRank || 99) || (b.heat || 0) - (a.heat || 0));
-        // 抖音挑战、有 AI 标签的（热梗 / AI相关 / 可借势）先看
-        if (!state.f2 && s === 'rank') items.sort((a, b) => (b.ai?.tag || b.kind ? 1 : 0) - (a.ai?.tag || a.kind ? 1 : 0));
-        return page(items, (x, i) => {
-          const r = x.peakRank || x.rank;
-          const where = r ? `${PLAT[x.src]}${state.w > 1 ? '最高' : ''}第 ${r} 名` : `${PLAT[x.src]}实时上升`;
-          return `
-          <article class="item row">
-            <div class="rk ${i < 3 ? 'top' : ''}">${i + 1}</div>
-            <div>
-              <div class="tt">${link(x.url, esc(x.title))}</div>
-              <div class="meta">${pb(x.src)}<span>${where}</span>${tag(x.kind, 'solid')}${tag(x.ai?.tag, 'mark')}${x.label ? tag(x.label, 'hot') : ''}${x.heat ? `<span>热度 ${N(x.peakHeat || x.heat)}</span>` : ''}${x.kind && x.m?.fetched ? `<span>参与视频 ${x.m.aiVideos || 0}/${x.m.fetched} 条是 AI 做的</span>` : ''}${state.w > 1 && x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}${state.w > 1 ? `<span>${ago(x.lastSeen)}</span>` : ''}</div>
-              ${ana('为什么火', x.ai?.why)}${ana(x.kind ? 'AI 跟拍' : 'AI 做法', x.ai?.idea)}
-              ${(x.top || []).map((v) => link(v.url, `${N(v.like)}赞 ${v.ai ? tag('AI', 'mark') : ''}${esc(v.title || '（无文案）')}`).replace('<a ', '<a class="tv" ')).join('')}
-            </div>
-          </article>`;
-        });
+        const s = state.sort || (state.w === 1 ? 'vel' : 'heat');
+        const key = s === 'vel' ? (x) => x.vel || 0 : s === 'heat' ? (x) => x.heat || 0 : (x) => x.pubAt || 0;
+        const items = d.videos.filter((x) => x.src === src && (!state.sub || vtype(x) === state.sub) && match(x, state.q)).sort((a, b) => key(b) - key(a));
+        return sheet(items.slice(0, state.shown).map(videoRow).join('')) + more(items.length);
+      },
+    };
+  }
+
+  // ---------- 热梗热搜：每个平台单独一张榜，按平台自己的排名连续编号 ----------
+  const TREND_SUBS = [
+    ['抖音热搜', (x) => x.src === 'douyin'],
+    ['B站热搜', (x) => x.src === 'bilibili'],
+    ['微博热搜', (x) => x.src === 'weibo'],
+    ['抖音挑战', (x) => !!x.kind],
+    ['热梗精选', (x) => !!x.ai?.tag],
+  ];
+  const TAG_ORDER = { 热梗: 0, AI相关: 1, 可借势: 2 };
+  function trendRow(x, i, showPlat) {
+    const r = x.peakRank || x.rank;
+    const where = r ? `${showPlat ? PLAT[x.src] : ''}${state.w > 1 ? '最高' : ''}第 ${r} 名` : '实时上升';
+    return `
+      <article class="item row">
+        <div class="rk ${i < 3 ? 'top' : ''}">${i + 1}</div>
+        <div>
+          <div class="tt">${link(x.url, esc(x.title))}</div>
+          <div class="meta">${showPlat ? pb(x.src) : ''}<span>${where}</span>${tag(x.kind, 'solid')}${tag(x.ai?.tag, 'mark')}${x.label ? tag(x.label, 'hot') : ''}${x.heat ? `<span>热度 ${N(x.peakHeat || x.heat)}</span>` : ''}${x.kind && x.m?.fetched ? `<span>参与视频 ${x.m.aiVideos || 0}/${x.m.fetched} 条是 AI 做的</span>` : ''}${state.w > 1 && x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}${state.w > 1 ? `<span>${ago(x.lastSeen)}</span>` : ''}</div>
+          ${ana('为什么火', x.ai?.why)}${ana(x.kind ? 'AI 跟拍' : 'AI 做法', x.ai?.idea)}
+          ${(x.top || []).map((v) => link(v.url, `${N(v.like)}赞 ${v.ai ? tag('AI', 'mark') : ''}${esc(v.title || '（无文案）')}`, 'tv')).join('')}
+        </div>
+      </article>`;
+  }
+
+  // ---------- 热歌飙升：每个平台热歌榜 / 飙升榜各 TOP20，左右并排 ----------
+  const MUSIC_SUBS = ['抖音', 'B站', 'QQ音乐', '网易云'];
+  function songRow(x) {
+    const r = state.w > 1 ? (x.peakRank || x.rank) : x.rank;
+    return `
+      <article class="item row">
+        <div class="rk ${r <= 3 ? 'top' : ''}">${r}</div>
+        <div>
+          <div class="tt">${link(x.url, esc(x.title))} <small>— ${esc(x.author)}</small></div>
+          <div class="meta">${x.label ? tag(x.label, x.label.startsWith('↓') ? '' : 'hot') : ''}${state.w > 1 ? `<span>最高第 ${x.peakRank || x.rank} 名</span>${x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}` : ''}</div>
+          ${ana('为什么火', x.ai?.why)}${ana('可以做', x.ai?.use)}
+        </div>
+      </article>`;
+  }
+
+  const TABS = {
+    douyin: videoTab('douyin'),
+    bilibili: videoTab('bilibili'),
+    trend: {
+      lede: '抖音、B站、微博各自的热搜榜，按平台自己的排名编号；「抖音挑战」是抖音官方归类为玩法 / 挑战的词条；「热梗精选」是 AI 从三个平台里挑出的热梗、AI 相关和可借势的话题。',
+      subs: (d) => TREND_SUBS.map(([k, f]) => [k, k, d.trends.filter(f).length]),
+      defaultSub: '抖音热搜',
+      sorts: [['rank', '排名'], ['days', '在榜天数']],
+      render(d) {
+        const f = (TREND_SUBS.find(([k]) => k === state.sub) || TREND_SUBS[0])[1];
+        const cross = state.sub === '抖音挑战' || state.sub === '热梗精选';
+        let items = d.trends.filter((x) => f(x) && match(x, state.q));
+        if (state.sort === 'days') items.sort((a, b) => (b.daysSeen || 0) - (a.daysSeen || 0) || rankOf(a) - rankOf(b));
+        else if (state.sub === '热梗精选') items.sort((a, b) => (TAG_ORDER[a.ai.tag] ?? 9) - (TAG_ORDER[b.ai.tag] ?? 9) || rankOf(a) - rankOf(b));
+        else if (state.sub === '抖音挑战') items.sort((a, b) => (a.kind === '抖音挑战' ? 0 : 1) - (b.kind === '抖音挑战' ? 0 : 1) || rankOf(a) - rankOf(b));
+        else items.sort((a, b) => rankOf(a) - rankOf(b));
+        return sheet(items.slice(0, state.shown).map((x, i) => trendRow(x, i, cross)).join('')) + more(items.length);
       },
     },
     music: {
-      chips: (d) => counts(d.music, musicPlat, MPLAT),
-      chips2: (d) => counts(d.music.filter((x) => !state.f1 || musicPlat(x) === state.f1), musicKind, ['热歌榜', '飙升榜']),
-      sorts: [['rank', '排名'], ['days', '在榜天数']],
+      lede: '四个平台的热歌榜和飙升榜各取前 20。QQ音乐、网易云日更；抖音、B站是周榜（B站没有官方飙升榜，按上期排名的升幅算）。',
+      subs: (d) => MUSIC_SUBS.map((p) => [p, p, d.music.filter((x) => PLAT[x.src] === p).length]),
+      defaultSub: '抖音',
+      sorts: [],
       render(d) {
-        let items = d.music.filter((x) => (!state.f1 || musicPlat(x) === state.f1) && (!state.f2 || musicKind(x) === state.f2) && match(x, state.q));
-        if (state.sort === 'days') items.sort((a, b) => (b.daysSeen || 0) - (a.daysSeen || 0));
-        if (!items.length) return '<div class="none">没有符合条件的内容</div>';
-        const row = (x, i) => {
-          const r = state.sort === 'days' ? i + 1 : state.w > 1 ? (x.peakRank || x.rank) : x.rank;
-          return `
-          <article class="item row">
-            <div class="rk ${r <= 3 ? 'top' : ''}">${r}</div>
-            <div>
-              <div class="tt">${link(x.url, esc(x.title))} <small>— ${esc(x.author)}</small></div>
-              <div class="meta">${state.sort === 'days' ? pb(x.src) + `<span>${esc(x.board)}</span>` : ''}${x.label ? tag(x.label, 'hot') : ''}${state.w > 1 ? `<span>最高第 ${x.peakRank || x.rank} 名</span>${x.daysSeen > 1 ? `<span>在榜 ${x.daysSeen} 天</span>` : ''}` : ''}</div>
-              ${ana('为什么火', x.ai?.why)}${ana('可以做', x.ai?.use)}
-            </div>
-          </article>`;
+        const src = PSRC[state.sub] || 'douyin';
+        const col = (kind) => {
+          const list = d.music.filter((x) => x.src === src && (kind === '飙升榜') === x.board.includes('飙升') && match(x, state.q))
+            .sort((a, b) => (state.w > 1 ? rankOf(a) - rankOf(b) : (a.rank || 99) - (b.rank || 99))).slice(0, 20);
+          const weekly = src === 'douyin' || src === 'bilibili';
+          return `<div class="col"><div class="group-h">${pb(src)}${kind} TOP20<small>${weekly ? '周榜' : '日更'}</small></div>${sheet(list.map(songRow).join(''))}</div>`;
         };
-        const shown = items.slice(0, state.shown);
-        let html;
-        if (state.sort === 'days') html = `<div class="sheet">${shown.map((x, i) => row(x, i)).join('')}</div>`;
-        else {
-          // 按「平台 · 榜单」分组，每组一张纸
-          const groups = [];
-          for (const x of shown) {
-            const g = `${musicPlat(x)} · ${musicKind(x)}`;
-            if (groups.at(-1)?.g !== g) groups.push({ g, src: x.src, weekly: /抖音|B站/.test(x.board), list: [] });
-            groups.at(-1).list.push(x);
-          }
-          html = groups.map((g) => `<div class="group-h">${pb(g.src)}${esc(g.g.split(' · ')[1])}${g.weekly ? '<small>周榜</small>' : '<small>日更</small>'}</div><div class="sheet">${g.list.map((x) => row(x)).join('')}</div>`).join('');
-        }
-        if (items.length > state.shown) html += `<button class="more" data-more>再看 ${Math.min(PAGE, items.length - state.shown)} 首（共 ${items.length} 首）</button>`;
-        return html;
+        return `<div class="cols">${col('热歌榜')}${col('飙升榜')}</div>`;
       },
     },
     news: {
-      chips: (d) => counts(d.news, (x) => x.src),
-      chips2: () => [],
+      lede: '汇总量子位、36氪、IT之家、OpenAI、Google、DeepMind、Hugging Face、TechCrunch、The Verge、Hacker News 等来源，AI 把同一件事的多篇报道合并成一个事件。',
+      subs: (d) => [['大事件', 'AI 归并的大事件', (d.digests || []).reduce((n, g) => n + (g.news || []).length, 0)], ['全部资讯', '全部资讯', d.news.length]],
+      defaultSub: '大事件',
       sorts: [['time', '最新发布'], ['heat', '热度']],
+      chips: (d) => (state.sub === '全部资讯' ? counts(d.news, (x) => x.src) : []),
       render(d) {
-        const q = state.q;
-        let html = '';
-        if (!state.f1) {
-          const evs = (d.digests || []).flatMap((g) => (g.news || []).map((e) => ({ ...e, date: g.date }))).filter((e) => match({ title: e.title, desc: e.summary }, q));
-          if (evs.length) {
-            html += `<div class="group-h">AI 归并的大事件<small>${evs.length} 件，同一件事的多篇报道已合并</small></div><div class="sheet">` + evs.map((e) => `
-              <article class="item event lv-${esc(e.level || '')}">
-                <div class="meta">${e.level === '重磅' ? tag('重磅', 'hot') : tag(e.level)}${tag(e.kind)}${(d.digests || []).length > 1 ? `<span>${e.date.slice(5)}</span>` : ''}</div>
-                <h3>${esc(e.title)}</h3>
-                ${e.summary ? `<p>${esc(e.summary)}</p>` : ''}
-                <div class="srcs">${(e.refs || []).map((r) => link(r.url, `<b>${esc(r.src)}</b>${esc(r.title)}`)).join('')}</div>
-              </article>`).join('') + '</div>';
-          }
+        if (state.sub !== '全部资讯') {
+          const evs = (d.digests || []).flatMap((g) => (g.news || []).map((e) => ({ ...e, date: g.date }))).filter((e) => match({ title: e.title, summary: e.summary }, state.q));
+          return sheet(evs.map((e) => `
+            <article class="item event lv-${esc(e.level || '')}">
+              <div class="meta">${e.level === '重磅' ? tag('重磅', 'hot') : tag(e.level)}${tag(e.kind)}${(d.digests || []).length > 1 ? `<span>${e.date.slice(5)}</span>` : ''}</div>
+              <h3>${esc(e.title)}</h3>
+              ${e.summary ? `<p>${esc(e.summary)}</p>` : ''}
+              <div class="srcs">${(e.refs || []).map((r) => link(r.url, `<b>${esc(r.src)}</b>${esc(r.title)}`)).join('')}</div>
+            </article>`).join(''));
         }
-        let items = d.news.filter((x) => (!state.f1 || x.src === state.f1) && match(x, q));
-        items = state.sort === 'heat' ? items.sort((a, b) => (b.heat || 0) - (a.heat || 0)) : items;
-        html += `<div class="group-h">全部资讯<small>${items.length} 篇</small></div>` + page(items, (x) => `
+        let items = d.news.filter((x) => (!state.chip || x.src === state.chip) && match(x, state.q));
+        if (state.sort === 'heat') items = items.sort((a, b) => (b.heat || 0) - (a.heat || 0));
+        return sheet(items.slice(0, state.shown).map((x) => `
           <article class="item">
             <div class="tt">${link(x.url, esc(x.title))}</div>
             ${x.desc && x.board === 'HF 热门模型' ? `<div class="meta">${esc(x.desc)}</div>` : ''}
             <div class="meta">${tag(x.src)}<span>${ago(x.pubAt || x.firstSeen)}</span>${x.heat ? `<span>${x.board === 'HF 热门模型' ? '❤' : '▲'} ${N(x.heat)}</span>` : ''}${x.ai?.level ? tag(x.ai.kind || 'AI 事件', 'mark') : ''}</div>
-          </article>`);
-        return html;
+          </article>`).join('')) + more(items.length, '篇');
       },
     },
   };
 
-  function counts(list, key, order) {
+  function counts(list, key) {
     const m = new Map();
     for (const x of list) { const k = key(x); if (k) m.set(k, (m.get(k) || 0) + 1); }
-    const keys = order ? order.filter((k) => m.has(k)) : [...m.keys()];
-    return keys.map((k) => [k, m.get(k)]);
-  }
-
-  function page(items, tpl) {
-    if (!items.length) return '<div class="none">没有符合条件的内容</div>';
-    const html = `<div class="sheet">${items.slice(0, state.shown).map((x, i) => tpl(x, i)).join('')}</div>`;
-    return html + (items.length > state.shown ? `<button class="more" data-more>再看 ${Math.min(PAGE, items.length - state.shown)} 条（共 ${items.length} 条）</button>` : '');
-  }
-
-  function chipRow(el, list, cur, attr) {
-    el.innerHTML = list.length ? [`<button class="chip ${!cur ? 'on' : ''}" data-${attr}="">全部</button>`, ...list.map(([k, n]) => `<button class="chip ${cur === k ? 'on' : ''}" data-${attr}="${esc(k)}">${esc(k)}<span class="n">${n}</span></button>`)].join('') : '';
+    return [...m].map(([k, n]) => [k, n]);
   }
 
   async function render() {
     const d = await load(state.w);
     const T = TABS[state.tab];
+    if (!state.sub && T.defaultSub) state.sub = T.defaultSub;
     const g = new Date(d.generatedAt);
     $('#updated').innerHTML = `<b class="num">${g.getMonth() + 1}.${g.getDate()}</b> 周${WEEK[g.getDay()]} · 最近一次扫描 <b class="num">${pad(g.getHours())}:${pad(g.getMinutes())}</b>`;
     document.querySelectorAll('#win button').forEach((b) => b.classList.toggle('on', +b.dataset.w === state.w));
-    const n = { news: d.news.length, video: d.videos.length, trend: d.trends.length, music: d.music.length };
+    const n = {
+      douyin: d.videos.filter((x) => x.src === 'douyin').length, bilibili: d.videos.filter((x) => x.src === 'bilibili').length,
+      trend: d.trends.length, music: d.music.length, news: (d.digests || []).reduce((s, x) => s + (x.news || []).length, 0) || d.news.length,
+    };
     document.querySelectorAll('#tabs button').forEach((b) => {
       b.classList.toggle('on', b.dataset.tab === state.tab);
       b.innerHTML = `${b.textContent.replace(/\d+$/, '').trim()}<span class="n">${n[b.dataset.tab]}</span>`;
     });
     renderPicks(d);
-    chipRow($('#chips'), T.chips(d), state.f1, 'f1');
-    chipRow($('#chips2'), T.chips2(d), state.f2, 'f2');
+    $('#subnav').innerHTML = T.subs(d).map(([k, label, c]) => `<button class="${state.sub === k ? 'on' : ''}" data-sub="${esc(k)}">${esc(label)}<span class="n">${c}</span></button>`).join('');
+    $('#lede').textContent = T.lede;
+    const chips = T.chips ? T.chips(d) : [];
+    $('#chips').innerHTML = chips.length ? [`<button class="chip ${!state.chip ? 'on' : ''}" data-chip="">全部</button>`, ...chips.map(([k, c]) => `<button class="chip ${state.chip === k ? 'on' : ''}" data-chip="${esc(k)}">${esc(k)}<span class="n">${c}</span></button>`)].join('') : '';
     $('#sort').innerHTML = T.sorts.map(([v, l]) => `<option value="${v}" ${state.sort === v ? 'selected' : ''}>${l}</option>`).join('');
     $('#list').innerHTML = T.render(d);
-    history.replaceState(null, '', `#w=${state.w}&tab=${state.tab}`);
+    history.replaceState(null, '', `#w=${state.w}&tab=${state.tab}${state.sub ? `&sub=${encodeURIComponent(state.sub)}` : ''}`);
   }
 
   async function renderStatus() {
@@ -253,15 +253,15 @@
   }
 
   // ---------- 交互 ----------
-  const reset = () => { state.f1 = ''; state.f2 = ''; state.sort = ''; state.shown = PAGE; };
   document.addEventListener('click', (e) => {
     const b = e.target.closest('button');
     if (!b) return;
     if (b.dataset.w) { state.w = +b.dataset.w; state.pickDay = 0; state.shown = PAGE; render(); }
-    else if (b.dataset.tab) { state.tab = b.dataset.tab; reset(); render(); }
-    else if ('f1' in b.dataset) { state.f1 = b.dataset.f1; if (state.tab === 'music') state.f2 = ''; state.shown = PAGE; render(); }
-    else if ('f2' in b.dataset) { state.f2 = b.dataset.f2; state.shown = PAGE; render(); }
+    else if (b.dataset.tab) { state.tab = b.dataset.tab; state.sub = ''; state.chip = ''; state.sort = ''; state.shown = PAGE; render(); }
+    else if ('sub' in b.dataset) { state.sub = b.dataset.sub; state.chip = ''; state.shown = PAGE; render(); }
+    else if ('chip' in b.dataset) { state.chip = b.dataset.chip; state.shown = PAGE; render(); }
     else if ('pickday' in b.dataset) { state.pickDay = +b.dataset.pickday; render(); }
+    else if ('picks' in b.dataset) { state.picksOpen = !state.picksOpen; render(); }
     else if ('more' in b.dataset) { state.shown += PAGE; render(); }
   });
   let t;
@@ -271,6 +271,7 @@
   const h = new URLSearchParams(location.hash.slice(1));
   if ([1, 3, 7, 30].includes(+h.get('w'))) state.w = +h.get('w');
   if (TABS[h.get('tab')]) state.tab = h.get('tab');
+  if (h.get('sub')) state.sub = h.get('sub');
   render().catch((e) => { $('#list').innerHTML = `<div class="none">数据加载失败：${esc(e.message)}，刷新一下试试。</div>`; });
   renderStatus();
 })();

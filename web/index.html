@@ -30,7 +30,8 @@
 
   <div class="bar" id="bar">
     <nav class="tabs" id="tabs" role="tablist" aria-label="分类">
-      <button data-tab="video" class="on">AIGC 爆款</button>
+      <button data-tab="douyin" class="on">抖音热点</button>
+      <button data-tab="bilibili">B站热点</button>
       <button data-tab="trend">热梗热搜</button>
       <button data-tab="music">热歌飙升</button>
       <button data-tab="news">AI 大事件</button>
@@ -43,9 +44,11 @@
     </div>
   </div>
 
+  <div class="subnav" id="subnav" role="tablist" aria-label="二级分类"></div>
+  <p class="lede" id="lede"></p>
+
   <div class="tools">
-    <div class="chips" id="chips"></div>
-    <div class="chips sub" id="chips2"></div>
+    <div class="chips sub" id="chips"></div>
     <div class="search">
       <input id="q" type="search" placeholder="在当前分类里搜：标题、作者、分析…" autocomplete="off" aria-label="搜索">
       <select id="sort" aria-label="排序"></select>
@@ -60,7 +63,7 @@
     <summary>数据源状态</summary>
     <div id="status"></div>
   </details>
-  <p>热搜和爆款约每 3 小时扫描一次，AI 选题每天早上更新。抖音视频只含上了抖音热榜的话题下的视频（搜索和话题页需要登录签名），没上热榜的爆款抓不到；抖音不公开播放数，热度和飙升按点赞算。抖音、B站音乐榜是周榜。小红书暂未接入。标「推测」的分析是 AI 根据有限信息做的判断。</p>
+  <p>热搜和爆款约每 3 小时扫描一次，AI 选题每天早上更新。抖音视频来自抖音热榜话题和 AIGC 话题（经 TikHub），抖音不公开播放数，热度和飙升按点赞算。抖音、B站音乐榜是周榜。小红书暂未接入。标「推测」的分析是 AI 根据有限信息做的判断。</p>
 </footer>
 
 <script src="app.js"></script>

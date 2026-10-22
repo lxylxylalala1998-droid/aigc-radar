@@ -18,8 +18,8 @@ export async function qqMusic() {
         title: clean(s.title), author: clean(s.singerName),
         url: mid ? `https://y.qq.com/n/ryqq/songDetail/${mid}` : `https://i.y.qq.com/v8/playsong.html?songid=${s.songId}`,
         cover: s.cover, rank: s.rank,
-        // rankType 6 = 飙升百分比，其它是名次变化
-        label: s.rankType === 6 ? `↑${s.rankValue}` : (s.rankValue && s.rankValue !== '0' ? s.rankValue : ''),
+        // rankType：1 上升 / 2 下降 / 3 持平 / 4 新上榜 / 6 飙升百分比（飙升榜）
+        label: { 1: `↑${s.rankValue}`, 2: `↓${s.rankValue}`, 4: '新', 6: `↑${s.rankValue}` }[s.rankType] || '',
       });
     }
   }
