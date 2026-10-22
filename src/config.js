@@ -20,6 +20,7 @@ export const AI_RE = new RegExp([
 // 每天早报那次运行还会对 core 关键词查近 30 天，作为「长期热点」的依据
 export const BILI_KEYWORDS = [
   { kw: 'AI音乐', core: true }, { kw: 'AI MV', core: true }, { kw: 'AI动画', core: true },
+  { kw: 'AI歌手', core: true }, { kw: '虚拟歌手' }, { kw: 'AI鬼畜', core: true }, { kw: 'AI电影', core: true }, { kw: 'AI换脸' }, { kw: 'AI演唱会' },
   { kw: 'AI短剧', core: true }, { kw: 'AI漫剧' }, { kw: 'AI短片', core: true }, { kw: 'AI翻唱', core: true },
   { kw: 'AIGC' }, { kw: 'AI视频' }, { kw: 'AI生成' }, { kw: 'Suno' }, { kw: 'Sora' }, { kw: '可灵' },
   { kw: '即梦' }, { kw: 'Seedance' }, { kw: 'Veo' }, { kw: 'AI 特效' },
@@ -57,6 +58,38 @@ export const NETEASE_TOPS = [{ id: 3778678, name: '热歌榜' }, { id: 19723756,
 // 抖音音乐榜（周更）。ID 来自开源项目 hutaolv/hutao-music 等
 export const DOUYIN_MUSIC_CHARTS = [{ id: '6853972723954146568', name: '热歌榜' }, { id: '6854399861215730952', name: '飙升榜' }];
 export const MUSIC_TOP_N = 50;
+
+// ---------- 抖音高赞 AIGC（TikHub，付费，每天早报那次运行拉一次）----------
+// 盯的话题：按「最多点赞」取，大话题前面多是几个月前的老视频，所以多翻几页再筛近 30 天。每页 0.001 美元
+// type 只是给 AI 的提示，最终类型由 AI 看内容判断
+export const DY_HASHTAGS = [
+  { name: 'ai音乐', id: '1635656412024840', pages: 3, type: 'AI音乐' },
+  { name: 'ai歌曲', id: '1669112351656971', pages: 2, type: 'AI音乐' },
+  { name: 'ai说唱', id: '1644566986083336', pages: 1, type: 'AI音乐' },
+  { name: 'ai歌曲翻唱', id: '1777278671261763', pages: 1, type: 'AI音乐' },
+  { name: '古人开麦', id: '7484454964819920907', pages: 1, type: 'AI音乐' },
+  { name: 'aimv', id: '1640674458408979', pages: 2, type: 'AI MV' },
+  { name: 'aimv大赏', id: '7628534042920486950', pages: 2, type: 'AI MV' },
+  { name: 'ai音乐mv', id: '1768584169786368', pages: 1, type: 'AI MV' },
+  { name: 'ai歌手', id: '1706595537765452', pages: 2, type: 'AI歌手/艺人' },
+  { name: '虚拟歌手', id: '1601701915410440', pages: 2, type: 'AI歌手/艺人' },
+  { name: 'ai艺人', id: '1765838402399244', pages: 1, type: 'AI歌手/艺人' },
+  { name: 'ai鬼畜', id: '1772208953550863', pages: 1, type: 'AI鬼畜' },
+  { name: 'ai鬼畜视频', id: '7387977063535216652', pages: 1, type: 'AI鬼畜' },
+  { name: 'ai影视', id: '1683774040475661', pages: 2, type: 'AI影视' },
+  { name: 'ai电影', id: '1653210771473412', pages: 3, type: 'AI影视' },
+  { name: 'ai短剧', id: '1682091371105293', pages: 3, type: 'AI影视' },
+  { name: 'ai漫剧', id: '7384348366978697228', pages: 3, type: 'AI影视' },
+  { name: 'ai真人短剧', id: '7532695948107974675', pages: 2, type: 'AI影视' },
+  { name: 'ai演唱会', id: '1716481052643339', pages: 1, type: 'AI换人' },
+  { name: '抖音ai创作', id: '1776715988162624', pages: 2, type: null },
+];
+// 创作者中心热门视频榜（近 30 天按播放）要拉的分类：只有这里能拿到抖音的真实播放量
+export const DY_BILLBOARD_TAGS = [{ tag: 337, name: '娱乐' }, { tag: 308, name: '剧情' }, { tag: 296, name: '二次元' }];
+// AI 发现新玩法后，每天最多花几次「话题搜索」（每次 0.01 美元）去拿它的话题 ID
+export const TIKHUB_NEW_TAGS_PER_DAY = 2;
+// 余额低于这个数就暂停，不会把钱扣成负数
+export const TIKHUB_MIN_BALANCE = 0.1;
 
 // DeepSeek
 export const DEEPSEEK_BASE = process.env.DEEPSEEK_BASE || 'https://api.deepseek.com';

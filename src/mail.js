@@ -58,13 +58,21 @@ export function render(d, { siteUrl } = {}) {
       </div>`).join('')));
   }
 
-  // 2. AIGC 爆款（抖音 / B站）
+  // 2. AIGC 爆款：先看近 30 天高赞榜（重点类型），再看 24 小时飙升
   const vids = d.videos || {};
-  const vBlock = ['douyin', 'bilibili'].filter((s) => vids[s]?.length).map((s) => `<div class="sub">${pb(s)}${s === 'douyin' ? '<span style="font-weight:400;font-size:12px;color:#6b7280">只含抖音热榜话题下的视频；没上热榜的爆款抓不到。热度按点赞（抖音不公开播放数）</span>' : ''}</div>` + items(vids[s], (v) => `
+  const note = (t) => `<span style="font-weight:400;font-size:12px;color:#6b7280">${t}</span>`;
+  const vRow = (v, s) => `
     <div class="tt">${a(v.url, esc(cut(v.title, 60)))}</div>
-    <div class="m">${b(v.ai?.type || 'AIGC', 'ai')}${v.m?.aiCorner ? b('AI角标') : ''}${s === 'douyin' ? '❤' : '▶'} ${fmtNum(v.heat)}${v.vel ? `　<span class="up">+${fmtNum(v.vel)}${s === 'douyin' ? '赞' : ''}/小时</span>` : ''}　${esc(v.author || '')}</div>
-    ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}`)).join('');
-  if (vBlock) parts.push(sec('🔥 最新 AIGC 爆款', '过去 24 小时飙升', vBlock));
+    <div class="m">${b(v.ai?.type || 'AIGC', 'ai')}${v.m?.aiCorner ? b('AI角标') : ''}${s === 'douyin' && v.m?.play ? `▶ ${fmtNum(v.m.play)}　` : ''}${s === 'douyin' ? '❤' : '▶'} ${fmtNum(v.heat)}${v.vel && v.vel > 1 ? `　<span class="up">+${fmtNum(v.vel)}${s === 'douyin' ? '赞' : ''}/小时</span>` : ''}　${esc(v.author || '')}${v.pubAt && !v.m?.noDate ? `　${Math.max(1, Math.round((d.generatedAt - v.pubAt) / DAY))} 天前` : ''}</div>
+    ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}`;
+  const blocks = [
+    ['douyinTop', 'douyin', `高赞榜 · 近 30 天 ${note('按点赞；AI音乐 / MV / 歌手艺人 / 鬼畜 / 影视 / 换人')}`],
+    ['bilibiliTop', 'bilibili', `高播放榜 · 近 30 天 ${note('按播放；同上 6 类')}`],
+    ['douyin', 'douyin', `24 小时飙升 ${note('按每小时新增点赞')}`],
+    ['bilibili', 'bilibili', `24 小时飙升 ${note('按每小时新增播放')}`],
+  ];
+  const vBlock = blocks.filter(([k]) => vids[k]?.length).map(([k, s, title]) => `<div class="sub">${pb(s)}${title}</div>` + items(vids[k].slice(0, k.endsWith('Top') ? 8 : 5), (v) => vRow(v, s))).join('');
+  if (vBlock) parts.push(sec('🔥 AIGC 爆款', '高赞榜 + 24 小时飙升', vBlock));
 
   // 3. 热梗热搜
   const memes = d.memes || [];
@@ -107,6 +115,9 @@ export function render(d, { siteUrl } = {}) {
 
   const st = readJSON(path.join(DATA, 'status.json'), { sources: {} });
   const bad = Object.values(st.sources).filter((s) => !s.ok).map((s) => s.name);
+  // TikHub 余额：低于 1 美元提醒充值（每天约 0.05 美元）
+  const th = readJSON(path.join(DATA, 'tikhub.json'), null);
+  const thWarn = th && typeof th.balance === 'number' && th.balance < 1 ? `<div class="warn">⚠ TikHub 余额剩 ${th.balance} 美元，大约还能用 ${Math.max(0, Math.floor(th.balance / 0.05))} 天，用完后抖音高赞榜会暂停。充值：user.tikhub.io</div>` : '';
 
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIGC 热点早报</title><style>${CSS.replace(/\n/g, '')}</style></head>
 <body><div style="padding:16px 8px"><div class="w">
@@ -119,6 +130,7 @@ export function render(d, { siteUrl } = {}) {
 ${parts.join('\n')}
 <div class="ft">
   ${bad.length ? `<div class="warn">⚠ 本次未采集到：${bad.join('、')}（下次会自动重试）</div>` : ''}
+  ${thWarn}
   ${d.errors?.length ? '<div class="warn">⚠ AI 分析部分出错，相关板块用规则兜底</div>' : ''}
   <div>标「推测」的分析是 AI 根据有限信息做的判断，仅供参考。小红书暂未接入。</div>
 </div>

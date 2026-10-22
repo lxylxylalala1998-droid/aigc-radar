@@ -8,9 +8,9 @@ const API = 'https://aweme.snssdk.com/aweme/v1';
 // 热榜词条的分类编号（sentence_tag）：1000~1004 是抖音标的「站内玩法」（挑战、玩法、BGM 文案梗），20000~20006 是「话题互动」
 const KIND = (t) => (t >= 1000 && t <= 1004 ? '抖音挑战' : t >= 20000 && t <= 20006 ? '话题互动' : undefined);
 
-const hashtags = (a) => (a.text_extra || []).map((t) => t.hashtag_name).filter(Boolean);
+export const hashtags = (a) => (a.text_extra || []).map((t) => t.hashtag_name).filter(Boolean);
 // 文案去掉 #话题 和 @，留下正文当标题
-const plain = (desc = '') => clean(desc.replace(/#\S+/g, ' ').replace(/@\S+/g, ' ')) || clean(desc);
+export const plain = (desc = '') => clean(desc.replace(/#\S+/g, ' ').replace(/@\S+/g, ' ')) || clean(desc);
 
 function videoItem(a, topic) {
   const st = a.statistics || {};

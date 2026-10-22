@@ -1,7 +1,7 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const PLAT = { weibo: '微博', douyin: '抖音', bilibili: 'B站', youtube: 'YouTube', qqmusic: 'QQ音乐', netease: '网易云' };
-  const VTYPES = ['AI音乐', 'AI MV', 'AI动画', 'AI剧情', 'AI短片', 'AI特效玩法', 'AI整活', 'AI教程测评'];
+  const VTYPES = ['AI音乐', 'AI MV', 'AI歌手/艺人', 'AI鬼畜', 'AI影视', 'AI换人', 'AI动画', 'AI特效玩法', 'AI整活', 'AI教程测评'];
   const TTAGS = ['热梗', 'AI相关', '可借势'];
   const TKINDS = ['抖音挑战', '话题互动'];
   const trendHas = (x, k) => x.kind === k || x.ai?.tag === k;
@@ -68,7 +68,7 @@
     video: {
       chips: (d) => counts(d.videos, (x) => PLAT[x.src] || x.src, ['抖音', 'B站', 'YouTube']),
       chips2: (d) => counts(d.videos, (x) => x.ai?.type || '未分类', VTYPES.concat('未分类')),
-      sorts: [['vel', '飙升最快'], ['heat', '热度最高'], ['time', '最新发布']],
+      sorts: [['vel', '飙升最快'], ['heat', '点赞 / 播放最高'], ['time', '最新发布']],
       render(d) {
         let items = d.videos.filter((x) => (!state.f1 || PLAT[x.src] === state.f1) && (!state.f2 || (x.ai?.type || '未分类') === state.f2) && match(x, state.q));
         const s = state.sort || (state.w === 1 ? 'vel' : 'heat');
@@ -89,8 +89,8 @@
             <a class="th ${x.cover ? '' : `ph ${x.src}`}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频">${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="">` : `<span>${PLAT[x.src] || ''}</span>`}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
             <div>
               <div class="tt">${link(x.url, esc(x.title))}</div>
-              <div class="meta">${pb(x.src)}${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiCorner ? tag('AI角标', 'solid') : ''}<span>${esc(x.author || '')}</span><span>${ago(x.pubAt)}</span></div>
-              <div class="stat"><span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}</div>
+              <div class="meta">${pb(x.src)}${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiCorner ? tag('AI角标', 'solid') : ''}<span>${esc(x.author || '')}</span>${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${dy && /^(话题|热门视频榜)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>
+              <div class="stat">${x.m?.play && dy ? `<span>${N(x.m.play)}播放</span>` : ''}<span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}</div>
               ${ana('爆点', x.ai?.hook)}${ana('参考', x.ai?.tip)}
             </div>
           </article>`;

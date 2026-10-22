@@ -10,12 +10,14 @@ import { biliHot, biliAI, biliMusic } from './sources/bilibili.js';
 import { youtube } from './sources/youtube.js';
 import { qqMusic, netease } from './sources/music.js';
 import { rss, hackerNews, hfTrending } from './sources/news.js';
+import { douyinAigc } from './sources/tikhub.js';
 
 export const SOURCES = [
   { key: 'weibo', name: '微博热搜', fn: weibo },
   { key: 'douyinHot', name: '抖音热榜+话题视频', fn: douyinHot },
   { key: 'biliHot', name: 'B站热搜', fn: biliHot },
   { key: 'biliAI', name: 'B站 AI 稿件', fn: (o) => biliAI({ long: o.daily }) },
+  { key: 'tikhub', name: '抖音高赞 AIGC（每天一次）', fn: (o) => douyinAigc({ daily: o.daily }) },
   { key: 'youtube', name: 'YouTube AI 视频', fn: youtube },
   { key: 'qqmusic', name: 'QQ音乐榜', fn: qqMusic },
   { key: 'netease', name: '网易云音乐榜', fn: netease },
@@ -38,12 +40,12 @@ async function runSources(only, opts = {}) {
     try {
       const got = await withTimeout(s.fn(opts), 240e3);
       items.push(...got);
-      status[s.key] = { name: s.name, ok: true, count: got.length, ms: Date.now() - t0, warnings: got.warnings?.slice(0, 5) };
+      status[s.key] = { name: s.name, ok: true, count: got.length, ms: Date.now() - t0, warnings: got.warnings?.slice(0, 5), info: got.info };
     } catch (e) {
       status[s.key] = { name: s.name, ok: false, count: 0, ms: Date.now() - t0, error: e.message.slice(0, 300) };
     }
     const st = status[s.key];
-    console.log(`${st.ok ? '✓' : '✗'} ${s.name.padEnd(14)} ${String(st.count).padStart(4)} 条  ${(st.ms / 1000).toFixed(1)}s ${st.error || (st.warnings?.length ? `（${st.warnings.length} 个子请求失败）` : '')}`);
+    console.log(`${st.ok ? '✓' : '✗'} ${s.name.padEnd(14)} ${String(st.count).padStart(4)} 条  ${(st.ms / 1000).toFixed(1)}s ${st.error || (st.warnings?.length ? `（${st.warnings.length} 个子请求失败）` : '')}${st.info ? ` ${st.info}` : ''}`);
   }));
   return { items, status };
 }

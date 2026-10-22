@@ -40,6 +40,8 @@ export const PLATFORM = {
   weibo: '微博', douyin: '抖音', bilibili: 'B站', youtube: 'YouTube', qqmusic: 'QQ音乐', netease: '网易云',
 };
 
+const OLD_TYPE = { AI剧情: 'AI影视', AI短片: 'AI影视' };
+
 // 精简成网页 / 邮件需要的字段
 export function slim(it, now = Date.now()) {
   const o = {
@@ -49,6 +51,8 @@ export function slim(it, now = Date.now()) {
     kind: it.kind, top: it.top, // 抖音挑战 / 话题互动，及其热门参与视频
   };
   if (it.cat === 'video') o.vel = Math.round(velocity(it, now).perHour);
+  // 视频分类改过名（AI剧情 / AI短片 → AI影视），旧数据展示时按新名字
+  if (o.ai?.type && OLD_TYPE[o.ai.type]) o.ai = { ...o.ai, type: OLD_TYPE[o.ai.type] };
   for (const k of Object.keys(o)) if (o[k] === undefined || o[k] === '') delete o[k];
   return o;
 }

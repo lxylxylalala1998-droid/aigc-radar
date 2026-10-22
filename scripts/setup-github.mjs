@@ -15,7 +15,7 @@ const args = process.argv.slice(2);
 const NAME = args.find((a) => !a.startsWith('--')) || 'aigc-radar';
 const TOKEN = process.env.GITHUB_TOKEN;
 const API = 'https://api.github.com';
-const SECRET_KEYS = ['DEEPSEEK_API_KEY', 'SMTP_USER', 'SMTP_PASS', 'MAIL_TO', 'SMTP_HOST', 'SMTP_PORT', 'YT_API_KEY'];
+const SECRET_KEYS = ['DEEPSEEK_API_KEY', 'SMTP_USER', 'SMTP_PASS', 'MAIL_TO', 'SMTP_HOST', 'SMTP_PORT', 'YT_API_KEY', 'TIKHUB_API_KEY'];
 const REQUIRED = ['GITHUB_TOKEN', 'DEEPSEEK_API_KEY', 'SMTP_USER', 'SMTP_PASS', 'MAIL_TO'];
 
 async function gh(method, url, body) {
