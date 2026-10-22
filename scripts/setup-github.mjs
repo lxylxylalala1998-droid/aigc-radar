@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import sodium from 'libsodium-wrappers';
 import { ROOT, loadEnv, sleep } from '../src/util.js';
 
@@ -72,20 +73,29 @@ async function main() {
   step('上传代码');
   // -z + quotepath=off：中文文件名（如「立即推送.cmd」）不会被转义成八进制
   const files = execSync('git -c core.quotepath=off ls-files -z', { cwd: ROOT, encoding: 'utf8' }).split('\0').filter(Boolean);
-  const tree = [];
-  for (const f of files) {
-    const content = fs.readFileSync(path.join(ROOT, f)).toString('base64');
-    const { data: blob } = await gh('POST', `/repos/${owner}/${NAME}/git/blobs`, { content, encoding: 'base64' });
-    tree.push({ path: f, mode: '100644', type: 'blob', sha: blob.sha });
-  }
   const { data: ref } = await gh('GET', `/repos/${owner}/${NAME}/git/ref/heads/${branch}`);
+  // 远端已有、内容没变的文件（git blob sha 相同）直接复用，只上传改过的
+  const { data: head } = await gh('GET', `/repos/${owner}/${NAME}/git/commits/${ref.object.sha}`);
+  const { data: remote } = await gh('GET', `/repos/${owner}/${NAME}/git/trees/${head.tree.sha}?recursive=1`);
+  const remoteSha = new Map((remote.tree || []).filter((x) => x.type === 'blob').map((x) => [x.path, x.sha]));
+  const tree = [];
+  let uploaded = 0;
+  for (const f of files) {
+    const buf = fs.readFileSync(path.join(ROOT, f));
+    const sha = createHash('sha1').update(`blob ${buf.length}\0`).update(buf).digest('hex');
+    if (remoteSha.get(f) !== sha) {
+      await gh('POST', `/repos/${owner}/${NAME}/git/blobs`, { content: buf.toString('base64'), encoding: 'base64' });
+      uploaded++;
+    }
+    tree.push({ path: f, mode: '100644', type: 'blob', sha });
+  }
   const { data: t } = await gh('POST', `/repos/${owner}/${NAME}/git/trees`, { tree });
   const { data: commit } = await gh('POST', `/repos/${owner}/${NAME}/git/commits`, {
     message: 'AIGC 热点雷达：部署\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>',
     tree: t.sha, parents: [ref.object.sha],
   });
   await gh('PATCH', `/repos/${owner}/${NAME}/git/refs/heads/${branch}`, { sha: commit.sha, force: true });
-  console.log(`  ${files.length} 个文件已上传`);
+  console.log(`  ${files.length} 个文件，其中 ${uploaded} 个有改动已上传`);
 
   step('填写 Secrets（加密后上传，本地不显示内容）');
   await sodium.ready;
