@@ -70,7 +70,8 @@ async function main() {
   const branch = repo.default_branch || 'main';
 
   step('上传代码');
-  const files = execSync('git ls-files', { cwd: ROOT, encoding: 'utf8' }).split('\n').filter(Boolean);
+  // -z + quotepath=off：中文文件名（如「立即推送.cmd」）不会被转义成八进制
+  const files = execSync('git -c core.quotepath=off ls-files -z', { cwd: ROOT, encoding: 'utf8' }).split('\0').filter(Boolean);
   const tree = [];
   for (const f of files) {
     const content = fs.readFileSync(path.join(ROOT, f)).toString('base64');

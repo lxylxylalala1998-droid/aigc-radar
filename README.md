@@ -53,6 +53,17 @@ QQ 邮箱网页版 → 设置 → 账号与安全 → 安全设置 → 开启「
 
 收件人用 QQ 邮箱，然后在微信里搜索并开启「QQ邮箱提醒」，邮件到达时微信会弹通知。
 
+## 手动推送（随时发一次）
+
+三种方式，任选：
+
+1. **双击项目文件夹里的 `立即推送.cmd`**（不需要梯子）：重新采集 + AI 分析，跑完立刻发邮件，大约 5~6 分钟。窗口可以直接关，不影响推送。
+2. **GitHub 网页**（需要能打开 github.com）：仓库 → Actions → 左侧「AIGC 热点雷达」→ Run workflow → 模式选 `daily-now` → 绿色 Run workflow。
+3. **让 Claude 做**。
+
+`立即推送.cmd` 用的是 `.env` 里的授权码。部署时的 `GITHUB_TOKEN` 30 天过期，想长期用可以单独生成一个只能触发运行的授权码，填到 `TRIGGER_TOKEN`：
+打开 https://github.com/settings/personal-access-tokens/new → Token name 填 `aigc-radar-trigger` → Expiration 选最长 → Repository access 选 Only select repositories，选 `aigc-radar` → Permissions 里 **Actions** 选 **Read and write** → Generate token → 复制 `github_pat_` 开头那串。
+
 ## 手动运行的四种模式
 
 | 模式 | 作用 |
