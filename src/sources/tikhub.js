@@ -5,7 +5,7 @@
 import path from 'node:path';
 import { clean, DAY, DATA, readJSON, writeJSON } from '../util.js';
 import { DY_HOT_QUERIES, DY_VERIFY_PER_DAY, DY_REFRESH_PER_DAY, TIKHUB_MIN_BALANCE } from '../config.js';
-import { plain, hashtags, aiLabel } from './douyin.js';
+import { plain, hashtags, aiLabel, coverOf } from './douyin.js';
 
 const BASE = 'https://api.tikhub.io';
 const STATE_FILE = path.join(DATA, 'tikhub.json'); // 余额、今天花了多少
@@ -67,7 +67,7 @@ function toItem(x, label, a, c = {}) {
     title: plain(title || '').slice(0, 80) || '（无文案）',
     url: `https://www.douyin.com/video/${x.item_id}`,
     author: x.nick_name || a?.author?.nickname || '',
-    cover: a?.video?.cover?.url_list?.[0] || c.cv || x.item_cover_url, // 约 14 天有效
+    cover: coverOf(a) || (c.cv && !/\.heic/i.test(c.cv) ? c.cv : '') || x.item_cover_url || undefined, // 约 14 天有效
     heat: like,
     pubAt: (x.publish_time || a?.create_time || 0) * 1000 || idTime(x.item_id),
     tags: (a ? hashtags(a) : (x.item_title || '').match(/#([^#\s]+)/g)?.map((t) => t.slice(1)) || []).slice(0, 8).join(','),
@@ -149,7 +149,7 @@ export async function douyinAigc({ daily = false } = {}) {
         const l = a ? aiLabel(a) : '';
         const st = a?.statistics || {};
         verified[x.item_id] = l
-          ? { l, t: now, n: st.digg_count || 0, c: st.comment_count || 0, s: st.share_count || 0, f: st.collect_count || 0, cv: a.video?.cover?.url_list?.[0] || '', d: durOf(a), bg: bgmOf(a) }
+          ? { l, t: now, n: st.digg_count || 0, c: st.comment_count || 0, s: st.share_count || 0, f: st.collect_count || 0, cv: coverOf(a), d: durOf(a), bg: bgmOf(a) }
           : { l, t: now };
         if (a) details.set(x.item_id, a);
       } catch (e) { warnings.push(`详情 ${x.item_id}：${e.message}`); if (e.broke) broke = true; }

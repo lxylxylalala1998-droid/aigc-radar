@@ -34,9 +34,8 @@
   </div>
 </header>
 
-<main class="wrap">
-  <!-- 一级菜单固定在页面顶部：点哪个就只显示哪个板块，不用往下翻 -->
-  <div class="bar" id="bar">
+<!-- 一级菜单：通栏深色条，固定在页面顶部；点哪个就只显示哪个板块，不用往下翻 -->
+<div class="bar" id="bar"><div class="wrap bar-in">
     <nav class="tabs" id="tabs" role="tablist" aria-label="分类">
       <button data-tab="picks" class="on">今日选题</button>
       <button data-tab="douyin">抖音热点</button>
@@ -53,8 +52,9 @@
       <button data-arch>往期</button>
     </div>
     <div class="days" id="days" role="tablist" aria-label="选择日期" hidden></div>
-  </div>
+</div></div>
 
+<main class="wrap">
   <section id="picks" class="picks" aria-label="今日选题"></section>
 
   <div id="listing" hidden>

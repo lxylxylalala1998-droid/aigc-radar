@@ -17,7 +17,17 @@ const ARCHIVE_DAYS = 30;
 
 const readDigest = (date) => readJSON(path.join(DATA, 'digests', `${date}.json`));
 // 网页只用得到日报里的选题、大事件
-const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news, trendKeywords: d.trendKeywords || [], gaps: d.gaps, review: d.review, brief: d.brief });
+// 选题的主要依据补上封面：旧日报没有 main；抖音封面约 14 天过期，用数据里最新抓到的封面（build 开始时建好索引）
+let coverIdx = new Map();
+// heic 格式的封面浏览器显示不了（旧数据里有），当作没有封面
+const okCover = (u) => !!u && !/\.heic/i.test(u);
+const withCovers = (picks) => (!picks || Array.isArray(picks) ? picks : Object.fromEntries(Object.entries(picks).map(([s, list]) => [s, list.map((p) => {
+  const mv = p.main?.url ? p.main : p.refs?.find((r) => r.kind === 'video');
+  if (!mv) return p;
+  const hit = coverIdx.get(mv.url);
+  return { ...p, main: { url: mv.url, src: hit?.src || mv.src || s, title: mv.title || hit?.title, heat: hit?.heat ?? mv.heat, cover: [hit?.cover, mv.cover].find(okCover) } };
+})])));
+const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: withCovers(d.picks), news: d.news, trendKeywords: d.trendKeywords || [], gaps: d.gaps, review: d.review, brief: d.brief });
 
 function digestsIn(days, now) {
   const out = [];
@@ -81,7 +91,8 @@ const keep = (o, keys) => {
   return r;
 };
 const leanVideo = (x) => ({
-  ...keep(x, ['id', 'src', 'board', 'title', 'url', 'author', 'cover', 'heat', 'pubAt', 'vel', 'pt']),
+  ...keep(x, ['id', 'src', 'board', 'title', 'url', 'author', 'heat', 'pubAt', 'vel', 'pt']),
+  ...(okCover(x.cover) ? { cover: x.cover } : {}),
   // 简介大多就是标题，重复的不要
   ...(x.desc && !x.desc.startsWith(x.title.slice(0, 15)) ? { desc: x.desc.slice(0, 60) } : {}),
   m: keep(x.m, ['play', 'playWin', 'like', 'share', 'fav', 'fans', 'dur', 'bgm', 'aiLabel', 'noDate']),
@@ -135,7 +146,7 @@ function buildArchive(now, ctx) {
     bytes += writeSplit(path.join(SITE, 'data', 'd', date), { ...windowData(1, at, ctx), date, digests: dg ? [webDigest(dg)] : [] }).bytes;
     if (dg) {
       fs.mkdirSync(path.join(SITE, 'archive'), { recursive: true });
-      fs.writeFileSync(path.join(SITE, 'archive', `${date}.html`), renderMail(dg, { archive: true }));
+      fs.writeFileSync(path.join(SITE, 'archive', `${date}.html`), renderMail({ ...dg, picks: withCovers(dg.picks) }, { archive: true }));
       // 「AI 选题日报」里切换日期时单独下这一天的选题
       writeJSON(path.join(SITE, 'data', 'dg', `${date}.json`), pickPart(webDigest(dg)));
     }
@@ -162,6 +173,7 @@ export function build(now = Date.now()) {
   fs.cpSync(path.join(ROOT, 'web'), SITE, { recursive: true });
   const fans = Object.fromEntries(Object.entries(readJSON(path.join(DATA, 'bili-fans.json'), {})).map(([k, v]) => [k, v.f]));
   const history = fs.existsSync(path.join(DATA, 'days')) ? fs.readdirSync(path.join(DATA, 'days')).filter((f) => f.endsWith('.json')).length : 0;
+  coverIdx = new Map(loadWindow(31, now).filter((x) => x.cat === 'video' && okCover(x.cover)).map((x) => [x.url, { cover: x.cover, heat: x.heat, src: x.src, title: x.title }]));
   const ctx = { fans, history, med: ratioMedians(loadWindow(30, now).map((x) => withFans(x, fans))) };
   for (const d of WINDOWS) {
     const w = windowData(d, now, ctx);

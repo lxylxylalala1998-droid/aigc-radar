@@ -164,31 +164,24 @@
     const dayChips = ds.length > 1 ? `<div class="day-chips">${ds.map((x, k) => `<button class="chip ${k === i ? 'on' : ''}" data-pickday="${k}">${+x.date.slice(5, 7)}月${+x.date.slice(8)}日</button>`).join('')}</div>` : '';
     const original = link(`archive/${dg.date}.html`, `看${state.day ? '当天' : ` ${+dg.date.slice(5, 7)}月${+dg.date.slice(8)}日 `}早报原文 →`, 'arch-link');
     const refs = (p) => (p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : '');
-    // 选题右边的封面：主要依据那条作品，点开看视频。旧日报没有 main，退回第一条视频参考（没有封面图，显示平台色块）；
-    // 选题只借了热搜 / 热歌的势、没有作品参考时，色块写「热搜」「热歌」，点开是那条热搜 / 热歌
-    const side = (p, s) => {
-      const mv = p.main || p.refs?.find((r) => r.kind === 'video');
-      const r0 = p.refs?.[0];
-      if (!mv && !r0) return '';
-      const src = mv?.src || s;
-      const label = mv ? PLAT[src] : r0.kind === 'music' ? '热歌' : r0.kind === 'trend' ? '热搜' : '参考';
-      return `
-        <div class="pm-side">
-          <a class="th ph ${src}" href="${esc((mv || r0).url)}" target="_blank" rel="noopener" title="${esc(`${mv ? '主要依据：' : ''}${(mv || r0).title}`)}"><span>${label}</span>${mv?.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(mv.cover, src))}" alt="" onerror="this.remove()">` : ''}${mv ? '<i class="play" aria-hidden="true">▶</i>' : ''}</a>
-          ${mv ? `<small>主要依据${mv.heat ? ` · ${num(mv.heat)}${src === 'douyin' ? '赞' : '播放'}` : ''}</small>` : ''}
-        </div>`;
-    };
-    // 选题默认只显示标签、标题、为什么能火；点「展开做法」看怎么做、工作流程、公式、风险、时效依据和参考作品
+    // 选题卡片：左边是主要依据那条作品的封面（抖音竖版、B站横版），编号压在封面左上角，点封面直接看视频；
+    // 右边从上到下：标题 → 标签 → 为什么能火 → 底部一行（展开做法 / 主要依据的数据 / 待做）。完整做法默认收起
+    // 没有作品参考的选题（只借热搜 / 热歌的势），封面位置显示平台色块，写「热搜」「热歌」，点开是那条热搜 / 热歌
     const item = (p, k, s) => {
       const key = `${dg.date}:${s}:${k}`;
       const open = state.pickOpen.has(key);
+      const mv = p.main?.url ? p.main : p.refs?.find((r) => r.kind === 'video');
+      const r0 = p.refs?.[0];
+      const src = mv?.src || s;
+      const target = mv || r0;
+      const label = mv ? PLAT[src] : r0?.kind === 'music' ? '热歌' : r0?.kind === 'trend' ? '热搜' : '选题';
+      const inner = `<span class="ph-l">${label}</span>${mv?.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(mv.cover, src))}" alt="" onerror="this.remove()">` : ''}<b class="pm-no">${pad(k + 1)}</b>${mv ? '<i class="play" aria-hidden="true">▶</i>' : ''}`;
       return `
-      <article class="pm ${k === 0 ? 'first' : ''} ${open ? 'open' : ''} ${side(p, s) ? 'has-cover' : ''}" id="pick-${s}-${k}">
-        <div class="no">${pad(k + 1)}</div>
-        ${side(p, s)}
-        <div>
-          <div class="tags">${tag(p.horizon, 'line')}${p.timing ? `<span class="tag ${TIMING_CLS[p.timing.label] ?? ''}" title="${esc(p.timing.basis)}" data-tip="时效依据：${esc(p.timing.basis)}">${esc(p.timing.label)}</span>` : ''}${p.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${p.form === '系列' ? tag('系列追更') : ''}${p.level ? tag(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${saveBtn(`p:${dg.date}:${s}:${p.title}`, { kind: '选题', src: s, title: p.title, why: p.why, how: p.how, flow: p.flow, tools: p.flow ? undefined : p.tools, url: p.refs?.[0]?.url })}</div>
+      <article class="pm ${open ? 'open' : ''}" id="pick-${s}-${k}">
+        ${target ? `<a class="pm-cover th ph ${s}" href="${esc(target.url)}" target="_blank" rel="noopener" title="${esc(`${mv ? '主要依据：' : ''}${target.title}`)}">${inner}</a>` : `<div class="pm-cover th ph ${s}">${inner}</div>`}
+        <div class="pm-body">
           <h3>${esc(p.title)}</h3>
+          <div class="tags">${tag(p.horizon, 'line')}${p.timing ? `<span class="tag ${TIMING_CLS[p.timing.label] ?? ''}" title="${esc(p.timing.basis)}" data-tip="时效依据：${esc(p.timing.basis)}">${esc(p.timing.label)}</span>` : ''}${p.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${p.form === '系列' ? tag('系列追更') : ''}${p.level ? tag(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}</div>
           <p><span class="mk">为什么能火</span>${esc(p.why)}</p>
           <div class="pm-more">
             <p><span class="mk">怎么做</span>${esc(p.how)}</p>
@@ -198,7 +191,11 @@
             ${p.timing ? `<p class="tmb">时效：${esc(p.timing.label)} · ${esc(p.timing.basis)}</p>` : ''}
             ${refs(p)}
           </div>
-          <button class="pm-toggle" data-pexp="${esc(key)}" aria-expanded="${open}">${open ? '收起 ▴' : '展开做法 ▾'}</button>
+          <div class="pm-foot">
+            <button class="pm-toggle" data-pexp="${esc(key)}" aria-expanded="${open}">${open ? '收起 ▴' : '展开做法 ▾'}</button>
+            ${mv?.heat ? `<span class="pm-src">主要依据 ${num(mv.heat)}${src === 'douyin' ? '赞' : '播放'}</span>` : ''}
+            ${saveBtn(`p:${dg.date}:${s}:${p.title}`, { kind: '选题', src: s, title: p.title, why: p.why, how: p.how, flow: p.flow, tools: p.flow ? undefined : p.tools, url: mv?.url || r0?.url })}
+          </div>
         </div>
       </article>`;
     };

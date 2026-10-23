@@ -20,6 +20,8 @@ export function aiLabel(a) {
 }
 
 export const hashtags = (a) => (a.text_extra || []).map((t) => t.hashtag_name).filter(Boolean);
+// 封面：url_list 里有时是 heic 格式（苹果的图片格式，Chrome / Edge 显示不了），挑浏览器能显示的那个
+export const coverOf = (a) => [...(a?.video?.cover?.url_list || []), ...(a?.video?.origin_cover?.url_list || [])].find((u) => u && !/\.heic/i.test(u)) || '';
 // 文案去掉 #话题 和 @，留下正文当标题
 export const plain = (desc = '') => clean(desc.replace(/#\S+/g, ' ').replace(/@\S+/g, ' ')) || clean(desc);
 
@@ -33,7 +35,7 @@ function videoItem(a, topic) {
     url: `https://www.douyin.com/video/${a.aweme_id}`,
     author: a.author?.nickname || '',
     // 封面链接带签名，约 14 天有效；同一条视频每次抓到都会刷新
-    cover: a.video?.cover?.url_list?.[0] || a.video?.origin_cover?.url_list?.[0],
+    cover: coverOf(a) || undefined,
     heat: st.digg_count || 0, // 抖音隐藏播放数，热度用点赞
     pubAt: (a.create_time || 0) * 1000,
     tags: tags.slice(0, 8).join(','),
