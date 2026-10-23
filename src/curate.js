@@ -20,7 +20,6 @@ const typeOf = (x) => OLD_TYPE[x.ai?.type] || x.ai?.type;
 // 抖音视频只认官方 AI 标（作者声明 / 平台识别 / AI 特效），没标的不算 AIGC
 const dyOk = (x) => x.src !== 'douyin' || !!x.m?.aiLabel;
 const isWork = (x) => x.cat === 'video' && AIGC_TYPES.includes(typeOf(x)) && dyOk(x);
-const isFocus = (x) => x.cat === 'video' && FOCUS_TYPES.includes(typeOf(x)) && dyOk(x);
 const VV = 3; // 视频标注版本
 
 const SYSTEM = `你是一位资深的 AIGC 自媒体选题编辑，服务对象是在抖音、B站做 AI 内容的博主。
@@ -92,7 +91,7 @@ const dropEcho = (s = '', title = '') => (title && s.startsWith(title) ? s.slice
 
 function stats(x) {
   const m = x.m || {};
-  if (x.src === 'douyin') return `${m.play ? `播放${fmtNum(m.play)} ` : ''}点赞${fmtNum(m.like)} 评论${fmtNum(m.comment)} 分享${fmtNum(m.share)}${m.fav ? ` 收藏${fmtNum(m.fav)}` : ''}${m.aiLabel ? ` 【抖音官方AI标：${m.aiLabel}】` : ''}${m.hint ? ` 【来自 #${x.board.replace('话题·#', '')} 话题】` : ''}`;
+  if (x.src === 'douyin') return `${m.play ? `${m.playWin ? `近${m.playWin}天` : ''}播放${fmtNum(m.play)} ` : ''}点赞${fmtNum(m.like)}${m.like24 ? `（近24小时+${fmtNum(m.like24)}）` : ''} 评论${fmtNum(m.comment)} 分享${fmtNum(m.share)}${m.fav ? ` 收藏${fmtNum(m.fav)}` : ''}${m.aiLabel ? ` 【抖音官方AI标：${m.aiLabel}】` : ''}${m.hint ? ` 【来自 #${x.board.replace('话题·#', '')} 话题】` : ''}`;
   if (x.src === 'bilibili') return `播放${fmtNum(m.play)} 点赞${fmtNum(m.like)} 弹幕${fmtNum(m.danmaku)}`;
   return `播放${fmtNum(x.heat)}`;
 }
@@ -339,10 +338,8 @@ ${lines.join('\n')}`, { maxTokens: 3000 });
 
 async function pickTop(list, now) {
   const lines = list.map((x, i) => `${i}|${PLATFORM[x.src]}|${typeOf(x)}|${x.title}|${stats(x)}|${x.m?.noDate ? '发布时间未知' : `发布${Math.max(1, Math.round(hoursAgo(x.pubAt, now) / 24))}天`}${x.tags ? `|话题:${x.tags}` : ''}`);
-  const r = await ask(`下面是近 30 天点赞（抖音）/ 播放（B站）最高的 AIGC 作品（编号|平台|类型|标题|数据|发布天数|话题），类型都是重点关注的：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人。
-从【抖音】挑 8 个、【B站】挑 5 个最值得 AI 自媒体研究的高赞作品（候选不够就全选）：
-- 尽量覆盖不同类型，同一作者 / 同一系列只选最火的一个
-- 对每个写：
+  const r = await ask(`下面是近 30 天点赞（抖音）/ 播放（B站）最高的 AIGC 作品（编号|平台|类型|标题|数据|发布天数|话题）。
+为【每一条】都写：
   - hook：它为什么能火到这个量级——题材、情绪、反差、人设、技术新鲜感、借了什么势，结合数据说，≤50 字
   - tip：想做同类内容怎么做——选题、工具、关键镜头 / 节奏 / 文案，≤45 字
 
@@ -371,6 +368,28 @@ export function related(title, x) {
   return false;
 }
 
+// 选题去重：两个选题参考了同一条稿件，或者参考稿件标题里有同一个专有词（连续 3 个字以上，比如「过来人」），算同一个题材，只留排前面的
+// 【AI MV大赛】这类活动标签、#话题 不算，常见口语词也不算
+const COMMON = new Set(['你的', '我的', '一下', '一起', '就是', '真的', '没有', '还是', '自己', '时候', '如果', '给你', '你会', '可能', '现在', '以前', '一定', '为什', '不会', '这样', '那个', '出来', '起来', '开始', '第一', '一次', '所有', '的人', '一样', '之后', '知道', '喜欢', '最后', '看看', '居然', '竟然', '原来', '终于', '全站', '中国', '世界', '人生', '时代', '小孩', '孩子', '宝宝', '唱歌', '音乐', '歌曲', '演唱', '新歌', '画风', '短剧', '电影', '动画', '特效', '创作', '网页', '即梦', '可灵', '豆包']);
+function themeGrams(p) {
+  const text = [p.title, ...p.refs.map((r) => r.title)].join(' ').replace(/【[^】]*】|#[^#\s]+/g, ' ');
+  return [...grams(text)].filter((g) => !COMMON.has(g));
+}
+function samePick(a, b) {
+  if (a.refs.some((r) => b.refs.some((x) => x.url === r.url))) return true;
+  const gb = new Set(b.g);
+  // 专有词：共有两个首尾相接的两字词（如「过来」「来人」）
+  return a.g.some((g) => gb.has(g) && a.g.some((h) => h !== g && gb.has(h) && h[0] === g[1]));
+}
+export function dedupePicks(list) {
+  const kept = [];
+  for (const p of list) {
+    const q = { ...p, g: themeGrams(p) };
+    if (!kept.some((k) => samePick(k, q))) kept.push(q);
+  }
+  return kept.map(({ g, ...p }) => p);
+}
+
 // 平台特点：给 AI 定「怎么做」时参考
 const PLATFORM_STYLE = {
   douyin: '抖音：竖屏，15~60 秒，前 3 秒定生死；擅长 AI 特效模板、卡点、BGM、挑战玩法、情绪向和反差向内容，文案 + 话题标签很关键',
@@ -380,10 +399,10 @@ const PLATFORM_STYLE = {
 async function makePicks(blocks, s) {
   const name = PLATFORM[s];
   const r = await ask(`下面是${name}上 AIGC 相关的热点数据，按时间段分组（方括号里是编号）。
-请给出「今天最值得在${name}上做的 12 个选题」，按值得做的程度从高到低排：
+请给出「今天最值得在${name}上做的 14 个选题」，按值得做的程度从高到低排：
 - 每个选题必须直接来自下面列出的某个具体作品或热点：refs 填的就是这个选题要参考的那几条（标题、内容要能对上），不要引用跟选题主题无关的素材凑数；下面没有对应作品的题材不要出。题材是 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
-- 10 个选题要覆盖不同时间段：至少 3 个来自「24小时飙升」，至少 2 个来自「近3天爆款」，至少 2 个来自「本周热点」或「长期热点」
-- 一视同仁：12 个选题分散到不同作品、不同题材，同一个系列 / 同一种玩法最多出 1 个，不要因为某个题材热就反复出
+- 选题要覆盖不同时间段：至少 3 个来自「24小时飙升」，至少 2 个来自「近3天爆款」，至少 2 个来自「本周热点」或「长期热点」
+- 一视同仁：14 个选题分散到不同作品、不同题材，同一个系列 / 同一种玩法最多出 1 个，不要因为某个题材热就反复出
 - 做法要贴合平台：${PLATFORM_STYLE[s]}
 - 每个选题输出：
   - title：选题标题，像一个能直接发在${name}上的视频标题，≤24 字
@@ -394,7 +413,7 @@ async function makePicks(blocks, s) {
 
 输出格式：{"picks":[{"title":"","horizon":"","why":"","how":"","refs":[]}]}
 
-${blocks}`, { maxTokens: 6000 });
+${blocks}`, { maxTokens: 7000 });
   return r.picks || [];
 }
 
@@ -438,19 +457,22 @@ export async function digest(now = Date.now()) {
   const videos = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, hits.filter((x) => x.src === s).slice(0, 6).map((x) => slim(x, now))]));
 
   // ---- 高赞榜：近 30 天，只看重点类型（AI音乐 / MV / 歌手艺人 / 鬼畜 / 影视 / 换人），抖音按点赞、B站按播放 ----
-  const TOPN = { douyin: 8, bilibili: 5 };
-  const topCand = ['douyin', 'bilibili'].flatMap((s) => all30
-    .filter((x) => isFocus(x) && x.src === s && x.pubAt > now - 30 * DAY)
-    .sort((a, b) => (b.heat || 0) - (a.heat || 0)).slice(0, 25).map(withVel));
-  const tops = await step('高赞榜', () => pickTop(topCand, now), () => [], errors);
-  const topHits = tops.map((t) => topCand[+t.i] && { ...topCand[+t.i], ai: { ...topCand[+t.i].ai, hook: t.hook || topCand[+t.i].ai.hook, tip: t.tip || topCand[+t.i].ai.tip } })
-    .filter(Boolean).filter((x, i, arr) => arr.findIndex((y) => y.id === x.id) === i);
+  // 近 30 天所有 AIGC 作品（不限类型，抖音只认官方 AI 标），严格按点赞（抖音）/ 播放（B站）取前 N 名
+  // 同一作者只留最火的一条（避免一个系列霸榜）；AI 只负责逐条写分析，不参与挑选
+  const TOPN = { douyin: 10, bilibili: 10 };
+  const topList = ['douyin', 'bilibili'].flatMap((s) => {
+    const seenAuthor = new Set();
+    return all30
+      .filter((x) => isWork(x) && x.src === s && x.pubAt > now - 30 * DAY)
+      .sort((a, b) => (b.heat || 0) - (a.heat || 0))
+      .filter((x) => { const k = x.author || x.id; if (seenAuthor.has(k)) return false; seenAuthor.add(k); return true; })
+      .slice(0, TOPN[s]).map(withVel);
+  });
+  const notes = await step('高赞榜点评', () => pickTop(topList, now), () => [], errors);
+  const noteOf = new Map(notes.map((t) => [+t.i, t]));
   for (const s of ['douyin', 'bilibili']) {
-    let have = topHits.filter((x) => x.src === s).length;
-    for (const x of topCand.filter((c) => c.src === s && !topHits.some((h) => h.id === c.id))) { if (have >= TOPN[s]) break; topHits.push(x); have++; }
-  }
-  for (const s of ['douyin', 'bilibili']) {
-    videos[`${s}Top`] = topHits.filter((x) => x.src === s).sort((a, b) => (b.heat || 0) - (a.heat || 0)).slice(0, TOPN[s]).map((x) => slim(x, now));
+    videos[`${s}Top`] = topList.map((x, i) => (x.src === s ? { ...x, ai: { ...x.ai, hook: noteOf.get(i)?.hook || x.ai.hook, tip: noteOf.get(i)?.tip || x.ai.tip } } : null))
+      .filter(Boolean).map((x) => slim(x, now));
   }
 
   // ---- 选题素材：四个时间段 ----
@@ -548,14 +570,14 @@ export async function digest(now = Date.now()) {
     date: bjDate(now), generatedAt: now, window: [since, now],
     ai: hasKey() ? DEEPSEEK_MODEL : null, errors,
     // 今日选题：抖音 10 个、B站 10 个
-    // 每个平台 AI 出 12 个，参考对不上标题的删掉，一个都对不上的选题整条丢弃，取前 10
-    picks: Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, list.map((p) => {
+    // 每个平台 AI 出 14 个，参考对不上标题的删掉，一个都对不上的选题整条丢弃；同题材的只留一个，取前 10
+    picks: Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, dedupePicks(list.map((p) => {
       const refs = (p.refs || []).map((c) => pb[s].refs[c]).filter(Boolean).filter((x) => related(p.title, x));
       return refs.length ? {
         title: p.title, horizon: p.horizon, why: p.why, how: p.how,
         refs: refs.map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url })),
       } : null;
-    }).filter(Boolean).slice(0, 10)])),
+    }).filter(Boolean)).slice(0, 10)])),
     trendKeywords: trendKw.map(({ kw, why }) => ({ kw, why })),
     videos,
     // 热梗里已经单列的抖音挑战不重复放

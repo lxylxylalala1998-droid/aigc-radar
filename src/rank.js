@@ -25,6 +25,8 @@ export function loadWindow(days, now = Date.now()) {
 
 // 视频蹿升：有历史采样就用「最近约 24 小时的增量 / 小时」，否则用「总播放 / 发布至今小时数」
 export function velocity(it, now = Date.now()) {
+  // 抖音热点宝直接给了近 24 小时新增点赞（当天采到的才算）
+  if (it.m?.like24 && it.lastSeen >= now - 30 * HOUR) return { perHour: it.m.like24 / 24, basis: 'window', hours: 24 };
   const cur = it.heat || 0;
   const old = (it.hist || []).filter((p) => p[0] <= now - 3 * HOUR);
   if (old.length) {

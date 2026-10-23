@@ -28,7 +28,11 @@ export const SOURCES = [
 ];
 
 const dayFile = (d) => path.join(DATA, 'days', `${d}.json`);
-const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(`超时 ${ms / 1000}s`)), ms))]);
+// 计时器要清掉，否则源跑完了进程还会干等到超时才退出
+const withTimeout = (p, ms) => {
+  let t;
+  return Promise.race([p, new Promise((_, rej) => { t = setTimeout(() => rej(new Error(`超时 ${ms / 1000}s`)), ms); })]).finally(() => clearTimeout(t));
+};
 
 async function runSources(only, opts = {}) {
   const list = only ? SOURCES.filter((s) => only.includes(s.key)) : SOURCES;

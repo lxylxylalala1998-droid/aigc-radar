@@ -54,50 +54,20 @@ export const DOUYIN_MUSIC_CHARTS = [{ id: '6853972723954146568', name: '热歌�
 export const MUSIC_TOP_N = 50;
 
 // ---------- 抖音高赞 AIGC（TikHub，付费，每天早报那次运行拉一次）----------
-// 盯的话题：按「最多点赞」取，大话题前面多是几个月前的老视频，所以多翻几页再筛近 30 天。每页 0.001 美元
-// type 只是给 AI 的提示，最终类型由 AI 看内容判断
-export const DY_HASHTAGS = [
-  { name: 'ai音乐', id: '1635656412024840', pages: 3, type: 'AI音乐' },
-  { name: 'ai歌曲', id: '1669112351656971', pages: 2, type: 'AI音乐' },
-  { name: 'ai说唱', id: '1644566986083336', pages: 1, type: 'AI音乐' },
-  { name: 'ai歌曲翻唱', id: '1777278671261763', pages: 1, type: 'AI音乐' },
-  { name: 'aimv', id: '1640674458408979', pages: 2, type: 'AI MV' },
-  { name: 'aimv大赏', id: '7628534042920486950', pages: 2, type: 'AI MV' },
-  { name: 'ai音乐mv', id: '1768584169786368', pages: 1, type: 'AI MV' },
-  { name: 'ai歌手', id: '1706595537765452', pages: 2, type: 'AI歌手/艺人' },
-  { name: '虚拟歌手', id: '1601701915410440', pages: 2, type: 'AI歌手/艺人' },
-  { name: 'ai艺人', id: '1765838402399244', pages: 1, type: 'AI歌手/艺人' },
-  { name: 'ai鬼畜', id: '1772208953550863', pages: 1, type: 'AI鬼畜' },
-  { name: 'ai鬼畜视频', id: '7387977063535216652', pages: 1, type: 'AI鬼畜' },
-  { name: 'ai影视', id: '1683774040475661', pages: 2, type: 'AI影视' },
-  { name: 'ai电影', id: '1653210771473412', pages: 3, type: 'AI影视' },
-  { name: 'ai短剧', id: '1682091371105293', pages: 3, type: 'AI影视' },
-  { name: 'ai漫剧', id: '7384348366978697228', pages: 3, type: 'AI影视' },
-  { name: 'ai真人短剧', id: '7532695948107974675', pages: 2, type: 'AI影视' },
-  { name: 'ai演唱会', id: '1716481052643339', pages: 1, type: 'AI换人' },
-  { name: '抖音ai创作', id: '1776715988162624', pages: 2, type: null },
-  { name: 'ai翻唱', id: '1716868688759811', pages: 2, type: 'AI音乐' },
-  { name: '虚拟偶像', id: '1596727512379396', pages: 2, type: 'AI歌手/艺人' },
-  { name: 'ai换人', id: '1734969483413507', pages: 1, type: 'AI换人' },
-  { name: 'ai漫剧推荐', id: '7579212100241721378', pages: 1, type: 'AI影视' },
-  { name: 'ai短剧推荐', id: '7422129998527465499', pages: 1, type: 'AI影视' },
-  { name: 'ai动画', id: '1663471029690371', pages: 1, type: null },
-  { name: 'aigc', id: '1722895911293971', pages: 1, type: null },
-  { name: 'ai视频', id: '1617402745256973', pages: 1, type: null },
-  { name: 'ai创作', id: '1641397594586119', pages: 1, type: null },
-  { name: 'ai创作浪潮', id: '7552088959354931251', pages: 1, type: null },
-  { name: '即梦ai', id: '7366978146019346483', pages: 1, type: null },
-  { name: '可灵ai', id: '7377253049573574668', pages: 1, type: null },
+// 抖音热点宝·视频热榜：抖音官方的热门视频榜，按标题关键词过滤，自带播放 / 点赞 / 发布时间。每页最多 50 条，0.001 美元
+//   window：榜单时间窗口（小时）24 / 72 / 168；sub：1001 总榜（默认）/ 1002 低粉爆款 / 1005 高点赞率
+export const DY_HOT_QUERIES = [
+  { keyword: 'AI', window: 24, pages: 3 },
+  { keyword: 'AI', window: 72, pages: 3 },
+  { keyword: 'AI', window: 168, pages: 4 },
+  { keyword: 'AI', window: 168, pages: 1, sub: 1005 },
+  { keyword: 'AI', window: 168, pages: 1, sub: 1002 },
+  { keyword: '即梦', window: 168, pages: 1 },
+  { keyword: '可灵', window: 168, pages: 1 },
+  { keyword: '豆包', window: 168, pages: 1 },
 ];
-// 每个话题另外按「综合」拉一页：主要是最近几天新发的视频（点赞还不高），抖音每天新出的 AIGC 靠这一路
-export const DY_RECENT_PAGE = true;
-// 创作者中心热门视频榜（近 30 天按播放）要拉的分类：只有这里能拿到抖音的真实播放量
-export const DY_BILLBOARD_TAGS = [
-  { tag: 337, name: '娱乐' }, { tag: 308, name: '剧情' }, { tag: 296, name: '二次元' },
-  { tag: 306, name: '才艺' }, { tag: 310, name: '创意' }, { tag: 336, name: '科技' },
-];
-// AI 发现新玩法后，每天最多花几次「话题搜索」（每次 0.01 美元）去拿它的话题 ID
-export const TIKHUB_NEW_TAGS_PER_DAY = 2;
+// 榜单不带 AI 标：按点赞从高到低查详情，确认抖音官方 AI 标（每条 0.001 美元，查过的 14 天内不再查）。每天最多查这么多条
+export const DY_VERIFY_PER_DAY = 150;
 // 余额低于这个数就暂停，不会把钱扣成负数
 export const TIKHUB_MIN_BALANCE = 0.1;
 

@@ -1,15 +1,18 @@
 // 抖音高赞 AIGC（经 TikHub 付费接口，国内免费接口拿不到）。只在每天早报那次运行时拉
-//   1. 盯一批 AIGC 话题，按「最多点赞」取，只留近 30 天的
-//   2. 创作者中心热门视频榜（按播放），挑出 AIGC —— 唯一能拿到抖音真实播放量的地方
-//   3. AI 发现的新玩法：搜一次拿到话题 ID，之后自动加进第 1 条
+//   1. 抖音热点宝·视频热榜，按标题关键词（AI / 即梦 / 可灵 / 豆包）过滤：抖音官方的热门视频榜，带播放 / 点赞 / 发布时间
+//   2. 排除标题里明确说「不是 AI」的，按点赞从高到低查详情，只留抖音官方标了 AI 的（作者声明 / 平台识别 / AI 特效）
+//      查过的视频记在 data/dy-verified.json，14 天内不再查，所以只有新上榜的视频要花钱
 import path from 'node:path';
-import { clean, isAI, sleep, DAY, DATA, readJSON, writeJSON } from '../util.js';
-import { DY_HASHTAGS, DY_BILLBOARD_TAGS, DY_RECENT_PAGE, TIKHUB_NEW_TAGS_PER_DAY, TIKHUB_MIN_BALANCE } from '../config.js';
+import { clean, DAY, DATA, readJSON, writeJSON } from '../util.js';
+import { DY_HOT_QUERIES, DY_VERIFY_PER_DAY, TIKHUB_MIN_BALANCE } from '../config.js';
 import { plain, hashtags, aiLabel } from './douyin.js';
 
 const BASE = 'https://api.tikhub.io';
-const TAG_FILE = path.join(DATA, 'dy-hashtags.json'); // AI 发现的新话题
 const STATE_FILE = path.join(DATA, 'tikhub.json'); // 余额、今天花了多少
+const VERIFY_FILE = path.join(DATA, 'dy-verified.json'); // { 视频 id: { l: 'AI 标' 或 ''，t: 查的时间 } }
+// 标题里明确否认用了 AI 的（「本视频不由 AI 生成」「真的不是 AI」）直接排除，不花钱查
+const NOT_AI = /(不是|不由|并非|没用|没有用|无需|非)\s*AI|真的不是/i;
+const SUB = { 1001: '', 1002: '·低粉爆款', 1005: '·高点赞率' };
 
 let spent = 0;
 async function th(p, body) {
@@ -41,55 +44,40 @@ const firstList = (o) => {
   return null;
 };
 
-// 抖音视频 ID 的高 32 位是发布时间（秒），用来补榜单里缺的发布时间
+// 抖音视频 ID 的高 32 位是发布时间（秒）
 export function idTime(id) {
   try { const ms = Number(BigInt(id) >> 32n) * 1000; return ms > Date.UTC(2016, 0) && ms <= Date.now() + 864e5 ? ms : 0; } catch { return 0; }
 }
 
-function videoItem(a, board, hint) {
-  const st = a.statistics || {};
-  return {
-    id: `dy:${a.aweme_id}`,
-    cat: 'video', src: 'douyin', board,
-    title: plain(a.desc).slice(0, 80) || '（无文案）',
-    url: `https://www.douyin.com/video/${a.aweme_id}`,
-    author: a.author?.nickname || '',
-    cover: a.video?.cover?.url_list?.[0] || a.video?.origin_cover?.url_list?.[0], // 约 14 天有效
-    heat: st.digg_count || 0,
-    pubAt: (a.create_time || 0) * 1000,
-    tags: hashtags(a).slice(0, 8).join(','),
-    desc: clean(a.desc).slice(0, 120),
-    m: { like: st.digg_count || 0, comment: st.comment_count || 0, share: st.share_count || 0, fav: st.collect_count || 0, hint, aiLabel: aiLabel(a) || undefined },
-  };
-}
+// 候选在各个时间窗口里的新增点赞，取最大的（排序用）
+const winLike = (x) => Math.max(0, ...Object.values(x.win || {}).map((w) => w.like));
 
-// 新玩法 → 话题 ID：每天最多搜几个，搜到的话题之后每天自动盯（14 天内没再被 AI 提到就不盯了）
-async function resolveNewTags(now, warnings) {
-  const known = readJSON(TAG_FILE, {});
-  const trends = readJSON(path.join(DATA, 'trend-keywords.json'), {});
-  const norm = (s) => s.toLowerCase().replace(/s/g, '');
-  const fixed = new Set(DY_HASHTAGS.map((t) => norm(t.name)));
-  const todo = Object.entries(trends)
-    .filter(([kw, v]) => v.last > now - 3 * DAY && !known[kw] && !fixed.has(norm(kw)))
-    .sort((a, b) => b[1].n - a[1].n)
-    .slice(0, TIKHUB_NEW_TAGS_PER_DAY);
-  for (const [kw] of todo) {
-    try {
-      const j = await th('/api/v1/douyin/search/fetch_challenge_search_v2', { keyword: kw, cursor: 0, sort_type: '0', publish_time: '0', filter_duration: '0', content_type: '0', search_id: '', backtrace: '' });
-      spent += 0.01;
-      const tags = [];
-      (function walk(o) { if (!o || typeof o !== 'object') return; const c = o.challenge_info; if (c?.cid) { tags.push(c); return; } for (const v of Object.values(o)) walk(v); })(j);
-      const k = kw.toLowerCase().replace(/\s/g, '');
-      const best = tags.find((c) => c.cha_name?.toLowerCase().replace(/\s/g, '') === k) || tags.find((c) => c.cha_name?.toLowerCase().includes(k)) || null;
-      known[kw] = best ? { name: best.cha_name, id: String(best.cid), views: best.view_count || 0, added: now, last: now } : { none: true, added: now, last: now };
-    } catch (e) { warnings.push(`搜话题「${kw}」：${e.message}`); if (e.broke) break; }
-  }
-  for (const [kw, v] of Object.entries(known)) {
-    if (trends[kw]?.last) v.last = Math.max(v.last || 0, trends[kw].last);
-    if (v.last < now - 14 * DAY) delete known[kw];
-  }
-  writeJSON(TAG_FILE, known, true);
-  return Object.values(known).filter((v) => v.id).map((v) => ({ name: v.name, id: v.id, pages: 1, type: null, auto: true }));
+// 热榜条目 → 统一的视频结构
+//   累计点赞、评论、分享：今天查了详情用详情，否则用上次查详情的记录（最多 3 天前）
+//   播放：抖音不公开累计播放，用榜单上最长时间窗口的新增播放（m.playWin 天）
+//   m.like24：近 24 小时新增点赞，算「飙升」用
+function toItem(x, label, a, c = {}) {
+  const st = a?.statistics || {};
+  const title = a ? a.desc : x.item_title;
+  const pw = Math.max(...Object.keys(x.win).map(Number));
+  const like = Math.max(st.digg_count || c.n || 0, winLike(x));
+  return {
+    id: `dy:${x.item_id}`,
+    cat: 'video', src: 'douyin', board: x.board,
+    title: plain(title || '').slice(0, 80) || '（无文案）',
+    url: `https://www.douyin.com/video/${x.item_id}`,
+    author: x.nick_name || a?.author?.nickname || '',
+    cover: a?.video?.cover?.url_list?.[0] || c.cv || x.item_cover_url, // 约 14 天有效
+    heat: like,
+    pubAt: (x.publish_time || a?.create_time || 0) * 1000 || idTime(x.item_id),
+    tags: (a ? hashtags(a) : (x.item_title || '').match(/#([^#\s]+)/g)?.map((t) => t.slice(1)) || []).slice(0, 8).join(','),
+    desc: clean(title || '').slice(0, 120),
+    m: {
+      play: x.win[pw].play || undefined, playWin: pw / 24, like, like24: x.win[24]?.like,
+      comment: st.comment_count || c.c || undefined, share: st.share_count || c.s || undefined, fav: st.collect_count || c.f || undefined,
+      fans: x.fans_cnt || undefined, aiLabel: label,
+    },
+  };
 }
 
 export async function douyinAigc({ daily = false } = {}) {
@@ -107,56 +95,65 @@ export async function douyinAigc({ daily = false } = {}) {
     throw new Error(`TikHub 余额只剩 ${balance} 美元，已暂停抖音高赞榜，充值后自动恢复`);
   }
 
-  const out = [];
-  const seen = new Set();
-  const since = now - 31 * DAY;
-  const push = (item) => { if (!seen.has(item.id) && item.pubAt > since) { seen.add(item.id); out.push(item); } };
-
-  // 1. 话题：按最多点赞翻页（高赞），再按综合拉一页（最近新发的）
-  const tags = [...DY_HASHTAGS, ...(await resolveNewTags(now, warnings))];
+  // 1. 热点宝·视频热榜：按关键词、时间窗口翻页
+  const cand = new Map();
   let broke = false;
-  // 所有话题请求排成一队，同时跑 4 个（TikHub 限速每秒 10 次），88 次请求约 1 分钟
-  const jobs = tags.flatMap((t) => [
-    ...Array.from({ length: t.pages || 1 }, (_, p) => ({ t, sort: 1, cursor: p * 10 })),
-    ...(DY_RECENT_PAGE ? [{ t, sort: 0, cursor: 0 }] : []),
-  ]);
+  for (const q of DY_HOT_QUERIES) {
+    for (let page = 1; page <= q.pages && !broke; page++) {
+      try {
+        const j = await th('/api/v1/douyin/billboard/fetch_hot_total_video_list', { page, page_size: 50, date_window: q.window, sub_type: q.sub || 1001, keyword: q.keyword, tags: [] });
+        spent += 0.001;
+        const list = firstList(j?.data) || [];
+        const board = `热点宝·近${q.window / 24}天${SUB[q.sub || 1001]}`;
+        // 榜单上的点赞 / 播放是「这个时间窗口内新增的」，不是累计：每个窗口分开记，榜单标签用最长的窗口
+        for (const x of list) {
+          if (!x.item_id) continue;
+          const id = String(x.item_id);
+          const c = cand.get(id) || { ...x, item_id: id, board, winMax: q.window, win: {} };
+          const w = (c.win[q.window] ||= { like: 0, play: 0 });
+          w.like = Math.max(w.like, x.like_cnt || 0);
+          w.play = Math.max(w.play, x.play_cnt || 0);
+          if (q.window > c.winMax) Object.assign(c, { board, winMax: q.window });
+          cand.set(id, c);
+        }
+        if (list.length < 40) break; // 没有下一页了
+      } catch (e) { warnings.push(`热榜 ${q.keyword}/${q.window}h/第${page}页：${e.message}`); if (e.broke) broke = true; break; }
+    }
+  }
+
+  // 2. 排除明确否认 AI 的，按点赞从高到低查详情确认 AI 标，顺便拿累计点赞（查过的直接用记录）
+  //    预算先给没查过的；有剩再给 3 天没更新过累计点赞的 AI 视频
+  const verified = readJSON(VERIFY_FILE, {});
+  for (const [id, v] of Object.entries(verified)) if (v.t < now - 14 * DAY) delete verified[id];
+  const ranked = [...cand.values()].filter((x) => !NOT_AI.test(x.item_title || '')).sort((a, b) => winLike(b) - winLike(a));
+  const todo = [
+    ...ranked.filter((x) => !verified[x.item_id]),
+    ...ranked.filter((x) => verified[x.item_id]?.l && verified[x.item_id].t < now - 3 * DAY),
+  ].slice(0, +process.env.DY_VERIFY_LIMIT || DY_VERIFY_PER_DAY);
+  const details = new Map();
   let next = 0;
   await Promise.all(Array.from({ length: 4 }, async () => {
-    while (next < jobs.length && !broke) {
-      const q = jobs[next++];
+    while (next < todo.length && !broke) {
+      const x = todo[next++];
       try {
-        const j = await th(`/api/v1/douyin/app/v3/fetch_hashtag_video_list?ch_id=${q.t.id}&cursor=${q.cursor}&sort_type=${q.sort}&count=10`);
+        const a = awemes(await th(`/api/v1/douyin/app/v3/fetch_one_video?aweme_id=${x.item_id}`))[0];
         spent += 0.001;
-        // 只收抖音官方标了 AI 的（作者声明 / 平台识别 / AI 特效）
-        for (const a of awemes(j)) if (aiLabel(a)) push(videoItem(a, `话题·#${q.t.name}`, q.t.type));
-      } catch (e) { warnings.push(`#${q.t.name}：${e.message}`); if (e.broke) broke = true; }
+        const l = a ? aiLabel(a) : '';
+        const st = a?.statistics || {};
+        verified[x.item_id] = l
+          ? { l, t: now, n: st.digg_count || 0, c: st.comment_count || 0, s: st.share_count || 0, f: st.collect_count || 0, cv: a.video?.cover?.url_list?.[0] || '' }
+          : { l, t: now };
+        if (a) details.set(x.item_id, a);
+      } catch (e) { warnings.push(`详情 ${x.item_id}：${e.message}`); if (e.broke) broke = true; }
     }
   }));
+  writeJSON(VERIFY_FILE, verified);
 
-  // 2. 创作者热门视频榜（近 30 天按播放），只留看起来跟 AI 有关的，交给 AI 再判断
-  for (const b of broke ? [] : DY_BILLBOARD_TAGS) {
-    try {
-      const j = await th(`/api/v1/douyin/creator/fetch_creator_material_center_billboard?billboard_tag=${b.tag}&order_key=1&time_filter=3`);
-      spent += 0.001;
-      for (const x of firstList(j?.data) || []) {
-        const text = `${x.title || ''} ${(x.key_words || []).join(' ')}`;
-        if (!isAI(text) || !x.item_id) continue;
-        // 榜单不带 AI 标记，查一次详情（0.001 美元）确认是不是官方标了 AI
-        let detail = null;
-        try { detail = awemes(await th(`/api/v1/douyin/app/v3/fetch_one_video?aweme_id=${x.item_id}`))[0]; spent += 0.001; } catch (e) { warnings.push(`详情 ${x.item_id}：${e.message}`); }
-        const lbl = detail ? aiLabel(detail) : '';
-        if (!lbl) continue;
-        push({
-          id: `dy:${x.item_id}`, cat: 'video', src: 'douyin', board: `热门视频榜·${b.name}`,
-          title: plain(x.title || '').slice(0, 80) || '（无文案）', url: `https://www.douyin.com/video/${x.item_id}`,
-          author: x.author_name || '', heat: x.like_count || 0, cover: x.cover?.url_list?.[0],
-          // 榜单不给发布时间，但抖音视频 ID 的高 32 位就是发布时间戳（实测误差十几秒）
-          pubAt: idTime(x.item_id) || now,
-          desc: clean(x.title || '').slice(0, 120), tags: (x.key_words || []).slice(0, 6).join(','),
-          m: { play: x.play_count || 0, like: x.like_count || 0, comment: x.comment_count || 0, share: x.share_count || 0, noDate: idTime(x.item_id) ? undefined : 1, aiLabel: lbl },
-        });
-      }
-    } catch (e) { warnings.push(`热门视频榜·${b.name}：${e.message}`); if (e.broke) break; }
+  // 3. 只输出带官方 AI 标的
+  const out = [];
+  for (const x of ranked) {
+    const label = verified[x.item_id]?.l;
+    if (label) out.push(toItem(x, label, details.get(x.item_id), verified[x.item_id]));
   }
 
   const today = new Date(now).toISOString().slice(0, 10);
@@ -165,6 +162,6 @@ export async function douyinAigc({ daily = false } = {}) {
     spentToday: +((state.day === today ? state.spentToday || 0 : 0) + spent).toFixed(3), day: today,
   }, true);
   out.warnings = warnings.slice(0, 5);
-  out.info = `本次约花 ${spent.toFixed(3)} 美元，余额约 ${typeof balance === 'number' ? (balance - spent).toFixed(3) : '?'}`;
+  out.info = `热榜 ${cand.size} 条，新查详情 ${todo.length} 条，带 AI 标 ${out.length} 条；本次约花 ${spent.toFixed(3)} 美元，余额约 ${typeof balance === 'number' ? (balance - spent).toFixed(3) : '?'}`;
   return out;
 }

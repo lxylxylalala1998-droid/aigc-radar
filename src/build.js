@@ -26,10 +26,12 @@ function windowData(days, now) {
   const news = by('news').sort((a, b) => (b.pubAt || b.firstSeen) - (a.pubAt || a.firstSeen)).slice(0, LIMIT.news);
 
   // 24 小时看蹿升，更长的窗口看总播放；只要窗口内发布的
-  const videos = by('video')
-    .filter((x) => x.pubAt >= now - Math.max(days, 3) * DAY && x.ai?.type !== '非AIGC' && (x.src !== 'douyin' || x.m?.aiLabel)) // 抖音只展示官方标了 AI 的
+  // 抖音按点赞、B站按播放，量级差很多，必须分平台各自排序截断，否则抖音会被 B站挤掉
+  // 窗口里出现过（还在热榜 / 搜索结果里）且近 31 天发布的都算；抖音只展示官方标了 AI 的
+  const videos = ['douyin', 'bilibili'].flatMap((s) => by('video')
+    .filter((x) => x.src === s && x.pubAt >= now - 31 * DAY && x.ai?.type !== '非AIGC' && (s !== 'douyin' || x.m?.aiLabel))
     .sort(days === 1 ? (a, b) => (b.vel || 0) - (a.vel || 0) : (a, b) => (b.heat || 0) - (a.heat || 0))
-    .slice(0, LIMIT.video);
+    .slice(0, LIMIT.video));
 
   const trends = ['weibo', 'douyin', 'bilibili'].flatMap((src) => by('trend')
     .filter((x) => x.src === src)

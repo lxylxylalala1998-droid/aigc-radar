@@ -74,16 +74,16 @@ export function render(d, { siteUrl } = {}) {
   const note = (t) => `<span style="font-weight:400;font-size:12px;color:#6b7280">${t}</span>`;
   const vRow = (v, s) => `
     <div class="tt">${a(v.url, esc(cut(v.title, 60)))}</div>
-    <div class="m">${b(v.ai?.type || 'AIGC', 'ai')}${v.m?.aiLabel ? b({ 作者声明: '作者声明AI', 平台识别: '平台识别AI', AI特效: 'AI特效角标' }[v.m.aiLabel] || 'AI标') : ''}${s === 'douyin' && v.m?.play ? `▶ ${fmtNum(v.m.play)}　` : ''}${s === 'douyin' ? '❤' : '▶'} ${fmtNum(v.heat)}${v.vel && v.vel > 1 ? `　<span class="up">+${fmtNum(v.vel)}${s === 'douyin' ? '赞' : ''}/小时</span>` : ''}　${esc(v.author || '')}${v.pubAt && !v.m?.noDate ? `　${Math.max(1, Math.round((d.generatedAt - v.pubAt) / DAY))} 天前` : ''}</div>
+    <div class="m">${b(v.ai?.type || 'AIGC', 'ai')}${v.m?.aiLabel ? b({ 作者声明: '作者声明AI', 平台识别: '平台识别AI', AI特效: 'AI特效角标' }[v.m.aiLabel] || 'AI标') : ''}${s === 'douyin' && v.m?.play ? `▶ ${v.m.playWin ? `近${v.m.playWin}天 ` : ''}${fmtNum(v.m.play)}　` : ''}${s === 'douyin' ? '❤' : '▶'} ${fmtNum(v.heat)}${v.vel && v.vel > 1 ? `　<span class="up">+${fmtNum(v.vel)}${s === 'douyin' ? '赞' : ''}/小时</span>` : ''}　${esc(v.author || '')}${v.pubAt && !v.m?.noDate ? `　${Math.max(1, Math.round((d.generatedAt - v.pubAt) / DAY))} 天前` : ''}</div>
     ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}`;
   const vSection = (s, emoji, topTitle, topNote, velNote) => {
-    const html = [[`${s}Top`, topTitle, topNote, 8], [s, '24 小时飙升', velNote, 5]]
+    const html = [[`${s}Top`, topTitle, topNote, 10], [s, '24 小时飙升', velNote, 5]]
       .filter(([k]) => vids[k]?.length)
       .map(([k, title, n, max]) => `<div class="sub">${title} ${note(n)}</div>` + items(vids[k].slice(0, max), (v) => vRow(v, s))).join('');
     if (html) parts.push(sec(`${emoji} ${PLATFORM[s]}热点`, `${PLATFORM[s]}上的 AIGC 爆款`, html));
   };
-  vSection('douyin', '🎬', '高赞榜 · 近 30 天', '按点赞；只收抖音官方标了 AI 的；AI音乐 / MV / 歌手艺人 / 鬼畜 / 影视 / 换人', '按每小时新增点赞');
-  vSection('bilibili', '📺', '高播放榜 · 近 30 天', '按播放；同上 6 类', '按每小时新增播放');
+  vSection('douyin', '🎬', '高赞榜 TOP10 · 近 30 天', '近 30 天所有 AIGC 作品严格按累计点赞排，同一作者只留最火的一条；只收抖音官方标了 AI 的', '按每小时新增点赞');
+  vSection('bilibili', '📺', '高播放榜 TOP10 · 近 30 天', '近 30 天所有 AIGC 作品严格按播放排，同一作者只留最火的一条', '按每小时新增播放');
 
   // 4. 热梗热搜：抖音 / B站 / 微博各自一张榜，再是抖音挑战、热梗精选（和网页同序）
   const tr = d.trends || {};
