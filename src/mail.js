@@ -55,6 +55,17 @@ export function render(d, { siteUrl, archive = false } = {}) {
   const site = siteUrl || process.env.SITE_URL || '';
   const parts = [];
 
+  // 0. 3 分钟速览：今天最该做的 3 个选题 + 一句话风向 + 1 个低粉爆款 + 1 个信息差
+  const br = d.brief;
+  if (br && (br.top?.length || br.wind)) {
+    const tb = (t) => [t.timing && b(t.timing, t.timing === '刚起势' ? 'hot' : t.timing === '已饱和' ? '' : 'warm'), t.kind === '教程测评' && b('教程测评', 'hz'), t.level && b(`难度${t.level}${t.time ? ` · ${t.time}` : ''}`)].filter(Boolean).join('');
+    parts.push(sec('⚡ 3 分钟速览', '先看这一块，完整选题和参考在下面', `
+      ${br.wind ? `<div class="gp" style="font-weight:600;line-height:1.6">🧭 ${esc(br.wind)}</div>` : ''}
+      ${(br.top || []).map((t, i) => `<div class="it"><div class="tt"><b>${i + 1}. </b>${pb(t.src)}<b>${esc(t.title)}</b></div><div class="m">${tb(t)}${PLATFORM[t.src]}选题第 ${t.i + 1} 个</div>${an('为什么先做', t.why)}</div>`).join('')}
+      ${br.low ? `<div class="it"><div class="m">🌱 低粉爆款</div><div class="tt">${a(br.low.url, esc(cut(br.low.title, 40)))}</div><div class="m">${pb(br.low.src)}${fmtNum(br.low.heat)}${br.low.src === 'douyin' ? '赞' : '播放'}${br.low.fans ? `，作者粉丝只有 ${fmtNum(br.low.fans)}` : ''}</div></div>` : ''}
+      ${br.gap ? `<div class="it" style="border-bottom:0"><div class="m">🔀 ${PLATFORM[br.gap.src]}爆了、${PLATFORM[br.gap.to]}还没人做</div><div class="tt">${a(br.gap.url, esc(cut(br.gap.title, 40)))}</div>${an(`搬到${PLATFORM[br.gap.to]}`, br.gap.how)}</div>` : ''}`));
+  }
+
   // 1. 今日选题：抖音 10 个、B站 10 个，各用平台代表色框住（邮件太窄，上下排）
   const byPlat = Array.isArray(d.picks)
     ? { douyin: d.picks.filter((p) => p.platform !== 'B站'), bilibili: d.picks.filter((p) => p.platform === 'B站' || p.platform === '双平台') }
@@ -178,7 +189,7 @@ ${parts.join('\n')}
   ${thWarn}
   ${dsWarn}
   ${d.errors?.length ? '<div class="warn">⚠ AI 分析部分出错，相关板块用规则兜底</div>' : ''}
-  <div>标「推测」的分析是 AI 根据有限信息做的判断，仅供参考。小红书暂未接入。</div>
+  <div>标「推测」的分析是 AI 根据有限信息做的判断，仅供参考。${site ? `看不懂某个标签？${a(`${site}#guide`, '<span style="color:#5b5bd6">看「怎么看这份报告」</span>')}` : ''}</div>
 </div>
 </div></div></body></html>`;
 }
@@ -200,8 +211,15 @@ async function waitUntilSendTime() {
   }
 }
 
-export async function send(d) {
-  const to = (process.env.MAIL_TO || '').split(/[,;，；\s]+/).filter(Boolean);
+// 收件人：MAIL_TO 里的全部地址；报警邮件只发给 ALERT_TO（没设就是 MAIL_TO 的第一个）
+export const recipients = () => (process.env.MAIL_TO || '').split(/[,;，；\s]+/).filter(Boolean);
+export const alertRecipients = () => {
+  const a = (process.env.ALERT_TO || '').split(/[,;，；\s]+/).filter(Boolean);
+  return a.length ? a : recipients().slice(0, 1);
+};
+
+// 发一封 HTML 邮件给一组人：每个收件人单独发一封，互相看不到邮箱，一个地址出错也不影响别人
+export async function sendHtml(to, subj, html) {
   const user = process.env.SMTP_USER;
   if (!to.length || !user || !process.env.SMTP_PASS) throw new Error('缺少 MAIL_TO / SMTP_USER / SMTP_PASS，无法发信');
   const port = +(process.env.SMTP_PORT || 465);
@@ -209,12 +227,10 @@ export async function send(d) {
     host: process.env.SMTP_HOST || 'smtp.qq.com', port, secure: port === 465,
     auth: { user, pass: process.env.SMTP_PASS },
   });
-  const html = render(d);
   const fails = [];
-  // 每个收件人单独发一封：互相看不到邮箱，一个地址出错也不影响别人
   for (const addr of to) {
     try {
-      await tx.sendMail({ from: { name: process.env.MAIL_FROM_NAME || 'AIGC 热点雷达', address: user }, to: addr, subject: subject(d), html });
+      await tx.sendMail({ from: { name: process.env.MAIL_FROM_NAME || 'AIGC 热点雷达', address: user }, to: addr, subject: subj, html });
       console.log(`✓ 已发送 → ${addr.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
     } catch (e) {
       fails.push(addr);
@@ -223,6 +239,10 @@ export async function send(d) {
     await sleep(1500);
   }
   if (fails.length === to.length) throw new Error('全部发送失败');
+}
+
+export async function send(d) {
+  await sendHtml(recipients(), subject(d), render(d));
 }
 
 function latestDigest() {

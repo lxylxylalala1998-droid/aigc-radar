@@ -36,10 +36,76 @@
   const more = (total, unit = '条') => (total > state.shown ? `<button class="more" data-more>再看 ${Math.min(PAGE, total - state.shown)} ${unit}（共 ${total} ${unit}）</button>` : '');
   const sheet = (rows) => (rows ? `<div class="sheet">${rows}</div>` : '<div class="none">没有符合条件的内容</div>');
 
-  // key：w1 / w3 / w7 / w30，往期是 d/日期；days 是往期日期索引
+  // key：w1 / w3 / w7 / w30（往期是 d/日期）是「核心」：选题 + 各板块条数，几十 KB，先下；
+  //      加 .v / .t / .m / .n 是视频 / 热搜 / 热歌 / 资讯，点到哪个板块再下；dg/日期 是某一天的选题；days 是往期日期索引
   async function load(key) {
-    if (!cache[key]) cache[key] = fetch(`data/${key}.json?t=${Math.floor(Date.now() / 6e5)}`).then((r) => { if (!r.ok) throw new Error(`没有这份数据（${r.status}）`); return r.json(); });
+    if (!cache[key]) {
+      cache[key] = fetch(`data/${key}.json?t=${Math.floor(Date.now() / 6e5)}`)
+        .then((r) => { if (!r.ok) throw new Error(`没有这份数据（${r.status}）`); return r.json(); })
+        .catch((e) => { delete cache[key]; throw e; }); // 失败了不缓存，下次还能重试
+    }
     return cache[key];
+  }
+  const PART = { douyin: 'v', bilibili: 'v', trend: 't', music: 'm', news: 'n' };
+  const baseKey = () => (state.day ? `d/${state.day}` : `w${state.w}`);
+  // 首屏出来后，后台把其它板块也下好，切换时不用等
+  let prefetched = '';
+  function prefetch(base) {
+    if (prefetched === base) return;
+    prefetched = base;
+    setTimeout(() => ['v', 't', 'm', 'n'].forEach((p) => load(`${base}.${p}`).catch(() => {})), 1200);
+  }
+
+  // ---------- 小提示：点标签看含义（手机上没法鼠标悬停）----------
+  let toastTimer;
+  function toast(text) {
+    const el = $('#toast');
+    el.textContent = text;
+    el.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.hidden = true; }, 4000);
+  }
+
+  // ---------- 待做清单：存在自己的浏览器里，可以一键复制成选题单 ----------
+  const TODO_KEY = 'aigc-radar-todo';
+  const readTodo = () => { try { return JSON.parse(localStorage.getItem(TODO_KEY) || '[]'); } catch { return []; } };
+  let todo = readTodo();
+  const writeTodo = () => { try { localStorage.setItem(TODO_KEY, JSON.stringify(todo)); } catch { /* 无痕模式等存不了，只在这次打开期间有效 */ } };
+  const savable = new Map(); // 渲染时登记：key → 存进清单的内容
+  const saveBtn = (key, item) => {
+    savable.set(key, item);
+    const on = todo.some((t) => t.key === key);
+    return `<button class="save ${on ? 'on' : ''}" data-save="${esc(key)}" title="${on ? '移出待做清单' : '加入待做清单'}" aria-label="${on ? '移出待做清单' : '加入待做清单'}">${on ? '★ 已加入' : '☆ 待做'}</button>`;
+  };
+  function todoCount() {
+    $('#todo-n').textContent = todo.length;
+    $('#todo-btn').hidden = !todo.length && $('#todo').hidden;
+  }
+  function toggleSave(key) {
+    const had = todo.some((t) => t.key === key);
+    if (had) todo = todo.filter((t) => t.key !== key);
+    else if (savable.has(key)) { todo.unshift({ ...savable.get(key), key, savedAt: Date.now() }); if (todo.length === 1) toast('已加入待做清单，右下角可以查看、复制'); }
+    writeTodo();
+    document.querySelectorAll('[data-save]').forEach((b) => {
+      if (b.dataset.save !== key) return;
+      b.classList.toggle('on', !had);
+      b.textContent = had ? '☆ 待做' : '★ 已加入';
+    });
+    todoCount();
+    if (!$('#todo').hidden) renderTodo();
+  }
+  const todoText = () => ['【AIGC 选题待做清单】', ...todo.map((t, i) => [
+    `${i + 1}. [${PLAT[t.src] || ''}] ${t.kind}：${t.title}`,
+    t.why && `   为什么能火：${t.why}`, t.how && `   怎么做：${t.how}`, t.tools && `   工具链：${t.tools}`,
+    t.hook && `   爆点：${t.hook}`, t.tip && `   参考：${t.tip}`, t.url && `   链接：${t.url}`,
+  ].filter(Boolean).join('\n'))].join('\n\n');
+  function renderTodo() {
+    $('#todo-list').innerHTML = todo.length ? todo.map((t) => `
+      <div class="td">
+        <div class="td-h">${pb(t.src)}<span class="tag">${esc(t.kind)}</span><button class="td-x" data-save="${esc(t.key)}" aria-label="移出">移出</button></div>
+        <div class="td-t">${t.url ? link(t.url, esc(t.title)) : esc(t.title)}</div>
+        ${t.how || t.tip ? `<div class="td-s">${esc(t.how || t.tip)}</div>` : ''}
+      </div>`).join('') : '<div class="none">还没有加入任何内容。选题和视频旁边点「☆ 待做」就能加进来。</div>';
   }
   const fmtDur = (s) => (!s ? '' : s >= 60 ? `${Math.floor(s / 60)}分${s % 60 ? `${s % 60}秒` : '钟'}` : `${s}秒`);
   const pct = (v) => `${v >= 0 ? '+' : ''}${Math.round(v * 100)}%`;
@@ -52,18 +118,44 @@
     点赞率高: '点赞 / 播放远高于同类：完成度和情绪都到位',
     弹幕多: '弹幕远高于同类：有名场面、梗密度高，适合鬼畜、二创',
   };
-  const ptTags = (x) => (x.pt || []).map((k) => `<span class="tag pt ${k === '低粉爆款' ? 'low' : ''}" title="${esc(PT_WHY[k] || '')}">${esc(k)}</span>`).join('');
-  const askTags = (a) => (a ? Object.entries(a).map(([k, n]) => `<span class="tag ask">${esc(k)} ×${n}</span>`).join('') : '');
+  const ptTags = (x) => (x.pt || []).map((k) => `<span class="tag pt ${k === '低粉爆款' ? 'low' : ''}" title="${esc(PT_WHY[k] || '')}" data-tip="${esc(`${k}：${PT_WHY[k] || ''}`)}">${esc(k)}</span>`).join('');
+  const askTags = (a) => (a ? Object.entries(a).map(([k, n]) => `<span class="tag ask" data-tip="${esc(`热评前 20 条里有 ${n} 条在${k.replace(/^问/, '问 ').replace(/^求/, '求')}`)}">${esc(k)} ×${n}</span>`).join('') : '');
   const TIMING_CLS = { 刚起势: 'hot', 高峰期: 'mark', 已饱和: '' };
   const dayLabel = (date) => { const d = new Date(`${date}T12:00:00+08:00`); return `${d.getMonth() + 1}月${d.getDate()}日`; };
   const weekOf = (date) => `周${WEEK[new Date(`${date}T12:00:00+08:00`).getDay()]}`;
 
   // ---------- 今日选题：抖音 10 个在左、B站 10 个在右，各用平台代表色框住；手机上上下排、各展开前 5 个 ----------
-  function renderPicks(d) {
+  // ---------- 3 分钟速览：今天最该做的 3 个 + 一句话风向 + 低粉爆款 + 信息差 ----------
+  function briefHtml(dg) {
+    const br = dg.brief;
+    if (!br || !(br.top?.length || br.wind)) return '';
+    return `
+      <section class="brief">
+        <div class="sec-head"><h2>3 分钟速览</h2><small>${dayLabel(dg.date)} · 先看这一块，点选题跳到下面的完整说明</small></div>
+        ${br.wind ? `<p class="wind">${esc(br.wind)}</p>` : ''}
+        <div class="brief-top">${(br.top || []).map((t, k) => `
+          <button class="bt" data-jump="${t.src}:${t.i}">
+            <span class="bt-no">${k + 1}</span>
+            <span class="bt-body">
+              <span class="tags">${pb(t.src)}${t.timing ? `<span class="tag ${TIMING_CLS[t.timing] ?? ''}">${esc(t.timing)}</span>` : ''}${t.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${t.level ? tag(`难度${t.level}${t.time ? ` · ${t.time}` : ''}`) : ''}</span>
+              <b>${esc(t.title)}</b>
+              ${t.why ? `<span class="bt-why">${esc(t.why)}</span>` : ''}
+            </span>
+          </button>`).join('')}</div>
+        ${br.low || br.gap ? `<div class="brief-more">
+          ${br.low ? `<div><span class="mk">低粉爆款</span>${link(br.low.url, esc(br.low.title))}<small>${pb(br.low.src)} ${num(br.low.heat)}${br.low.src === 'douyin' ? '赞' : '播放'}${br.low.fans ? ` · 作者粉丝只有 ${num(br.low.fans)}` : ''}</small></div>` : ''}
+          ${br.gap ? `<div><span class="mk">信息差</span>${link(br.gap.url, esc(br.gap.title))}<small>${PLAT[br.gap.src]}爆了、${PLAT[br.gap.to]}还没人做${br.gap.how ? `：${esc(br.gap.how)}` : ''}</small></div>` : ''}
+        </div>` : ''}
+      </section>`;
+  }
+
+  async function renderPicks(d) {
     const ds = d.digests || [];
     if (!ds.length) { $('#picks').innerHTML = `<div class="empty-note">${state.day ? `${dayLabel(state.day)}没有生成早报（那天 AI 日报没跑成），下面各板块的数据照常可以看。` : '这个时间段还没有 AI 选题日报，每天早上 9 点前生成。'}</div>`; return; }
     const i = Math.min(state.pickDay, ds.length - 1);
-    const dg = ds[i];
+    // 最新一天的选题在核心数据里；切到别的日期再单独下那一天的
+    const dg = i === 0 && d.dg0 ? d.dg0 : await load(`dg/${ds[i].date}`).catch(() => null);
+    if (!dg) { $('#picks').innerHTML = '<div class="empty-note">这一天的选题加载失败，刷新一下试试。</div>'; return; }
     // 旧日报是一个混合列表（带 platform 字段），新日报按平台分开
     const byPlat = Array.isArray(dg.picks)
       ? { douyin: dg.picks.filter((p) => p.platform !== 'B站'), bilibili: dg.picks.filter((p) => p.platform === 'B站' || p.platform === '双平台') }
@@ -71,11 +163,11 @@
     const dayChips = ds.length > 1 ? `<div class="day-chips">${ds.map((x, k) => `<button class="chip ${k === i ? 'on' : ''}" data-pickday="${k}">${+x.date.slice(5, 7)}月${+x.date.slice(8)}日</button>`).join('')}</div>` : '';
     const original = link(`archive/${dg.date}.html`, `看${state.day ? '当天' : ` ${+dg.date.slice(5, 7)}月${+dg.date.slice(8)}日 `}早报原文 →`, 'arch-link');
     const refs = (p) => (p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : '');
-    const item = (p, k) => `
-      <article class="pm ${k === 0 ? 'first' : ''}">
+    const item = (p, k, s) => `
+      <article class="pm ${k === 0 ? 'first' : ''}" id="pick-${s}-${k}">
         <div class="no">${pad(k + 1)}</div>
         <div>
-          <div class="tags">${tag(p.horizon, 'mark')}${p.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${p.form === '系列' ? tag('系列追更') : ''}${p.level ? tag(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${p.timing ? `<span class="tag ${TIMING_CLS[p.timing.label] ?? ''}" title="${esc(p.timing.basis)}">${esc(p.timing.label)}</span>` : ''}</div>
+          <div class="tags">${tag(p.horizon, 'mark')}${p.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${p.form === '系列' ? tag('系列追更') : ''}${p.level ? tag(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${p.timing ? `<span class="tag ${TIMING_CLS[p.timing.label] ?? ''}" title="${esc(p.timing.basis)}" data-tip="时效依据：${esc(p.timing.basis)}">${esc(p.timing.label)}</span>` : ''}${saveBtn(`p:${dg.date}:${s}:${p.title}`, { kind: '选题', src: s, title: p.title, why: p.why, how: p.how, tools: p.tools, url: p.refs?.[0]?.url })}</div>
           <h3>${esc(p.title)}</h3>
           <p><span class="mk">为什么能火</span>${esc(p.why)}</p>
           <p><span class="mk">怎么做</span>${esc(p.how)}</p>
@@ -92,7 +184,7 @@
       return `
       <section class="pbox ${s}">
         <header class="pbox-h"><h3>${PLAT[s]} · 今日选题</h3><span><b class="num">${list.length}</b> 个</span></header>
-        ${list.length ? `<div class="pbox-list">${list.slice(0, 5).map(item).join('')}<div class="pbox-more ${open ? 'open' : ''}">${list.slice(5).map((p, k) => item(p, k + 5)).join('')}</div></div>
+        ${list.length ? `<div class="pbox-list">${list.slice(0, 5).map((p, k) => item(p, k, s)).join('')}<div class="pbox-more ${open ? 'open' : ''}">${list.slice(5).map((p, k) => item(p, k + 5, s)).join('')}</div></div>
         ${list.length > 5 ? `<button class="more picks-toggle" data-picks="${s}">${open ? '收起' : `展开其余 ${list.length - 5} 个`}</button>` : ''}` : '<div class="none">这一天没有生成选题（AI 分析未开启或出错）</div>'}
       </section>`;
     };
@@ -119,7 +211,7 @@
           <div class="rv"><span class="tag ${r.status === '继续涨' ? 'hot' : r.status === '放缓' ? 'mark' : ''}">${r.status}</span>${pb(r.src)}<span class="rv-t">${esc(r.title)}</span><span class="rv-n">${N(r.from)} → ${N(r.to)}　${pct(r.perDay)}/天</span>${link(r.ref.url, '参考作品 ↗', 'rv-a')}</div>`).join('')}</div>
         <p class="rv-note">每个选题按涨得最多的那条参考作品算（抖音按点赞、B站按播放）。「按信号看」统计了 ${rv.days.map(dayLabel).join('、')} 的选题，看哪类信号推荐的选题后劲更足。</p>
       </details>` : '';
-    $('#picks').innerHTML = `
+    $('#picks').innerHTML = `${briefHtml(dg)}
       <div class="sec-head"><h2>${state.day ? `${dayLabel(state.day)}选题` : ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>AI 编辑${dg.ai ? `（${esc(dg.ai)}）` : ''}分别从抖音、B站的 24 小时 / 3 天 / 7 天 / 30 天热点里挑 · ${clock(dg.generatedAt)} · ${original}</small></div>
       ${dayChips}
       <div class="pick-cols">${box('douyin')}${box('bilibili')}</div>
@@ -135,7 +227,7 @@
         <div>
           <div class="tt">${link(x.url, esc(x.title))}</div>
           <div class="meta">${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiLabel ? tag({ 作者声明: '作者声明AI', 平台识别: '平台识别AI', AI特效: 'AI特效角标' }[x.m.aiLabel] || 'AI标', 'solid') : ''}${ptTags(x)}<span>${esc(x.author || '')}</span>${x.m?.fans ? `<span>粉丝 ${num(x.m.fans)}</span>` : ''}${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${x.m?.dur ? `<span>${fmtDur(x.m.dur)}</span>` : ''}${dy && /^(话题|热门视频榜|热点宝)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>
-          <div class="stat">${dy && x.m?.play ? `<span>${x.m.playWin ? `近${x.m.playWin}天` : ''}${N(x.m.play)}播放</span>` : ''}<span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}${x.m?.fav ? `<span>${N(x.m.fav)}收藏</span>` : ''}</div>
+          <div class="stat">${dy && x.m?.play ? `<span>${x.m.playWin ? `近${x.m.playWin}天` : ''}${N(x.m.play)}播放</span>` : ''}<span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}${x.m?.fav ? `<span>${N(x.m.fav)}收藏</span>` : ''}${saveBtn(`v:${x.id}`, { kind: '参考作品', src: x.src, title: x.title, url: x.url, hook: x.ai?.hook, tip: x.ai?.tip })}</div>
           ${x.m?.bgm ? `<div class="bgm">♪ BGM：${esc(x.m.bgm)}</div>` : ''}
           ${ana('爆点', x.ai?.hook)}${ana('参考', x.ai?.tip)}
           ${x.ai?.voice || x.ai?.ask ? `<div class="ana"><span class="mk">评论区</span>${esc(x.ai.voice || '')} ${askTags(x.ai.ask)}</div>` : ''}
@@ -253,7 +345,7 @@
     },
     news: {
       lede: '汇总量子位、36氪、IT之家、OpenAI、Google、DeepMind、Hugging Face、TechCrunch、The Verge、Hacker News 等来源，AI 把同一件事的多篇报道合并成一个事件。',
-      subs: (d) => [['大事件', 'AI 归并的大事件', (d.digests || []).reduce((n, g) => n + (g.news || []).length, 0)], ['工具热度', '爆款工具榜', (d.tools || []).length], ['全部资讯', '全部资讯', d.news.length]],
+      subs: (d) => [['大事件', 'AI 归并的大事件', (d.events || []).length], ['工具热度', '爆款工具榜', (d.tools || []).length], ['全部资讯', '全部资讯', d.news.length]],
       defaultSub: '大事件',
       sorts: [['time', '最新发布'], ['heat', '热度']],
       chips: (d) => (state.sub === '全部资讯' ? counts(d.news, (x) => x.src) : []),
@@ -276,10 +368,11 @@
             </article>`).join(''));
         }
         if (state.sub !== '全部资讯') {
-          const evs = (d.digests || []).flatMap((g) => (g.news || []).map((e) => ({ ...e, date: g.date }))).filter((e) => match({ title: e.title, summary: e.summary }, state.q));
+          const evs = (d.events || []).filter((e) => match({ title: e.title, summary: e.summary }, state.q));
+          const multiDay = new Set((d.events || []).map((e) => e.date)).size > 1;
           return sheet(evs.map((e) => `
             <article class="item event lv-${esc(e.level || '')}">
-              <div class="meta">${e.level === '重磅' ? tag('重磅', 'hot') : tag(e.level)}${tag(e.kind)}${(d.digests || []).length > 1 ? `<span>${e.date.slice(5)}</span>` : ''}</div>
+              <div class="meta">${e.level === '重磅' ? tag('重磅', 'hot') : tag(e.level)}${tag(e.kind)}${multiDay ? `<span>${e.date.slice(5)}</span>` : ''}</div>
               <h3>${esc(e.title)}</h3>
               ${e.summary ? `<p>${esc(e.summary)}</p>` : ''}
               <div class="srcs">${(e.refs || []).map((r) => link(r.url, `<b>${esc(r.src)}</b>${esc(r.title)}`)).join('')}</div>
@@ -320,23 +413,30 @@
     box.querySelector('.on')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
+  let renderSeq = 0;
   async function render() {
-    const d = await load(state.day ? `d/${state.day}` : `w${state.w}`);
+    const seq = ++renderSeq;
+    const base = baseKey();
+    const d = await load(base);
     const T = TABS[state.tab];
     if (!state.sub && T.defaultSub) state.sub = T.defaultSub;
     const g = new Date(d.generatedAt);
     $('#updated').innerHTML = `<b class="num">${g.getMonth() + 1}.${g.getDate()}</b> 周${WEEK[g.getDay()]} · ${state.day ? '正在看往期 · 当天最后一次扫描' : '最近一次扫描'} <b class="num">${pad(g.getHours())}:${pad(g.getMinutes())}</b>`;
     document.querySelectorAll('#win button').forEach((b) => b.classList.toggle('on', state.day ? 'arch' in b.dataset : +b.dataset.w === state.w));
     await renderDays();
-    const n = {
-      douyin: d.videos.filter((x) => x.src === 'douyin').length, bilibili: d.videos.filter((x) => x.src === 'bilibili').length,
-      trend: d.trends.length, music: d.music.length, news: (d.digests || []).reduce((s, x) => s + (x.news || []).length, 0) || d.news.length,
-    };
+    const n = d.counts || {};
     document.querySelectorAll('#tabs button').forEach((b) => {
       b.classList.toggle('on', b.dataset.tab === state.tab);
-      b.innerHTML = `${b.textContent.replace(/\d+$/, '').trim()}<span class="n">${n[b.dataset.tab]}</span>`;
+      b.innerHTML = `${b.textContent.replace(/\d+$/, '').trim()}<span class="n">${n[b.dataset.tab] ?? ''}</span>`;
     });
-    renderPicks(d);
+    await renderPicks(d);
+    $('#lede').textContent = T.lede;
+    // 当前板块的数据：没下过就先显示「加载中」
+    const partKey = `${base}.${PART[state.tab]}`;
+    if (!cache[partKey]) { $('#subnav').innerHTML = ''; $('#chips').innerHTML = ''; $('#list').innerHTML = '<div class="none">正在加载这个板块…</div>'; }
+    const part = await load(partKey);
+    if (seq !== renderSeq) return; // 加载期间又切到别处了，以最新的为准
+    Object.assign(d, part);
     $('#subnav').innerHTML = T.subs(d).map(([k, label, c]) => `<button class="${state.sub === k ? 'on' : ''}" data-sub="${esc(k)}">${esc(label)}<span class="n">${c}</span></button>`).join('');
     $('#lede').textContent = T.lede;
     const chips = T.chips ? T.chips(d) : [];
@@ -344,6 +444,7 @@
     $('#sort').innerHTML = T.sorts.map(([v, l]) => `<option value="${v}" ${state.sort === v ? 'selected' : ''}>${l}</option>`).join('');
     $('#list').innerHTML = T.render(d);
     history.replaceState(null, '', `#w=${state.w}${state.day ? `&day=${state.day}` : ''}&tab=${state.tab}${state.sub ? `&sub=${encodeURIComponent(state.sub)}` : ''}`);
+    prefetch(base);
   }
 
   async function renderStatus() {
@@ -364,10 +465,40 @@
     if (fromTop) $('#bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // 点带 data-tip 的标签（数据画像、时效、评论区需求）弹出含义
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-tip]');
+    if (t) toast(t.dataset.tip);
+  });
+
+  function openGuide() {
+    const g = $('#guide');
+    g.hidden = false;
+    g.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   document.addEventListener('click', (e) => {
     const b = e.target.closest('button');
     if (!b) return;
-    if ('arch' in b.dataset) openArchive(!!b.closest('.mast'));
+    if ('save' in b.dataset) toggleSave(b.dataset.save);
+    else if ('todo' in b.dataset) { const p = $('#todo'); p.hidden = !p.hidden; if (!p.hidden) renderTodo(); todoCount(); }
+    else if ('todoCopy' in b.dataset) {
+      const text = todoText();
+      const fallback = () => { const ta = $('#todo-text'); ta.hidden = false; ta.value = text; ta.select(); toast('自动复制不了，文字已经选中，长按或 Ctrl+C 复制'); };
+      if (!todo.length) toast('清单是空的');
+      else if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => toast('已复制，可以直接粘贴到微信 / 飞书 / 备忘录'), fallback);
+      else fallback();
+    }
+    else if ('todoClear' in b.dataset) { if (todo.length) { todo = []; writeTodo(); renderTodo(); todoCount(); render(); toast('清单已清空'); } }
+    else if ('guide' in b.dataset) openGuide();
+    else if ('guideClose' in b.dataset) { $('#guide').hidden = true; }
+    else if (b.dataset.jump) {
+      // 速览里点选题：展开对应平台的选题框，滚到那一条
+      const [s, i] = b.dataset.jump.split(':');
+      if (+i >= 5 && !state.picksOpen[s]) { state.picksOpen[s] = true; render(); }
+      setTimeout(() => { const el = document.getElementById(`pick-${s}-${i}`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600); } }, 120);
+    }
+    else if ('arch' in b.dataset) openArchive(!!b.closest('.mast'));
     else if (b.dataset.day) { state.day = b.dataset.day; state.dayMiss = ''; state.pickDay = 0; state.shown = PAGE; render(); }
     else if (b.dataset.w) { state.day = ''; state.dayMiss = ''; state.w = +b.dataset.w; state.pickDay = 0; state.shown = PAGE; render(); }
     else if (b.dataset.tab) { state.tab = b.dataset.tab; state.sub = ''; state.chip = ''; state.sort = ''; state.shown = PAGE; render(); }
@@ -399,6 +530,10 @@
   if (/^\d{4}-\d{2}-\d{2}$/.test(h.get('day') || '')) { state.day = h.get('day'); state.w = 1; }
   if (TABS[h.get('tab')]) state.tab = h.get('tab');
   if (h.get('sub')) state.sub = h.get('sub');
-  render().catch((e) => { $('#list').innerHTML = `<div class="none">数据加载失败：${esc(e.message)}，刷新一下试试。</div>`; });
+  const wantGuide = location.hash === '#guide';
+  render().then(() => { if (wantGuide) openGuide(); }).catch((e) => { $('#list').innerHTML = `<div class="none">数据加载失败：${esc(e.message)}，刷新一下试试。</div>`; });
   renderStatus();
+  todoCount();
+  // 周报入口：有周报才显示
+  load('weeks').then((w) => { if (w?.length) { const a = $('#week-link'); a.href = `archive/week-${w[0]}.html`; a.hidden = false; } }).catch(() => {});
 })();

@@ -5,18 +5,23 @@ on:
     # GitHub 用 UTC 时间，而且定时触发经常延迟（高峰期能晚好几个小时），所以早报放了好几个时间点：
     # 北京 06:07 / 07:07 / 08:07 / 10:07（兜底）。哪个先跑起来就由它出早报，等到 09:00 再发；
     # 之后的发现今天已经发过（data/sent.json），就只采集。分钟数避开整点，整点前后最堵
+    # 想要准点：在 cron-job.org 每天 08:20 调一次 workflow_dispatch（mode=daily），见 README「准点触发」
     - cron: '7 22 * * *'
     - cron: '7 23 * * *'
     - cron: '7 0 * * *'
     - cron: '7 2 * * *'
     # 其余每 3 小时采集一次：北京 11:40 / 14:40 / 17:40 / 20:40 / 23:40 / 02:40
     - cron: '40 3,6,9,12,15,18 * * *'
+    # 北京 09:40 检查今天的早报发了没有，没发就给管理员发报警邮件
+    - cron: '40 1 * * *'
+    # 每周一北京 09:17 发周报
+    - cron: '17 1 * * 1'
   workflow_dispatch:
     inputs:
       mode:
-        description: 'collect=只采集更新网页；daily=完整早报（等到 9 点发）；daily-now=完整早报立刻发；mail-test=用最近一份日报立刻发一封测试邮件'
+        description: 'collect=只采集更新网页；daily=完整早报（等到 9 点发）；daily-now=完整早报立刻发；mail-test=用最近一份日报立刻发一封测试邮件；weekly=周报；check=检查今天早报发了没有'
         type: choice
-        options: [collect, daily, daily-now, mail-test]
+        options: [collect, daily, daily-now, mail-test, weekly, check]
         default: daily-now
 
 permissions:
@@ -44,6 +49,7 @@ jobs:
       SMTP_USER: ${{ secrets.SMTP_USER }}
       SMTP_PASS: ${{ secrets.SMTP_PASS }}
       MAIL_TO: ${{ secrets.MAIL_TO }}
+      ALERT_TO: ${{ secrets.ALERT_TO }}
       TIKHUB_API_KEY: ${{ secrets.TIKHUB_API_KEY }}
       SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
     steps:
@@ -74,6 +80,8 @@ jobs:
           if [ -z "$M" ]; then
             case "${{ github.event.schedule }}" in
               "7 22 * * *"|"7 23 * * *"|"7 0 * * *"|"7 2 * * *") M=daily ;;
+              "40 1 * * *") M=check ;;
+              "17 1 * * 1") M=weekly ;;
               *) M=collect ;;
             esac
           fi
@@ -82,23 +90,39 @@ jobs:
             echo "今天（$TODAY）的早报已经发过了，这次只采集"
             M=collect
           fi
+          # work：要不要采集 + AI 标注（检查、周报、测试邮件都不用）
+          case "$M" in collect|daily|daily-now) W=true ;; *) W=false ;; esac
           echo "mode=$M" >> "$GITHUB_OUTPUT"
+          echo "work=$W" >> "$GITHUB_OUTPUT"
           echo "运行模式：$M（北京时间 $(TZ=Asia/Shanghai date '+%F %R')，触发：${{ github.event.schedule || 'manual' }}）"
 
+      - name: 检查今天的早报发了没有
+        if: steps.mode.outputs.mode == 'check'
+        run: node src/alert.js check
+
       - name: 采集
-        if: steps.mode.outputs.mode != 'mail-test'
+        id: collect
+        if: steps.mode.outputs.work == 'true'
         run: node src/collect.js ${{ startsWith(steps.mode.outputs.mode, 'daily') && '--daily' || '' }}
 
       - name: AI 标注
-        if: steps.mode.outputs.mode != 'mail-test'
+        id: annotate
+        if: steps.mode.outputs.work == 'true'
         run: node src/curate.js annotate
 
       - name: AI 日报
+        id: digest
         if: startsWith(steps.mode.outputs.mode, 'daily')
         run: node src/curate.js digest
 
+      - name: 周报
+        id: weekly
+        if: steps.mode.outputs.mode == 'weekly'
+        run: node src/weekly.js
+
       - name: 保存数据（覆盖写入 data 分支，不留历史）
-        if: steps.mode.outputs.mode != 'mail-test'
+        id: save
+        if: steps.mode.outputs.work == 'true' || steps.mode.outputs.mode == 'weekly'
         run: |
           cd data
           git init -q -b data
@@ -108,18 +132,24 @@ jobs:
           rm -rf .git
 
       - name: 生成网页
+        id: build
+        if: steps.mode.outputs.mode != 'check'
         run: node src/build.js
 
       - uses: actions/configure-pages@v5
+        if: steps.mode.outputs.mode != 'check'
       - uses: actions/upload-pages-artifact@v3
+        if: steps.mode.outputs.mode != 'check'
         with:
           path: site
       - name: 发布网页
         id: deploy
+        if: steps.mode.outputs.mode != 'check'
         uses: actions/deploy-pages@v4
 
       - name: 发邮件
-        if: steps.mode.outputs.mode != 'collect'
+        id: mail
+        if: startsWith(steps.mode.outputs.mode, 'daily') || steps.mode.outputs.mode == 'mail-test'
         run: |
           # 定时早报：等到 09:00 再发，发完记一笔，当天后面的早报时间点就不再重复发
           if [ "${{ steps.mode.outputs.mode }}" = "daily" ]; then node src/mail.js --wait --mark; else node src/mail.js; fi
@@ -133,6 +163,14 @@ jobs:
           git -c user.name="radar-bot" -c user.email="radar-bot@users.noreply.github.com" commit -qm "sent $(TZ=Asia/Shanghai date '+%F %R')"
           git push -fq "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" data
           rm -rf .git
+
+      # 任何一步失败都给管理员（ALERT_TO，没设就是 MAIL_TO 的第一个地址）发一封报警邮件，写清楚是哪一步
+      - name: 运行失败时发报警邮件
+        if: failure()
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: >-
+          node src/alert.js fail "模式 ${{ steps.mode.outputs.mode || '未知' }}｜采集 ${{ steps.collect.outcome || '-' }}｜AI 标注 ${{ steps.annotate.outcome || '-' }}｜AI 日报 ${{ steps.digest.outcome || '-' }}｜周报 ${{ steps.weekly.outcome || '-' }}｜保存数据 ${{ steps.save.outcome || '-' }}｜生成网页 ${{ steps.build.outcome || '-' }}｜发布网页 ${{ steps.deploy.outcome || '-' }}｜发邮件 ${{ steps.mail.outcome || '-' }}"
 
       - name: 定时任务续命（防止 60 天无提交被 GitHub 自动停用）
         if: always()

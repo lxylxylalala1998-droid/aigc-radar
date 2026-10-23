@@ -20,10 +20,10 @@ export const FOCUS_TYPES = ['AI音乐', 'AI MV', 'AI歌手/艺人', 'AI鬼畜', 
 export const AIGC_TYPES = [...FOCUS_TYPES, 'AI动画', 'AI特效玩法', 'AI整活'];
 // 视频分类改过一次（AI剧情 / AI短片 并进 AI影视），旧数据先按新名字读，再由 annotate 重新标
 const OLD_TYPE = { AI剧情: 'AI影视', AI短片: 'AI影视' };
-const typeOf = (x) => OLD_TYPE[x.ai?.type] || x.ai?.type;
+export const typeOf = (x) => OLD_TYPE[x.ai?.type] || x.ai?.type;
 // 抖音视频只认官方 AI 标（作者声明 / 平台识别 / AI 特效），没标的不算 AIGC
 const dyOk = (x) => x.src !== 'douyin' || !!x.m?.aiLabel;
-const isWork = (x) => x.cat === 'video' && AIGC_TYPES.includes(typeOf(x)) && dyOk(x);
+export const isWork = (x) => x.cat === 'video' && AIGC_TYPES.includes(typeOf(x)) && dyOk(x);
 const VV = 3; // 视频标注版本
 
 const SYSTEM = `你是一位资深的 AIGC 自媒体选题编辑，服务对象是在抖音、B站做 AI 内容的博主。
@@ -38,7 +38,7 @@ const fixText = (s) => s.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800
 
 // DeepSeek 用量：每次运行累计，结束时记到 data/deepseek-usage.json（按天，保留 40 天），方便算钱
 const usage = { calls: 0, in: 0, hit: 0, out: 0 };
-function saveUsage(now = Date.now()) {
+export function saveUsage(now = Date.now()) {
   if (!usage.calls) return;
   const file = path.join(DATA, 'deepseek-usage.json');
   const all = readJSON(file, {});
@@ -49,7 +49,7 @@ function saveUsage(now = Date.now()) {
   console.log(`DeepSeek 用量：${usage.calls} 次调用，输入 ${usage.in} tokens（缓存命中 ${usage.hit}），输出 ${usage.out} tokens`);
 }
 
-async function ask(prompt, { maxTokens = 6000 } = {}) {
+export async function ask(prompt, { maxTokens = 6000 } = {}) {
   prompt = fixText(prompt);
   let lastErr;
   for (let i = 0; i < 2; i++) {
@@ -78,7 +78,7 @@ async function ask(prompt, { maxTokens = 6000 } = {}) {
   throw lastErr;
 }
 
-async function step(name, fn, fallback, errors) {
+export async function step(name, fn, fallback, errors) {
   if (!hasKey()) return fallback();
   const t0 = Date.now();
   try {
@@ -109,7 +109,7 @@ const dayPath = (now) => path.join(DATA, 'days', `${bjDate(now)}.json`);
 const dropEcho = (s = '', title = '') => (title && s.startsWith(title) ? s.slice(title.length).replace(/^[，,：:；;。\s]+/, '') : s);
 
 export const fmtDur = (s) => (!s ? '' : s >= 60 ? `${Math.floor(s / 60)}分${s % 60 ? `${s % 60}秒` : '钟'}` : `${s}秒`);
-function stats(x) {
+export function stats(x) {
   const m = x.m || {};
   const more = `${m.dur ? ` 时长${fmtDur(m.dur)}` : ''}${m.fans ? ` 作者粉丝${fmtNum(m.fans)}` : ''}`;
   if (x.src === 'douyin') return `${m.play ? `${m.playWin ? `近${m.playWin}天` : ''}播放${fmtNum(m.play)} ` : ''}点赞${fmtNum(m.like)}${m.like24 ? `（近24小时+${fmtNum(m.like24)}）` : ''} 评论${fmtNum(m.comment)} 分享${fmtNum(m.share)}${m.fav ? ` 收藏${fmtNum(m.fav)}` : ''}${more}${m.bgm ? ` BGM:${m.bgm}` : ''}${m.aiLabel ? ` 【抖音官方AI标：${m.aiLabel}】` : ''}${m.hint ? ` 【来自 #${x.board.replace('话题·#', '')} 话题】` : ''}`;
@@ -586,7 +586,7 @@ ${bl.map((x, i) => line(`B${i}`, x)).join('\n') || '（无）'}
 }
 
 // 选题复盘：前 3 天推荐的选题，参考作品后来又涨了多少（每天的涨幅），看哪类信号更靠谱
-function heatAt(x, ts) {
+export function heatAt(x, ts) {
   const near = (x.hist || []).filter((q) => Math.abs(q[0] - ts) < 6 * HOUR).sort((a, b) => Math.abs(a[0] - ts) - Math.abs(b[0] - ts))[0];
   return near ? near[1] : null;
 }
@@ -628,6 +628,23 @@ function reviewPicks(now, pool) {
   return { date: items[0].date, items, byHorizon, days: [...new Set(rows.map((r) => r.date))] };
 }
 
+// 3 分钟速览：AI 从最终的 20 个选题里挑今天最该做的 3 个，写一句话风向
+async function makeBrief(picks, extra) {
+  const lines = ['douyin', 'bilibili'].flatMap((s) => picks[s].map((p, i) => `${s === 'douyin' ? 'D' : 'B'}${i}|${PLATFORM[s]}|${p.kind}|${p.horizon || ''}|${p.timing?.label || ''}|难度${p.level || '?'}·${p.time || '?'}|${p.title}|${p.why}`));
+  return ask(`下面是今天给抖音、B站 AIGC 博主出的选题（编号|平台|类型|时间段|时效|难度·耗时|标题|为什么能火），以及一些全局数据。
+请：
+1. 挑出今天最该做的 3 个：优先「刚起势 / 高峰期」、投入产出比高（难度低或中、爆点明确）的；两个平台都要照顾到，除非某个平台明显更值得；3 个不要是同一种题材
+   每个写 why：为什么今天先做它，≤30 字
+2. wind：一句话说今天的风向（什么在涨、什么已经饱和、该往哪边走），≤45 字，要具体到题材，不要空话
+
+输出格式：{"wind":"","top":[{"code":"D0","why":""}]}
+
+选题：
+${lines.join('\n')}
+
+${extra}`, { maxTokens: 800 });
+}
+
 // 取前 10 个选题；AI 出了教程测评但排在 10 名以后时，换掉第 10 个，保证至少有 1 个
 function keepTutorial(list) {
   const top = list.slice(0, 10);
@@ -639,7 +656,7 @@ function keepTutorial(list) {
 }
 
 // DeepSeek 余额（元），邮件里低于 DEEPSEEK_WARN_BALANCE 时提醒充值
-async function deepseekBalance(now) {
+export async function deepseekBalance(now) {
   const r = await fetch(`${DEEPSEEK_BASE}/user/balance`, { headers: { Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}` }, signal: AbortSignal.timeout(20e3) });
   const j = await r.json();
   const cny = (j.balance_infos || []).find((b) => b.currency === 'CNY') || j.balance_infos?.[0];
@@ -840,13 +857,10 @@ export async function digest(now = Date.now()) {
   const pool3 = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, all7.filter((x) => isWork(x) && x.src === s && x.pubAt > now - 3 * DAY)]));
   const LEVELS = ['低', '中', '高'];
 
-  const out = {
-    date: bjDate(now), generatedAt: now, window: [since, now],
-    ai: hasKey() ? DEEPSEEK_MODEL : null, errors,
-    // 今日选题：抖音 10 个、B站 10 个
-    // 每个平台 AI 出 14 个，参考对不上标题的删掉，一个都对不上的选题整条丢弃；同题材的只留一个，取前 10
-    // 参考作品记下当时的热度，第二天复盘看它后来又涨了多少
-    picks: Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, keepTutorial(dedupePicks(list.map((p) => {
+  // 今日选题：抖音 10 个、B站 10 个
+  // 每个平台 AI 出 14 个，参考对不上标题的删掉，一个都对不上的选题整条丢弃；同题材的只留一个，取前 10
+  // 参考作品记下当时的热度，第二天复盘看它后来又涨了多少
+  const picks = Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, keepTutorial(dedupePicks(list.map((p) => {
       const refs = (p.refs || []).map((c) => pb[s].refs[c]).filter(Boolean).filter((x) => related(p.title, x));
       if (!refs.length) return null;
       return {
@@ -857,9 +871,45 @@ export async function digest(now = Date.now()) {
         risk: p.risk || undefined, timing: timing(refs, pool3[s], now),
         refs: refs.map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url, id: x.id, heat: x.cat === 'video' ? x.heat : undefined })),
       };
-    }).filter(Boolean)))])),
+    }).filter(Boolean)))]));
+
+  // ---- 3 分钟速览：从 20 个选题里挑今天最该做的 3 个 + 一句话风向，再配 1 个低粉爆款、1 个信息差 ----
+  const review = reviewPicks(now, all7);
+  const briefExtra = [
+    review?.byHorizon?.length ? `最近几天选题复盘（参考作品之后每天涨幅）：${review.byHorizon.map((h) => `${h.horizon} ${Math.round(h.avg * 100)}%/天`).join('，')}` : '',
+    tools.length ? `近 7 天爆款里提到最多的工具：${tools.slice(0, 6).map((t) => `${t.name} ${t.n}`).join('，')}` : '',
+    challenges.length ? `抖音正在流行的挑战 / 玩法：${challenges.slice(0, 6).map((x) => x.title).join('、')}` : '',
+  ].filter(Boolean).join('\n');
+  const briefRaw = picks.douyin.length || picks.bilibili.length ? await step('3 分钟速览', () => makeBrief(picks, briefExtra), () => ({}), errors) : {};
+  const byCode = (c) => {
+    const m = /^([DB])(\d+)$/.exec(String(c || '').trim().toUpperCase());
+    if (!m) return null;
+    const s = m[1] === 'D' ? 'douyin' : 'bilibili';
+    return picks[s][+m[2]] ? { s, i: +m[2], p: picks[s][+m[2]] } : null;
+  };
+  const briefTop = (briefRaw.top || []).map((t) => { const r = byCode(t.code); return r && { ...r, why: t.why }; }).filter(Boolean)
+    .filter((r, k, a) => a.findIndex((q) => q.s === r.s && q.i === r.i) === k);
+  // AI 没挑够就按顺序补：抖音第 1、B站第 1、抖音第 2……
+  for (const [s, i] of [['douyin', 0], ['bilibili', 0], ['douyin', 1], ['bilibili', 1]]) {
+    if (briefTop.length >= 3) break;
+    if (picks[s][i] && !briefTop.some((r) => r.s === s && r.i === i)) briefTop.push({ s, i, p: picks[s][i], why: picks[s][i].why });
+  }
+  const lowPick = [...(videos.douyinLow || []).slice(0, 1), ...(videos.bilibiliLow || []).slice(0, 1)][0];
+  const gapPick = gaps.toBilibili[0] || gaps.toDouyin[0];
+  const brief = {
+    wind: briefRaw.wind || '',
+    top: briefTop.slice(0, 3).map(({ s, i, p, why }) => ({ src: s, i, title: p.title, kind: p.kind, horizon: p.horizon, level: p.level, time: p.time, timing: p.timing?.label, why })),
+    low: lowPick && { title: lowPick.title, url: lowPick.url, src: lowPick.src, heat: lowPick.heat, author: lowPick.author, fans: lowPick.m?.fans, hook: lowPick.ai?.hook },
+    gap: gapPick && { title: gapPick.title, url: gapPick.url, src: gapPick.src, heat: gapPick.heat, to: gapPick.src === 'douyin' ? 'bilibili' : 'douyin', how: gapPick.how },
+  };
+
+  const out = {
+    date: bjDate(now), generatedAt: now, window: [since, now],
+    ai: hasKey() ? DEEPSEEK_MODEL : null, errors,
+    picks,
+    brief,
     gaps,
-    review: reviewPicks(now, all7),
+    review,
     tools,
     bgms,
     trendKeywords: trendKw.map(({ kw, why }) => ({ kw, why })),

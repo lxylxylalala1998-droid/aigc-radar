@@ -2,6 +2,8 @@
 
 每天早上 9 点把过去 24 小时的 AIGC 热点发到邮箱，并提供一个可按 **24 小时 / 3 天 / 7 天 / 30 天** 查询的网页。**每一条都附 AI 写的「为什么能火」的分析。**
 
+**网页**：打开先看最上面的「3 分钟速览」；选题和视频旁边点「☆ 待做」加进右下角的待做清单，可以一键复制成选题单；标签看不懂就点一下，或者看页头「怎么看这份报告」。网页数据按板块分开加载，首屏只下几十 KB。
+
 **往期**：网页页头「往期日报」或时间范围里的「往期」，可以选最近 30 天的任意一天，整个网页（选题、抖音 / B站热点、热梗热搜、热歌、AI 大事件）切换成那天最后一次扫描时的数据；选题区的「早报原文」是当天邮件的原样。
 
 邮件和网页按这个顺序：
@@ -82,17 +84,60 @@ QQ 邮箱网页版 → 设置 → 账号与安全 → 安全设置 → 开启「
 2. **GitHub 网页**（需要能打开 github.com）：仓库 → Actions → 左侧「AIGC 热点雷达」→ Run workflow → 模式选 `daily-now` → 绿色 Run workflow。
 3. **让 Claude 做**。
 
-`立即推送.cmd` 用的是 `.env` 里的授权码。部署时的 `GITHUB_TOKEN` 30 天过期，想长期用可以单独生成一个只能触发运行的授权码，填到 `TRIGGER_TOKEN`：
-打开 https://github.com/settings/personal-access-tokens/new → Token name 填 `aigc-radar-trigger` → Expiration 选最长 → Repository access 选 Only select repositories，选 `aigc-radar` → Permissions 里 **Actions** 选 **Read and write** → Generate token → 复制 `github_pat_` 开头那串。
+## 长期授权码（TRIGGER_TOKEN）
 
-## 手动运行的四种模式
+`立即推送.cmd` 和下面的「准点触发」都要用一个能触发运行的授权码。部署时用的 `GITHUB_TOKEN` 会过期（当前这个 2026-11-20 过期），所以单独生成一个只能触发运行、有效期最长的：
+
+1. 打开 https://github.com/settings/personal-access-tokens/new （需要能打开 github.com）
+2. Token name 填 `aigc-radar-trigger`；Expiration 选最长（有 No expiration 就选它，没有就选 Custom 填一年后）
+3. Repository access 选 **Only select repositories**，选 `aigc-radar`
+4. Permissions → Repository permissions → **Actions** 选 **Read and write**（其它都不用动）
+5. Generate token，复制 `github_pat_` 开头那串
+6. 用记事本打开项目文件夹里的 `.env`，加一行 `TRIGGER_TOKEN=刚复制的那串`，保存。不要发到聊天里
+
+这个授权码只能触发 / 查看这个仓库的运行，改不了代码、看不到密钥，泄露了最多被人多触发几次运行。
+
+## 准点触发（cron-job.org，免费）
+
+GitHub 自带的定时经常晚 1~4 小时。用 cron-job.org 每天 08:20 准点触发一次，跑完等到 09:00 准点发：
+
+1. 打开 https://console.cron-job.org/signup 用邮箱注册（免费）
+2. 右上角 Settings 把时区设成 **Asia/Shanghai**
+3. Cronjobs → **Create cronjob**：
+   - Title：`AIGC 早报`
+   - URL：`https://api.github.com/repos/lxylxylalala1998-droid/aigc-radar/actions/workflows/radar.yml/dispatches`
+   - Execution schedule：Every day at **08:20**
+   - 打开 **Advanced** 选项卡：
+     - Request method：**POST**
+     - Headers 加三行：`Authorization` = `Bearer 你的TRIGGER_TOKEN`；`Accept` = `application/vnd.github+json`；`Content-Type` = `application/json`
+     - Request body：`{"ref":"main","inputs":{"mode":"daily"}}`
+4. 保存后点 **Test run**，返回 **204** 就是成功了（GitHub 那边会多一次运行，今天已经发过的话它只采集，不会重复发邮件）
+5. （可选）再建两个，URL 和请求头一样，只改时间和 body：
+   - 每天 **09:40**，body 里 `daily` 换成 `check`：早报没发出就给你发报警
+   - 每周一 **09:10**，body 里换成 `weekly`：周报准点发
+
+GitHub 自带的定时还留着当兜底，两边谁先跑都行，不会重复发。
+
+## 报警
+
+- 任何一次运行失败，都会给管理员发一封「⚠ 运行失败」的邮件，写清楚是哪一步出的问题（采集 / AI 分析 / 发邮件……）。
+- 每天北京 09:40 检查早报发了没有，没发就发「⚠ 今天的早报还没发出」。
+- 管理员默认是 `MAIL_TO` 里的第一个地址；想单独指定，在 GitHub Secrets 里加 `ALERT_TO`。
+
+## 周报
+
+每周一早上发一封，回顾过去 7 天：一句话总结、**本周建议做的 5 个方向**、上周一直在涨的题材、上周爆款 TOP5、选题复盘（哪类信号推荐的选题后劲足、时效标签准不准）、工具热度、低粉爆款。网页页头「本周周报」可以看最新一期。
+
+## 手动运行的模式
 
 | 模式 | 作用 |
 |---|---|
 | `collect` | 只采集 + 更新网页，不发邮件 |
-| `daily` | 完整早报，等到 09:00 再发 |
-| `daily-now` | 完整早报，跑完立刻发（测试用） |
+| `daily` | 完整早报，等到 09:00 再发（今天发过就只采集） |
+| `daily-now` | 完整早报，跑完立刻发（`立即推送.cmd` 用的就是这个） |
 | `mail-test` | 不采集，用最近一份日报立刻发一封（测试邮箱配置） |
+| `weekly` | 周报（今天发过就跳过） |
+| `check` | 检查今天的早报发了没有，没发就报警 |
 
 ## 常改的配置
 
