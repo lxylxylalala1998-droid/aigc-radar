@@ -35,11 +35,11 @@
 </header>
 
 <main class="wrap">
-  <section id="picks" class="picks" aria-label="今日选题"></section>
-
+  <!-- 一级菜单固定在页面顶部：点哪个就只显示哪个板块，不用往下翻 -->
   <div class="bar" id="bar">
     <nav class="tabs" id="tabs" role="tablist" aria-label="分类">
-      <button data-tab="douyin" class="on">抖音热点</button>
+      <button data-tab="picks" class="on">今日选题</button>
+      <button data-tab="douyin">抖音热点</button>
       <button data-tab="bilibili">B站热点</button>
       <button data-tab="trend">热梗热搜</button>
       <button data-tab="music">热歌飙升</button>
@@ -55,18 +55,22 @@
     <div class="days" id="days" role="tablist" aria-label="选择日期" hidden></div>
   </div>
 
-  <div class="subnav" id="subnav" role="tablist" aria-label="二级分类"></div>
-  <p class="lede" id="lede"></p>
+  <section id="picks" class="picks" aria-label="今日选题"></section>
 
-  <div class="tools">
-    <div class="chips sub" id="chips"></div>
-    <div class="search">
-      <input id="q" type="search" placeholder="在当前分类里搜：标题、作者、分析…" autocomplete="off" aria-label="搜索">
-      <select id="sort" aria-label="排序"></select>
+  <div id="listing" hidden>
+    <div class="subnav" id="subnav" role="tablist" aria-label="二级分类"></div>
+    <p class="lede" id="lede"></p>
+
+    <div class="tools">
+      <div class="chips sub" id="chips"></div>
+      <div class="search">
+        <input id="q" type="search" placeholder="在当前分类里搜：标题、作者、分析…" autocomplete="off" aria-label="搜索">
+        <select id="sort" aria-label="排序"></select>
+      </div>
     </div>
-  </div>
 
-  <div id="list" class="list"></div>
+    <div id="list" class="list"></div>
+  </div>
 </main>
 
 <section id="guide" class="guide wrap" hidden aria-label="怎么看这份报告">
@@ -75,9 +79,10 @@
     <div>
       <h3>每天怎么用</h3>
       <ol>
-        <li>先看最上面的<b>3 分钟速览</b>：今天最该做的 3 个选题、一句话风向。</li>
-        <li>想做哪个，点它跳到<b>今日选题</b>；选题默认只显示为什么能火，点「展开做法」看怎么做、工作流程、公式和风险。</li>
-        <li>要找参考，去下面的<b>抖音热点 / B站热点</b>，按类型、低粉爆款筛。</li>
+        <li>页面顶部那一排是菜单，一直固定在顶上：<b>今日选题</b>（打开默认就是它）、抖音热点、B站热点、热梗热搜、热歌飙升、AI 大事件，点哪个看哪个。</li>
+        <li>先看今日选题最上面的<b>3 分钟速览</b>：今天最该做的 3 个选题、一句话风向。</li>
+        <li>想做哪个，点它跳到<b>今日选题</b>；选题默认只显示为什么能火，点「展开做法」看怎么做、工作流程、公式和风险。右边的封面是这个选题的主要依据，点开直接看视频。</li>
+        <li>要找参考，点菜单里的<b>抖音热点 / B站热点</b>，按类型、低粉爆款筛。</li>
         <li>觉得不错的选题、视频点「☆ 待做」，右下角的清单可以一键复制发给团队。</li>
         <li>前几天没看的，点页头「往期日报」按日期查；每周一还有一封<b>周报</b>。</li>
         <li>晚上看嫌刺眼，点页头「外观」切换深色 / 浅色。</li>

@@ -457,7 +457,7 @@ async function makePicks(blocks, s) {
   - formula：这类爆款的可复用公式，如「经典 IP × 反差画风 × 名场面卡点」，≤24 字
   - variants：2~3 个换皮方向（同一个公式换题材 / IP / 人物，避免和原作撞车），每个 ≤16 字
   - risk：风险提示——涉及真人肖像（明星、企业家、政要）、影视动漫游戏 IP、历史人物戏说、未成年人、医疗金融等敏感领域时，说清楚风险和怎么规避（比如发布时声明 AI 生成、不商用、换成原创角色），≤36 字；没有明显风险就留空
-  - refs：参考素材编号数组，如 ["A1","C3"]
+  - refs：参考素材编号数组，如 ["A1","C3"]。第一个必须是这个选题最主要依据的那条具体作品（视频，A / B / C / D 开头的编号），后面可以再跟热搜、热歌等
 
 输出格式：{"picks":[{"title":"","kind":"","horizon":"","form":"","why":"","how":"","flow":"","level":"","time":"","formula":"","variants":[],"risk":"","refs":[]}]}
 
@@ -843,6 +843,8 @@ export async function digest(now = Date.now()) {
         level: LEVELS.includes(p.level) ? p.level : undefined, time: p.time || undefined,
         formula: p.formula || undefined, variants: (Array.isArray(p.variants) ? p.variants : []).filter((v) => typeof v === 'string' && v).slice(0, 3),
         risk: p.risk || undefined, timing: timing(refs, pool3[s], now),
+        // 主要依据：AI 排在第一的那条作品（没有作品参考就没有），选题旁边显示它的封面，点开看视频
+        main: (({ url, cover, src, title, heat } = {}) => (url ? { url, cover, src, title, heat } : undefined))(refs.find((x) => x.cat === 'video')),
         refs: refs.map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url, id: x.id, heat: x.cat === 'video' ? x.heat : undefined })),
       };
     }).filter(Boolean)))]));

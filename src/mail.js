@@ -34,7 +34,7 @@ a{color:#191c22;text-decoration:none}
 .bi{padding:10px 14px;border-top:1px solid #eef0f3}.bi .t{font-size:15px;font-weight:700;line-height:1.45}.bn{font-weight:800;font-size:15px;margin-right:6px}.bn-dy{color:#fe2c55}.bn-bl{color:#00a1d6}
 .ft{padding:24px 20px 22px;font-size:12px;color:#9aa1ad;line-height:1.7}.warn{color:#f0820f}
 .pt{display:inline-block;font-size:11px;line-height:14px;padding:0 4px;border-radius:4px;margin-right:4px;border:1px dashed #9aa1ad;color:#6b7280}.pt.low{border:1px solid #e5484d;color:#e5484d}
-.nt{font-weight:400;font-size:12px;color:#6b7280}.rs b{color:#e5484d}.gp{background:#f7f7fb;border-radius:10px;padding:10px 14px;margin:8px 0}
+.nt{font-weight:400;font-size:12px;color:#6b7280}.pkt{width:100%;border-collapse:collapse}.pc{width:104px;padding-left:10px}.pc img{display:block;width:104px;border-radius:6px}.c{text-align:center}.rs b{color:#e5484d}.gp{background:#f7f7fb;border-radius:10px;padding:10px 14px;margin:8px 0}
 `;
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -76,14 +76,21 @@ export function render(d, { siteUrl, archive = false } = {}) {
     const list = byPlat[s];
     if (!list.length) return '';
     const k = s === 'douyin' ? 'dy' : 'bl';
+    // 右边放主要依据那条作品的封面，点开看视频（B站封面用缩略图，10KB 左右）
+    const side = (p) => {
+      const mv = p.main;
+      if (!mv?.url) return '';
+      const img = mv.cover ? (mv.src === 'bilibili' && /hdslb\.com/.test(mv.cover) && !mv.cover.includes('@') ? `${mv.cover}@320w_200h_1c.jpg` : mv.cover) : '';
+      return `<td class="pc" valign="top">${a(mv.url, img ? `<img src="${esc(img)}" width="104" alt="">` : '<span class="up">▶ 看视频</span>')}<div class="m c">${img ? '▶ ' : ''}主要依据</div></td>`;
+    };
     return `<div class="bx bx-${k}"><div class="bh bh-${k}">${PLATFORM[s]} · 今日选题 ${list.length} 个</div>${list.map((p, i) => `
-      <div class="bi">
+      <div class="bi"><table class="pkt" role="presentation"><tr><td valign="top">
         <div class="t"><span class="bn bn-${k}">${String(i + 1).padStart(2, '0')}</span>${p.horizon ? b(p.horizon, 'ai') : ''}${esc(p.title)}</div>
         <div class="m">${p.kind === '教程测评' ? b('教程测评', 'hz') : ''}${p.form === '系列' ? b('系列追更') : ''}${p.level ? b(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${p.timing ? `${b(p.timing.label, TIMING_B[p.timing.label] ?? '')}${esc(p.timing.basis)}` : ''}</div>
         ${an('为什么能火', p.why)}${an('怎么做', p.how)}${an(p.flow ? '工作流程' : '工具链', p.flow || p.tools)}${an('公式', p.formula)}
         ${p.risk ? `<div class="a rs"><b>⚠ 风险</b>${esc(p.risk)}</div>` : ''}
-        ${p.refs?.length ? `<div class="refs">${p.refs.map((r) => a(r.url, `↗ ${esc(cut(r.title, 20))}`)).join(' ')}</div>` : ''}
-      </div>`).join('')}</div>`;
+        ${(() => { const rest = (p.refs || []).filter((r) => r.url !== p.main?.url).slice(0, 2); return rest.length ? `<div class="refs">${rest.map((r) => a(r.url, `↗ ${esc(cut(r.title, 16))}`)).join(' ')}</div>` : ''; })()}
+      </td>${side(p)}</tr></table></div>`).join('')}</div>`;
   };
   // 跨平台信息差：一个平台爆了、另一个平台还没人做的题材（各 3 个）
   const gapBox = (list, from, to) => (list?.length ? `<div class="sub">${PLATFORM[from]}爆了 · ${PLATFORM[to]}还没人做</div>${list.slice(0, 3).map((x) => `<div class="gp">
@@ -122,7 +129,7 @@ export function render(d, { siteUrl, archive = false } = {}) {
   // 4. 热梗热搜：抖音 / B站 / 微博各自一张榜，再是抖音挑战、热梗精选（和网页同序）
   const tr = d.trends || {};
   // 邮件只放精简版（Gmail 超过 102KB 会截断），完整榜单在网页
-  const trendHtml = ['douyin', 'bilibili', 'weibo'].filter((s) => tr[s]?.length).map((s) => `<div class="sub">${pb(s)}${PLATFORM[s]}热搜 · 前 ${Math.min(8, tr[s].length)}</div>` + items(tr[s].slice(0, 8), (t, i) => `
+  const trendHtml = ['douyin', 'bilibili', 'weibo'].filter((s) => tr[s]?.length).map((s) => `<div class="sub">${pb(s)}${PLATFORM[s]}热搜 · 前 ${Math.min(6, tr[s].length)}</div>` + items(tr[s].slice(0, 6), (t, i) => `
     <div class="tt">${rk(i + 1)}${a(t.url, esc(t.title))}${t.kind ? ` ${b(t.kind, 'warm')}` : ''}${t.ai?.tag ? ` ${b(t.ai.tag, 'ai')}` : ''}</div>
     ${t.ai?.why ? `<div class="a">${esc(t.ai.why)}</div>` : ''}`)).join('');
   const ch = d.challenges || [];
@@ -132,7 +139,7 @@ export function render(d, { siteUrl, archive = false } = {}) {
     ${an('为什么火', t.ai?.why)}${an('AI 跟拍', t.ai?.idea)}
     ${(t.top || []).slice(0, 1).map((v) => `<div class="m">${a(v.url, `❤ ${fmtNum(v.like)}　${v.ai ? b('AI', 'ai') : ''}${esc(cut(v.title || '（无文案）', 36))}`)}</div>`).join('')}`) : '';
   const memes = d.memes || [];
-  const memeHtml = memes.length ? `<div class="sub">热梗精选 ${note('AI 从三个平台里挑的热梗 / AI 相关 / 可借势')}</div>` + items(memes.slice(0, 6), (t) => `
+  const memeHtml = memes.length ? `<div class="sub">热梗精选 ${note('AI 从三个平台里挑的热梗 / AI 相关 / 可借势')}</div>` + items(memes.slice(0, 5), (t) => `
     <div class="tt">${b(t.ai.tag, t.ai.tag === '热梗' ? 'warm' : 'ai')}${a(t.url, esc(t.title))} ${pb(t.src)}</div>
     ${an('为什么火', t.ai.why)}${an('AI 做法', t.ai.idea)}`) : '';
   if (trendHtml || chHtml || memeHtml) parts.push(sec('😂 热梗热搜', '抖音 / B站 / 微博 / 抖音挑战 / 热梗精选', trendHtml + chHtml + memeHtml));

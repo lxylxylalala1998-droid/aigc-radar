@@ -7,7 +7,7 @@
 
   // day：在看哪一天的往期数据（'' = 不在往期模式）。往期按 24 小时的方式展示，所以 w 固定为 1
   // picksOpen：手机上某个平台的选题框展开了后 5 个；pickOpen：哪些选题点开了完整做法
-  const state = { w: 1, day: '', tab: 'douyin', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: {}, pickOpen: new Set(), shown: PAGE };
+  const state = { w: 1, day: '', tab: 'picks', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: {}, pickOpen: new Set(), shown: PAGE };
   const cache = {};
 
   // ---------- 工具 ----------
@@ -164,13 +164,28 @@
     const dayChips = ds.length > 1 ? `<div class="day-chips">${ds.map((x, k) => `<button class="chip ${k === i ? 'on' : ''}" data-pickday="${k}">${+x.date.slice(5, 7)}月${+x.date.slice(8)}日</button>`).join('')}</div>` : '';
     const original = link(`archive/${dg.date}.html`, `看${state.day ? '当天' : ` ${+dg.date.slice(5, 7)}月${+dg.date.slice(8)}日 `}早报原文 →`, 'arch-link');
     const refs = (p) => (p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : '');
+    // 选题右边的封面：主要依据那条作品，点开看视频。旧日报没有 main，退回第一条视频参考（没有封面图，显示平台色块）；
+    // 选题只借了热搜 / 热歌的势、没有作品参考时，色块写「热搜」「热歌」，点开是那条热搜 / 热歌
+    const side = (p, s) => {
+      const mv = p.main || p.refs?.find((r) => r.kind === 'video');
+      const r0 = p.refs?.[0];
+      if (!mv && !r0) return '';
+      const src = mv?.src || s;
+      const label = mv ? PLAT[src] : r0.kind === 'music' ? '热歌' : r0.kind === 'trend' ? '热搜' : '参考';
+      return `
+        <div class="pm-side">
+          <a class="th ph ${src}" href="${esc((mv || r0).url)}" target="_blank" rel="noopener" title="${esc(`${mv ? '主要依据：' : ''}${(mv || r0).title}`)}"><span>${label}</span>${mv?.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(mv.cover, src))}" alt="" onerror="this.remove()">` : ''}${mv ? '<i class="play" aria-hidden="true">▶</i>' : ''}</a>
+          ${mv ? `<small>主要依据${mv.heat ? ` · ${num(mv.heat)}${src === 'douyin' ? '赞' : '播放'}` : ''}</small>` : ''}
+        </div>`;
+    };
     // 选题默认只显示标签、标题、为什么能火；点「展开做法」看怎么做、工作流程、公式、风险、时效依据和参考作品
     const item = (p, k, s) => {
       const key = `${dg.date}:${s}:${k}`;
       const open = state.pickOpen.has(key);
       return `
-      <article class="pm ${k === 0 ? 'first' : ''} ${open ? 'open' : ''}" id="pick-${s}-${k}">
+      <article class="pm ${k === 0 ? 'first' : ''} ${open ? 'open' : ''} ${side(p, s) ? 'has-cover' : ''}" id="pick-${s}-${k}">
         <div class="no">${pad(k + 1)}</div>
+        ${side(p, s)}
         <div>
           <div class="tags">${tag(p.horizon, 'line')}${p.timing ? `<span class="tag ${TIMING_CLS[p.timing.label] ?? ''}" title="${esc(p.timing.basis)}" data-tip="时效依据：${esc(p.timing.basis)}">${esc(p.timing.label)}</span>` : ''}${p.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${p.form === '系列' ? tag('系列追更') : ''}${p.level ? tag(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${saveBtn(`p:${dg.date}:${s}:${p.title}`, { kind: '选题', src: s, title: p.title, why: p.why, how: p.how, flow: p.flow, tools: p.flow ? undefined : p.tools, url: p.refs?.[0]?.url })}</div>
           <h3>${esc(p.title)}</h3>
@@ -422,23 +437,41 @@
     box.querySelector('.on')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
+  // 已经往下翻过的话，回到当前板块开头：内容顶端刚好贴在固定菜单下面（固定元素的 offsetTop 会跟着滚动变，不能用）
+  function toContentTop() {
+    const el = state.tab === 'picks' ? $('#picks') : $('#listing');
+    const y = el.getBoundingClientRect().top + window.scrollY - $('#bar').offsetHeight;
+    if (window.scrollY > y) window.scrollTo({ top: Math.max(0, y) });
+  }
+
   let renderSeq = 0;
   async function render() {
     const seq = ++renderSeq;
     const base = baseKey();
     const d = await load(base);
+    // 「今日选题」是菜单第一项：只显示速览 + 选题；其它菜单只显示对应板块的列表
+    const isPicks = state.tab === 'picks';
     const T = TABS[state.tab];
-    if (!state.sub && T.defaultSub) state.sub = T.defaultSub;
+    if (!isPicks && !state.sub && T.defaultSub) state.sub = T.defaultSub;
     const g = new Date(d.generatedAt);
     $('#updated').innerHTML = `<b class="num">${g.getMonth() + 1}.${g.getDate()}</b> 周${WEEK[g.getDay()]} · ${state.day ? '正在看往期 · 当天最后一次扫描' : '最近一次扫描'} <b class="num">${pad(g.getHours())}:${pad(g.getMinutes())}</b>`;
     document.querySelectorAll('#win button').forEach((b) => b.classList.toggle('on', state.day ? 'arch' in b.dataset : +b.dataset.w === state.w));
     await renderDays();
-    const n = d.counts || {};
+    const n = { ...(d.counts || {}), picks: (d.dg0?.picks?.douyin?.length || 0) + (d.dg0?.picks?.bilibili?.length || 0) || '' };
     document.querySelectorAll('#tabs button').forEach((b) => {
       b.classList.toggle('on', b.dataset.tab === state.tab);
       b.innerHTML = `${b.textContent.replace(/\d+$/, '').trim()}<span class="n">${n[b.dataset.tab] ?? ''}</span>`;
     });
-    await renderPicks(d);
+    // 手机上菜单是横向滑动的一行：当前菜单滑到看得见的位置
+    $('#tabs .on')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    $('#picks').hidden = !isPicks;
+    $('#listing').hidden = isPicks;
+    if (isPicks) {
+      await renderPicks(d);
+      history.replaceState(null, '', `#w=${state.w}${state.day ? `&day=${state.day}` : ''}&tab=picks`);
+      prefetch(base);
+      return;
+    }
     $('#lede').textContent = T.lede;
     // 当前板块的数据：没下过就先显示「加载中」
     const partKey = `${base}.${PART[state.tab]}`;
@@ -524,7 +557,11 @@
     else if ('arch' in b.dataset) openArchive(!!b.closest('.mast'));
     else if (b.dataset.day) { state.day = b.dataset.day; state.dayMiss = ''; state.pickDay = 0; state.shown = PAGE; render(); }
     else if (b.dataset.w) { state.day = ''; state.dayMiss = ''; state.w = +b.dataset.w; state.pickDay = 0; state.shown = PAGE; render(); }
-    else if (b.dataset.tab) { state.tab = b.dataset.tab; state.sub = ''; state.chip = ''; state.sort = ''; state.shown = PAGE; render(); }
+    else if (b.dataset.tab) {
+      state.tab = b.dataset.tab; state.sub = ''; state.chip = ''; state.sort = ''; state.shown = PAGE;
+      // 换菜单时回到内容开头（菜单固定在顶上，内容从它下面开始）
+      render().then(toContentTop);
+    }
     else if ('sub' in b.dataset) { state.sub = b.dataset.sub; state.chip = ''; state.shown = PAGE; render(); }
     else if ('chip' in b.dataset) { state.chip = b.dataset.chip; state.shown = PAGE; render(); }
     else if ('pickday' in b.dataset) { state.pickDay = +b.dataset.pickday; render(); }
@@ -551,7 +588,7 @@
   const h = new URLSearchParams(location.hash.slice(1));
   if ([1, 3, 7, 30].includes(+h.get('w'))) state.w = +h.get('w');
   if (/^\d{4}-\d{2}-\d{2}$/.test(h.get('day') || '')) { state.day = h.get('day'); state.w = 1; }
-  if (TABS[h.get('tab')]) state.tab = h.get('tab');
+  if (TABS[h.get('tab')] || h.get('tab') === 'picks') state.tab = h.get('tab');
   if (h.get('sub')) state.sub = h.get('sub');
   // ---------- 外观：跟随系统 / 深色 / 浅色，记在浏览器里（页面一开始的小脚本会先套上，避免闪一下）----------
   const THEMES = [['', '跟随系统'], ['dark', '深色'], ['light', '浅色']];
