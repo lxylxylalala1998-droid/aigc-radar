@@ -1,20 +1,26 @@
 // 生成网页：把 web/ 拷到 site/，并把数据预聚合成 24h / 3天 / 7天 / 30天 四份
+// 往期：每天一份「当天最后一次扫描时」的 24 小时数据（site/data/d/日期.json），和那天打开网页看到的一样；
+//       每天的早报原样存成一页（site/archive/日期.html），都保留 ARCHIVE_DAYS 天
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, DATA, DAY, bjDate, readJSON, writeJSON, isMain } from './util.js';
 import { loadWindow, slim } from './rank.js';
+import { render as renderMail } from './mail.js';
 
 const SITE = path.join(ROOT, 'site');
 const WINDOWS = [1, 3, 7, 30];
 const LIMIT = { news: 400, video: 500, trend: 120, music: 50 };
+const ARCHIVE_DAYS = 30;
+
+const readDigest = (date) => readJSON(path.join(DATA, 'digests', `${date}.json`));
+// 网页只用得到日报里的选题、大事件
+const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news, trendKeywords: d.trendKeywords || [] });
 
 function digestsIn(days, now) {
   const out = [];
   for (let i = 0; i < days + 1 && out.length < days; i++) {
-    const d = readJSON(path.join(DATA, 'digests', `${bjDate(now - i * DAY)}.json`));
-    if (d && d.generatedAt > now - (days + 1) * DAY) {
-      out.push({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news, trendKeywords: d.trendKeywords || [] });
-    }
+    const d = readDigest(bjDate(now - i * DAY));
+    if (d && d.generatedAt > now - (days + 1) * DAY) out.push(webDigest(d));
   }
   return out;
 }
@@ -50,6 +56,30 @@ function windowData(days, now) {
   return { days, generatedAt: now, digests: digestsIn(days, now), news, videos, trends, music };
 }
 
+// 往期：最近 ARCHIVE_DAYS 天，每天一份当天数据 + 早报原样页，外加一个日期索引 days.json
+function buildArchive(now) {
+  const index = [];
+  let bytes = 0;
+  for (let i = 0; i < ARCHIVE_DAYS; i++) {
+    const date = bjDate(now - i * DAY);
+    const day = readJSON(path.join(DATA, 'days', `${date}.json`));
+    if (!day) continue;
+    const at = Math.min(day.updatedAt || now, now);
+    const dg = readDigest(date);
+    const w = { ...windowData(1, at), date, digests: dg ? [webDigest(dg)] : [] };
+    const file = path.join(SITE, 'data', 'd', `${date}.json`);
+    writeJSON(file, w);
+    bytes += fs.statSync(file).size;
+    if (dg) {
+      fs.mkdirSync(path.join(SITE, 'archive'), { recursive: true });
+      fs.writeFileSync(path.join(SITE, 'archive', `${date}.html`), renderMail(dg, { archive: true }));
+    }
+    index.push({ date, at, digest: !!dg });
+  }
+  writeJSON(path.join(SITE, 'data', 'days.json'), index);
+  console.log(`往期：${index.length} 天（其中有早报 ${index.filter((x) => x.digest).length} 天），合计 ${(bytes / 1048576).toFixed(1)}MB`);
+}
+
 export function build(now = Date.now()) {
   fs.rmSync(SITE, { recursive: true, force: true });
   fs.cpSync(path.join(ROOT, 'web'), SITE, { recursive: true });
@@ -59,6 +89,7 @@ export function build(now = Date.now()) {
     const kb = (fs.statSync(path.join(SITE, 'data', `w${d}.json`)).size / 1024).toFixed(0);
     console.log(`w${d}: 资讯 ${w.news.length} / 视频 ${w.videos.length} / 热搜 ${w.trends.length} / 热歌 ${w.music.length} / 日报 ${w.digests.length}  ${kb}KB`);
   }
+  buildArchive(now);
   const st = readJSON(path.join(DATA, 'status.json'), { sources: {} });
   writeJSON(path.join(SITE, 'data', 'status.json'), st);
   fs.writeFileSync(path.join(SITE, '.nojekyll'), '');

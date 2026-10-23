@@ -21,7 +21,10 @@
         <p class="dateline" id="updated">正在读取最新一次扫描…</p>
       </div>
     </div>
-    <p class="scope">扫描 <b>抖音</b> <b>B站</b> <b>微博</b> <b>QQ音乐</b> <b>网易云</b> 和十几家 AI 媒体<br>每 3 小时一次，每条热点都附 AI 写的「为什么能火」</p>
+    <div class="mast-side">
+      <p class="scope">扫描 <b>抖音</b> <b>B站</b> <b>微博</b> <b>QQ音乐</b> <b>网易云</b> 和十几家 AI 媒体<br>每 3 小时一次，每条热点都附 AI 写的「为什么能火」</p>
+      <button class="arch" data-arch>往期日报 · 按日期查 →</button>
+    </div>
   </div>
 </header>
 
@@ -41,7 +44,9 @@
       <button data-w="3"><b>3</b>天</button>
       <button data-w="7"><b>7</b>天</button>
       <button data-w="30"><b>30</b>天</button>
+      <button data-arch>往期</button>
     </div>
+    <div class="days" id="days" role="tablist" aria-label="选择日期" hidden></div>
   </div>
 
   <div class="subnav" id="subnav" role="tablist" aria-label="二级分类"></div>
@@ -63,7 +68,7 @@
     <summary>数据源状态</summary>
     <div id="status"></div>
   </details>
-  <p>热搜和爆款约每 3 小时扫描一次，AI 选题每天早上更新。抖音视频来自抖音热榜话题和 AIGC 话题（经 TikHub），抖音不公开播放数，热度和飙升按点赞算。抖音、B站音乐榜是周榜。小红书暂未接入。标「推测」的分析是 AI 根据有限信息做的判断。</p>
+  <p>热搜和爆款约每 3 小时扫描一次，AI 选题每天早上更新。抖音视频来自抖音热榜话题和抖音热点宝视频热榜（经 TikHub），只收官方标了 AI 的；热度按累计点赞，播放是热点宝给的近 N 天播放。抖音、B站音乐榜是周榜。「往期」可以查最近 30 天每一天的完整数据和当天早报原文。小红书暂未接入。标「推测」的分析是 AI 根据有限信息做的判断。</p>
 </footer>
 
 <script src="app.js"></script>

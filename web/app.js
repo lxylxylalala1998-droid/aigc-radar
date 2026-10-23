@@ -5,7 +5,8 @@
   const VTYPES = ['AI音乐', 'AI MV', 'AI歌手/艺人', 'AI鬼畜', 'AI影视', 'AI换人', 'AI动画', 'AI特效玩法', 'AI整活', 'AI教程测评'];
   const PAGE = 40;
 
-  const state = { w: 1, tab: 'douyin', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: {}, shown: PAGE };
+  // day：在看哪一天的往期数据（'' = 不在往期模式）。往期按 24 小时的方式展示，所以 w 固定为 1
+  const state = { w: 1, day: '', tab: 'douyin', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: {}, shown: PAGE };
   const cache = {};
 
   // ---------- 工具 ----------
@@ -35,15 +36,18 @@
   const more = (total, unit = '条') => (total > state.shown ? `<button class="more" data-more>再看 ${Math.min(PAGE, total - state.shown)} ${unit}（共 ${total} ${unit}）</button>` : '');
   const sheet = (rows) => (rows ? `<div class="sheet">${rows}</div>` : '<div class="none">没有符合条件的内容</div>');
 
-  async function load(w) {
-    if (!cache[w]) cache[w] = fetch(`data/w${w}.json?t=${Math.floor(Date.now() / 6e5)}`).then((r) => r.json());
-    return cache[w];
+  // key：w1 / w3 / w7 / w30，往期是 d/日期；days 是往期日期索引
+  async function load(key) {
+    if (!cache[key]) cache[key] = fetch(`data/${key}.json?t=${Math.floor(Date.now() / 6e5)}`).then((r) => { if (!r.ok) throw new Error(`没有这份数据（${r.status}）`); return r.json(); });
+    return cache[key];
   }
+  const dayLabel = (date) => { const d = new Date(`${date}T12:00:00+08:00`); return `${d.getMonth() + 1}月${d.getDate()}日`; };
+  const weekOf = (date) => `周${WEEK[new Date(`${date}T12:00:00+08:00`).getDay()]}`;
 
   // ---------- 今日选题：抖音 10 个在左、B站 10 个在右，各用平台代表色框住；手机上上下排、各展开前 5 个 ----------
   function renderPicks(d) {
     const ds = d.digests || [];
-    if (!ds.length) { $('#picks').innerHTML = '<div class="empty-note">这个时间段还没有 AI 选题日报，每天早上 9 点前生成。</div>'; return; }
+    if (!ds.length) { $('#picks').innerHTML = `<div class="empty-note">${state.day ? `${dayLabel(state.day)}没有生成早报（那天 AI 日报没跑成），下面各板块的数据照常可以看。` : '这个时间段还没有 AI 选题日报，每天早上 9 点前生成。'}</div>`; return; }
     const i = Math.min(state.pickDay, ds.length - 1);
     const dg = ds[i];
     // 旧日报是一个混合列表（带 platform 字段），新日报按平台分开
@@ -51,6 +55,7 @@
       ? { douyin: dg.picks.filter((p) => p.platform !== 'B站'), bilibili: dg.picks.filter((p) => p.platform === 'B站' || p.platform === '双平台') }
       : { douyin: dg.picks?.douyin || [], bilibili: dg.picks?.bilibili || [] };
     const dayChips = ds.length > 1 ? `<div class="day-chips">${ds.map((x, k) => `<button class="chip ${k === i ? 'on' : ''}" data-pickday="${k}">${+x.date.slice(5, 7)}月${+x.date.slice(8)}日</button>`).join('')}</div>` : '';
+    const original = link(`archive/${dg.date}.html`, `看${state.day ? '当天' : ` ${+dg.date.slice(5, 7)}月${+dg.date.slice(8)}日 `}早报原文 →`, 'arch-link');
     const refs = (p) => (p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : '');
     const item = (p, k) => `
       <article class="pm ${k === 0 ? 'first' : ''}">
@@ -74,7 +79,7 @@
       </section>`;
     };
     $('#picks').innerHTML = `
-      <div class="sec-head"><h2>${ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>AI 编辑${dg.ai ? `（${esc(dg.ai)}）` : ''}分别从抖音、B站的 24 小时 / 3 天 / 7 天 / 30 天热点里挑 · ${clock(dg.generatedAt)}</small></div>
+      <div class="sec-head"><h2>${state.day ? `${dayLabel(state.day)}选题` : ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>AI 编辑${dg.ai ? `（${esc(dg.ai)}）` : ''}分别从抖音、B站的 24 小时 / 3 天 / 7 天 / 30 天热点里挑 · ${clock(dg.generatedAt)} · ${original}</small></div>
       ${dayChips}
       <div class="pick-cols">${box('douyin')}${box('bilibili')}</div>`;
   }
@@ -223,13 +228,24 @@
     return [...m].map(([k, n]) => [k, n]);
   }
 
+  // 往期日期条：最近 30 天，新的在左
+  async function renderDays() {
+    const box = $('#days');
+    box.hidden = !state.day;
+    if (!state.day) return;
+    const days = await load('days');
+    box.innerHTML = days.map((x) => `<button class="chip ${x.date === state.day ? 'on' : ''}" data-day="${x.date}">${dayLabel(x.date)}<small>${weekOf(x.date)}${x.digest ? '' : ' · 无早报'}</small></button>`).join('');
+    box.querySelector('.on')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
   async function render() {
-    const d = await load(state.w);
+    const d = await load(state.day ? `d/${state.day}` : `w${state.w}`);
     const T = TABS[state.tab];
     if (!state.sub && T.defaultSub) state.sub = T.defaultSub;
     const g = new Date(d.generatedAt);
-    $('#updated').innerHTML = `<b class="num">${g.getMonth() + 1}.${g.getDate()}</b> 周${WEEK[g.getDay()]} · 最近一次扫描 <b class="num">${pad(g.getHours())}:${pad(g.getMinutes())}</b>`;
-    document.querySelectorAll('#win button').forEach((b) => b.classList.toggle('on', +b.dataset.w === state.w));
+    $('#updated').innerHTML = `<b class="num">${g.getMonth() + 1}.${g.getDate()}</b> 周${WEEK[g.getDay()]} · ${state.day ? '正在看往期 · 当天最后一次扫描' : '最近一次扫描'} <b class="num">${pad(g.getHours())}:${pad(g.getMinutes())}</b>`;
+    document.querySelectorAll('#win button').forEach((b) => b.classList.toggle('on', state.day ? 'arch' in b.dataset : +b.dataset.w === state.w));
+    await renderDays();
     const n = {
       douyin: d.videos.filter((x) => x.src === 'douyin').length, bilibili: d.videos.filter((x) => x.src === 'bilibili').length,
       trend: d.trends.length, music: d.music.length, news: (d.digests || []).reduce((s, x) => s + (x.news || []).length, 0) || d.news.length,
@@ -245,7 +261,7 @@
     $('#chips').innerHTML = chips.length ? [`<button class="chip ${!state.chip ? 'on' : ''}" data-chip="">全部</button>`, ...chips.map(([k, c]) => `<button class="chip ${state.chip === k ? 'on' : ''}" data-chip="${esc(k)}">${esc(k)}<span class="n">${c}</span></button>`)].join('') : '';
     $('#sort').innerHTML = T.sorts.map(([v, l]) => `<option value="${v}" ${state.sort === v ? 'selected' : ''}>${l}</option>`).join('');
     $('#list').innerHTML = T.render(d);
-    history.replaceState(null, '', `#w=${state.w}&tab=${state.tab}${state.sub ? `&sub=${encodeURIComponent(state.sub)}` : ''}`);
+    history.replaceState(null, '', `#w=${state.w}${state.day ? `&day=${state.day}` : ''}&tab=${state.tab}${state.sub ? `&sub=${encodeURIComponent(state.sub)}` : ''}`);
   }
 
   async function renderStatus() {
@@ -256,10 +272,22 @@
   }
 
   // ---------- 交互 ----------
+  // 进入往期：默认看昨天（今天的就是「24 小时」）
+  async function openArchive(fromTop) {
+    const days = await load('days');
+    if (!days.length) return;
+    state.day ||= (days[1] || days[0]).date;
+    state.w = 1; state.pickDay = 0; state.shown = PAGE; state.sort = '';
+    await render();
+    if (fromTop) $('#bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   document.addEventListener('click', (e) => {
     const b = e.target.closest('button');
     if (!b) return;
-    if (b.dataset.w) { state.w = +b.dataset.w; state.pickDay = 0; state.shown = PAGE; render(); }
+    if ('arch' in b.dataset) openArchive(!!b.closest('.mast'));
+    else if (b.dataset.day) { state.day = b.dataset.day; state.pickDay = 0; state.shown = PAGE; render(); }
+    else if (b.dataset.w) { state.day = ''; state.w = +b.dataset.w; state.pickDay = 0; state.shown = PAGE; render(); }
     else if (b.dataset.tab) { state.tab = b.dataset.tab; state.sub = ''; state.chip = ''; state.sort = ''; state.shown = PAGE; render(); }
     else if ('sub' in b.dataset) { state.sub = b.dataset.sub; state.chip = ''; state.shown = PAGE; render(); }
     else if ('chip' in b.dataset) { state.chip = b.dataset.chip; state.shown = PAGE; render(); }
@@ -273,6 +301,7 @@
 
   const h = new URLSearchParams(location.hash.slice(1));
   if ([1, 3, 7, 30].includes(+h.get('w'))) state.w = +h.get('w');
+  if (/^\d{4}-\d{2}-\d{2}$/.test(h.get('day') || '')) { state.day = h.get('day'); state.w = 1; }
   if (TABS[h.get('tab')]) state.tab = h.get('tab');
   if (h.get('sub')) state.sub = h.get('sub');
   render().catch((e) => { $('#list').innerHTML = `<div class="none">数据加载失败：${esc(e.message)}，刷新一下试试。</div>`; });

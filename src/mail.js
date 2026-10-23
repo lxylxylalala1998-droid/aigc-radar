@@ -47,7 +47,8 @@ const sec = (title, sub, body) => `<div class="s"><h2>${title}${sub ? `<small>${
 const items = (arr, fn) => arr.map((x, i) => `<div class="it">${fn(x, i)}</div>`).join('');
 const rk = (n) => `<span class="r ${n <= 3 ? 'top' : ''}">${n}</span>`;
 
-export function render(d, { siteUrl } = {}) {
+// archive：存成网页版往期日报时用，不显示「本次未采集到」、余额这类只对当时有意义的提醒，按钮改成回到网页看这天的完整数据
+export function render(d, { siteUrl, archive = false } = {}) {
   const site = siteUrl || process.env.SITE_URL || '';
   const parts = [];
 
@@ -123,19 +124,19 @@ export function render(d, { siteUrl } = {}) {
       <div class="m">来源：${[...new Set(e.refs.map((r) => r.src))].join(' / ')}</div>`)));
   }
 
-  const st = readJSON(path.join(DATA, 'status.json'), { sources: {} });
+  const st = archive ? { sources: {} } : readJSON(path.join(DATA, 'status.json'), { sources: {} });
   const bad = Object.values(st.sources).filter((s) => !s.ok).map((s) => s.name);
   // TikHub 余额：低于 1 美元提醒充值（每天约 0.05 美元）
-  const th = readJSON(path.join(DATA, 'tikhub.json'), null);
+  const th = archive ? null : readJSON(path.join(DATA, 'tikhub.json'), null);
   const thWarn = th && typeof th.balance === 'number' && th.balance < 1 ? `<div class="warn">⚠ TikHub 余额剩 ${th.balance} 美元，大约还能用 ${Math.max(0, Math.floor(th.balance / 0.05))} 天，用完后抖音高赞榜会暂停。充值：user.tikhub.io</div>` : '';
 
-  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIGC 热点早报</title><style>${CSS.replace(/\n/g, '')}</style></head>
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIGC 热点早报 · ${fmtDay(d.generatedAt)}</title><style>${CSS.replace(/\n/g, '')}</style></head>
 <body><div style="padding:16px 8px"><div class="w">
 <div class="hd">
   <div class="k">AIGC 热点雷达 · 早报</div>
   <div class="dt">${fmtDay(d.generatedAt)}</div>
   <div class="cv">覆盖 ${fmtHM(d.window[0])} — ${fmtHM(d.window[1])}${d.ai ? `　·　AI 分析：${esc(d.ai)}` : ''}</div>
-  ${site ? `<a class="btn" href="${esc(site)}">打开网页版，看全部 + 按 3 天 / 7 天 / 30 天查</a>` : ''}
+  ${archive ? `<a class="btn" href="../#w=1&day=${esc(d.date)}">在网页上看这天的完整数据</a>` : site ? `<a class="btn" href="${esc(site)}">打开网页版，看全部 + 按 3 天 / 7 天 / 30 天查</a>` : ''}
 </div>
 ${parts.join('\n')}
 <div class="ft">
