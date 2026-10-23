@@ -98,7 +98,7 @@ export function render(d, { siteUrl, archive = false } = {}) {
     ${v.m?.bgm ? `<div class="m">♪ ${esc(cut(v.m.bgm, 30))}</div>` : ''}
     ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}${v.ai?.voice || v.ai?.ask ? `<div class="a"><b>评论区</b>${esc(v.ai.voice || '')}${v.ai.ask ? `　${Object.entries(v.ai.ask).map(([k, n]) => `<span class="up">${esc(k)}×${n}</span>`).join(' ')}` : ''}</div>` : ''}`;
   const vSection = (s, emoji, topTitle, topNote, velNote) => {
-    const html = [[`${s}Top`, topTitle, topNote, 10], [`${s}Low`, '低粉爆款 · 近 14 天', s === 'douyin' ? '作者粉丝不到 10 万、点赞超过粉丝数：小号也能做' : 'UP 主粉丝不到 10 万、播放是粉丝 5 倍以上：小号也能做', 3], [s, '24 小时飙升', velNote, 3]]
+    const html = [[`${s}Top`, topTitle, topNote, 10], [`${s}Low`, '低粉爆款 · 近 14 天', s === 'douyin' ? '作者粉丝不到 5 万、点赞过 10 万：小号也能做' : 'UP 主粉丝不到 3 万、播放过 30 万：小号也能做', 3], [s, '24 小时飙升', velNote, 3]]
       .filter(([k]) => vids[k]?.length)
       .map(([k, title, n, max]) => `<div class="sub">${title} ${note(n)}</div>` + items(vids[k].slice(0, max), (v) => vRow(v, s))).join('');
     if (html) parts.push(sec(`${emoji} ${PLATFORM[s]}热点`, `${PLATFORM[s]}上的 AIGC 爆款`, html));

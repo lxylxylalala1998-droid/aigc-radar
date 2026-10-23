@@ -3,18 +3,19 @@
 import { AI_TOOLS } from './config.js';
 import { DAY } from './util.js';
 
-// 低粉爆款：作者粉丝不到 10 万，作品却爆了——说明靠的是内容本身，小号也能做
-//   抖音：点赞过 5 万且超过粉丝数；B站：播放过 20 万且是粉丝数的 5 倍以上
+// 低粉爆款：作者粉丝很少，作品却爆了——说明靠的是内容本身，小号也能做
+//   AIGC 爆款里小号本来就多，门槛定在大约 1 成作品能标上，才有区分度：
+//   抖音：粉丝不到 5 万、点赞过 10 万且是粉丝数的 2 倍以上；B站：粉丝不到 3 万、播放过 30 万且是粉丝数的 20 倍以上
 //   品牌官方号不算：粉丝少但播放高多半是投流推广，不是内容本身爆
 export function lowFan(x) {
   const f = x.m?.fans;
-  if (!f || f >= 1e5 || /官方|旗舰店|品牌/.test(x.author || '')) return false;
-  if (x.src === 'douyin') return (x.heat || 0) >= 5e4 && x.heat >= f;
-  if (x.src === 'bilibili') return (x.heat || 0) >= 2e5 && x.heat >= 5 * f;
+  if (!f || /官方|旗舰店|品牌/.test(x.author || '')) return false;
+  if (x.src === 'douyin') return f < 5e4 && (x.heat || 0) >= 1e5 && x.heat >= 2 * f;
+  if (x.src === 'bilibili') return f < 3e4 && (x.heat || 0) >= 3e5 && x.heat >= 20 * f;
   return false;
 }
 
-// 互动率标签：某项比例是同平台同类作品中位数的 2 倍以上才标
+// 互动率标签：某项比例排进同平台、数据够大的作品里的前 10% 才标（分布很偏，用「中位数几倍」会标得太多）
 const RATIOS = {
   douyin: [['分享率高', (m) => m.share / m.like], ['收藏率高', (m) => m.fav / m.like], ['评论多', (m) => m.comment / m.like]],
   bilibili: [['点赞率高', (m) => m.like / m.play], ['收藏率高', (m) => m.fav / m.play], ['弹幕多', (m) => m.danmaku / m.play]],
@@ -23,7 +24,7 @@ const RATIOS = {
 const BIG = { douyin: (m) => (m.like || 0) >= 1e4, bilibili: (m) => (m.play || 0) >= 5e4 };
 // 每个标签对博主意味着什么（网页悬停、邮件图例用）
 export const PT_WHY = {
-  低粉爆款: '作者粉丝不到 10 万也爆了：靠内容本身，小号也能做',
+  低粉爆款: '作者粉丝很少（抖音不到 5 万 / B站不到 3 万）也爆了：靠内容本身，小号也能做',
   分享率高: '分享 / 点赞远高于同类：社交货币，大家想转给朋友，适合情绪共鸣、反差、梗',
   收藏率高: '收藏远高于同类：干货或想反复看，适合教程、合集、高质量画面',
   评论多: '评论远高于同类：有争议或强互动，适合抛问题、站队、求续集',
@@ -37,7 +38,7 @@ export function ratioMedians(list) {
     const pool = list.filter((x) => x.cat === 'video' && x.src === s && x.m && BIG[s](x.m));
     med[s] = rs.map(([, f]) => {
       const v = pool.map((x) => f(x.m)).filter((n) => Number.isFinite(n) && n > 0).sort((a, b) => a - b);
-      return v.length >= 20 ? v[Math.floor(v.length / 2)] : null;
+      return v.length >= 20 ? v[Math.floor(v.length * 0.9)] : null; // 第 90 百分位
     });
   }
   return med;
@@ -51,7 +52,7 @@ export function portrait(x, med) {
   rs.forEach(([k, f], i) => {
     const m = med[x.src]?.[i];
     const v = f(x.m);
-    if (m && Number.isFinite(v) && v >= 2 * m) out.push(k);
+    if (m && Number.isFinite(v) && v >= m) out.push(k);
   });
   return out;
 }
