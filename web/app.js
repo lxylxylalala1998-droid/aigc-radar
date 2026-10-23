@@ -228,13 +228,20 @@
     return [...m].map(([k, n]) => [k, n]);
   }
 
-  // 往期日期条：最近 30 天，新的在左
+  // 往期日期条：只放最近 7 天的标签（新的在左），更早的（最多到 30 天前）用「更早」里的日期选择器选
+  // 透明的日期输入框盖在「更早」上：手机点一下直接弹系统日期选择；电脑上点击时用 showPicker 弹出
+  const RECENT_DAYS = 7;
   async function renderDays() {
     const box = $('#days');
     box.hidden = !state.day;
     if (!state.day) return;
     const days = await load('days');
-    box.innerHTML = days.map((x) => `<button class="chip ${x.date === state.day ? 'on' : ''}" data-day="${x.date}">${dayLabel(x.date)}<small>${weekOf(x.date)}${x.digest ? '' : ' · 无早报'}</small></button>`).join('');
+    const recent = days.slice(0, RECENT_DAYS);
+    const older = days.slice(RECENT_DAYS);
+    const chip = (x) => `<button class="chip ${x.date === state.day ? 'on' : ''}" data-day="${x.date}">${dayLabel(x.date)}<small>${weekOf(x.date)}${x.digest ? '' : ' · 无早报'}</small></button>`;
+    const picked = older.find((x) => x.date === state.day);
+    const more = older.length ? `<span class="chip older ${picked ? 'on' : ''}">${picked ? `${dayLabel(picked.date)}<small>${weekOf(picked.date)}${picked.digest ? '' : ' · 无早报'}</small>` : `更早<small>最多 30 天前</small>`} ▾<input type="date" id="older-day" aria-label="选择更早的日期" min="${older[older.length - 1].date}" max="${older[0].date}" value="${picked ? picked.date : ''}"></span>` : '';
+    box.innerHTML = recent.map(chip).join('') + more + (state.dayMiss ? `<span class="miss">${dayLabel(state.dayMiss)}那天没有数据（当天采集没跑成），换一天看看</span>` : '');
     box.querySelector('.on')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
@@ -286,8 +293,8 @@
     const b = e.target.closest('button');
     if (!b) return;
     if ('arch' in b.dataset) openArchive(!!b.closest('.mast'));
-    else if (b.dataset.day) { state.day = b.dataset.day; state.pickDay = 0; state.shown = PAGE; render(); }
-    else if (b.dataset.w) { state.day = ''; state.w = +b.dataset.w; state.pickDay = 0; state.shown = PAGE; render(); }
+    else if (b.dataset.day) { state.day = b.dataset.day; state.dayMiss = ''; state.pickDay = 0; state.shown = PAGE; render(); }
+    else if (b.dataset.w) { state.day = ''; state.dayMiss = ''; state.w = +b.dataset.w; state.pickDay = 0; state.shown = PAGE; render(); }
     else if (b.dataset.tab) { state.tab = b.dataset.tab; state.sub = ''; state.chip = ''; state.sort = ''; state.shown = PAGE; render(); }
     else if ('sub' in b.dataset) { state.sub = b.dataset.sub; state.chip = ''; state.shown = PAGE; render(); }
     else if ('chip' in b.dataset) { state.chip = b.dataset.chip; state.shown = PAGE; render(); }
@@ -298,6 +305,19 @@
   let t;
   $('#q').addEventListener('input', (e) => { clearTimeout(t); t = setTimeout(() => { state.q = e.target.value.trim().toLowerCase(); state.shown = PAGE; render(); }, 200); });
   $('#sort').addEventListener('change', (e) => { state.sort = e.target.value; render(); });
+  // 「更早」日期选择器
+  $('#days').addEventListener('click', (e) => {
+    if (e.target.id !== 'older-day') return;
+    try { e.target.showPicker(); } catch { /* 手机上点了本来就会弹，老浏览器不支持就退回默认行为 */ }
+  });
+  $('#days').addEventListener('change', async (e) => {
+    if (e.target.id !== 'older-day' || !e.target.value) return;
+    const days = await load('days');
+    const v = e.target.value;
+    if (days.some((x) => x.date === v)) { state.day = v; state.dayMiss = ''; state.pickDay = 0; state.shown = PAGE; }
+    else state.dayMiss = v;
+    render();
+  });
 
   const h = new URLSearchParams(location.hash.slice(1));
   if ([1, 3, 7, 30].includes(+h.get('w'))) state.w = +h.get('w');
