@@ -175,7 +175,7 @@
       const src = mv?.src || s;
       const target = mv || r0;
       const label = mv ? PLAT[src] : r0?.kind === 'music' ? '热歌' : r0?.kind === 'trend' ? '热搜' : '选题';
-      const inner = `<span class="ph-l">${label}</span>${mv?.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(mv.cover, src))}" alt="" onerror="this.remove()">` : ''}<b class="pm-no">${pad(k + 1)}</b>${mv ? '<i class="play" aria-hidden="true">▶</i>' : ''}`;
+      const inner = `<span class="ph-l">${label}</span>${mv?.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(mv.cover, src))}" alt="" onerror="this.remove()" onload="if(this.naturalWidth>this.naturalHeight)this.classList.add('wide')">` : ''}<b class="pm-no">${pad(k + 1)}</b>${mv ? '<i class="play" aria-hidden="true">▶</i>' : ''}`;
       return `
       <article class="pm ${open ? 'open' : ''}" id="pick-${s}-${k}">
         ${target ? `<a class="pm-cover th ph ${s}" href="${esc(target.url)}" target="_blank" rel="noopener" title="${esc(`${mv ? '主要依据：' : ''}${target.title}`)}">${inner}</a>` : `<div class="pm-cover th ph ${s}">${inner}</div>`}
@@ -243,8 +243,8 @@
   function videoRow(x) {
     const dy = x.src === 'douyin';
     return `
-      <article class="item vid">
-        <a class="th ph ${x.src}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频"><span>${PLAT[x.src] || ''}</span>${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="" onerror="this.remove()">` : ''}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
+      <article class="item vid ${x.src}">
+        <a class="th ph ${x.src}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频"><span>${PLAT[x.src] || ''}</span>${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="" onerror="this.remove()" onload="if(this.naturalWidth>this.naturalHeight)this.classList.add('wide')">` : ''}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
         <div>
           <div class="tt">${link(x.url, esc(x.title))}</div>
           <div class="meta">${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiLabel ? tag({ 作者声明: '作者声明AI', 平台识别: '平台识别AI', AI特效: 'AI特效角标' }[x.m.aiLabel] || 'AI标', 'solid') : ''}${ptTags(x)}<span>${esc(x.author || '')}</span>${x.m?.fans ? `<span>粉丝 ${num(x.m.fans)}</span>` : ''}${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${x.m?.dur ? `<span>${fmtDur(x.m.dur)}</span>` : ''}${dy && /^(话题|热门视频榜|热点宝)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>

@@ -284,6 +284,10 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 
 /* 视频 */
 .vid { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 14px; align-items: start; }
+/* 抖音封面统一竖版（抖音的封面本来就是竖的，裁成横条会切掉人脸和字）；横屏拍的视频封面完整显示，上下留黑边 */
+.vid.douyin { grid-template-columns: 100px minmax(0, 1fr); }
+.vid.douyin .th { aspect-ratio: 3 / 4; }
+.th.douyin img.wide { object-fit: contain; background: #000000; }
 .th { position: relative; display: block; width: 100%; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; background: var(--chip); }
 .th img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; display: block; }
 .th .ty { z-index: 1; position: absolute; left: 6px; top: 6px; font-size: 11px; font-weight: 600; padding: 3px 6px; border-radius: 4px; background: var(--marker); color: var(--on-marker); }
@@ -298,6 +302,7 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 .stat .up { color: var(--hot); }
 @media (max-width: 480px) {
   .vid { grid-template-columns: 112px minmax(0, 1fr); gap: 12px; }
+  .vid.douyin { grid-template-columns: 84px minmax(0, 1fr); }
   .item { padding: 12px 13px; }
   .row { grid-template-columns: 30px minmax(0, 1fr); gap: 4px 10px; }
   .rk { font-size: 24px; }
