@@ -32,6 +32,19 @@ const hasKey = () => !!process.env.DEEPSEEK_API_KEY;
 // 截断标题时可能把 emoji 切成半个（孤立的代理项），DeepSeek 会直接拒收整个请求，发送前清掉
 const fixText = (s) => s.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '');
 
+// DeepSeek 用量：每次运行累计，结束时记到 data/deepseek-usage.json（按天，保留 40 天），方便算钱
+const usage = { calls: 0, in: 0, hit: 0, out: 0 };
+function saveUsage(now = Date.now()) {
+  if (!usage.calls) return;
+  const file = path.join(DATA, 'deepseek-usage.json');
+  const all = readJSON(file, {});
+  const d = (all[bjDate(now)] ||= { calls: 0, in: 0, hit: 0, out: 0 });
+  for (const k of Object.keys(usage)) d[k] += usage[k];
+  for (const k of Object.keys(all)) if (k < bjDate(now - 40 * DAY)) delete all[k];
+  writeJSON(file, all);
+  console.log(`DeepSeek 用量：${usage.calls} 次调用，输入 ${usage.in} tokens（缓存命中 ${usage.hit}），输出 ${usage.out} tokens`);
+}
+
 async function ask(prompt, { maxTokens = 6000 } = {}) {
   prompt = fixText(prompt);
   let lastErr;
@@ -53,6 +66,8 @@ async function ask(prompt, { maxTokens = 6000 } = {}) {
       let j;
       try { j = JSON.parse(text); } catch { throw new Error(`DeepSeek ${res.status}: ${text.slice(0, 160)}`); }
       if (!res.ok) throw new Error(`DeepSeek ${res.status}: ${j?.error?.message || text.slice(0, 200)}`);
+      const u = j.usage || {};
+      usage.calls++; usage.in += u.prompt_tokens || 0; usage.hit += u.prompt_cache_hit_tokens || 0; usage.out += u.completion_tokens || 0;
       return JSON.parse(j.choices[0].message.content);
     } catch (e) { lastErr = e; }
   }
@@ -608,5 +623,6 @@ if (isMain(import.meta.url)) {
   (async () => {
     if (what === 'annotate' || what === 'all') await annotate();
     if (what === 'digest' || what === 'all') await digest();
-  })().catch((e) => { console.error(e); process.exit(1); });
+    saveUsage();
+  })().catch((e) => { saveUsage(); console.error(e); process.exit(1); });
 }
