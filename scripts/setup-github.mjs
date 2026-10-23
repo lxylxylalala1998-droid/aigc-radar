@@ -110,14 +110,16 @@ async function main() {
   }
 
   step('开启网页（GitHub Pages）');
-  try {
+  // 先查：已经开着就不动（细粒度授权码没有「新建网页」的权限，只能查和改）
+  let pages = null;
+  try { pages = (await gh('GET', `/repos/${owner}/${NAME}/pages`)).data; } catch (e) { if (e.status !== 404) throw e; }
+  if (!pages) {
     await gh('POST', `/repos/${owner}/${NAME}/pages`, { build_type: 'workflow' });
     console.log('  已开启');
-  } catch (e) {
-    if (e.status !== 409) throw e;
+  } else if (pages.build_type !== 'workflow') {
     await gh('PUT', `/repos/${owner}/${NAME}/pages`, { build_type: 'workflow' });
-    console.log('  已是开启状态');
-  }
+    console.log('  已改成由工作流发布');
+  } else console.log('  已是开启状态');
   const site = `https://${owner.toLowerCase()}.github.io/${NAME}/`;
 
   if (!args.includes('--no-run')) {
