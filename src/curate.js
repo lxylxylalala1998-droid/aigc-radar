@@ -106,7 +106,7 @@ async function annotateVideos(list, now) {
   const r = await ask(`下面是抖音 / B站上近期可能跟 AI 有关的视频（编号|平台|分区|标题|话题|简介|数据|发布时长）。
 关键词搜索会混进很多不是 AI 生成的视频，请严格判断：
 1. 「内容本身主要由 AI 生成 / AI 参与创作」的 AIGC 作品，给出 type（选最贴切的一个）：
-   AI音乐（AI 作曲 / AI 翻唱 / AI 说唱，比如让古人开麦唱歌说唱）、
+   AI音乐（AI 作曲 / AI 翻唱 / AI 说唱）、
    AI MV（给歌配 AI 生成画面的 MV）、
    AI歌手/艺人（虚拟歌手、AI 艺人 / 数字人账号发的作品）、
    AI鬼畜（AI 做的鬼畜、魔性循环、名人唱跳恶搞）、
@@ -172,7 +172,7 @@ async function discoverTrends(works, memes) {
     ...memes.slice(0, 40).map((x) => `热搜|${PLATFORM[x.src]}|${x.ai.tag}|${x.title}`),
   ];
   const r = await ask(`下面是刚抓到的 AIGC 作品（含话题标签）和带标签的热搜。请找出其中正在流行的【具体】AIGC 玩法 / 题材名称，用来去抖音、B站搜索更多同类爆款。
-例如「古人开麦」（AI 让古人说唱 / 唱歌）、「AI趣味滑镜」（抖音 AI 特效）、「AI老照片动起来」这种有辨识度、别人会拿来当话题的名字。
+要有辨识度、别人会拿来当话题的名字（比如某个 AI 特效模板名、某种固定的 AI 内容格式）。
 不要泛泛的词（AI音乐、AI视频、AIGC、AI动画这种不要），不要单个作品名或人名，最多 6 个，没有就返回空数组。
 - kw：玩法名，≤10 字，就是会被拿去搜索的词
 - why：这是什么玩法，≤20 字
@@ -352,6 +352,25 @@ ${lines.join('\n')}`, { maxTokens: 3000 });
   return r.top || [];
 }
 
+// 选题和参考稿件对不对得上：选题标题和稿件（标题 / 话题 / 简介 / 作者 / 分析）至少共有一个实义词
+// 中文按两字切，英文按单词；「AI」「视频」「挑战」这类泛词不算
+const STOP = new Set(['ai', 'aigc', 'mv', '视频', '爆款', '一个', '我们', '大家', '系列', '合集', '原创', '作品', '今天', '什么', '怎么', '这个', '可以', '不是', '如何', '教程', '新版', '抖音', 'b站', '版本', '整活', '挑战', '玩法', '模板', '用ai', '生成', '制作', '一键', '同款']);
+function grams(text) {
+  const t = String(text || '').toLowerCase();
+  const out = new Set();
+  for (const w of t.match(/[a-z0-9]{2,}/g) || []) if (!STOP.has(w)) out.add(w);
+  for (const seg of t.replace(/[^\u4e00-\u9fa5]+/g, ' ').split(' ')) {
+    for (let i = 0; i + 1 < seg.length; i++) { const g = seg.slice(i, i + 2); if (!STOP.has(g)) out.add(g); }
+  }
+  return out;
+}
+export function related(title, x) {
+  const a = grams(title);
+  const b = grams([x.title, x.tags, x.desc, x.author, x.board, x.ai?.why, x.ai?.hook].join(' '));
+  for (const g of a) if (b.has(g)) return true;
+  return false;
+}
+
 // 平台特点：给 AI 定「怎么做」时参考
 const PLATFORM_STYLE = {
   douyin: '抖音：竖屏，15~60 秒，前 3 秒定生死；擅长 AI 特效模板、卡点、BGM、挑战玩法、情绪向和反差向内容，文案 + 话题标签很关键',
@@ -361,10 +380,10 @@ const PLATFORM_STYLE = {
 async function makePicks(blocks, s) {
   const name = PLATFORM[s];
   const r = await ask(`下面是${name}上 AIGC 相关的热点数据，按时间段分组（方括号里是编号）。
-请给出「今天最值得在${name}上做的 10 个选题」，按值得做的程度从高到低排：
-- 选题的依据必须是下面${name}上的真实作品和热点（每个选题至少引用一个参考素材），题材是 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
+请给出「今天最值得在${name}上做的 12 个选题」，按值得做的程度从高到低排：
+- 每个选题必须直接来自下面列出的某个具体作品或热点：refs 填的就是这个选题要参考的那几条（标题、内容要能对上），不要引用跟选题主题无关的素材凑数；下面没有对应作品的题材不要出。题材是 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
 - 10 个选题要覆盖不同时间段：至少 3 个来自「24小时飙升」，至少 2 个来自「近3天爆款」，至少 2 个来自「本周热点」或「长期热点」
-- 类型尽量分散，不要两个选题做同一件事
+- 一视同仁：12 个选题分散到不同作品、不同题材，同一个系列 / 同一种玩法最多出 1 个，不要因为某个题材热就反复出
 - 做法要贴合平台：${PLATFORM_STYLE[s]}
 - 每个选题输出：
   - title：选题标题，像一个能直接发在${name}上的视频标题，≤24 字
@@ -376,7 +395,7 @@ async function makePicks(blocks, s) {
 输出格式：{"picks":[{"title":"","horizon":"","why":"","how":"","refs":[]}]}
 
 ${blocks}`, { maxTokens: 6000 });
-  return (r.picks || []).slice(0, 10);
+  return r.picks || [];
 }
 
 // 抖音 AIGC 视频里出现最多的话题标签（看 AI 特效 / 玩法趋势）
@@ -485,7 +504,6 @@ export async function digest(now = Date.now()) {
       `【本周热点】\n${[...h7.map((x, i) => line(`C${i}`, x)), ...lt.map((x, i) => line(`L${i}`, x))].join('\n') || '（无）'}${tags7.length ? `\n抖音 AIGC 话题标签（7天内视频数/总赞）：${tags7.map(([t, e]) => `#${t} ${e.n}条/${fmtNum(e.likes)}赞`).join('，')}` : ''}`,
       `【长期热点（30天）】\n${h30.map((x, i) => line(`D${i}`, x)).join('\n') || '（无）'}${typeCount.length ? `\n30 天 AIGC 作品类型分布：${typeCount.map(([t, n]) => `${t} ${n}`).join('，')}` : ''}`,
       songs.length ? `【可借势的热歌】\n${songs.map((x, i) => line(`S${i}`, x)).join('\n')}` : '',
-      trendKw.length ? `【近期新冒出的 AIGC 玩法】\n${trendKw.map((t) => `${t.kw}：${t.why || ''}（${Math.max(1, Math.round((now - t.first) / DAY))} 天内出现 ${t.n} 次）`).join('\n')}` : '',
     ].filter(Boolean).join('\n\n');
     console.log(`${PLATFORM[s]}选题素材：24h ${h24.length}+热梗 ${pm.length}+挑战 ${pc.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lt.length}，30天 ${h30.length}，热歌 ${songs.length}`);
     return { blocks, refs };
@@ -530,10 +548,14 @@ export async function digest(now = Date.now()) {
     date: bjDate(now), generatedAt: now, window: [since, now],
     ai: hasKey() ? DEEPSEEK_MODEL : null, errors,
     // 今日选题：抖音 10 个、B站 10 个
-    picks: Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, list.map((p) => ({
-      title: p.title, horizon: p.horizon, why: p.why, how: p.how,
-      refs: (p.refs || []).map((c) => pb[s].refs[c]).filter(Boolean).map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url })),
-    }))])),
+    // 每个平台 AI 出 12 个，参考对不上标题的删掉，一个都对不上的选题整条丢弃，取前 10
+    picks: Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, list.map((p) => {
+      const refs = (p.refs || []).map((c) => pb[s].refs[c]).filter(Boolean).filter((x) => related(p.title, x));
+      return refs.length ? {
+        title: p.title, horizon: p.horizon, why: p.why, how: p.how,
+        refs: refs.map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url })),
+      } : null;
+    }).filter(Boolean).slice(0, 10)])),
     trendKeywords: trendKw.map(({ kw, why }) => ({ kw, why })),
     videos,
     // 热梗里已经单列的抖音挑战不重复放

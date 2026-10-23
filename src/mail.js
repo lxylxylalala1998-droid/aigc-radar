@@ -1,11 +1,12 @@
 // 生成并发送每日早报邮件
 //   node src/mail.js --dry    只生成 out/mail.html 预览，不发送
 //   node src/mail.js --wait   等到 SEND_AT（默认 09:00 北京时间）再发
+//   node src/mail.js --mark   发完写 data/sent.json（定时早报用，防止当天重复发）
 // 顺序和网页一致：今日选题（抖音 10 / B站 10）→ 抖音热点 → B站热点 → 热梗热搜 → 热歌飙升 → AI 大事件。每条都带「为什么能火」的分析
 import fs from 'node:fs';
 import path from 'node:path';
 import nodemailer from 'nodemailer';
-import { ROOT, DATA, DAY, HOUR, bjDate, readJSON, loadEnv, isMain, fmtNum, sleep } from './util.js';
+import { ROOT, DATA, DAY, HOUR, bjDate, readJSON, writeJSON, loadEnv, isMain, fmtNum, sleep } from './util.js';
 import { SEND_AT, TZ } from './config.js';
 import { PLATFORM } from './rank.js';
 
@@ -209,5 +210,7 @@ if (isMain(import.meta.url)) {
     }
     if (args.includes('--wait')) await waitUntilSendTime();
     await send(d);
+    // 定时早报发完记一笔：当天后面的早报时间点看到它就不再重复发
+    if (args.includes('--mark')) writeJSON(path.join(DATA, 'sent.json'), { date: bjDate(), at: Date.now() }, true);
   })().catch((e) => { console.error(e.message); process.exit(1); });
 }
