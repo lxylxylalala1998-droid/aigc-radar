@@ -65,6 +65,13 @@ export const DY_HOT_QUERIES = [
   { keyword: '即梦', window: 168, pages: 1 },
   { keyword: '可灵', window: 168, pages: 1 },
   { keyword: '豆包', window: 168, pages: 1 },
+  // 工具名：这类视频标题里常常不写「AI」，但带工具名的基本都是 AI 做的（补 AI换人 / AI歌手 这类覆盖不到的）
+  { keyword: 'Seedance', window: 168, pages: 1 },
+  { keyword: 'OiiOii', window: 168, pages: 1 },
+  { keyword: 'LibTV', window: 168, pages: 1 },
+  { keyword: 'Suno', window: 168, pages: 1 },
+  { keyword: '海螺', window: 168, pages: 1 },
+  { keyword: 'Vidu', window: 168, pages: 1 },
 ];
 // 榜单不带 AI 标：按点赞从高到低查详情，确认抖音官方 AI 标（每条 0.001 美元，查过的 14 天内不再查）。每天最多查这么多条
 export const DY_VERIFY_PER_DAY = 150;
@@ -72,7 +79,25 @@ export const DY_VERIFY_PER_DAY = 150;
 export const DY_REFRESH_PER_DAY = 50;
 // 余额低于这个数就暂停，不会把钱扣成负数
 export const TIKHUB_MIN_BALANCE = 0.1;
+// 抖音高赞榜前几条抓热门评论（每条 0.001 美元），看观众在说什么、有没有人求教程 / 求下集
+export const DY_COMMENT_TOP = 10;
 
 // DeepSeek
 export const DEEPSEEK_BASE = process.env.DEEPSEEK_BASE || 'https://api.deepseek.com';
 export const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || 'deepseek-chat';
+// 余额低于这个数（元）时邮件底部提醒充值
+export const DEEPSEEK_WARN_BALANCE = 3;
+// 只给「会被看到」的视频写爆点 / 参考，其余只分类：每个平台 24 小时飙升前 N + 30 天热度前 N；热歌只分析每个榜前 N 首
+export const ANALYZE_TOP_VIDEOS = 80;
+export const ANALYZE_TOP_SONGS = 20;
+
+// 爆款里提到的 AI 工具（标题 / 话题 / 简介里出现就算），用来统计「爆款都在用什么工具」
+// 不收太短、容易误伤的写法（比如 MJ 会撞上迈克尔·杰克逊）
+export const AI_TOOLS = [
+  ['即梦', /即梦|dreamina/i], ['可灵', /可灵|kling/i], ['Seedance', /seedance/i], ['海螺', /海螺|hailuo/i], ['Vidu', /vidu/i],
+  ['豆包', /豆包|doubao/i], ['OiiOii', /oiioii/i], ['LibTV', /libtv/i], ['剪映', /剪映|capcut/i], ['Suno', /suno/i],
+  ['Midjourney', /midjourney/i], ['Sora', /sora/i], ['Veo', /\bveo\s?\d?\b/i], ['Runway', /runway/i], ['PixVerse', /pixverse|拍我ai/i],
+  ['通义万相', /万相|wanx|通义/i], ['腾讯混元', /混元|hunyuan/i], ['天工', /天工|skyreels/i], ['Nano Banana', /nano\s?banana/i],
+  ['ComfyUI', /comfyui/i], ['Stable Diffusion', /stable\s?diffusion/i], ['Flux', /\bflux\b/i], ['GPT', /chatgpt|gpt-?\d/i],
+  ['DeepSeek', /deepseek/i], ['即创', /即创/], ['ElevenLabs', /elevenlabs/i], ['Hedra', /hedra/i], ['Udio', /udio/i],
+];

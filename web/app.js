@@ -41,6 +41,20 @@
     if (!cache[key]) cache[key] = fetch(`data/${key}.json?t=${Math.floor(Date.now() / 6e5)}`).then((r) => { if (!r.ok) throw new Error(`没有这份数据（${r.status}）`); return r.json(); });
     return cache[key];
   }
+  const fmtDur = (s) => (!s ? '' : s >= 60 ? `${Math.floor(s / 60)}分${s % 60 ? `${s % 60}秒` : '钟'}` : `${s}秒`);
+  const pct = (v) => `${v >= 0 ? '+' : ''}${Math.round(v * 100)}%`;
+  // 数据画像标签的含义（悬停显示）
+  const PT_WHY = {
+    低粉爆款: '作者粉丝不到 10 万也爆了：靠内容本身，小号也能做',
+    分享率高: '分享 / 点赞远高于同类：社交货币，大家想转给朋友，适合情绪共鸣、反差、梗',
+    收藏率高: '收藏远高于同类：干货或想反复看，适合教程、合集、高质量画面',
+    评论多: '评论远高于同类：有争议或强互动，适合抛问题、站队、求续集',
+    点赞率高: '点赞 / 播放远高于同类：完成度和情绪都到位',
+    弹幕多: '弹幕远高于同类：有名场面、梗密度高，适合鬼畜、二创',
+  };
+  const ptTags = (x) => (x.pt || []).map((k) => `<span class="tag pt ${k === '低粉爆款' ? 'low' : ''}" title="${esc(PT_WHY[k] || '')}">${esc(k)}</span>`).join('');
+  const askTags = (a) => (a ? Object.entries(a).map(([k, n]) => `<span class="tag ask">${esc(k)} ×${n}</span>`).join('') : '');
+  const TIMING_CLS = { 刚起势: 'hot', 高峰期: 'mark', 已饱和: '' };
   const dayLabel = (date) => { const d = new Date(`${date}T12:00:00+08:00`); return `${d.getMonth() + 1}月${d.getDate()}日`; };
   const weekOf = (date) => `周${WEEK[new Date(`${date}T12:00:00+08:00`).getDay()]}`;
 
@@ -61,10 +75,14 @@
       <article class="pm ${k === 0 ? 'first' : ''}">
         <div class="no">${pad(k + 1)}</div>
         <div>
-          <div class="tags">${tag(p.horizon, 'mark')}</div>
+          <div class="tags">${tag(p.horizon, 'mark')}${p.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${p.form === '系列' ? tag('系列追更') : ''}${p.level ? tag(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${p.timing ? `<span class="tag ${TIMING_CLS[p.timing.label] ?? ''}" title="${esc(p.timing.basis)}">${esc(p.timing.label)}</span>` : ''}</div>
           <h3>${esc(p.title)}</h3>
           <p><span class="mk">为什么能火</span>${esc(p.why)}</p>
           <p><span class="mk">怎么做</span>${esc(p.how)}</p>
+          ${p.tools ? `<p><span class="mk">工具链</span>${esc(p.tools)}</p>` : ''}
+          ${p.formula ? `<p><span class="mk">公式</span>${esc(p.formula)}${p.variants?.length ? `<span class="vars">换皮：${p.variants.map(esc).join(' / ')}</span>` : ''}</p>` : ''}
+          ${p.risk ? `<p class="risk"><span class="mk">风险</span>${esc(p.risk)}</p>` : ''}
+          ${p.timing ? `<p class="tmb">时效：${esc(p.timing.label)} · ${esc(p.timing.basis)}</p>` : ''}
           ${refs(p)}
         </div>
       </article>`;
@@ -78,10 +96,34 @@
         ${list.length > 5 ? `<button class="more picks-toggle" data-picks="${s}">${open ? '收起' : `展开其余 ${list.length - 5} 个`}</button>` : ''}` : '<div class="none">这一天没有生成选题（AI 分析未开启或出错）</div>'}
       </section>`;
     };
+    // 跨平台信息差：一个平台爆了、另一个平台还没人做的题材
+    const gapCol = (list, from, to) => (list?.length ? `<div class="gcol"><h4>${PLAT[from]}爆了 · ${PLAT[to]}还没人做</h4>${list.map((x) => `
+        <div class="gap">
+          <div class="tt">${link(x.url, esc(x.title))}</div>
+          <div class="meta">${pb(x.src)}<span>${N(x.heat)}${x.src === 'douyin' ? '赞' : '播放'}</span>${x.ai?.type ? `<span>${esc(x.ai.type)}</span>` : ''}${ptTags(x)}</div>
+          ${ana('为什么值得做', x.why)}${ana(`搬到${PLAT[to]}`, x.how)}
+        </div>`).join('')}</div>` : '');
+    const g = dg.gaps;
+    const gaps = g && (g.toBilibili?.length || g.toDouyin?.length) ? `
+      <section class="gaps">
+        <div class="sub-head"><h3>跨平台信息差</h3><small>一个平台近 7 天的 AIGC 爆款，在另一个平台近 30 天的 AI 稿件里没找到同题材的。用同样的题材做原创，不是搬运</small></div>
+        <div class="gap-cols">${gapCol(g.toBilibili, 'douyin', 'bilibili')}${gapCol(g.toDouyin, 'bilibili', 'douyin')}</div>
+      </section>` : '';
+    // 选题复盘：前几天推荐的选题，参考作品后来又涨了多少
+    const rv = dg.review;
+    const avg = rv?.items?.length ? rv.items.reduce((s, r) => s + r.perDay, 0) / rv.items.length : 0;
+    const review = rv?.items?.length ? `
+      <details class="review">
+        <summary><b>选题复盘</b>　${dayLabel(rv.date)}推荐的 ${rv.items.length} 个选题，参考作品之后平均每天又涨 ${pct(avg)}${rv.byHorizon?.length ? `；按信号看：${rv.byHorizon.map((h) => `${esc(h.horizon)} ${pct(h.avg)}/天`).join('，')}` : ''}</summary>
+        <div class="rv-list">${rv.items.map((r) => `
+          <div class="rv"><span class="tag ${r.status === '继续涨' ? 'hot' : r.status === '放缓' ? 'mark' : ''}">${r.status}</span>${pb(r.src)}<span class="rv-t">${esc(r.title)}</span><span class="rv-n">${N(r.from)} → ${N(r.to)}　${pct(r.perDay)}/天</span>${link(r.ref.url, '参考作品 ↗', 'rv-a')}</div>`).join('')}</div>
+        <p class="rv-note">每个选题按涨得最多的那条参考作品算（抖音按点赞、B站按播放）。「按信号看」统计了 ${rv.days.map(dayLabel).join('、')} 的选题，看哪类信号推荐的选题后劲更足。</p>
+      </details>` : '';
     $('#picks').innerHTML = `
       <div class="sec-head"><h2>${state.day ? `${dayLabel(state.day)}选题` : ds.length > 1 ? 'AI 选题日报' : '今日选题'}</h2><small>AI 编辑${dg.ai ? `（${esc(dg.ai)}）` : ''}分别从抖音、B站的 24 小时 / 3 天 / 7 天 / 30 天热点里挑 · ${clock(dg.generatedAt)} · ${original}</small></div>
       ${dayChips}
-      <div class="pick-cols">${box('douyin')}${box('bilibili')}</div>`;
+      <div class="pick-cols">${box('douyin')}${box('bilibili')}</div>
+      ${gaps}${review}`;
   }
 
   // ---------- 视频条目（抖音 / B站共用）----------
@@ -92,9 +134,11 @@
         <a class="th ph ${x.src}" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="打开视频"><span>${PLAT[x.src] || ''}</span>${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="" onerror="this.remove()">` : ''}${x.ai?.type ? `<span class="ty">${esc(x.ai.type)}</span>` : ''}</a>
         <div>
           <div class="tt">${link(x.url, esc(x.title))}</div>
-          <div class="meta">${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiLabel ? tag({ 作者声明: '作者声明AI', 平台识别: '平台识别AI', AI特效: 'AI特效角标' }[x.m.aiLabel] || 'AI标', 'solid') : ''}<span>${esc(x.author || '')}</span>${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${dy && /^(话题|热门视频榜|热点宝)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>
-          <div class="stat">${dy && x.m?.play ? `<span>${x.m.playWin ? `近${x.m.playWin}天` : ''}${N(x.m.play)}播放</span>` : ''}<span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}</div>
+          <div class="meta">${x.ai?.top ? tag('今日精选', 'hot') : ''}${x.m?.aiLabel ? tag({ 作者声明: '作者声明AI', 平台识别: '平台识别AI', AI特效: 'AI特效角标' }[x.m.aiLabel] || 'AI标', 'solid') : ''}${ptTags(x)}<span>${esc(x.author || '')}</span>${x.m?.fans ? `<span>粉丝 ${num(x.m.fans)}</span>` : ''}${x.m?.noDate ? '' : `<span>${ago(x.pubAt)}</span>`}${x.m?.dur ? `<span>${fmtDur(x.m.dur)}</span>` : ''}${dy && /^(话题|热门视频榜|热点宝)/.test(x.board) ? `<span>${esc(x.board.replace('话题·', ''))}</span>` : ''}</div>
+          <div class="stat">${dy && x.m?.play ? `<span>${x.m.playWin ? `近${x.m.playWin}天` : ''}${N(x.m.play)}播放</span>` : ''}<span>${N(x.heat)}${dy ? '赞' : '播放'}</span>${x.vel ? `<span class="up">+${N(x.vel)}${dy ? '赞' : ''}/小时</span>` : ''}${!dy && x.m?.like ? `<span>${N(x.m.like)}赞</span>` : ''}${dy && x.m?.share ? `<span>${N(x.m.share)}分享</span>` : ''}${x.m?.fav ? `<span>${N(x.m.fav)}收藏</span>` : ''}</div>
+          ${x.m?.bgm ? `<div class="bgm">♪ BGM：${esc(x.m.bgm)}</div>` : ''}
           ${ana('爆点', x.ai?.hook)}${ana('参考', x.ai?.tip)}
+          ${x.ai?.voice || x.ai?.ask ? `<div class="ana"><span class="mk">评论区</span>${esc(x.ai.voice || '')} ${askTags(x.ai.ask)}</div>` : ''}
         </div>
       </article>`;
   }
@@ -103,17 +147,19 @@
     const dy = src === 'douyin';
     return {
       lede: dy
-        ? '抖音上的 AIGC 爆款，只收抖音官方标了 AI 的视频（作者声明「内容由 AI 生成」、平台识别为 AI 内容、AI 特效角标）。来源：抖音热点宝·视频热榜（近 1 / 3 / 7 天，标题含 AI / 即梦 / 可灵 / 豆包）+ 热榜话题下的视频。热度按点赞，热点宝的视频带真实播放数。'
-        : 'B站上的 AIGC 爆款：关键词搜索 + 分区排行 + 综合热门。热度按播放。',
+        ? '抖音上的 AIGC 爆款，只收抖音官方标了 AI 的视频（作者声明「内容由 AI 生成」、平台识别为 AI 内容、AI 特效角标）。来源：抖音热点宝·视频热榜（近 1 / 3 / 7 天，标题含 AI 或常用 AI 工具名）+ 热榜话题下的视频。热度按累计点赞。「低粉爆款」= 作者粉丝不到 10 万也爆了；「分享率高 / 收藏率高 / 评论多」= 比同类作品高一倍以上，鼠标悬停看含义。'
+        : 'B站上的 AIGC 爆款：关键词搜索 + 分区排行 + 综合热门。热度按播放。「低粉爆款」= UP 主粉丝不到 10 万、播放是粉丝数 5 倍以上；「点赞率高 / 收藏率高 / 弹幕多」= 比同类作品高一倍以上。',
       subs: (d) => {
         const list = d.videos.filter((x) => x.src === src);
-        return [['', '全部', list.length], ...VTYPES.concat('未分类').map((t) => [t, t, list.filter((x) => vtype(x) === t).length]).filter(([, , n]) => n)];
+        const low = list.filter((x) => x.pt?.includes('低粉爆款')).length;
+        return [['', '全部', list.length], ...(low ? [['低粉爆款', '低粉爆款', low]] : []), ...VTYPES.concat('未分类').map((t) => [t, t, list.filter((x) => vtype(x) === t).length]).filter(([, , n]) => n)];
       },
       sorts: [['vel', '飙升最快'], ['heat', dy ? '点赞最高' : '播放最高'], ['time', '最新发布']],
       render(d) {
         const s = state.sort || (state.w === 1 ? 'vel' : 'heat');
         const key = s === 'vel' ? (x) => x.vel || 0 : s === 'heat' ? (x) => x.heat || 0 : (x) => x.pubAt || 0;
-        const items = d.videos.filter((x) => x.src === src && (!state.sub || vtype(x) === state.sub) && match(x, state.q)).sort((a, b) => key(b) - key(a));
+        const inSub = (x) => !state.sub || (state.sub === '低粉爆款' ? x.pt?.includes('低粉爆款') : vtype(x) === state.sub);
+        const items = d.videos.filter((x) => x.src === src && inSub(x) && match(x, state.q)).sort((a, b) => key(b) - key(a));
         return sheet(items.slice(0, state.shown).map(videoRow).join('')) + more(items.length);
       },
     };
@@ -178,11 +224,23 @@
       },
     },
     music: {
-      lede: '四个平台的热歌榜和飙升榜各取前 20。QQ音乐、网易云日更；抖音、B站是周榜（B站没有官方飙升榜，按上期排名的升幅算）。',
-      subs: (d) => MUSIC_SUBS.map((p) => [p, p, d.music.filter((x) => PLAT[x.src] === p).length]),
+      lede: '四个平台的热歌榜和飙升榜各取前 20。QQ音乐、网易云日更；抖音、B站是周榜（B站没有官方飙升榜，按上期排名的升幅算）。「爆款BGM」是这个时间段里抖音 AIGC 作品用得最多的配乐（用原声的不算）。',
+      subs: (d) => [...MUSIC_SUBS.map((p) => [p, p, d.music.filter((x) => PLAT[x.src] === p).length]), ['爆款BGM', 'AIGC 爆款BGM', (d.bgms || []).length]],
       defaultSub: '抖音',
       sorts: [],
       render(d) {
+        if (state.sub === '爆款BGM') {
+          const list = (d.bgms || []).filter((b) => match({ title: b.title, desc: b.best?.title }, state.q));
+          return sheet(list.map((b, i) => `
+            <article class="item row">
+              <div class="rk ${i < 3 ? 'top' : ''}">${i + 1}</div>
+              <div>
+                <div class="tt">${link(`https://www.douyin.com/search/${encodeURIComponent(b.title.split(' - ')[0])}`, esc(b.title))}</div>
+                <div class="meta"><span>${b.n} 条 AIGC 作品在用</span><span>合计 ${N(b.likes)} 赞</span></div>
+                ${b.best ? `<div class="ana"><span class="mk">代表作</span>${link(b.best.url, esc(b.best.title))}　${N(b.best.heat)}赞</div>` : ''}
+              </div>
+            </article>`).join(''));
+        }
         const src = PSRC[state.sub] || 'douyin';
         const col = (kind) => {
           const list = d.music.filter((x) => x.src === src && (kind === '飙升榜') === x.board.includes('飙升') && match(x, state.q))
@@ -195,11 +253,28 @@
     },
     news: {
       lede: '汇总量子位、36氪、IT之家、OpenAI、Google、DeepMind、Hugging Face、TechCrunch、The Verge、Hacker News 等来源，AI 把同一件事的多篇报道合并成一个事件。',
-      subs: (d) => [['大事件', 'AI 归并的大事件', (d.digests || []).reduce((n, g) => n + (g.news || []).length, 0)], ['全部资讯', '全部资讯', d.news.length]],
+      subs: (d) => [['大事件', 'AI 归并的大事件', (d.digests || []).reduce((n, g) => n + (g.news || []).length, 0)], ['工具热度', '爆款工具榜', (d.tools || []).length], ['全部资讯', '全部资讯', d.news.length]],
       defaultSub: '大事件',
       sorts: [['time', '最新发布'], ['heat', '热度']],
       chips: (d) => (state.sub === '全部资讯' ? counts(d.news, (x) => x.src) : []),
       render(d) {
+        // 爆款工具榜：这个时间段发布的 AIGC 作品里，标题 / 话题 / 简介提到各工具的作品数
+        if (state.sub === '工具热度') {
+          const list = d.tools || [];
+          const max = Math.max(1, ...list.map((t) => t.n));
+          const vs = (t) => (t.prev == null ? '' : !t.prev ? '<span class="up">新上榜</span>' : `<span class="${t.n >= t.prev ? 'up' : 'down'}">上期 ${t.prev}　${pct((t.n - t.prev) / t.prev)}</span>`);
+          const hasPrev = list.some((t) => t.prev != null);
+          return `<p class="list-note">只统计在标题、话题、简介里写了工具名的作品，大多数作品不写，所以看相对热度和涨跌。${hasPrev ? '「上期」是再往前同样天数里发布的作品。' : state.w === 3 || state.w === 7 ? '数据攒够两期后会显示和上一期的对比。' : '3 天、7 天范围会和上一期对比。'}</p>` + sheet(list.map((t, i) => `
+            <article class="item row">
+              <div class="rk ${i < 3 ? 'top' : ''}">${i + 1}</div>
+              <div>
+                <div class="tt"><b>${esc(t.name)}</b>　<span class="tool-n">${N(t.n)} 条作品</span>　${vs(t)}</div>
+                <div class="bar-mini"><i style="width:${Math.round((t.n / max) * 100)}%"></i></div>
+                <div class="meta"><span>抖音 ${t.douyin || 0}</span><span>B站 ${t.bilibili || 0}</span></div>
+                ${t.best ? `<div class="ana"><span class="mk">代表作</span>${pb(t.best.src)} ${link(t.best.url, esc(t.best.title))}　${N(t.best.heat)}${t.best.src === 'douyin' ? '赞' : '播放'}</div>` : ''}
+              </div>
+            </article>`).join(''));
+        }
         if (state.sub !== '全部资讯') {
           const evs = (d.digests || []).flatMap((g) => (g.news || []).map((e) => ({ ...e, date: g.date }))).filter((e) => match({ title: e.title, summary: e.summary }, state.q));
           return sheet(evs.map((e) => `

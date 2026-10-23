@@ -6,6 +6,8 @@ import path from 'node:path';
 import { ROOT, DATA, DAY, bjDate, readJSON, writeJSON, isMain } from './util.js';
 import { loadWindow, slim } from './rank.js';
 import { render as renderMail } from './mail.js';
+import { AIGC_TYPES } from './curate.js';
+import { ratioMedians, portrait, withFans, toolRank, bgmRank } from './insight.js';
 
 const SITE = path.join(ROOT, 'site');
 const WINDOWS = [1, 3, 7, 30];
@@ -14,7 +16,7 @@ const ARCHIVE_DAYS = 30;
 
 const readDigest = (date) => readJSON(path.join(DATA, 'digests', `${date}.json`));
 // 网页只用得到日报里的选题、大事件
-const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news, trendKeywords: d.trendKeywords || [] });
+const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: d.picks, news: d.news, trendKeywords: d.trendKeywords || [], gaps: d.gaps, review: d.review });
 
 function digestsIn(days, now) {
   const out = [];
@@ -25,8 +27,13 @@ function digestsIn(days, now) {
   return out;
 }
 
-function windowData(days, now) {
-  const all = loadWindow(days, now).map((x) => slim(x, now));
+// 网页上算 AIGC 作品：分了类、不是「非AIGC / 教程」，抖音还要有官方 AI 标
+const OLD_TYPE = { AI剧情: 'AI影视', AI短片: 'AI影视' };
+const isWork = (x) => x.cat === 'video' && AIGC_TYPES.includes(OLD_TYPE[x.ai?.type] || x.ai?.type) && (x.src !== 'douyin' || !!x.m?.aiLabel);
+
+// ctx：{ fans: B站 UP 主粉丝数缓存, med: 互动率中位数 }，整次生成共用
+function windowData(days, now, ctx) {
+  const all = loadWindow(days, now).map((x) => slim(withFans(x, ctx.fans), now));
   const by = (cat) => all.filter((x) => x.cat === cat);
 
   const news = by('news').sort((a, b) => (b.pubAt || b.firstSeen) - (a.pubAt || a.firstSeen)).slice(0, LIMIT.news);
@@ -37,7 +44,15 @@ function windowData(days, now) {
   const videos = ['douyin', 'bilibili'].flatMap((s) => by('video')
     .filter((x) => x.src === s && x.pubAt >= now - 31 * DAY && x.ai?.type !== '非AIGC' && (s !== 'douyin' || x.m?.aiLabel))
     .sort(days === 1 ? (a, b) => (b.vel || 0) - (a.vel || 0) : (a, b) => (b.heat || 0) - (a.heat || 0))
-    .slice(0, LIMIT.video));
+    .slice(0, LIMIT.video))
+    // 数据画像标签：低粉爆款、分享率高……
+    .map((x) => { const pt = portrait(x, ctx.med); return pt.length ? { ...x, pt } : x; });
+
+  // 爆款工具榜（3 天 / 7 天窗口和上一期比）、爆款 BGM 榜（抖音）：都只看窗口内发布的 AIGC 作品
+  // 3 天 / 7 天窗口和上一期比；数据要攒够两期才比（系统刚上线时上期不全）
+  const compare = (days === 3 || days === 7) && ctx.history >= 2 * days;
+  const tools = toolRank((compare ? loadWindow(days * 2, now) : loadWindow(days, now)).filter(isWork), now, days, { compare }).slice(0, 20);
+  const bgms = bgmRank(all.filter((x) => isWork(x) && x.pubAt >= now - days * DAY)).slice(0, 20);
 
   const trends = ['weibo', 'douyin', 'bilibili'].flatMap((src) => by('trend')
     .filter((x) => x.src === src)
@@ -53,11 +68,11 @@ function windowData(days, now) {
       .sort(days === 1 ? (a, b) => (a.rank || 99) - (b.rank || 99) : (a, b) => (a.peakRank || 99) - (b.peakRank || 99) || (b.daysSeen || 0) - (a.daysSeen || 0))
       .slice(0, LIMIT.music));
 
-  return { days, generatedAt: now, digests: digestsIn(days, now), news, videos, trends, music };
+  return { days, generatedAt: now, digests: digestsIn(days, now), news, videos, trends, music, tools, bgms };
 }
 
 // 往期：最近 ARCHIVE_DAYS 天，每天一份当天数据 + 早报原样页，外加一个日期索引 days.json
-function buildArchive(now) {
+function buildArchive(now, ctx) {
   const index = [];
   let bytes = 0;
   for (let i = 0; i < ARCHIVE_DAYS; i++) {
@@ -66,7 +81,7 @@ function buildArchive(now) {
     if (!day) continue;
     const at = Math.min(day.updatedAt || now, now);
     const dg = readDigest(date);
-    const w = { ...windowData(1, at), date, digests: dg ? [webDigest(dg)] : [] };
+    const w = { ...windowData(1, at, ctx), date, digests: dg ? [webDigest(dg)] : [] };
     const file = path.join(SITE, 'data', 'd', `${date}.json`);
     writeJSON(file, w);
     bytes += fs.statSync(file).size;
@@ -83,13 +98,16 @@ function buildArchive(now) {
 export function build(now = Date.now()) {
   fs.rmSync(SITE, { recursive: true, force: true });
   fs.cpSync(path.join(ROOT, 'web'), SITE, { recursive: true });
+  const fans = Object.fromEntries(Object.entries(readJSON(path.join(DATA, 'bili-fans.json'), {})).map(([k, v]) => [k, v.f]));
+  const history = fs.existsSync(path.join(DATA, 'days')) ? fs.readdirSync(path.join(DATA, 'days')).filter((f) => f.endsWith('.json')).length : 0;
+  const ctx = { fans, history, med: ratioMedians(loadWindow(30, now).map((x) => withFans(x, fans))) };
   for (const d of WINDOWS) {
-    const w = windowData(d, now);
+    const w = windowData(d, now, ctx);
     writeJSON(path.join(SITE, 'data', `w${d}.json`), w);
     const kb = (fs.statSync(path.join(SITE, 'data', `w${d}.json`)).size / 1024).toFixed(0);
     console.log(`w${d}: 资讯 ${w.news.length} / 视频 ${w.videos.length} / 热搜 ${w.trends.length} / 热歌 ${w.music.length} / 日报 ${w.digests.length}  ${kb}KB`);
   }
-  buildArchive(now);
+  buildArchive(now, ctx);
   const st = readJSON(path.join(DATA, 'status.json'), { sources: {} });
   writeJSON(path.join(SITE, 'data', 'status.json'), st);
   fs.writeFileSync(path.join(SITE, '.nojekyll'), '');

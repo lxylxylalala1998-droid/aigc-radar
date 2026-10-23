@@ -42,7 +42,9 @@ function videoItem(a, topic) {
       like: st.digg_count || 0, comment: st.comment_count || 0, share: st.share_count || 0, fav: st.collect_count || 0,
       aiCorner: a.video_control?.show_ai_corner ? 1 : 0,
       aiLabel: aiLabel(a) || undefined, // 抖音官方 AI 标：只有带标的才算 AIGC
-      bgm: a.music?.title ? clean(a.music.title) : undefined,
+      bgm: a.music?.title && !/原声|创作的/.test(a.music.title) ? `${clean(a.music.title)}${a.music.author ? ` - ${clean(a.music.author)}` : ''}` : undefined,
+      dur: a.video?.duration ? Math.round(a.video.duration / 1000) : undefined,
+      fans: a.author?.follower_count || undefined,
     },
   };
 }

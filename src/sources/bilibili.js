@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { http, clean, isAI, sleep, DAY, DATA, readJSON } from '../util.js';
+import { http, clean, isAI, sleep, DAY, DATA, readJSON, writeJSON } from '../util.js';
 import { BILI_KEYWORDS, BILI_RANK_RIDS, WATCH_KEYWORDS } from '../config.js';
 
 // AI 从最近数据里发现的新兴玩法（curate.js 维护），取最近 3 天还在出现的前 8 个
@@ -23,6 +23,8 @@ async function bili(url) {
 }
 
 const fixPic = (u) => (u && u.startsWith('//') ? 'https:' + u : u?.replace(/^http:/, 'https:'));
+// 时长：搜索接口给「3:25」，排行 / 热门给秒数
+const durSec = (d) => (typeof d === 'number' ? d : String(d || '').split(':').reduce((s, x) => s * 60 + (+x || 0), 0)) || undefined;
 
 function video(v, board) {
   const st = v.stat || {};
@@ -42,9 +44,52 @@ function video(v, board) {
       like: v.like ?? st.like ?? 0,
       danmaku: v.video_review ?? st.danmaku ?? 0,
       fav: v.favorites ?? st.favorite ?? 0,
+      reply: v.review ?? st.reply ?? undefined,
+      coin: st.coin ?? undefined,
+      share: st.share ?? undefined,
       part: v.typename || v.tname || '',
+      dur: durSec(v.duration),
+      mid: v.mid || v.owner?.mid || undefined,
+      aid: v.aid || v.id || undefined,
     },
   };
+}
+
+// UP 主粉丝数（日报算「低粉爆款」用）：免费接口，结果缓存 7 天；被风控（412）就停
+//   mids：UP 主 ID 数组；返回 { mid: 粉丝数 }（含缓存）
+export async function biliFans(mids, { max = 100 } = {}) {
+  const file = path.join(DATA, 'bili-fans.json');
+  const cache = readJSON(file, {});
+  const now = Date.now();
+  for (const [k, v] of Object.entries(cache)) if (v.t < now - 7 * DAY) delete cache[k];
+  let n = 0;
+  for (const mid of mids) {
+    if (cache[mid] || n >= max) continue;
+    try {
+      const d = await bili(`https://api.bilibili.com/x/relation/stat?vmid=${mid}`);
+      cache[mid] = { f: d?.follower || 0, t: now };
+      n++;
+    } catch (e) { if (e.status === 412) break; }
+    await sleep(300);
+  }
+  writeJSON(file, cache);
+  return Object.fromEntries(Object.entries(cache).map(([k, v]) => [k, v.f]));
+}
+
+// B站热门评论（日报给高播放榜用）：免费接口，按热度取第一页
+//   list：[{ bvid, aid }]（没有 aid 的先查一次稿件信息）；返回 { bvid: [{ t, l }] }
+export async function biliComments(list) {
+  const out = {};
+  for (const { bvid, aid: known } of list) {
+    try {
+      const aid = known || (await bili(`https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`))?.aid;
+      if (!aid) continue;
+      const d = await bili(`https://api.bilibili.com/x/v2/reply/main?type=1&oid=${aid}&mode=3&next=0&ps=20`);
+      out[bvid] = (d?.replies || []).map((c) => ({ t: clean(c.content?.message || ''), l: c.like || 0 })).filter((c) => c.t).sort((a, b) => b.l - a.l);
+    } catch (e) { if (e.status === 412) break; }
+    await sleep(500);
+  }
+  return out;
 }
 
 // B站热搜

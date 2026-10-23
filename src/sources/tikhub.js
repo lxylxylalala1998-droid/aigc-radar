@@ -76,9 +76,13 @@ function toItem(x, label, a, c = {}) {
       play: x.win[pw].play || undefined, playWin: pw / 24, like, like24: x.win[24]?.like,
       comment: st.comment_count || c.c || undefined, share: st.share_count || c.s || undefined, fav: st.collect_count || c.f || undefined,
       fans: x.fans_cnt || undefined, aiLabel: label,
+      dur: durOf(a) || c.d || undefined, bgm: bgmOf(a) || c.bg || undefined,
     },
   };
 }
+// 时长（秒）、BGM（用的原声不算）
+const durOf = (a) => (a?.video?.duration ? Math.round(a.video.duration / 1000) : 0);
+export const bgmOf = (a) => { const t = clean(a?.music?.title || ''); return t && !/原声|创作的/.test(t) ? `${t}${a.music.author ? ` - ${clean(a.music.author)}` : ''}` : ''; };
 
 export async function douyinAigc({ daily = false } = {}) {
   if (!process.env.TIKHUB_API_KEY) throw new Error('没配置 TIKHUB_API_KEY，跳过');
@@ -145,7 +149,7 @@ export async function douyinAigc({ daily = false } = {}) {
         const l = a ? aiLabel(a) : '';
         const st = a?.statistics || {};
         verified[x.item_id] = l
-          ? { l, t: now, n: st.digg_count || 0, c: st.comment_count || 0, s: st.share_count || 0, f: st.collect_count || 0, cv: a.video?.cover?.url_list?.[0] || '' }
+          ? { l, t: now, n: st.digg_count || 0, c: st.comment_count || 0, s: st.share_count || 0, f: st.collect_count || 0, cv: a.video?.cover?.url_list?.[0] || '', d: durOf(a), bg: bgmOf(a) }
           : { l, t: now };
         if (a) details.set(x.item_id, a);
       } catch (e) { warnings.push(`详情 ${x.item_id}：${e.message}`); if (e.broke) broke = true; }
@@ -167,5 +171,27 @@ export async function douyinAigc({ daily = false } = {}) {
   }, true);
   out.warnings = warnings.slice(0, 5);
   out.info = `热榜 ${cand.size} 条，查详情 ${todo.length} 条（新视频 ${todo.length - refreshing}、刷新老视频累计赞 ${refreshing}），带 AI 标 ${out.length} 条；本次约花 ${spent.toFixed(3)} 美元，余额约 ${typeof balance === 'number' ? (balance - spent).toFixed(3) : '?'}`;
+  return out;
+}
+
+// 抖音热门评论（日报给高赞榜用）：每条视频取 1 页 20 条，按点赞排；0.001 美元一次，花费记进 tikhub.json
+//   ids：抖音视频 ID（不带 dy: 前缀）；返回 { id: [{ t: 评论, l: 点赞 }] }
+export async function dyComments(ids) {
+  const out = {};
+  if (!process.env.TIKHUB_API_KEY || !ids.length) return out;
+  let cost = 0;
+  for (const id of ids) {
+    try {
+      const j = await th(`/api/v1/douyin/app/v3/fetch_video_comments?aweme_id=${id}&cursor=0&count=20`);
+      cost += 0.001;
+      out[id] = (j?.data?.comments || []).map((c) => ({ t: clean(c.text || ''), l: c.digg_count || 0 })).filter((c) => c.t).sort((a, b) => b.l - a.l);
+    } catch (e) { if (e.broke) break; }
+  }
+  const state = readJSON(STATE_FILE, {});
+  const today = new Date().toISOString().slice(0, 10);
+  writeJSON(STATE_FILE, {
+    ...state, balance: typeof state.balance === 'number' ? +(state.balance - cost).toFixed(3) : state.balance,
+    spentToday: +((state.day === today ? state.spentToday || 0 : 0) + cost).toFixed(3), day: today,
+  }, true);
   return out;
 }
