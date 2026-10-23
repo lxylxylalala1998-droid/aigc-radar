@@ -1,10 +1,10 @@
 // 抖音高赞 AIGC（经 TikHub 付费接口，国内免费接口拿不到）。只在每天早报那次运行时拉
 //   1. 抖音热点宝·视频热榜，按标题关键词（AI / 即梦 / 可灵 / 豆包）过滤：抖音官方的热门视频榜，带播放 / 点赞 / 发布时间
 //   2. 排除标题里明确说「不是 AI」的，按点赞从高到低查详情，只留抖音官方标了 AI 的（作者声明 / 平台识别 / AI 特效）
-//      查过的视频记在 data/dy-verified.json，14 天内不再查，所以只有新上榜的视频要花钱
+//      AI 标发布后基本不变，查过的记在 data/dy-verified.json（14 天）；数据会涨，每天刷新点赞最高的一批 AI 视频
 import path from 'node:path';
 import { clean, DAY, DATA, readJSON, writeJSON } from '../util.js';
-import { DY_HOT_QUERIES, DY_VERIFY_PER_DAY, TIKHUB_MIN_BALANCE } from '../config.js';
+import { DY_HOT_QUERIES, DY_VERIFY_PER_DAY, DY_REFRESH_PER_DAY, TIKHUB_MIN_BALANCE } from '../config.js';
 import { plain, hashtags, aiLabel } from './douyin.js';
 
 const BASE = 'https://api.tikhub.io';
@@ -121,15 +121,19 @@ export async function douyinAigc({ daily = false } = {}) {
     }
   }
 
-  // 2. 排除明确否认 AI 的，按点赞从高到低查详情确认 AI 标，顺便拿累计点赞（查过的直接用记录）
-  //    预算先给没查过的；有剩再给 3 天没更新过累计点赞的 AI 视频
+  // 2. 排除明确否认 AI 的，按点赞从高到低查详情：确认 AI 标（发布后基本不变，查过就记下），顺便拿累计点赞、评论、分享、收藏
+  //    数据会涨，所以每天先刷新点赞最高的 DY_REFRESH_PER_DAY 条 AI 视频（不管发布几天），剩下的额度查新上榜的；
+  //    没轮到刷新的视频，点赞照样每天从榜单更新（发布 7 天内的，「近 7 天」榜单点赞就约等于累计），只有评论、分享会晚几天
   const verified = readJSON(VERIFY_FILE, {});
   for (const [id, v] of Object.entries(verified)) if (v.t < now - 14 * DAY) delete verified[id];
   const ranked = [...cand.values()].filter((x) => !NOT_AI.test(x.item_title || '')).sort((a, b) => winLike(b) - winLike(a));
-  const todo = [
-    ...ranked.filter((x) => !verified[x.item_id]),
-    ...ranked.filter((x) => verified[x.item_id]?.l && verified[x.item_id].t < now - 3 * DAY),
-  ].slice(0, +process.env.DY_VERIFY_LIMIT || DY_VERIFY_PER_DAY);
+  const budget = +process.env.DY_VERIFY_LIMIT || DY_VERIFY_PER_DAY;
+  const stale = ranked.filter((x) => verified[x.item_id]?.l && verified[x.item_id].t < now - 20 * 3600e3);
+  const fresh = ranked.filter((x) => !verified[x.item_id]);
+  const top = stale.slice(0, Math.min(DY_REFRESH_PER_DAY, budget));
+  const news = fresh.slice(0, budget - top.length);
+  const todo = [...top, ...news, ...stale.slice(top.length, top.length + budget - top.length - news.length)]; // 新视频不够时，多出来的额度继续刷新
+  const refreshing = todo.length - news.length;
   const details = new Map();
   let next = 0;
   await Promise.all(Array.from({ length: 4 }, async () => {
@@ -162,6 +166,6 @@ export async function douyinAigc({ daily = false } = {}) {
     spentToday: +((state.day === today ? state.spentToday || 0 : 0) + spent).toFixed(3), day: today,
   }, true);
   out.warnings = warnings.slice(0, 5);
-  out.info = `热榜 ${cand.size} 条，新查详情 ${todo.length} 条，带 AI 标 ${out.length} 条；本次约花 ${spent.toFixed(3)} 美元，余额约 ${typeof balance === 'number' ? (balance - spent).toFixed(3) : '?'}`;
+  out.info = `热榜 ${cand.size} 条，查详情 ${todo.length} 条（新视频 ${todo.length - refreshing}、刷新老视频累计赞 ${refreshing}），带 AI 标 ${out.length} 条；本次约花 ${spent.toFixed(3)} 美元，余额约 ${typeof balance === 'number' ? (balance - spent).toFixed(3) : '?'}`;
   return out;
 }

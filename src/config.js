@@ -68,6 +68,8 @@ export const DY_HOT_QUERIES = [
 ];
 // 榜单不带 AI 标：按点赞从高到低查详情，确认抖音官方 AI 标（每条 0.001 美元，查过的 14 天内不再查）。每天最多查这么多条
 export const DY_VERIFY_PER_DAY = 150;
+// 其中先拿这么多次刷新点赞最高的 AI 视频（累计点赞、评论、分享、收藏会涨），剩下的查新上榜的
+export const DY_REFRESH_PER_DAY = 50;
 // 余额低于这个数就暂停，不会把钱扣成负数
 export const TIKHUB_MIN_BALANCE = 0.1;
 
