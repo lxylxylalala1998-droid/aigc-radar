@@ -44,6 +44,8 @@ const pb = (src) => b(PLATFORM[src] || src, `p-${src}`);
 const an = (label, text) => (text ? `<div class="a"><b>${label}</b>${esc(text)}</div>` : '');
 const cut = (s, n) => (s.length > n ? s.slice(0, n) + '…' : s);
 const note = (t) => `<span class="nt">${t}</span>`;
+// 时效标签颜色：刚起势橙、高峰期红、已饱和灰
+const TIMING_B = { 刚起势: 'warm', 高峰期: 'hot', 已饱和: '' };
 const fmtDay = (ts) => new Intl.DateTimeFormat('zh-CN', { timeZone: TZ, month: 'numeric', day: 'numeric', weekday: 'short' }).format(ts);
 const fmtHM = (ts) => new Intl.DateTimeFormat('zh-CN', { timeZone: TZ, month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }).format(ts);
 const sec = (title, sub, body) => `<div class="s"><h2>${title}${sub ? `<small>${sub}</small>` : ''}</h2>${body}</div>`;
@@ -58,7 +60,7 @@ export function render(d, { siteUrl, archive = false } = {}) {
   // 0. 3 分钟速览：今天最该做的 3 个选题 + 一句话风向 + 1 个低粉爆款 + 1 个信息差
   const br = d.brief;
   if (br && (br.top?.length || br.wind)) {
-    const tb = (t) => [t.timing && b(t.timing, t.timing === '刚起势' ? 'hot' : t.timing === '已饱和' ? '' : 'warm'), t.kind === '教程测评' && b('教程测评', 'hz'), t.level && b(`难度${t.level}${t.time ? ` · ${t.time}` : ''}`)].filter(Boolean).join('');
+    const tb = (t) => [t.timing && b(t.timing, TIMING_B[t.timing] ?? ''), t.kind === '教程测评' && b('教程测评', 'hz'), t.level && b(`难度${t.level}${t.time ? ` · ${t.time}` : ''}`)].filter(Boolean).join('');
     parts.push(sec('⚡ 3 分钟速览', '先看这一块，完整选题和参考在下面', `
       ${br.wind ? `<div class="gp" style="font-weight:600;line-height:1.6">🧭 ${esc(br.wind)}</div>` : ''}
       ${(br.top || []).map((t, i) => `<div class="it"><div class="tt"><b>${i + 1}. </b>${pb(t.src)}<b>${esc(t.title)}</b></div><div class="m">${tb(t)}${PLATFORM[t.src]}选题第 ${t.i + 1} 个</div>${an('为什么先做', t.why)}</div>`).join('')}
@@ -77,8 +79,8 @@ export function render(d, { siteUrl, archive = false } = {}) {
     return `<div class="bx bx-${k}"><div class="bh bh-${k}">${PLATFORM[s]} · 今日选题 ${list.length} 个</div>${list.map((p, i) => `
       <div class="bi">
         <div class="t"><span class="bn bn-${k}">${String(i + 1).padStart(2, '0')}</span>${p.horizon ? b(p.horizon, 'ai') : ''}${esc(p.title)}</div>
-        <div class="m">${p.kind === '教程测评' ? b('教程测评', 'hz') : ''}${p.form === '系列' ? b('系列追更') : ''}${p.level ? b(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${p.timing ? `${b(p.timing.label, p.timing.label === '刚起势' ? 'hot' : p.timing.label === '已饱和' ? '' : 'warm')}${esc(p.timing.basis)}` : ''}</div>
-        ${an('为什么能火', p.why)}${an('怎么做', p.how)}${an('工具链', p.tools)}${an('公式', p.formula)}
+        <div class="m">${p.kind === '教程测评' ? b('教程测评', 'hz') : ''}${p.form === '系列' ? b('系列追更') : ''}${p.level ? b(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${p.timing ? `${b(p.timing.label, TIMING_B[p.timing.label] ?? '')}${esc(p.timing.basis)}` : ''}</div>
+        ${an('为什么能火', p.why)}${an('怎么做', p.how)}${an(p.flow ? '工作流程' : '工具链', p.flow || p.tools)}${an('公式', p.formula)}
         ${p.risk ? `<div class="a rs"><b>⚠ 风险</b>${esc(p.risk)}</div>` : ''}
         ${p.refs?.length ? `<div class="refs">${p.refs.map((r) => a(r.url, `↗ ${esc(cut(r.title, 20))}`)).join(' ')}</div>` : ''}
       </div>`).join('')}</div>`;
@@ -107,7 +109,7 @@ export function render(d, { siteUrl, archive = false } = {}) {
     <div class="tt">${a(v.url, esc(cut(v.title, 60)))}</div>
     <div class="m">${b(v.ai?.type || 'AIGC', 'ai')}${v.m?.aiLabel ? b({ 作者声明: '作者声明AI', 平台识别: '平台识别AI', AI特效: 'AI特效角标' }[v.m.aiLabel] || 'AI标') : ''}${pts(v)}${s === 'douyin' && v.m?.play ? `▶ ${v.m.playWin ? `近${v.m.playWin}天 ` : ''}${fmtNum(v.m.play)}　` : ''}${s === 'douyin' ? '❤' : '▶'} ${fmtNum(v.heat)}${v.vel && v.vel > 1 ? `　<span class="up">+${fmtNum(v.vel)}${s === 'douyin' ? '赞' : ''}/小时</span>` : ''}　${esc(v.author || '')}${v.m?.fans && v.pt?.includes('低粉爆款') ? `（粉丝 ${fmtNum(v.m.fans)}）` : ''}${v.pubAt && !v.m?.noDate ? `　${Math.max(1, Math.round((d.generatedAt - v.pubAt) / DAY))} 天前` : ''}${v.m?.dur ? `　${fmtDur(v.m.dur)}` : ''}</div>
     ${v.m?.bgm ? `<div class="m">♪ ${esc(cut(v.m.bgm, 30))}</div>` : ''}
-    ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}${v.ai?.voice || v.ai?.ask ? `<div class="a"><b>评论区</b>${esc(v.ai.voice || '')}${v.ai.ask ? `　${Object.entries(v.ai.ask).map(([k, n]) => `<span class="up">${esc(k)}×${n}</span>`).join(' ')}` : ''}</div>` : ''}`;
+    ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}`;
   const vSection = (s, emoji, topTitle, topNote, velNote) => {
     const html = [[`${s}Top`, topTitle, topNote, 10], [`${s}Low`, '低粉爆款 · 近 14 天', s === 'douyin' ? '作者粉丝不到 5 万、点赞过 10 万：小号也能做' : 'UP 主粉丝不到 3 万、播放过 30 万：小号也能做', 3], [s, '24 小时飙升', velNote, 3]]
       .filter(([k]) => vids[k]?.length)

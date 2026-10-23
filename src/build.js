@@ -85,7 +85,7 @@ const leanVideo = (x) => ({
   // 简介大多就是标题，重复的不要
   ...(x.desc && !x.desc.startsWith(x.title.slice(0, 15)) ? { desc: x.desc.slice(0, 60) } : {}),
   m: keep(x.m, ['play', 'playWin', 'like', 'share', 'fav', 'fans', 'dur', 'bgm', 'aiLabel', 'noDate']),
-  ai: keep(x.ai, ['type', 'hook', 'tip', 'voice', 'ask', 'top']),
+  ai: keep(x.ai, ['type', 'hook', 'tip', 'top']),
 });
 const leanTrend = (x) => ({
   ...keep(x, ['src', 'title', 'url', 'rank', 'peakRank', 'kind', 'label', 'heat', 'peakHeat', 'daysSeen', 'lastSeen', 'top']),

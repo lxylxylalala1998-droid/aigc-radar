@@ -12,6 +12,9 @@
   --hot: #f2382c;          /* 飙升、名次前三、重磅 */
   --hot-soft: #fde5e3;
   --chip: #e3e6ec;
+  --hl: #ffe14d;           /* 链接、选中 Tab 下面那道荧光笔底线；深色模式换成暗金色，不然压在浅色字上像划掉了 */
+  --warm: #e8780a;         /* 橙：刚起势 */
+  --warm-soft: #fdebd6;
 
   --font-display: 'ZCOOL QingKe HuangYou', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
   --font-body: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Segoe UI', sans-serif;
@@ -25,14 +28,14 @@
   :root:not([data-theme="light"]) {
     --paper: #0f1115; --sheet: #171a20; --ink: #eceef3; --ink-2: #a9aebb; --ink-3: #6f7482; --rule: #2a2e37;
     --marker: #f5d63d; --on-marker: #15171c; --hot: #ff5a4f; --hot-soft: #3a1d1b; --chip: #232730;
-    --douyin: #2a2d33;
+    --douyin: #2a2d33; --hl: #7d6a12; --warm: #ff9a3c; --warm-soft: #3a2a14;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --paper: #0f1115; --sheet: #171a20; --ink: #eceef3; --ink-2: #a9aebb; --ink-3: #6f7482; --rule: #2a2e37;
   --marker: #f5d63d; --on-marker: #15171c; --hot: #ff5a4f; --hot-soft: #3a1d1b; --chip: #232730;
-  --douyin: #2a2d33;
+  --douyin: #2a2d33; --hl: #7d6a12; --warm: #ff9a3c; --warm-soft: #3a2a14;
   color-scheme: dark;
 }
 
@@ -67,8 +70,8 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 .scope { margin: 0; font-size: 12.5px; line-height: 1.7; color: var(--ink-3); text-align: right; }
 .scope b { font-weight: 600; color: var(--ink-2); }
 .mast-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-.arch { border: 0; padding: 1px 2px; font-size: 13.5px; font-weight: 600; color: var(--ink); background: linear-gradient(176deg, transparent 55%, var(--marker) 55%, var(--marker) 92%, transparent 92%); }
-.arch:hover { color: var(--ink); background: var(--marker); }
+.arch { border: 0; padding: 1px 2px; font-size: 13.5px; font-weight: 600; color: var(--ink); background: linear-gradient(176deg, transparent 55%, var(--hl) 55%, var(--hl) 92%, transparent 92%); }
+.arch:hover { color: var(--on-marker); background: var(--marker); }
 @media (max-width: 640px) { .scope { text-align: left; } .mast-side { align-items: flex-start; } .mast-in { padding-block: 20px 14px; } }
 
 /* ---------- 今日选题 ---------- */
@@ -77,8 +80,8 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 .sec-head h2 { font: 400 26px/1.1 var(--font-display); margin: 0; letter-spacing: 1px; }
 .sec-head small { font-size: 12.5px; color: var(--ink-3); }
 .day-chips { display: flex; gap: 6px; flex-wrap: wrap; margin: -4px 0 14px; }
-.arch-link { color: var(--ink); font-weight: 600; white-space: nowrap; background: linear-gradient(176deg, transparent 55%, var(--marker) 55%, var(--marker) 92%, transparent 92%); }
-.arch-link:hover { background: var(--marker); }
+.arch-link { color: var(--ink); font-weight: 600; white-space: nowrap; background: linear-gradient(176deg, transparent 55%, var(--hl) 55%, var(--hl) 92%, transparent 92%); }
+.arch-link:hover { color: var(--on-marker); background: var(--marker); }
 .pick-grid { display: grid; gap: 12px; grid-template-columns: 1.25fr 1fr 1fr; }
 .pick { position: relative; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); padding: 16px 18px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .pick .no { font-family: var(--font-num); font-weight: 800; font-size: 34px; line-height: .9; color: var(--ink-3); }
@@ -104,7 +107,12 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 .pm:first-child { border-top: 0; }
 .pm .no { font-family: var(--font-num); font-weight: 800; font-size: 30px; line-height: 1; color: var(--ink-3); }
 .pm .tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.pm h3 { font: 400 17px/1.4 var(--font-display); margin: 6px 0 4px; letter-spacing: .5px; text-wrap: balance; }
+/* 选题标题用正文粗体：花体字放在夹着数字、英文的长标题里挤成一团，不好读 */
+.pm h3 { font: 700 16.5px/1.45 var(--font-body); margin: 6px 0 4px; text-wrap: balance; }
+.pm .pm-more { display: none; }
+.pm.open .pm-more { display: block; }
+.pm-toggle { margin-top: 6px; border: 0; background: none; padding: 2px 0; font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
+.pm-toggle:hover { color: var(--ink); }
 .pm p { margin: 2px 0 0; font-size: 13.5px; line-height: 1.65; color: var(--ink-2); max-width: 75ch; }
 .pm .refs { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 6px; }
 .pm .refs a { font-size: 12.5px; color: var(--ink-3); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -152,7 +160,7 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 .tabs { display: flex; gap: 4px 18px; flex-wrap: wrap; min-width: 0; }
 .tabs button { border: 0; background: none; padding: 4px 0; font: 400 19px/1.3 var(--font-display); color: var(--ink-3); letter-spacing: .5px; }
 .tabs button .n { font-family: var(--font-num); font-weight: 700; font-size: 14px; margin-left: 3px; color: var(--ink-3); }
-.tabs button.on { color: var(--ink); background: linear-gradient(176deg, transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%); }
+.tabs button.on { color: var(--ink); background: linear-gradient(176deg, transparent 58%, var(--hl) 58%, var(--hl) 92%, transparent 92%); }
 .tabs button:hover { color: var(--ink); }
 .seg { display: inline-flex; border: 1.5px solid var(--ink); border-radius: 999px; padding: 2px; flex: none; }
 .seg button { border: 0; background: none; padding: 3px 11px; border-radius: 999px; font-size: 13px; color: var(--ink-2); }
@@ -208,6 +216,8 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 .tag.hot { background: var(--hot-soft); color: var(--hot); font-weight: 600; }
 .tag.solid { background: var(--ink); color: var(--paper); }
 .tag.mark { background: var(--marker); color: var(--on-marker); font-weight: 600; }
+.tag.warm { background: var(--warm-soft); color: var(--warm); font-weight: 600; }
+.tag.line { background: transparent; border: 1px solid var(--rule); color: var(--ink-2); padding: 3px 6px; }
 .ana { margin-top: 7px; font-size: 13.5px; line-height: 1.65; color: var(--ink); max-width: 70ch; }
 /* 数据画像标签：低粉爆款用描边，其余虚线框，悬停看含义 */
 .tag.pt { background: transparent; border: 1px dashed var(--ink-3); color: var(--ink-2); padding: 3px 6px; cursor: help; }
@@ -327,7 +337,7 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 .bt-no { font-family: var(--font-num); font-weight: 800; font-size: 34px; line-height: 1; color: var(--hot); }
 .bt-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .bt-body .tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.bt-body b { font: 400 17px/1.4 var(--font-display); letter-spacing: .5px; }
+.bt-body b { font: 700 16px/1.45 var(--font-body); }
 .bt-why { font-size: 13px; line-height: 1.6; color: var(--ink-2); }
 .brief-more { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 8px 16px; margin-top: 12px; font-size: 13.5px; }
 .brief-more > div { min-width: 0; line-height: 1.6; }

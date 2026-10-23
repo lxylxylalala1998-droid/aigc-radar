@@ -7,9 +7,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DATA, HOUR, DAY, bjDate, readJSON, writeJSON, loadEnv, isMain, isAI, fmtNum } from './util.js';
-import { DEEPSEEK_BASE, DEEPSEEK_MODEL, ANALYZE_TOP_VIDEOS, ANALYZE_TOP_SONGS, DY_COMMENT_TOP } from './config.js';
-import { dyComments } from './sources/tikhub.js';
-import { biliFans, biliComments } from './sources/bilibili.js';
+import { DEEPSEEK_BASE, DEEPSEEK_MODEL, ANALYZE_TOP_VIDEOS, ANALYZE_TOP_SONGS } from './config.js';
+import { biliFans } from './sources/bilibili.js';
 import { lowFan, ratioMedians, portrait, withFans, toolsOf, toolRank, bgmRank } from './insight.js';
 import { loadWindow, velocity, slim, PLATFORM } from './rank.js';
 
@@ -29,6 +28,7 @@ const VV = 3; // 视频标注版本
 const SYSTEM = `你是一位资深的 AIGC 自媒体选题编辑，服务对象是在抖音、B站做 AI 内容的博主。
 你的任务是帮他们看懂每个热点「为什么能火」，并判断能做什么内容。
 要求：判断准确、语言精炼口语化、不说空话套话；只根据给出的信息和你确定知道的事实分析，拿不准的写「推测：」开头，绝不编造具体事件、人名、数据。
+写做法时只描述步骤和方法（比如「文生图出角色 → 图生视频做动作 → 剪辑卡点」），不要写具体用哪家 AI 平台或哪个模型——从作品看不出来，写了容易错。
 只输出 JSON，不要任何其它文字。`;
 
 const hasKey = () => !!process.env.DEEPSEEK_API_KEY;
@@ -140,7 +140,7 @@ async function annotateVideos(list, now, note) {
 3. 跟 AI 生成无关的不要输出
 4. 编号前带 ★ 的 AIGC 作品再写两句（不带 ★ 的只给 type，不写 hook / tip）：
    - hook：爆点分析——这条为什么能火（题材、情绪、反差、梗、技术新鲜感、蹭了什么热点、人设、节奏等），要具体到这条视频，≤45 字
-   - tip：怎么参考——同类内容怎么做、用什么工具、关键点是什么，≤40 字
+   - tip：怎么参考——同类内容怎么做、关键步骤和要点是什么（不点名具体平台 / 模型），≤40 字
 
 输出格式：{"items":[{"i":编号,"type":"AI音乐","hook":"","tip":""}]}
 
@@ -164,7 +164,7 @@ async function annotateTrends(list) {
 - tag：热梗（流行梗、名场面、魔性台词 / BGM、新造词、全网模仿的段子）/ AI相关（词条本身在说 AI 或机器人；普通数码产品不算）/ 可借势（热度高的影视剧、综艺、游戏、体育、节日，适合用 AI 做同人、恶搞、MV）
 - idea：可以怎么用 AI 来做，≤30 字
 纯政治、外交、灾难、刑事、负面社会新闻不加 tag（但仍要写 why）。
-标了【抖音挑战】【话题互动】的是抖音官方归类的站内玩法 / 挑战：why 要说清楚这个挑战怎么玩、为什么大家爱跟；idea 必须写，说怎么用 AI 跟拍 / 参与（用什么工具、拍什么），≤35 字。
+标了【抖音挑战】【话题互动】的是抖音官方归类的站内玩法 / 挑战：why 要说清楚这个挑战怎么玩、为什么大家爱跟；idea 必须写，说怎么用 AI 跟拍 / 参与（拍什么、AI 做哪一步，不点名具体平台），≤35 字。
 
 输出格式：{"items":[{"i":编号,"why":"","tag":"","idea":""}]}
 
@@ -366,7 +366,7 @@ async function pickHits(list, now) {
 从【抖音】和【B站】里各挑 6 个最值得 AI 自媒体参考的爆款（某个平台候选不足 6 个就全选）（优先增长快、有代表性、可复制；同一系列 / 同一个特效模板只选一个代表）。
 对每个写：
 - hook：爆点分析——这条具体为什么能火，结合数据说（比如几小时涨了多少），≤50 字
-- tip：怎么参考——同类内容怎么做、用什么工具、关键镜头 / 节奏 / 文案怎么设计，≤45 字
+- tip：怎么参考——同类内容怎么做、关键步骤、镜头 / 节奏 / 文案怎么设计（不点名具体平台 / 模型），≤45 字
 
 输出格式：{"top":[{"i":编号,"hook":"","tip":""}]}
 
@@ -374,20 +374,16 @@ ${lines.join('\n')}`, { maxTokens: 3000 });
   return r.top || [];
 }
 
-async function pickTop(list, now, cmOf = () => []) {
-  const lines = list.map((x, i) => {
-    const cms = cmOf(x).slice(0, 12).map((c) => `${c.t.slice(0, 40)}(${fmtNum(c.l)}赞)`).join(' / ');
-    return `${i}|${PLATFORM[x.src]}|${typeOf(x)}|${x.title}|${stats(x)}|${x.m?.noDate ? '发布时间未知' : `发布${Math.max(1, Math.round(hoursAgo(x.pubAt, now) / 24))}天`}${x.tags ? `|话题:${x.tags}` : ''}${cms ? `|热评:${cms}` : ''}`;
-  });
-  const r = await ask(`下面是近 30 天点赞（抖音）/ 播放（B站）最高的 AIGC 作品（编号|平台|类型|标题|数据|发布天数|话题|热评）。
+async function pickTop(list, now) {
+  const lines = list.map((x, i) => `${i}|${PLATFORM[x.src]}|${typeOf(x)}|${x.title}|${stats(x)}|${x.m?.noDate ? '发布时间未知' : `发布${Math.max(1, Math.round(hoursAgo(x.pubAt, now) / 24))}天`}${x.tags ? `|话题:${x.tags}` : ''}`);
+  const r = await ask(`下面是近 30 天点赞（抖音）/ 播放（B站）最高的 AIGC 作品（编号|平台|类型|标题|数据|发布天数|话题）。
 为【每一条】都写：
-  - hook：它为什么能火到这个量级——题材、情绪、反差、人设、技术新鲜感、借了什么势，结合数据和热评说，≤50 字
-  - tip：想做同类内容怎么做——选题、工具、关键镜头 / 节奏 / 文案，≤45 字
-  - voice：评论区在说什么——观众的情绪、争论点、最常见的需求（求教程 / 求下集 / 问用什么做的…），≤40 字；没有热评就留空
+  - hook：它为什么能火到这个量级——题材、情绪、反差、人设、技术新鲜感、借了什么势，结合数据说，≤50 字
+  - tip：想做同类内容怎么做——选题、关键步骤、镜头 / 节奏 / 文案（不点名具体平台 / 模型），≤45 字
 
-输出格式：{"top":[{"i":编号,"hook":"","tip":"","voice":""}]}
+输出格式：{"top":[{"i":编号,"hook":"","tip":""}]}
 
-${lines.join('\n')}`, { maxTokens: 4500 });
+${lines.join('\n')}`, { maxTokens: 3500 });
   return r.top || [];
 }
 
@@ -445,7 +441,7 @@ async function makePicks(blocks, s) {
 - 每个选题必须直接来自下面列出的某个具体作品或热点：refs 填的就是这个选题要参考的那几条（标题、内容要能对上），不要引用跟选题主题无关的素材凑数；下面没有对应作品的题材不要出。题材是 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
 - 选题要覆盖不同时间段：至少 3 个来自「24小时飙升」，至少 2 个来自「近3天爆款」，至少 2 个来自「本周热点」或「长期热点」
 - 一视同仁：14 个选题分散到不同作品、不同题材，同一个系列 / 同一种玩法最多出 1 个，不要因为某个题材热就反复出
-- 选题分两类（kind）：「作品」= 自己做一条 AIGC 作品；「教程测评」= 教别人怎么做某类爆款，或测评新工具新模型。14 个里要有 1~2 个教程测评，并且至少 1 个排进前 10，来源：【评论区需求】里有人求教程的爆款、【新工具 / 新模型】、【爆款工具热度】里正在涨的工具；没有这些素材就不出
+- 选题分两类（kind）：「作品」= 自己做一条 AIGC 作品；「教程测评」= 教别人怎么做某类爆款，或测评新工具新模型。14 个里要有 1~2 个教程测评，并且至少 1 个排进前 10，来源：【新工具 / 新模型】、【爆款工具热度】里正在涨的工具、门槛低但数据好的爆款（教大家怎么做）；没有这些素材就不出
 - 标了「低粉爆款」的作品说明小号也能做，同等条件下优先；标了「分享率高 / 收藏率高 / 评论多」的，做法要顺着这个特点设计
 - 做法要贴合平台：${PLATFORM_STYLE[s]}
 - 每个选题输出：
@@ -455,7 +451,7 @@ async function makePicks(blocks, s) {
   - form：单条 / 系列（系列 = 适合连续更新、做成合集让人追更的）
   - why：这个题材为什么能火，引用数据（播放、点赞、增速、持续天数），≤50 字，不要出现方括号编号
   - how：具体怎么做（形式、时长、关键镜头 / 节奏 / 文案），≤60 字
-  - tools：工具链，按步骤写具体工具，如「即梦出图 → 可灵图生视频 → 剪映卡点」，≤30 字；参考素材里提到了工具就优先用它
+  - flow：工作流程，按步骤写怎么做出来，如「文生图出角色定妆 → 图生视频做动作 → 剪辑卡点配字幕」，≤36 字；只写步骤，不要写具体用哪家平台 / 哪个模型
   - level：难度，低（套模板 / 一键特效）/ 中（要自己写提示词、剪辑）/ 高（要写剧本分镜、多工具配合、保持角色一致）
   - time：一个人做出一条大概要多久，如「1 小时内」「半天」「2~3 天」
   - formula：这类爆款的可复用公式，如「经典 IP × 反差画风 × 名场面卡点」，≤24 字
@@ -463,7 +459,7 @@ async function makePicks(blocks, s) {
   - risk：风险提示——涉及真人肖像（明星、企业家、政要）、影视动漫游戏 IP、历史人物戏说、未成年人、医疗金融等敏感领域时，说清楚风险和怎么规避（比如发布时声明 AI 生成、不商用、换成原创角色），≤36 字；没有明显风险就留空
   - refs：参考素材编号数组，如 ["A1","C3"]
 
-输出格式：{"picks":[{"title":"","kind":"","horizon":"","form":"","why":"","how":"","tools":"","level":"","time":"","formula":"","variants":[],"risk":"","refs":[]}]}
+输出格式：{"picks":[{"title":"","kind":"","horizon":"","form":"","why":"","how":"","flow":"","level":"","time":"","formula":"","variants":[],"risk":"","refs":[]}]}
 
 ${blocks}`, { maxTokens: 12000 });
   return r.picks || [];
@@ -490,18 +486,6 @@ async function safe(name, fn, fallback) {
     console.log(`  ✓ ${name} ${((Date.now() - t0) / 1000).toFixed(0)}s`);
     return r;
   } catch (e) { console.log(`  ✗ ${name}：${e.message}`); return fallback; }
-}
-
-// 评论里的需求信号：有人求教程 / 问用什么做的、催更、问 BGM
-const ASK = [
-  ['求教程', /教程|怎么做|怎么弄|咋做|咋弄|用的什么|用什么做|啥软件|什么软件|什么工具|哪个ai|什么ai|求方法|教教|求软件|求提示词/i],
-  ['求更新', /下一集|下集|更新|催更|续集|第二集|第二季|快更|多更|还有吗|蹲后续|求后续/],
-  ['问BGM', /bgm|什么歌|歌名|求歌|这首歌|背景音乐/i],
-];
-function askOf(cms = []) {
-  const r = {};
-  for (const [k, re] of ASK) { const n = cms.filter((c) => re.test(c.t)).length; if (n) r[k] = n; }
-  return Object.keys(r).length ? r : undefined;
 }
 
 // 题材比对用的关键词：去掉【活动标签】和 #话题，去掉泛词
@@ -712,18 +696,10 @@ export async function digest(now = Date.now()) {
       .filter((x) => { const k = x.author || x.id; if (seenAuthor.has(k)) return false; seenAuthor.add(k); return true; })
       .slice(0, TOPN[s]).map(withVel);
   });
-  // 高赞榜抓热门评论：观众在说什么、有没有人求教程 / 求下集（抖音每条 0.001 美元，B站免费）
-  const dyIds = topList.filter((x) => x.src === 'douyin').slice(0, DY_COMMENT_TOP).map((x) => x.id.replace(/^dy:/, ''));
-  const blList = topList.filter((x) => x.src === 'bilibili').map((x) => ({ bvid: x.id.replace(/^bili:/, ''), aid: x.m?.aid }));
-  const [dyC, blC] = await Promise.all([
-    safe('抖音热评', () => dyComments(dyIds), {}),
-    safe('B站热评', () => biliComments(blList), {}),
-  ]);
-  const cmOf = (x) => (x.src === 'douyin' ? dyC[x.id.replace(/^dy:/, '')] : blC[x.id.replace(/^bili:/, '')]) || [];
-  const notes = await step('高赞榜点评', () => pickTop(topList, now, cmOf), () => [], errors);
+  const notes = await step('高赞榜点评', () => pickTop(topList, now), () => [], errors);
   const noteOf = new Map(notes.map((t) => [+t.i, t]));
   const topDone = topList.map((x, i) => ({
-    ...x, ai: { ...x.ai, hook: noteOf.get(i)?.hook || x.ai.hook, tip: noteOf.get(i)?.tip || x.ai.tip, voice: noteOf.get(i)?.voice || undefined, ask: askOf(cmOf(x)) },
+    ...x, ai: { ...x.ai, hook: noteOf.get(i)?.hook || x.ai.hook, tip: noteOf.get(i)?.tip || x.ai.tip },
   }));
   for (const s of ['douyin', 'bilibili']) videos[`${s}Top`] = topDone.filter((x) => x.src === s).map(dress);
 
@@ -758,7 +734,7 @@ export async function digest(now = Date.now()) {
     refs: (e.ids || []).map(refOf).filter(Boolean).map((x) => ({ id: x.id, title: x.title, url: x.url, src: x.src })),
   })).filter((e) => e.refs.length);
 
-  // ---- 选题素材：四个时间段 + 评论区需求 + 新工具 + 工具热度 ----
+  // ---- 选题素材：四个时间段 + 新工具 + 工具热度 ----
   const memes = all1.filter((x) => x.cat === 'trend' && x.lastSeen >= since && x.ai?.tag)
     .sort((a, b) => ({ 热梗: 0, AI相关: 1, 可借势: 2 }[a.ai.tag] ?? 9) - ({ 热梗: 0, AI相关: 1, 可借势: 2 }[b.ai.tag] ?? 9) || (a.peakRank || 99) - (b.peakRank || 99))
     .slice(0, 15);
@@ -808,9 +784,7 @@ export async function digest(now = Date.now()) {
     const tags7 = s === 'douyin' ? topTags(w7) : [];
     const typeCount = Object.entries(w30.reduce((c, x) => ((c[typeOf(x)] = (c[typeOf(x)] || 0) + 1), c), {})).sort((a, b) => b[1] - a[1]);
     // 评论区有人求教程 / 求更新的高赞作品
-    // 每条只抓第一页 20 条热评，热评里出现一次「求教程」就算明确需求；AI 总结里提到的也算
-    const asked = topDone.filter((x) => mine(x) && (x.ai.ask?.求教程 >= 1 || x.ai.ask?.求更新 >= 2 || /教程|怎么做|用什么做|催更|下一集|下集/.test(x.ai.voice || '')));
-    const askLine = (code, x) => `${line(code, x)}｜评论区：${Object.entries(x.ai.ask || {}).map(([k, n]) => `${k}×${n}`).join(' ')}${x.ai.voice ? `，${x.ai.voice}` : ''}`;
+
     const tn = toolNews.map((e) => ({ cat: 'news', kind: e.kind, title: e.title, desc: e.summary, url: e.refs[0].url }));
     const blocks = [
       `【24小时飙升】\n${[...h24.map((x, i) => line(`A${i}`, x)), ...pm.map((x, i) => line(`T${i}`, x)), ...pc.map((x, i) => line(`K${i}`, x))].join('\n') || '（无）'}`,
@@ -818,11 +792,11 @@ export async function digest(now = Date.now()) {
       `【本周热点】\n${[...h7.map((x, i) => line(`C${i}`, x)), ...lt.map((x, i) => line(`L${i}`, x))].join('\n') || '（无）'}${tags7.length ? `\n抖音 AIGC 话题标签（7天内视频数/总赞）：${tags7.map(([t, e]) => `#${t} ${e.n}条/${fmtNum(e.likes)}赞`).join('，')}` : ''}`,
       `【长期热点（30天）】\n${h30.map((x, i) => line(`D${i}`, x)).join('\n') || '（无）'}${typeCount.length ? `\n30 天 AIGC 作品类型分布：${typeCount.map(([t, n]) => `${t} ${n}`).join('，')}` : ''}`,
       songs.length ? `【可借势的热歌】\n${songs.map((x, i) => line(`S${i}`, x)).join('\n')}` : '',
-      asked.length ? `【评论区需求】高赞作品的评论区里有人求教程 / 求更新\n${asked.map((x, i) => askLine(`Q${i}`, x)).join('\n')}` : '',
+
       tn.length ? `【新工具 / 新模型】可以做首发测评、教程\n${tn.map((x, i) => line(`N${i}`, x)).join('\n')}` : '',
       tools.length ? `【爆款工具热度】近 7 天 AIGC 爆款里提到各工具的作品数（括号里是上 7 天）：${tools.slice(0, 10).map((t) => `${t.name} ${t.n}（${t.prev}）`).join('，')}` : '',
     ].filter(Boolean).join('\n\n');
-    console.log(`${PLATFORM[s]}选题素材：24h ${h24.length}+热梗 ${pm.length}+挑战 ${pc.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lt.length}，30天 ${h30.length}，热歌 ${songs.length}，求教程 / 求更新 ${asked.length}，新工具 ${tn.length}`);
+    console.log(`${PLATFORM[s]}选题素材：24h ${h24.length}+热梗 ${pm.length}+挑战 ${pc.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lt.length}，30天 ${h30.length}，热歌 ${songs.length}，新工具 ${tn.length}`);
     return { blocks, refs };
   }
   const pb = { douyin: platformBlocks('douyin'), bilibili: platformBlocks('bilibili') };
@@ -865,7 +839,7 @@ export async function digest(now = Date.now()) {
       if (!refs.length) return null;
       return {
         title: p.title, kind: p.kind === '教程测评' ? '教程测评' : '作品', horizon: p.horizon, form: p.form === '系列' ? '系列' : '单条',
-        why: p.why, how: p.how, tools: p.tools || undefined,
+        why: p.why, how: p.how, flow: p.flow || undefined,
         level: LEVELS.includes(p.level) ? p.level : undefined, time: p.time || undefined,
         formula: p.formula || undefined, variants: (Array.isArray(p.variants) ? p.variants : []).filter((v) => typeof v === 'string' && v).slice(0, 3),
         risk: p.risk || undefined, timing: timing(refs, pool3[s], now),
@@ -929,7 +903,7 @@ export async function digest(now = Date.now()) {
   if (day) {
     const put = (id, ai) => { if (day.items[id]) day.items[id].ai = { ...day.items[id].ai, ...ai }; };
     hits.forEach((v) => put(v.id, { hook: v.ai.hook, tip: v.ai.tip, top: 1 }));
-    topDone.forEach((v) => put(v.id, { hook: v.ai.hook, tip: v.ai.tip, voice: v.ai.voice, ask: v.ai.ask }));
+    topDone.forEach((v) => put(v.id, { hook: v.ai.hook, tip: v.ai.tip }));
     newsOut.forEach((e) => e.refs.forEach((r) => put(r.id, { event: e.title, kind: e.kind, level: e.level })));
     writeJSON(file, day);
   }

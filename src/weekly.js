@@ -52,7 +52,7 @@ async function writeWeek(data) {
   return ask(`下面是过去 7 天抖音、B站 AIGC 内容的汇总数据。请输出：
 - summary：一句话总结上周 AIGC 内容圈的变化，≤50 字，要具体
 - themes：上周一直在涨 / 持续出爆款的 3~5 个题材（是一类内容，不是单个作品），每个写 title（≤12 字）、platform（抖音 / B站 / 双平台）、why（为什么持续火，≤40 字）
-- directions：本周建议重点做的 5 个方向，每个写 title（≤16 字）、platform、why（结合数据说，≤40 字）、how（具体怎么做、用什么工具，≤50 字）
+- directions：本周建议重点做的 5 个方向，每个写 title（≤16 字）、platform、why（结合数据说，≤40 字）、how（具体怎么做：步骤和要点，不点名具体平台 / 模型，≤50 字）
   要参考【选题复盘】：哪类信号（时间段 / 时效）推荐的选题后劲更足，就往那类方向多倾斜；已经饱和的题材不要再推
 
 输出格式：{"summary":"","themes":[{"title":"","platform":"","why":""}],"directions":[{"title":"","platform":"","why":"","how":""}]}

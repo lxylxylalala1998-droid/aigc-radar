@@ -173,25 +173,3 @@ export async function douyinAigc({ daily = false } = {}) {
   out.info = `热榜 ${cand.size} 条，查详情 ${todo.length} 条（新视频 ${todo.length - refreshing}、刷新老视频累计赞 ${refreshing}），带 AI 标 ${out.length} 条；本次约花 ${spent.toFixed(3)} 美元，余额约 ${typeof balance === 'number' ? (balance - spent).toFixed(3) : '?'}`;
   return out;
 }
-
-// 抖音热门评论（日报给高赞榜用）：每条视频取 1 页 20 条，按点赞排；0.001 美元一次，花费记进 tikhub.json
-//   ids：抖音视频 ID（不带 dy: 前缀）；返回 { id: [{ t: 评论, l: 点赞 }] }
-export async function dyComments(ids) {
-  const out = {};
-  if (!process.env.TIKHUB_API_KEY || !ids.length) return out;
-  let cost = 0;
-  for (const id of ids) {
-    try {
-      const j = await th(`/api/v1/douyin/app/v3/fetch_video_comments?aweme_id=${id}&cursor=0&count=20`);
-      cost += 0.001;
-      out[id] = (j?.data?.comments || []).map((c) => ({ t: clean(c.text || ''), l: c.digg_count || 0 })).filter((c) => c.t).sort((a, b) => b.l - a.l);
-    } catch (e) { if (e.broke) break; }
-  }
-  const state = readJSON(STATE_FILE, {});
-  const today = new Date().toISOString().slice(0, 10);
-  writeJSON(STATE_FILE, {
-    ...state, balance: typeof state.balance === 'number' ? +(state.balance - cost).toFixed(3) : state.balance,
-    spentToday: +((state.day === today ? state.spentToday || 0 : 0) + cost).toFixed(3), day: today,
-  }, true);
-  return out;
-}

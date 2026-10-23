@@ -76,22 +76,6 @@ export async function biliFans(mids, { max = 100 } = {}) {
   return Object.fromEntries(Object.entries(cache).map(([k, v]) => [k, v.f]));
 }
 
-// B站热门评论（日报给高播放榜用）：免费接口，按热度取第一页
-//   list：[{ bvid, aid }]（没有 aid 的先查一次稿件信息）；返回 { bvid: [{ t, l }] }
-export async function biliComments(list) {
-  const out = {};
-  for (const { bvid, aid: known } of list) {
-    try {
-      const aid = known || (await bili(`https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`))?.aid;
-      if (!aid) continue;
-      const d = await bili(`https://api.bilibili.com/x/v2/reply/main?type=1&oid=${aid}&mode=3&next=0&ps=20`);
-      out[bvid] = (d?.replies || []).map((c) => ({ t: clean(c.content?.message || ''), l: c.like || 0 })).filter((c) => c.t).sort((a, b) => b.l - a.l);
-    } catch (e) { if (e.status === 412) break; }
-    await sleep(500);
-  }
-  return out;
-}
-
 // B站热搜
 export async function biliHot() {
   const d = await bili('https://api.bilibili.com/x/web-interface/search/square?limit=50');

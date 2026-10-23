@@ -79,8 +79,7 @@ export const DY_VERIFY_PER_DAY = 150;
 export const DY_REFRESH_PER_DAY = 50;
 // 余额低于这个数就暂停，不会把钱扣成负数
 export const TIKHUB_MIN_BALANCE = 0.1;
-// 抖音高赞榜前几条抓热门评论（每条 0.001 美元），看观众在说什么、有没有人求教程 / 求下集
-export const DY_COMMENT_TOP = 10;
+
 
 // DeepSeek
 export const DEEPSEEK_BASE = process.env.DEEPSEEK_BASE || 'https://api.deepseek.com';

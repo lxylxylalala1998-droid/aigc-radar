@@ -10,6 +10,7 @@
 <link rel="preload" href="fonts/big-shoulders-display-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="style.css">
+<script>/* 先套上用户选过的外观（深色 / 浅色），避免页面先闪一下另一个颜色 */try{var t=localStorage.getItem('aigc-radar-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
 <header class="mast">
@@ -24,6 +25,7 @@
     <div class="mast-side">
       <p class="scope">扫描 <b>抖音</b> <b>B站</b> <b>微博</b> <b>QQ音乐</b> <b>网易云</b> 和十几家 AI 媒体<br>每 3 小时一次，每条热点都附 AI 写的「为什么能火」</p>
       <div class="mast-links">
+        <button class="arch" id="theme-btn" data-theme-toggle>外观：跟随系统</button>
         <button class="arch" data-guide>怎么看这份报告</button>
         <a class="arch" id="week-link" hidden>本周周报 →</a>
         <button class="arch" data-arch>往期日报 · 按日期查 →</button>
@@ -74,17 +76,19 @@
       <h3>每天怎么用</h3>
       <ol>
         <li>先看最上面的<b>3 分钟速览</b>：今天最该做的 3 个选题、一句话风向。</li>
-        <li>想做哪个，点它跳到<b>今日选题</b>，看完整的做法、工具链、公式和风险。</li>
+        <li>想做哪个，点它跳到<b>今日选题</b>；选题默认只显示为什么能火，点「展开做法」看怎么做、工作流程、公式和风险。</li>
         <li>要找参考，去下面的<b>抖音热点 / B站热点</b>，按类型、低粉爆款筛。</li>
         <li>觉得不错的选题、视频点「☆ 待做」，右下角的清单可以一键复制发给团队。</li>
         <li>前几天没看的，点页头「往期日报」按日期查；每周一还有一封<b>周报</b>。</li>
+        <li>晚上看嫌刺眼，点页头「外观」切换深色 / 浅色。</li>
       </ol>
     </div>
     <div>
       <h3>选题上的标签</h3>
       <dl>
         <dt>24小时飙升 / 近3天爆款 / 本周热点 / 长期热点</dt><dd>这个选题来自哪个时间段的数据。复盘显示「24 小时飙升」类的后劲最足。</dd>
-        <dt>刚起势 / 高峰期 / 已饱和</dt><dd>现在跟还来不来得及。看最早的爆款是几天前、还在不在加速、近 3 天同题材的 AI 作品有多少条。点标签能看依据。</dd>
+        <dt>刚起势（橙）/ 高峰期（红）/ 已饱和（灰）</dt><dd>现在跟还来不来得及。看最早的爆款是几天前、还在不在加速、近 3 天同题材的 AI 作品有多少条。点标签能看依据。</dd>
+        <dt>工作流程</dt><dd>按步骤写怎么做出来。不写具体用哪家平台 / 哪个模型：从作品本身看不出来，写了容易误导。</dd>
         <dt>难度低 / 中 / 高</dt><dd>低 = 套模板、一键特效；中 = 自己写提示词、剪辑；高 = 写剧本分镜、多工具配合、保持角色一致。</dd>
         <dt>教程测评 / 系列追更</dt><dd>教程测评 = 教别人做某类爆款或测评新工具；系列追更 = 适合连续更新、做合集。</dd>
         <dt>公式 / 换皮</dt><dd>这类爆款的可复用套路，以及同一套路换题材、换 IP 的方向，避免和原作撞车。</dd>
@@ -98,7 +102,7 @@
         <dt>分享率高</dt><dd>分享 / 点赞排进同类前 10%：大家想转给朋友，适合情绪共鸣、反差、梗。</dd>
         <dt>收藏率高</dt><dd>收藏排进同类前 10%：干货或想反复看，适合教程、合集。</dd>
         <dt>评论多 / 弹幕多</dt><dd>互动排进同类前 10%：有争议、有名场面，适合抛问题、二创。</dd>
-        <dt>评论区 · 求教程 ×N</dt><dd>热评前 20 条里有 N 条在求教程 / 催更 / 问 BGM，是现成的需求。</dd>
+
         <dt>作者声明AI / 平台识别AI / AI特效角标</dt><dd>抖音官方的 AI 标，抖音只收带这个标的视频。</dd>
       </dl>
     </div>
