@@ -1,0 +1,98 @@
+{
+ "runAt": 1792876184600,
+ "sources": {
+  "weibo": {
+   "name": "微博热搜",
+   "ok": true,
+   "count": 50,
+   "ms": 1036,
+   "lastOk": 1792876184600
+  },
+  "douyinHot": {
+   "name": "抖音热榜+话题视频",
+   "ok": true,
+   "count": 109,
+   "ms": 55395,
+   "warnings": [],
+   "lastOk": 1792876184600
+  },
+  "biliHot": {
+   "name": "B站热搜",
+   "ok": true,
+   "count": 50,
+   "ms": 935,
+   "lastOk": 1792876184600
+  },
+  "biliAI": {
+   "name": "B站 AI 稿件",
+   "ok": true,
+   "count": 716,
+   "ms": 76948,
+   "warnings": [
+    "rank 3: B站接口 code=-352 -352",
+    "rank 1: B站接口 code=-352 -352",
+    "rank 119: B站接口 code=-352 -352",
+    "rank 181: B站接口 code=-352 -352",
+    "rank 188: B站接口 code=-352 -352"
+   ],
+   "lastOk": 1792876184600
+  },
+  "tikhub": {
+   "name": "抖音高赞 AIGC（每天一次）",
+   "ok": true,
+   "count": 0,
+   "ms": 15,
+   "lastOk": 1792876184600
+  },
+  "qqmusic": {
+   "name": "QQ音乐榜",
+   "ok": true,
+   "count": 100,
+   "ms": 2036,
+   "lastOk": 1792876184600
+  },
+  "netease": {
+   "name": "网易云音乐榜",
+   "ok": true,
+   "count": 100,
+   "ms": 2727,
+   "lastOk": 1792876184600
+  },
+  "douyinMusic": {
+   "name": "抖音热歌榜",
+   "ok": true,
+   "count": 81,
+   "ms": 2343,
+   "lastOk": 1792876184600
+  },
+  "biliMusic": {
+   "name": "B站音乐榜",
+   "ok": true,
+   "count": 34,
+   "ms": 1763,
+   "lastOk": 1792876184600
+  },
+  "rss": {
+   "name": "AI 资讯 RSS",
+   "ok": true,
+   "count": 48,
+   "ms": 3637,
+   "warnings": [],
+   "lastOk": 1792876184600
+  },
+  "hn": {
+   "name": "Hacker News",
+   "ok": true,
+   "count": 8,
+   "ms": 2167,
+   "lastOk": 1792876184600
+  },
+  "hf": {
+   "name": "Hugging Face 热门模型",
+   "ok": true,
+   "count": 25,
+   "ms": 1924,
+   "lastOk": 1792876184600
+  }
+ }
+}

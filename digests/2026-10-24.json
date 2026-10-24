@@ -1,0 +1,7112 @@
+{
+ "date": "2026-10-24",
+ "generatedAt": 1792801364243,
+ "window": [
+  1792714964243,
+  1792801364243
+ ],
+ "ai": "deepseek-chat",
+ "errors": [],
+ "picks": {
+  "douyin": [
+   {
+    "title": "猫猫讲人生道理，句句戳心",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "系列",
+    "why": "9.2万粉小号，101小时824万播放，每小时+1.1万赞，收藏12.8万，萌宠+金句双钩子",
+    "how": "竖屏30~45秒，AI猫当主讲人，前3秒抛一句扎心金句，中段配生活化画面，结尾留一句可截图收藏的话",
+    "flow": "文生图定猫角色 → 图生视频做表情口型 → 配音配字幕卡点",
+    "level": "中",
+    "time": "半天",
+    "formula": "萌宠人设 × 人生金句 × 收藏向结尾",
+    "variants": [
+     "柴犬讲职场",
+     "橘猫讲恋爱",
+     "兔子讲存钱"
+    ],
+    "timing": {
+     "label": "高峰期",
+     "basis": "最早的爆款 5 天前 · 近 3 天同题材 AI 作品 0 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7698287665296215323",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/2096a385102d400e98a6a72a31d7e842~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=iQ%2BIn%2BhX4nKsf8wdijeBqGIrQn8%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172325DD6A57A4C1B3160BC39D",
+     "src": "douyin",
+     "title": "猫猫教你做人——那些看不起你的人，其实也在装",
+     "heat": 1074159
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "猫猫教你做人——那些看不起你的人，其实也在装",
+      "url": "https://www.douyin.com/video/7698287665296215323",
+      "id": "dy:7698287665296215323",
+      "heat": 1074159
+     }
+    ]
+   },
+   {
+    "title": "AI猫假装实拍，骗过所有人",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "单条",
+    "why": "556粉小号，88万播放17.6万赞，点赞率极高，标题写实拍实际是AI猫制造真假话题",
+    "how": "竖屏50秒，开头打字幕「这是实拍」，全程手持感镜头跟猫，结尾反转声明是AI生成，引导评论区猜真假",
+    "flow": "文生图出猫 → 图生视频加手持晃动 → 加噪点滤镜配字幕",
+    "level": "中",
+    "time": "半天",
+    "formula": "伪实拍 × AI萌宠 × 结尾反转",
+    "variants": [
+     "AI狗假装监控",
+     "AI鸟假装手机拍",
+     "AI仓鼠伪vlog"
+    ],
+    "risk": "发布时明确标注AI生成，避免被指造假",
+    "timing": {
+     "label": "刚起势",
+     "basis": "最早的爆款 2 天前 · 近 3 天同题材 AI 作品 1 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7699168199401848403",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-p-0015/oonq2ADoEABEZHsEfAAgIABFAPYpoBHBLYf9C8~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=dGLXAs0SElh9li4k1%2FEuJmUCHVM%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261024082121A33B7D7F20F62A2BB227",
+     "src": "douyin",
+     "title": "小猫实拍",
+     "heat": 175886
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "小猫实拍",
+      "url": "https://www.douyin.com/video/7699168199401848403",
+      "id": "dy:7699168199401848403",
+      "heat": 175886
+     }
+    ]
+   },
+   {
+    "title": "三国悲情38秒，许嵩BGM杀我",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "单条",
+    "why": "8590粉小号做出478万播放，38秒情绪浓度高，古风BGM+悲情梗粉丝向传播强",
+    "how": "竖屏38秒，只做一个情绪爆点：一句台词+一个回望镜头，BGM卡在副歌，字幕用古风字体",
+    "flow": "文生图定古装角色 → 图生视频做回望动作 → 配BGM卡点加字幕",
+    "level": "中",
+    "time": "半天",
+    "formula": "历史悲情梗 × 古风热歌 × 极短情绪片",
+    "variants": [
+     "楚汉别姬",
+     "岳飞回望",
+     "红楼梦断"
+    ],
+    "risk": "历史人物戏说注意别歪曲，标注虚构演绎",
+    "timing": {
+     "label": "刚起势",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 0 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7699062597483629851",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/a62438fc74f044d99fa6a66baefe740c~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=xIgaYgtWB2fJXAoNbOExarDQ9sA%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610240821186358DBCA4E715433E141",
+     "src": "douyin",
+     "title": "陛下，怎么样才能回到从前？",
+     "heat": 288630
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "陛下，怎么样才能回到从前？",
+      "url": "https://www.douyin.com/video/7699062597483629851",
+      "id": "dy:7699062597483629851",
+      "heat": 288630
+     }
+    ]
+   },
+   {
+    "title": "萌娃送麻将好运，10秒模板",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "系列",
+    "why": "6460粉小号，336万播放，评论5万，10秒模板化内容靠互动引导起量",
+    "how": "竖屏10秒，AI萌娃递麻将牌特写，配吉祥话字幕，结尾问「你抽到哪张」，评论区引导接好运",
+    "flow": "文生图出萌娃 → 图生视频做递牌动作 → 加吉祥字幕配乐",
+    "level": "低",
+    "time": "1小时内",
+    "formula": "萌娃 × 吉祥谐音 × 评论区接好运",
+    "variants": [
+     "萌娃送柿子",
+     "萌娃送元宝",
+     "萌娃送福字"
+    ],
+    "risk": "未成年人形象注意合规，标注AI生成",
+    "timing": {
+     "label": "刚起势",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 0 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7698968134857902746",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/ooCwAdS2hFGAJADAIqED3WfYQA0fgqGzACw2E9~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=w7B2dghOoYbkUmWkIS4QrThPMMw%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610240821227F9D1B7885014B2C73C6",
+     "src": "douyin",
+     "title": "#AI萌娃送麻将好运 #抖音ai创作",
+     "heat": 174091
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "#AI萌娃送麻将好运 #抖音ai创作",
+      "url": "https://www.douyin.com/video/7698968134857902746",
+      "id": "dy:7698968134857902746",
+      "heat": 174091
+     }
+    ]
+   },
+   {
+    "title": "以前的孩子vs现在的孩子，AI还原",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "单条",
+    "why": "763万播放分享62.8万，代际对比是全民共鸣，AI还原旧时代画面制造反差",
+    "how": "竖屏1分钟，左右分屏对比，前半旧时代颗粒感画面，后半现代场景，卡点切换配怀旧BGM",
+    "flow": "文生图出两代场景 → 图生视频做动作 → 分屏剪辑卡点配字幕",
+    "level": "中",
+    "time": "半天",
+    "formula": "代际对比 × 旧画质还原 × 卡点反差",
+    "variants": [
+     "以前的年vs现在的年",
+     "以前的课间vs现在",
+     "以前的零食vs现在"
+    ],
+    "timing": {
+     "label": "刚起势",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 2 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7699086288741305615",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/da1ec1b0b25743a89f211b9ca0558c02~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=1%2BTN5Y09LJDbAVNN%2BR8op62ZMFY%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261024082113FEE9751C50E18B2AEBCE",
+     "src": "douyin",
+     "title": "现在的孩子vs以前的孩子...",
+     "heat": 280302
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "现在的孩子vs以前的孩子...",
+      "url": "https://www.douyin.com/video/7699086288741305615",
+      "id": "dy:7699086288741305615",
+      "heat": 280302
+     },
+     {
+      "kind": "video",
+      "title": "以前的小孩VS现在的小孩",
+      "url": "https://www.douyin.com/video/7699101485912689954",
+      "id": "dy:7699101485912689954",
+      "heat": 163849
+     }
+    ]
+   },
+   {
+    "title": "方言清唱治愈曲，太阳下山有月亮",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "单条",
+    "why": "近1天696万播放，方言清唱+治愈歌词，情绪共鸣带来高完播，蹭飙升榜累不累情绪",
+    "how": "竖屏30秒，AI歌手方言清唱，画面走黄昏到夜晚的渐变，歌词逐句上屏，结尾留一句安慰文案",
+    "flow": "写词定旋律 → AI生成人声 → 生成画面配歌词字幕",
+    "level": "中",
+    "time": "半天",
+    "formula": "方言AI歌手 × 治愈歌词 × 情绪向画面",
+    "variants": [
+     "东北话版",
+     "四川话版",
+     "粤语版"
+    ],
+    "timing": {
+     "label": "刚起势",
+     "basis": "最早的爆款 2 天前 · 近 3 天同题材 AI 作品 1 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7699178696703373170",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813/ogfTxx8AAACEAkgKn1DXNqQj2IAoLe9GPFyAG8~tplv-dy-resize-walign-adapt-aq:720:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=gAw62I%2BgXAz4yoU96rYSn5kvvYk%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261024082121A849B233707AE835AAA9",
+     "src": "douyin",
+     "title": "慌啥子嘛 慢慢来 太阳下山有月亮爬上来.",
+     "heat": 123801
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "慌啥子嘛 慢慢来 太阳下山有月亮爬上来.",
+      "url": "https://www.douyin.com/video/7699178696703373170",
+      "id": "dy:7699178696703373170",
+      "heat": 123801
+     }
+    ]
+   },
+   {
+    "title": "东方志怪撞西方神话，蹲更剧集",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "系列",
+    "why": "3015万播放收藏35.4万，收藏率高说明观众要追更，东西方神话碰撞+看不出是AI的技术惊叹",
+    "how": "竖屏3~5分钟一集，每集一个猎魔地点，开头10秒先给怪物亮相，结尾留钩子引导蹲下集",
+    "flow": "写分镜剧本 → 文生图定角色场景 → 图生视频做打斗 → 剪辑配乐",
+    "level": "高",
+    "time": "2~3天",
+    "formula": "东方志怪 × 西方神话 × 系列追更钩子",
+    "variants": [
+     "中式道士闯欧洲",
+     "日本阴阳师赴美",
+     "驱魔人下南洋"
+    ],
+    "risk": "宗教神话元素注意别冒犯，标注纯属虚构",
+    "timing": {
+     "label": "高峰期",
+     "basis": "最早的爆款 6 天前 · 近 3 天同题材 AI 作品 0 条 · 增速平稳"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7697769322558606642",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/edc769634afd48a7a871b41e27a587c2~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=MMy%2BuXNRcdh9hWLNwfl82dtBWoc%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172319B3D3B20F7E8C6C0A373E",
+     "src": "douyin",
+     "title": "第1集 东方志怪美学与西方黑暗神话的碰撞系列剧集 中国驱魔大神和女徒作为驱魔雇佣兵身份踏上了全球猎魔之旅。本作品已严格遵循平台规则进行修正，Ai作品纯属虚构无不",
+     "heat": 1422130
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "第1集 东方志怪美学与西方黑暗神话的碰撞系列剧集 中国驱魔大神和女徒作为驱魔雇佣兵身份踏上了全球猎魔之旅。本作品已严格遵循平台规则进行修正，Ai作品纯属虚构无不",
+      "url": "https://www.douyin.com/video/7697769322558606642",
+      "id": "dy:7697769322558606642",
+      "heat": 1422130
+     }
+    ]
+   },
+   {
+    "title": "苦瓜大王梗，模板一键整活",
+    "kind": "作品",
+    "horizon": "近3天爆款",
+    "form": "单条",
+    "why": "56小时738万播放，分享42.9万强传播，模板+热梗门槛低，大号小号都能跟",
+    "how": "竖屏20秒，套模板生成苦瓜拟人形象，配「你也成为苦瓜大王了吗」文案，结尾自嘲一句",
+    "flow": "套模板出苦瓜角色 → 生成动作片段 → 加梗文案配乐",
+    "level": "低",
+    "time": "1小时内",
+    "formula": "热梗 × 拟人化角色 × 自嘲文案",
+    "variants": [
+     "打工人变柠檬精",
+     "学生变卷心菜",
+     "老板变辣椒王"
+    ],
+    "timing": {
+     "label": "高峰期",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 1 条 · 增速放缓"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7698976771118517544",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/c5fb779a32934adc9f9be837c39cd15c~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=r%2B3Ug3Al0hpc%2Buoc9Z01ETdvnTg%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172344E14B1849E8D1FB213E09",
+     "src": "douyin",
+     "title": "所以呢，你也成为苦瓜大王了吗？本视频使用LibTV制作",
+     "heat": 364224
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "所以呢，你也成为苦瓜大王了吗？本视频使用LibTV制作",
+      "url": "https://www.douyin.com/video/7698976771118517544",
+      "id": "dy:7698976771118517544",
+      "heat": 364224
+     }
+    ]
+   },
+   {
+    "title": "火象风象谈恋爱，星座拟人剧",
+    "kind": "作品",
+    "horizon": "近3天爆款",
+    "form": "系列",
+    "why": "2.9万粉小号720万播放，星座话题自带流量，拟人化演绎相处日常",
+    "how": "竖屏1分钟，两个星座拟人角色演一段相处冲突，台词贴星座性格，结尾问「你俩谁赢」",
+    "flow": "文生图定两角色 → 图生视频做对话动作 → 配音加星座标签字幕",
+    "level": "中",
+    "time": "半天",
+    "formula": "星座拟人 × 相处冲突 × 评论区站队",
+    "variants": [
+     "土象vs水象",
+     "狮子vs天蝎",
+     "双子vs处女"
+    ],
+    "timing": {
+     "label": "高峰期",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 0 条 · 增速放缓"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7699006240206389503",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c000-ce/o4E9NfQwyGDqAJDwCwf2FoAoA1IhsARiEF2quA~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=E8B%2Bl4qm%2BM7taTR6l5eoic%2BKieY%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172411E048388107AF000BA010",
+     "src": "douyin",
+     "title": "当火象和风象在一起",
+     "heat": 268768
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "当火象和风象在一起",
+      "url": "https://www.douyin.com/video/7699006240206389503",
+      "id": "dy:7699006240206389503",
+      "heat": 268768
+     }
+    ]
+   },
+   {
+    "title": "7秒AI演技片段，BGM一响就破防",
+    "kind": "作品",
+    "horizon": "近3天爆款",
+    "form": "单条",
+    "why": "5435粉小号461万播放，7秒极短靠细节和BGM情绪出圈，完播率高",
+    "how": "竖屏7秒，只拍一个微表情特写：眼眶红、嘴角抖，BGM卡在情绪最高点，不加多余字幕",
+    "flow": "文生图出人物特写 → 图生视频做微表情 → 配热歌卡点",
+    "level": "中",
+    "time": "1小时内",
+    "formula": "极短时长 × 微表情特写 × 虐向BGM",
+    "variants": [
+     "分手瞬间",
+     "挂电话后",
+     "目送离开"
+    ],
+    "timing": {
+     "label": "高峰期",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 8 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.douyin.com/video/7699062585774376427",
+     "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/owxvADCEeAFJAkhfAgnYBDqKkD9k2AscEIlCAG~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=9Wz%2BJ9V6XnDoxaQxYrsMK3UT0eg%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610240821152111FFB4CE509F369F32",
+     "src": "douyin",
+     "title": "叹人间",
+     "heat": 214745
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "叹人间",
+      "url": "https://www.douyin.com/video/7699062585774376427",
+      "id": "dy:7699062585774376427",
+      "heat": 214745
+     }
+    ]
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "用寂静岭画风打开《周处除三害》",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "单条",
+    "why": "寂静岭画风+周处除三害反差感强，AI MV大赛流量扶持，51小时191万播放，每小时+6万。",
+    "how": "横屏4分钟，AI生成寂静岭风格场景，卡点配《周处除三害》台词和音效，突出反差。",
+    "flow": "文生图出寂静岭场景 → 图生视频做动态 → 剪辑卡点配台词",
+    "level": "中",
+    "time": "1~2天",
+    "formula": "经典IP × 恐怖画风 × 名场面卡点",
+    "variants": [
+     "用生化危机画风打开让子弹飞",
+     "用寂静岭画风打开西游记",
+     "用克苏鲁画风打开水浒传"
+    ],
+    "risk": "涉及影视IP，需声明二创，避免商用。",
+    "timing": {
+     "label": "刚起势",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 0 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV1Cdni6AEQB",
+     "cover": "https://i2.hdslb.com/bfs/archive/9d89ec7364337217f081d94cc4e7590f9e330e49.jpg",
+     "src": "bilibili",
+     "title": "用寂静岭的画风打开《周处除三害》【AI MV大赛】",
+     "heat": 2310672
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "用寂静岭的画风打开《周处除三害》【AI MV大赛】",
+      "url": "https://www.bilibili.com/video/BV1Cdni6AEQB",
+      "id": "bili:BV1Cdni6AEQB",
+      "heat": 2310672
+     },
+     {
+      "kind": "trend",
+      "title": "用寂静岭画风打开周处除三害",
+      "url": "https://search.bilibili.com/all?keyword=%E7%94%A8%E5%AF%82%E9%9D%99%E5%B2%AD%E7%94%BB%E9%A3%8E%E6%89%93%E5%BC%80%E5%91%A8%E5%A4%84%E9%99%A4%E4%B8%89%E5%AE%B3",
+      "id": "bili:用寂静岭画风打开周处除三害"
+     }
+    ]
+   },
+   {
+    "title": "AI还原普通男孩的一生，看哭百万网友",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "单条",
+    "why": "低粉爆款，每小时+3.9万，情绪共鸣型短片，普通男孩一生引发代入。",
+    "how": "5分钟横屏，用AI生成男孩各年龄段画面，配旁白和音乐，节奏舒缓。",
+    "flow": "文生图出各年龄形象 → 图生视频做动作 → 剪辑配旁白音乐",
+    "level": "中",
+    "time": "半天",
+    "formula": "人生轨迹 × AI画面 × 情绪旁白",
+    "variants": [
+     "AI还原普通女孩的一生",
+     "AI还原打工人的十年",
+     "AI还原小镇做题家的一生"
+    ],
+    "timing": {
+     "label": "刚起势",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 0 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV1hTnB6yEMx",
+     "cover": "https://i2.hdslb.com/bfs/archive/0e6a52bb22f4c971476a0136595a186f5bc52338.jpg",
+     "src": "bilibili",
+     "title": "耗时许久，我用AI还原了普通男孩的一生【AI全民制作人】",
+     "heat": 1096453
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "耗时许久，我用AI还原了普通男孩的一生【AI全民制作人】",
+      "url": "https://www.bilibili.com/video/BV1hTnB6yEMx",
+      "id": "bili:BV1hTnB6yEMx",
+      "heat": 1096453
+     }
+    ]
+   },
+   {
+    "title": "哈利波特同人：大难不死的男孩爱上纯血家族女孩",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "系列",
+    "why": "76小时211万播放，点赞11.4万，同人CP粉粘性高，适合系列化。",
+    "how": "5分钟横屏，AI生成哈利波特风格角色，剧情围绕CP展开，每集留悬念。",
+    "flow": "文生图出角色定妆 → 图生视频做互动 → 剪辑配字幕音乐",
+    "level": "高",
+    "time": "2~3天",
+    "formula": "经典IP × 同人CP × 剧情连载",
+    "variants": [
+     "哈利波特×马尔福",
+     "哈利波特×赫敏",
+     "哈利波特×卢娜"
+    ],
+    "risk": "涉及哈利波特IP，需声明二创，不商用。",
+    "timing": {
+     "label": "已饱和",
+     "basis": "最早的爆款 4 天前 · 近 3 天同题材 AI 作品 25 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV1bKnw6zEsV",
+     "cover": "https://i1.hdslb.com/bfs/archive/9da3d2d1247f17a3f763397fc564d2c01061a4db.jpg",
+     "src": "bilibili",
+     "title": "大难不死的男孩爱上纯血家族的女孩【AI全民制作人】",
+     "heat": 2459317
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "大难不死的男孩爱上纯血家族的女孩【AI全民制作人】",
+      "url": "https://www.bilibili.com/video/BV1bKnw6zEsV",
+      "id": "bili:BV1bKnw6zEsV",
+      "heat": 2459317
+     }
+    ]
+   },
+   {
+    "title": "关公袍下过，关关难过关关过！AI短片祈福",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "form": "单条",
+    "why": "低粉爆款，每小时+2.5万，民俗祈福+AI短片，转发率高。",
+    "how": "1分21秒横屏，AI生成关公像和风雨场景，配祈福文案和音乐，结尾留祝福。",
+    "flow": "文生图出关公形象 → 图生视频做动态 → 剪辑配文案音乐",
+    "level": "低",
+    "time": "1小时内",
+    "formula": "民俗信仰 × AI画面 × 情绪出口",
+    "variants": [
+     "妈祖保佑出海平安",
+     "财神送财AI短片",
+     "观音祈福AI短片"
+    ],
+    "risk": "涉及民俗信仰，避免戏说，声明AI生成。",
+    "timing": {
+     "label": "高峰期",
+     "basis": "最早的爆款 5 天前 · 近 3 天同题材 AI 作品 1 条 · 还在加速"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV19Fn76ZEX2",
+     "cover": "https://i0.hdslb.com/bfs/archive/5a3d1c43f98a7d97c51b3fb88e3b65b283b6be0f.jpg",
+     "src": "bilibili",
+     "title": "关公袍下过，关关难过关关过！万般风雨，只求心中一份期盼【AI全民制作人】",
+     "heat": 695002
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "关公袍下过，关关难过关关过！万般风雨，只求心中一份期盼【AI全民制作人】",
+      "url": "https://www.bilibili.com/video/BV19Fn76ZEX2",
+      "id": "bili:BV19Fn76ZEX2",
+      "heat": 695002
+     }
+    ]
+   },
+   {
+    "title": "以前的小孩vs现在的小孩，AI还原代际对比",
+    "kind": "作品",
+    "horizon": "近3天爆款",
+    "form": "单条",
+    "why": "播放317万，代际共鸣强，全民制作人话题带流量。",
+    "how": "1分钟横屏，左右分屏对比两代小孩的玩具、学习、娱乐，AI生成画面。",
+    "flow": "文生图出两代场景 → 图生视频做动作 → 剪辑分屏对比",
+    "level": "低",
+    "time": "1小时内",
+    "formula": "代际对比 × AI画面 × 共鸣梗",
+    "variants": [
+     "以前的学生vs现在的学生",
+     "以前的过年vs现在的过年",
+     "以前的追星vs现在的追星"
+    ],
+    "timing": {
+     "label": "高峰期",
+     "basis": "最早的爆款 2 天前 · 近 3 天同题材 AI 作品 1 条 · 增速放缓"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV1TGnB63EAm",
+     "cover": "https://i0.hdslb.com/bfs/archive/d62729a2e46ff50da610fc817b844a5805f0615c.jpg",
+     "src": "bilibili",
+     "title": "以前的小孩vs现在的小孩【AI全民制作人】",
+     "heat": 3170403
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "以前的小孩vs现在的小孩【AI全民制作人】",
+      "url": "https://www.bilibili.com/video/BV1TGnB63EAm",
+      "id": "bili:BV1TGnB63EAm",
+      "heat": 3170403
+     }
+    ]
+   },
+   {
+    "title": "瓦龙哆嗦毛：魔性鬼畜AI整活",
+    "kind": "作品",
+    "horizon": "近3天爆款",
+    "form": "单条",
+    "why": "27小时90万播放，点赞8.5万，点赞率超高，洗脑魔性。",
+    "how": "1分钟横屏，AI生成瓦龙角色做哆嗦动作，配魔性音乐和重复台词。",
+    "flow": "文生图出瓦龙形象 → 图生视频做哆嗦动作 → 剪辑卡点循环",
+    "level": "低",
+    "time": "1小时内",
+    "formula": "魔性动作 × 洗脑音乐 × 鬼畜循环",
+    "variants": [
+     "哆啦A梦哆嗦毛",
+     "光头强哆嗦毛",
+     "喜羊羊哆嗦毛"
+    ],
+    "risk": "涉及动漫IP，需声明二创，不商用。",
+    "timing": {
+     "label": "已饱和",
+     "basis": "最早的爆款 3 天前 · 近 3 天同题材 AI 作品 19 条 · 增速放缓"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV1iVnq6DEui",
+     "cover": "https://i2.hdslb.com/bfs/archive/f4450e180d0dfb4eefe337b7c9a16ffd3ff75716.jpg",
+     "src": "bilibili",
+     "title": "“瓦龙哆嗦毛”",
+     "heat": 1224609
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "“瓦龙哆嗦毛”",
+      "url": "https://www.bilibili.com/video/BV1iVnq6DEui",
+      "id": "bili:BV1iVnq6DEui",
+      "heat": 1224609
+     }
+    ]
+   },
+   {
+    "title": "黄仁勋AI换脸世界巡演，唱Beat It",
+    "kind": "作品",
+    "horizon": "长期热点",
+    "form": "单条",
+    "why": "602万播放，点赞23万，科技大佬+鬼畜+显卡怨气三重梗叠加。",
+    "how": "1分26秒横屏，AI换脸黄仁勋唱Beat It，穿插显卡涨价梗字幕。",
+    "flow": "找黄仁勋素材 → AI换脸合成 → 剪辑卡点加特效字幕",
+    "level": "中",
+    "time": "半天",
+    "formula": "名人换脸 × 经典歌曲 × 鬼畜剪辑",
+    "variants": [
+     "马斯克唱Rap",
+     "雷军唱Are you OK",
+     "库克唱江南Style"
+    ],
+    "risk": "涉及真人肖像，需声明AI生成，避免商用和丑化。",
+    "timing": {
+     "label": "已饱和",
+     "basis": "最早的爆款 20 天前 · 近 3 天同题材 AI 作品 17 条 · 增速放缓"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV1VRHr6AEZ6",
+     "cover": "https://i1.hdslb.com/bfs/archive/e3cf3db69e88409839a7d5a7d44d8c86e872fbbe.jpg",
+     "src": "bilibili",
+     "title": "⚡️黄仁勋 世界巡演⚡️【AI MV大赛】",
+     "heat": 6019959
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "⚡️黄仁勋 世界巡演⚡️【AI MV大赛】",
+      "url": "https://www.bilibili.com/video/BV1VRHr6AEZ6",
+      "id": "bili:BV1VRHr6AEZ6",
+      "heat": 6019959
+     }
+    ]
+   },
+   {
+    "title": "烧心的小曲AI整活大赛，全站最烧心版本",
+    "kind": "作品",
+    "horizon": "长期热点",
+    "form": "系列",
+    "why": "845万播放，弹幕5.9万，烧心梗病毒传播，适合系列化二创。",
+    "how": "1分钟横屏，AI生成各种角色唱烧心小曲，每集换角色和场景。",
+    "flow": "文生图出角色 → 图生视频做唱歌动作 → 剪辑卡点配烧心小曲",
+    "level": "低",
+    "time": "1小时内",
+    "formula": "热梗 × AI角色 × 洗脑循环",
+    "variants": [
+     "原神角色烧心版",
+     "奥特曼烧心版",
+     "甄嬛传烧心版"
+    ],
+    "risk": "涉及IP角色，需声明二创，不商用。",
+    "timing": {
+     "label": "已饱和",
+     "basis": "最早的爆款 20 天前 · 近 3 天同题材 AI 作品 12 条 · 增速放缓"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV1wiHj6uEsr",
+     "cover": "https://i0.hdslb.com/bfs/archive/5138ce39155c3aaf9c6b9c23372ab117f74f00a2.jpg",
+     "src": "bilibili",
+     "title": "全 站 最 烧 心 版 本！！！",
+     "heat": 8450619
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "全 站 最 烧 心 版 本！！！",
+      "url": "https://www.bilibili.com/video/BV1wiHj6uEsr",
+      "id": "bili:BV1wiHj6uEsr",
+      "heat": 8450619
+     },
+     {
+      "kind": "video",
+      "title": "烧 心 大 赛 ！【AI全民制作人】",
+      "url": "https://www.bilibili.com/video/BV1xNH46gEkv",
+      "id": "bili:BV1xNH46gEkv",
+      "heat": 5766006
+     }
+    ]
+   },
+   {
+    "title": "科学家用物理智斗爱因斯坦？知识梗AI短片",
+    "kind": "作品",
+    "horizon": "长期热点",
+    "form": "单条",
+    "why": "640万播放，点赞43.1万，谐音梗+学霸幽默，知识梗传播广。",
+    "how": "2分18秒横屏，AI生成科学家和爱因斯坦对话，用物理梗制造笑点。",
+    "flow": "文生图出角色场景 → 图生视频做对话动作 → 剪辑配字幕音效",
+    "level": "中",
+    "time": "半天",
+    "formula": "知识梗 × 名人恶搞 × AI对话",
+    "variants": [
+     "牛顿智斗爱因斯坦",
+     "霍金智斗爱因斯坦",
+     "特斯拉智斗爱迪生"
+    ],
+    "risk": "涉及历史人物，避免戏说过度，声明AI生成。",
+    "timing": {
+     "label": "已饱和",
+     "basis": "最早的爆款 8 天前 · 近 3 天同题材 AI 作品 18 条 · 增速放缓"
+    },
+    "main": {
+     "url": "https://www.bilibili.com/video/BV1fZJ26mEiY",
+     "cover": "https://i2.hdslb.com/bfs/archive/64a0dad83048850dfbf41640201ebf85c2e5b6af.jpg",
+     "src": "bilibili",
+     "title": "科学家们用物理智斗爱因斯坦？",
+     "heat": 6400318
+    },
+    "refs": [
+     {
+      "kind": "video",
+      "title": "科学家们用物理智斗爱因斯坦？",
+      "url": "https://www.bilibili.com/video/BV1fZJ26mEiY",
+      "id": "bili:BV1fZJ26mEiY",
+      "heat": 6400318
+     }
+    ]
+   },
+   {
+    "title": "测评新模型Seedance 2.5：4K影视级画面生成实测",
+    "kind": "教程测评",
+    "horizon": "本周热点",
+    "form": "单条",
+    "why": "新模型发布，影视级4K生成，视频创作者关注度高，首发测评窗口期。",
+    "how": "5分钟横屏，对比生成4K画面，测试动态细节，给出使用建议。",
+    "flow": "写提示词生成4K画面 → 对比不同参数 → 剪辑解说测评",
+    "level": "中",
+    "time": "半天",
+    "formula": "新模型首发 × 实测对比 × 使用建议",
+    "variants": [
+     "测评Kimi K3.1 Pro",
+     "测评Canva图像模型",
+     "测评OpenAI决策API"
+    ],
+    "refs": [
+     {
+      "kind": "news",
+      "title": "字节火山引擎发布 Seedance 2.5 4K 模型",
+      "url": "https://www.ithome.com/1/017/078.htm"
+     }
+    ]
+   }
+  ]
+ },
+ "brief": {
+  "wind": "猫猫拟人、代际对比、方言治愈曲在涨；鬼畜烧心、黄仁勋换脸已饱和，往萌宠+情绪金句和低门槛模板走",
+  "top": [
+   {
+    "src": "douyin",
+    "i": 1,
+    "title": "AI猫假装实拍，骗过所有人",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "level": "中",
+    "time": "半天",
+    "timing": "刚起势",
+    "why": "556粉小号88万播放，点赞率极高，真假话题刚起势，半天能出"
+   },
+   {
+    "src": "douyin",
+    "i": 3,
+    "title": "萌娃送麻将好运，10秒模板",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "level": "低",
+    "time": "1小时内",
+    "timing": "刚起势",
+    "why": "10秒模板1小时出片，336万播放5万评论，投入产出比最高"
+   },
+   {
+    "src": "bilibili",
+    "i": 3,
+    "title": "关公袍下过，关关难过关关过！AI短片祈福",
+    "kind": "作品",
+    "horizon": "24小时飙升",
+    "level": "低",
+    "time": "1小时内",
+    "timing": "高峰期",
+    "why": "B站低粉爆款每小时+2.5万，1小时内能做，民俗祈福转发率高"
+   }
+  ],
+  "low": {
+   "title": "在此之前，奶道从未有过尊者 (本视频用OiiOii制作)",
+   "url": "https://www.douyin.com/video/7697253301624081698",
+   "src": "douyin",
+   "heat": 536889,
+   "author": "日整猫",
+   "fans": 35085,
+   "hook": "奶蛙+风语咒IP，54秒短平快，1100万播放，抽象萌系"
+  },
+  "gap": {
+   "title": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～",
+   "url": "https://www.douyin.com/video/7698977781489486566",
+   "src": "douyin",
+   "heat": 1982751,
+   "to": "bilibili",
+   "how": "改横屏，拆成单集连载+合集，加角色设定和弹幕梗"
+  }
+ },
+ "gaps": {
+  "toBilibili": [
+   {
+    "id": "dy:7698977781489486566",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～",
+    "url": "https://www.douyin.com/video/7698977781489486566",
+    "author": "脑洞视界",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/owf7IBbUUsfsGAlwvMEfQvshAAFvBVAIssDEAE~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=1Hkt3JL4cbDWcPW0gAMNeF1CGzs%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261024082113460CA25C854F3D2A9F3F",
+    "desc": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～ #美妖姐姐麾下全是呆瓜 #即梦AI创作者成长计划 #AIGC #AI创作浪潮计划 #原创",
+    "heat": 1982751,
+    "pubAt": 1792578600000,
+    "daysSeen": 2,
+    "firstSeen": 1792731672982,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 35085468,
+     "playWin": 7,
+     "like": 1982751,
+     "like24": 971979,
+     "comment": 22799,
+     "share": 2660415,
+     "fav": 262308,
+     "fans": 505156,
+     "aiLabel": "作者声明",
+     "dur": 531
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "美妖姐姐+呆瓜部下，爆笑群像+超长合集，'中国人自己的疯狂动物城'，销冠梗成热评第一",
+     "tip": "做搞笑群像短剧，角色设定要夸张有记忆点，合集形式利于完播和收藏",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1,
+     "voice": "笑疯、夸水准高、玩销冠梗，也有人吐槽女主服装"
+    },
+    "vel": 40499,
+    "why": "长合集动画在B站天然吃香，B站缺这类爆笑群像AI动画",
+    "how": "改横屏，拆成单集连载+合集，加角色设定和弹幕梗"
+   },
+   {
+    "id": "dy:7697599282216422074",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "《困兽之战》13集 一切混乱的根源出现了…本视频由LibTV制作生成",
+    "url": "https://www.douyin.com/video/7697599282216422074",
+    "author": "艺一",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c000-ce/osA6NAPtMhx6duANADTpEI9VAiPXouibm7Bia~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793970000&x-signature=3src20ARX379ltuZPL%2BiSqFlOwQ%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610232108233050EE1891B55C1B8CE6",
+    "desc": "《困兽之战》13集 一切混乱的根源出现了…本视频由LibTV制作生成 #淘宝闪购 #libtv创作者成长计划 #ai全能艺术家计划",
+    "heat": 318423,
+    "pubAt": 1792294215000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 7631228,
+     "playWin": 7,
+     "like": 318423,
+     "comment": 5004,
+     "share": 27477,
+     "fav": 51533,
+     "fans": 1428988,
+     "aiLabel": "作者声明",
+     "dur": 362
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "末日困兽之战第13集，系列连载，LibTV制作，686万播放",
+     "tip": "LibTV做末日题材系列短剧，稳定更新养追更",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "why": "连续剧式AI影视B站有追更氛围，13集结构适合系列化",
+    "how": "横屏、每集3分钟内、做追剧合集，片头埋前情提要"
+   },
+   {
+    "id": "dy:7697561900942445875",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "学历的差距真的重要吗",
+    "url": "https://www.douyin.com/video/7697561900942445875",
+    "author": "起床",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/03f57f7fd943497dbf9d9d2f11a60210~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=FX5CiL0vRZ4CADdjEjg0lRCxQEM%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610231723483F177C971B6F620A1154",
+    "desc": "学历的差距真的重要吗 #ai创作者浪潮计划 #即梦ai创作者成长计划 #ai偶像星光计划 #爱情 #学历",
+    "heat": 303413,
+    "pubAt": 1792235700000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 4223560,
+     "playWin": 7,
+     "like": 303413,
+     "comment": 9190,
+     "share": 67024,
+     "fav": 26692,
+     "fans": 47004,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "学历差距重要吗，社会议题+爱情，争议话题引流",
+     "tip": "做争议社会话题AI短剧，引发评论",
+     "vv": 3,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ],
+    "why": "学历差距这类社会议题在B站易引发讨论和长评",
+    "how": "横屏3分钟，结尾抛问题引导弹幕和评论区讨论"
+   },
+   {
+    "id": "dy:7699006240206389503",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近3天",
+    "title": "当火象和风象在一起",
+    "url": "https://www.douyin.com/video/7699006240206389503",
+    "author": "星动信号",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c000-ce/o4E9NfQwyGDqAJDwCwf2FoAoA1IhsARiEF2quA~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=E8B%2Bl4qm%2BM7taTR6l5eoic%2BKieY%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172411E048388107AF000BA010",
+    "desc": "当火象和风象在一起 #十二星座#火象星座 #风象星座 #即梦AI创作者成长计划 #AI创作浪潮计划",
+    "heat": 268768,
+    "pubAt": 1792564580000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 7199520,
+     "playWin": 3,
+     "like": 268768,
+     "comment": 5841,
+     "share": 78944,
+     "fav": 17246,
+     "fans": 28739,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "火象风象星座相处，星座话题自带流量，拟人化演绎",
+     "tip": "星座拟人短剧，抓星座刻板印象做笑点，系列化更新",
+     "vv": 3,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ],
+    "why": "星座话题B站有稳定受众，适合做成系列对比向内容",
+    "how": "横屏1-2分钟，做十二星座系列合集，埋星座梗"
+   }
+  ],
+  "toDouyin": [
+   {
+    "id": "bili:BV1Cdni6AEQB",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI MV",
+    "title": "用寂静岭的画风打开《周处除三害》【AI MV大赛】",
+    "url": "https://www.bilibili.com/video/BV1Cdni6AEQB",
+    "author": "ByeByeBlueBerry",
+    "cover": "https://i2.hdslb.com/bfs/archive/9d89ec7364337217f081d94cc4e7590f9e330e49.jpg",
+    "desc": "当陈桂林扣下扳机的那一刻，时间突然静止。 原本庄严祥和的教堂瞬间腐朽，墙壁剥落，铁锈蔓延，死去的教众化作扭曲的怪物，而本该倒在枪口下的萧湘湘，却成为了这场噩梦的",
+    "heat": 2310672,
+    "pubAt": 1792576800000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 2310672,
+     "like": 100481,
+     "danmaku": 1462,
+     "fav": 20750,
+     "reply": 3024,
+     "part": "影视剪辑",
+     "dur": 245,
+     "mid": 1483869441,
+     "aid": 117478009080898,
+     "fans": 121330
+    },
+    "ai": {
+     "type": "AI MV",
+     "checked": 1,
+     "hook": "51小时191万播放，每小时+6万，寂静岭画风+周处除三害，风格反差+AI MV大赛流量",
+     "tip": "做「XX画风打开XX」反差MV，用Midjourney定风格+可灵生成动态，卡音乐节拍剪辑，蹭大赛标签",
+     "v": 2,
+     "vv": 3,
+     "top": 1
+    },
+    "vel": 54716,
+    "why": "影视+音乐混搭MV在抖音易卡点传播，题材可迁移",
+    "how": "竖屏30秒，前3秒放最炸画风，卡热门BGM高潮段"
+   },
+   {
+    "id": "bili:BV1UYJY6tE9b",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI剧情大片",
+    "title": "美军后勤部用所有罐头换了几十吨奇可树胶，本想做点轮胎雨靴发往前线，竟阴差阳错做成了口香糖，被前线士兵疯抢！【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1UYJY6tE9b",
+    "author": "A1ger历史课本",
+    "cover": "https://i1.hdslb.com/bfs/archive/0d7ff687228369932277963a23727e841d76c007.jpg",
+    "desc": "-",
+    "heat": 1616237,
+    "pubAt": 1792203017000,
+    "daysSeen": 3,
+    "firstSeen": 1792645402476,
+    "lastSeen": 1792772373614,
+    "m": {
+     "play": 1616237,
+     "like": 4545,
+     "danmaku": 17,
+     "fav": 5554,
+     "reply": 41,
+     "part": "美食侦探",
+     "dur": 155,
+     "mid": 303699618,
+     "aid": 117453799621411,
+     "fans": 68982
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "二战美军口香糖起源的冷知识，AI剧情大片+历史猎奇，播放160万",
+     "tip": "AI影视做历史冷知识剧情化，猎奇+科普双钩子",
+     "v": 2,
+     "checked": 1,
+     "vv": 3
+    },
+    "vel": 304,
+    "why": "二战冷知识+AI剧情，抖音缺这类猎奇科普向内容",
+    "how": "竖屏30秒讲一个冷知识反转，前3秒抛悬念"
+   },
+   {
+    "id": "bili:BV1CXnF6bEA3",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短剧",
+    "title": "郡主娶我爹",
+    "url": "https://www.bilibili.com/video/BV1CXnF6bEA3",
+    "author": "夏眠片刻",
+    "cover": "https://i2.hdslb.com/bfs/archive/6bea5f712c1fc2af5882a72ab0fe210b56e2d7ca.jpg",
+    "heat": 1603520,
+    "pubAt": 1792460480000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 1603520,
+     "like": 13656,
+     "danmaku": 7,
+     "fav": 85218,
+     "reply": 8,
+     "part": "影视杂谈",
+     "dur": 3684,
+     "mid": 3546865618389421,
+     "aid": 117470677437290,
+     "fans": 138610
+    },
+    "ai": {
+     "type": "AI影视",
+     "checked": 1,
+     "hook": "郡主娶我爹，古风AI短剧，狗血设定",
+     "tip": "古风狗血设定做AI短剧，标题要抓马",
+     "v": 2,
+     "vv": 3
+    },
+    "vel": 22363,
+    "pt": [
+     "收藏率高"
+    ],
+    "why": "古装AI短剧在抖音有市场，长剧可切高能片段",
+    "how": "竖屏切30秒高能片段，做连载钩子引导追更"
+   },
+   {
+    "id": "bili:BV1MtnG6NEGF",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI动画",
+    "title": "【科学修仙】怎能命丧于此？！~~~【up动画】",
+    "url": "https://www.bilibili.com/video/BV1MtnG6NEGF",
+    "author": "么鸣堂",
+    "cover": "https://i1.hdslb.com/bfs/archive/0ba87f90433dcc0457e30b930336578a080d21e0.jpg",
+    "heat": 2622068,
+    "pubAt": 1792315502000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 2622068,
+     "like": 82286,
+     "danmaku": 3236,
+     "fav": 26208,
+     "reply": 2567,
+     "part": "小剧场",
+     "dur": 783,
+     "mid": 249295355,
+     "aid": 117461131204491,
+     "fans": 240668
+    },
+    "ai": {
+     "type": "AI动画",
+     "checked": 1,
+     "why": "科学修仙混搭，动画爽点密集，题材差异化明显",
+     "hook": "科学修仙搞笑，修仙+现代科技梗，脑洞大",
+     "tip": "修仙题材混搭现代科技，做搞笑剧集",
+     "v": 2,
+     "vv": 3
+    },
+    "vel": 8475,
+    "why": "搞笑修仙题材轻松易传播，抖音缺系列化AI修仙",
+    "how": "竖屏30秒单梗，前3秒给冲突，配搞笑音效"
+   }
+  ]
+ },
+ "review": {
+  "date": "2026-10-22",
+  "items": [
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "AI小黑猫跳KDA神之八秒，舞技瞒不住了",
+    "horizon": "24小时飙升",
+    "growth": 2.903,
+    "perDay": 1.861,
+    "from": 15203,
+    "to": 59344,
+    "ref": {
+     "title": "看来舞技瞒不住了",
+     "url": "https://www.douyin.com/video/7699420626197306353"
+    },
+    "status": "继续涨"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "KDA八秒挑战，AI换脸让本尊来跳",
+    "horizon": "24小时飙升",
+    "growth": 2.741,
+    "perDay": 1.757,
+    "from": 9542,
+    "to": 35698,
+    "ref": {
+     "title": "这一看就是本人跳的",
+     "url": "https://www.douyin.com/video/7699419531572244155"
+    },
+    "status": "继续涨"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "bilibili",
+    "title": "白骨借皮：洞房花烛夜，新郎面皮剥落",
+    "horizon": "24小时飙升",
+    "growth": 0.895,
+    "perDay": 0.574,
+    "from": 712038,
+    "to": 1349606,
+    "ref": {
+     "title": "【白骨借皮】借来一场金玉良缘。洞房花烛之夜，新郎面皮剥落，新娘筋骨四散。一人丢了血肉皮囊，一人只剩枯骨残躯，这般残缺，反倒天生相配",
+     "url": "https://www.bilibili.com/video/BV1TZJR6DEeY"
+    },
+    "status": "继续涨"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "bilibili",
+    "title": "东北为什么不会丢孩子？AI给你真相",
+    "horizon": "24小时飙升",
+    "growth": 0.653,
+    "perDay": 0.418,
+    "from": 868171,
+    "to": 1434765,
+    "ref": {
+     "title": "在东北为什么不会丢孩子？这个视频告诉你真相",
+     "url": "https://www.bilibili.com/video/BV14tnv6YEkb"
+    },
+    "status": "继续涨"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "bilibili",
+    "title": "闪身哆嗦毛，我让全B站都哆嗦起来",
+    "horizon": "24小时飙升",
+    "growth": 0.353,
+    "perDay": 0.226,
+    "from": 905200,
+    "to": 1224609,
+    "ref": {
+     "title": "“瓦龙哆嗦毛”",
+     "url": "https://www.bilibili.com/video/BV1iVnq6DEui"
+    },
+    "status": "继续涨"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "海底巨物袭击东京，AI怪兽短片",
+    "horizon": "本周热点",
+    "growth": 0.349,
+    "perDay": 0.224,
+    "from": 18730,
+    "to": 25268,
+    "ref": {
+     "title": "《赤潮》海底巨物袭击东京",
+     "url": "https://www.douyin.com/video/7698548104550747411"
+    },
+    "status": "继续涨"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "鳄鱼版KDA新歌，beat drop一响就上头",
+    "horizon": "24小时飙升",
+    "growth": 0.201,
+    "perDay": 0.129,
+    "from": 107483,
+    "to": 129041,
+    "ref": {
+     "title": "KDA新歌神之八秒！🐊（鳄鱼版） 🐊beat drop💃beat beat drop💃",
+     "url": "https://www.douyin.com/video/7698960686860274995"
+    },
+    "status": "放缓"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "反派开口唱说唱，你会心疼谁的过去",
+    "horizon": "近3天爆款",
+    "growth": 0.131,
+    "perDay": 0.084,
+    "from": 67316,
+    "to": 76166,
+    "ref": {
+     "title": "【不必原谅】当所有反派开口唱歌，你会心疼谁的过去？",
+     "url": "https://www.douyin.com/video/7698547767307767059"
+    },
+    "status": "放缓"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "bilibili",
+    "title": "科学家用物理智斗爱因斯坦，脑洞拉满",
+    "horizon": "本周热点",
+    "growth": 0.087,
+    "perDay": 0.056,
+    "from": 5888519,
+    "to": 6400318,
+    "ref": {
+     "title": "科学家们用物理智斗爱因斯坦？",
+     "url": "https://www.bilibili.com/video/BV1fZJ26mEiY"
+    },
+    "status": "放缓"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "AI滑镜转场，一秒闯进你心里",
+    "horizon": "近3天爆款",
+    "growth": 0.081,
+    "perDay": 0.052,
+    "from": 27798,
+    "to": 30037,
+    "ref": {
+     "title": "有没有闯进你的心里🥰……",
+     "url": "https://www.douyin.com/video/7698603632804388730"
+    },
+    "status": "放缓"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "bilibili",
+    "title": "豆奶虫之殇：萌系角色虐心结局，弹幕全哭了",
+    "horizon": "近3天爆款",
+    "growth": 0.062,
+    "perDay": 0.04,
+    "from": 1562232,
+    "to": 1658754,
+    "ref": {
+     "title": "豆奶虫之殇【AI全民制作人】",
+     "url": "https://www.bilibili.com/video/BV1ponw6vEB9"
+    },
+    "status": "放缓"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "美高短剧EP03：完美的背后全是破碎",
+    "horizon": "近3天爆款",
+    "growth": 0.049,
+    "perDay": 0.032,
+    "from": 559877,
+    "to": 587465,
+    "ref": {
+     "title": "自制美高短剧《Shame》 EP02 私家侦探X美高男神，完美的背后是日复一日的破碎与重建",
+     "url": "https://www.douyin.com/video/7697856190857167857"
+    },
+    "status": "放缓"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "李世民对朱棣《不差》，帝王CP开麦",
+    "horizon": "本周热点",
+    "growth": 0.018,
+    "perDay": 0.011,
+    "from": 20727,
+    "to": 21097,
+    "ref": {
+     "title": "李世民×朱棣《不差》本视频由RunningHub支持制作",
+     "url": "https://www.douyin.com/video/7696871190832368896"
+    },
+    "status": "停滞"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "十个古人开麦，唱当代人的累",
+    "horizon": "长期热点",
+    "growth": 0.014,
+    "perDay": 0.009,
+    "from": 2972855,
+    "to": 3013406,
+    "ref": {
+     "title": "人生不是每句都是punchline，十个“过来人”，唱给你听 十个古人，今天不battle，一起唱给你听。 他们也搬过家、被发配、被人看不起、输到最后。 不教你",
+     "url": "https://www.douyin.com/video/7696114106826280242"
+    },
+    "status": "停滞"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "bilibili",
+    "title": "黄仁勋世界巡演第二站：这次唱乱世书",
+    "horizon": "长期热点",
+    "growth": 0.012,
+    "perDay": 0.008,
+    "from": 5946363,
+    "to": 6019959,
+    "ref": {
+     "title": "⚡️黄仁勋 世界巡演⚡️【AI MV大赛】",
+     "url": "https://www.bilibili.com/video/BV1VRHr6AEZ6"
+    },
+    "status": "停滞"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "bilibili",
+    "title": "古人开麦：李白和苏轼Freestyle说唱对战",
+    "horizon": "长期热点",
+    "growth": 0.01,
+    "perDay": 0.006,
+    "from": 8368959,
+    "to": 8450619,
+    "ref": {
+     "title": "全 站 最 烧 心 版 本！！！",
+     "url": "https://www.bilibili.com/video/BV1wiHj6uEsr"
+    },
+    "status": "停滞"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "douyin",
+    "title": "焦虑的本质是活得太用力",
+    "horizon": "本周热点",
+    "growth": 0,
+    "perDay": 0,
+    "from": 376981,
+    "to": 376981,
+    "ref": {
+     "title": "Vibe知识大赏|焦虑的本质是活得太用力 本视频由 opus5.5制作 为什么我们总是这么累？因为连一个标点符号、一个“嗯”字，都要在心里……版本过低，升级后可",
+     "url": "https://www.douyin.com/video/7697026270730718514"
+    },
+    "status": "停滞"
+   },
+   {
+    "date": "2026-10-22",
+    "k": 2,
+    "src": "bilibili",
+    "title": "DeepSeek鲸鱼娘接管我账号的第一天",
+    "horizon": "24小时飙升",
+    "growth": 0,
+    "perDay": 0,
+    "from": 1885364,
+    "to": 1885364,
+    "ref": {
+     "title": "【Day 0】我是DeepSeek鲸鱼娘，这个B站账号现在归我了",
+     "url": "https://www.bilibili.com/video/BV1pGnn67EC2"
+    },
+    "status": "停滞"
+   }
+  ],
+  "byHorizon": [
+   {
+    "horizon": "24小时飙升",
+    "n": 7,
+    "avg": 0.709
+   },
+   {
+    "horizon": "本周热点",
+    "n": 4,
+    "avg": 0.073
+   },
+   {
+    "horizon": "近3天爆款",
+    "n": 4,
+    "avg": 0.052
+   },
+   {
+    "horizon": "长期热点",
+    "n": 3,
+    "avg": 0.008
+   }
+  ],
+  "days": [
+   "2026-10-22"
+  ]
+ },
+ "tools": [
+  {
+   "name": "即梦",
+   "n": 68,
+   "douyin": 56,
+   "bilibili": 12,
+   "best": {
+    "title": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～",
+    "url": "https://www.douyin.com/video/7698977781489486566",
+    "src": "douyin",
+    "heat": 1982751
+   }
+  },
+  {
+   "name": "DeepSeek",
+   "n": 58,
+   "douyin": 8,
+   "bilibili": 50,
+   "best": {
+    "title": "大肥鱼你别哭😭 本视频由LibTV生成~",
+    "url": "https://www.douyin.com/video/7698580623132249395",
+    "src": "douyin",
+    "heat": 229917
+   }
+  },
+  {
+   "name": "Seedance",
+   "n": 48,
+   "douyin": 16,
+   "bilibili": 32,
+   "best": {
+    "title": "叹人间",
+    "url": "https://www.douyin.com/video/7699062585774376427",
+    "src": "douyin",
+    "heat": 214745
+   }
+  },
+  {
+   "name": "Suno",
+   "n": 46,
+   "douyin": 1,
+   "bilibili": 45,
+   "best": {
+    "title": "时间加速の小曲⚡通透版⚡",
+    "url": "https://www.douyin.com/video/7698686810888637736",
+    "src": "douyin",
+    "heat": 36683
+   }
+  },
+  {
+   "name": "可灵",
+   "n": 42,
+   "douyin": 2,
+   "bilibili": 40,
+   "best": {
+    "title": "巨构：移动城邦｜大灾变档案【砼核纪元】",
+    "url": "https://www.bilibili.com/video/BV1Mmni6zE1S",
+    "src": "bilibili",
+    "heat": 1000469
+   }
+  },
+  {
+   "name": "OiiOii",
+   "n": 27,
+   "douyin": 24,
+   "bilibili": 3,
+   "best": {
+    "title": "这下笨笨可惨了 （本视频由OiiOii Ai制作）",
+    "url": "https://www.douyin.com/video/7697959695277149478",
+    "src": "douyin",
+    "heat": 572645
+   }
+  },
+  {
+   "name": "豆包",
+   "n": 26,
+   "douyin": 9,
+   "bilibili": 17,
+   "best": {
+    "title": "豆奶虫之殇",
+    "url": "https://www.douyin.com/video/7699469191232982335",
+    "src": "douyin",
+    "heat": 151510
+   }
+  },
+  {
+   "name": "LibTV",
+   "n": 23,
+   "douyin": 21,
+   "bilibili": 2,
+   "best": {
+    "title": "所以呢，你也成为苦瓜大王了吗？本视频使用LibTV制作",
+    "url": "https://www.douyin.com/video/7698976771118517544",
+    "src": "douyin",
+    "heat": 364224
+   }
+  },
+  {
+   "name": "剪映",
+   "n": 17,
+   "douyin": 15,
+   "bilibili": 2,
+   "best": {
+    "title": "我哄人的方式belike：",
+    "url": "https://www.douyin.com/video/7698020257035210149",
+    "src": "douyin",
+    "heat": 283812
+   }
+  },
+  {
+   "name": "Sora",
+   "n": 11,
+   "douyin": 0,
+   "bilibili": 11,
+   "best": {
+    "title": "【A2O SOUL】A2O SOUL SORA- 「Superstar 」竖版直拍 | 261022",
+    "url": "https://www.bilibili.com/video/BV1vYnm6mEUr",
+    "src": "bilibili",
+    "heat": 7059
+   }
+  },
+  {
+   "name": "Udio",
+   "n": 9,
+   "douyin": 0,
+   "bilibili": 9,
+   "best": {
+    "title": "冰瓜女王【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1zVnz6bEs5",
+    "src": "bilibili",
+    "heat": 188401
+   }
+  },
+  {
+   "name": "GPT",
+   "n": 7,
+   "douyin": 0,
+   "bilibili": 7,
+   "best": {
+    "title": "GPT 6.1 Sol 告诉我，它的指令遵循能力任何模型无法企及 我不信，结果它给我剪了个视频：",
+    "url": "https://www.bilibili.com/video/BV1RGnc61Ea4",
+    "src": "bilibili",
+    "heat": 141428
+   }
+  }
+ ],
+ "bgms": [
+  {
+   "title": "叹人间(DJ)",
+   "n": 3,
+   "likes": 57083,
+   "best": {
+    "title": "这个特效崽崽用超可爱😍",
+    "url": "https://www.douyin.com/video/7698576904820417466",
+    "src": "douyin",
+    "heat": 24097
+   }
+  },
+  {
+   "title": "叹人间(DJ) - 狂澜",
+   "n": 1,
+   "likes": 214745,
+   "best": {
+    "title": "叹人间",
+    "url": "https://www.douyin.com/video/7699062585774376427",
+    "src": "douyin",
+    "heat": 214745
+   }
+  },
+  {
+   "title": "恐怖阴森的音乐 - E8r",
+   "n": 1,
+   "likes": 133506,
+   "best": {
+    "title": "真实的下界竟然是这样子",
+    "url": "https://www.douyin.com/video/7698688072447970536",
+    "src": "douyin",
+    "heat": 133506
+   }
+  }
+ ],
+ "trendKeywords": [
+  {
+   "kw": "AI漫剧",
+   "why": "AI生成连续剧情漫画短剧，爽文反转题材"
+  },
+  {
+   "kw": "AI全民制作人",
+   "why": "网友用AI整活做歌做MV的共创玩法"
+  },
+  {
+   "kw": "AI MV大赛",
+   "why": "参赛向AI音乐MV，角色对唱battle"
+  },
+  {
+   "kw": "AI剧情大片",
+   "why": "AI生成真人质感历史短剧"
+  },
+  {
+   "kw": "AI COVER",
+   "why": "用AI换声翻唱K-pop歌曲"
+  },
+  {
+   "kw": "AI萌娃送麻将好运",
+   "why": "萌娃形象送祝福/送好运特效模板"
+  },
+  {
+   "kw": "AI五人合拍同步舞",
+   "why": "多人同步跳舞卡点特效模板"
+  },
+  {
+   "kw": "AI双人同步卡点舞",
+   "why": "双人同步舞蹈卡点特效模板"
+  }
+ ],
+ "videos": {
+  "douyin": [
+   {
+    "id": "dy:7698977781489486566",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～",
+    "url": "https://www.douyin.com/video/7698977781489486566",
+    "author": "脑洞视界",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/owf7IBbUUsfsGAlwvMEfQvshAAFvBVAIssDEAE~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=1Hkt3JL4cbDWcPW0gAMNeF1CGzs%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261024082113460CA25C854F3D2A9F3F",
+    "desc": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～ #美妖姐姐麾下全是呆瓜 #即梦AI创作者成长计划 #AIGC #AI创作浪潮计划 #原创",
+    "heat": 1982751,
+    "pubAt": 1792578600000,
+    "daysSeen": 2,
+    "firstSeen": 1792731672982,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 35085468,
+     "playWin": 7,
+     "like": 1982751,
+     "like24": 971979,
+     "comment": 22799,
+     "share": 2660415,
+     "fav": 262308,
+     "fans": 505156,
+     "aiLabel": "作者声明",
+     "dur": 531
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "62小时3508万播放、24小时涨97万赞，超长合集+收藏引导把单集流量滚成雪球",
+     "tip": "做系列短剧先攒3-5集再发合集，标题打「一次看够+建议收藏」，前3秒放最炸冲突镜头",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1,
+     "voice": "笑疯、夸水准高、玩销冠梗，也有人吐槽女主服装"
+    },
+    "vel": 40499
+   },
+   {
+    "id": "dy:7698287665296215323",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "猫猫教你做人——那些看不起你的人，其实也在装",
+    "url": "https://www.douyin.com/video/7698287665296215323",
+    "author": "小弹簧晓丹",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/2096a385102d400e98a6a72a31d7e842~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=iQ%2BIn%2BhX4nKsf8wdijeBqGIrQn8%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172325DD6A57A4C1B3160BC39D",
+    "desc": "猫猫教你做人——那些看不起你的人，其实也在装 #即梦AI创作者成长计划 #即梦AI新影像 #AI创作浪潮计划",
+    "heat": 1074159,
+    "pubAt": 1792397278000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 10722997,
+     "playWin": 7,
+     "like": 1074159,
+     "like24": 306615,
+     "comment": 8380,
+     "share": 318225,
+     "fav": 128437,
+     "fans": 92428,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "9万粉小号112小时破千万播放，猫拟人+人间清醒台词，24小时仍涨30万赞",
+     "tip": "萌宠拟人配扎心文案，单条一个金句主题，结尾留反转，节奏压到1分钟内",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1
+    },
+    "vel": 12776
+   },
+   {
+    "id": "dy:7698742839655632137",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近1天",
+    "title": "被偷走零花钱的小狗，没有记恨小主人，还把辛苦讨来的钱分给她",
+    "url": "https://www.douyin.com/video/7698742839655632137",
+    "author": "奋斗的希瓜皮",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/b3f8ff7fd6b84c0abb48b45bd4c89b71~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=SebNqDu58wRQkEhc1z3NqMccndY%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172347883089399E0B771CE0BB",
+    "desc": "被偷走零花钱的小狗，没有记恨小主人，还把辛苦讨来的钱分给她#萌娃 #萌宠 #剧情 #搞笑 #即梦AI创作者成长计划",
+    "heat": 374713,
+    "pubAt": 1792503257000,
+    "daysSeen": 1,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792760842613,
+    "m": {
+     "play": 8499980,
+     "playWin": 1,
+     "like": 374713,
+     "like24": 306250,
+     "comment": 2557,
+     "share": 116626,
+     "fav": 23235,
+     "fans": 163098,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "83小时850万播放，萌宠+萌娃+催泪剧情三要素叠加，24小时涨30万赞",
+     "tip": "宠物视角讲家庭小故事，先制造误会再反转煽情，配旁白和慢镜头收尾",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1
+    },
+    "vel": 12760
+   },
+   {
+    "id": "dy:7699086288741305615",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "现在的孩子vs以前的孩子...",
+    "url": "https://www.douyin.com/video/7699086288741305615",
+    "author": "柚辞可说",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/da1ec1b0b25743a89f211b9ca0558c02~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=1%2BTN5Y09LJDbAVNN%2BR8op62ZMFY%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261024082113FEE9751C50E18B2AEBCE",
+    "desc": "现在的孩子vs以前的孩子... #即梦ai创作者成长计划 #ai创作浪潮计划 #搞笑 #回忆 #童年回忆",
+    "heat": 280302,
+    "pubAt": 1792583222000,
+    "daysSeen": 1,
+    "firstSeen": 1792801240051,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 7639207,
+     "playWin": 7,
+     "like": 280302,
+     "like24": 242106,
+     "comment": 11851,
+     "share": 628397,
+     "fav": 21182,
+     "fans": 1010217,
+     "aiLabel": "作者声明",
+     "dur": 128
+    },
+    "ai": {
+     "type": "AI整活",
+     "hook": "24小时涨24万赞、分享62.8万远超点赞，代际对比戳中转发欲",
+     "tip": "做「以前vs现在」对比结构，左右分屏或前后切换，文案抛共鸣问题引导@好友",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 10088
+   },
+   {
+    "id": "dy:7699062597483629851",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近1天",
+    "title": "陛下，怎么样才能回到从前？",
+    "url": "https://www.douyin.com/video/7699062597483629851",
+    "author": "我爸爸是刘备",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/a62438fc74f044d99fa6a66baefe740c~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=xIgaYgtWB2fJXAoNbOExarDQ9sA%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610240821186358DBCA4E715433E141",
+    "desc": "陛下，怎么样才能回到从前？ #许嵩#AI创作浪潮计划 #相父与阿斗 #三国杀演义 #怎么样才能回到从前",
+    "heat": 288630,
+    "pubAt": 1792577705000,
+    "daysSeen": 1,
+    "firstSeen": 1792801240051,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 4783758,
+     "playWin": 1,
+     "like": 288630,
+     "like24": 193027,
+     "comment": 4681,
+     "share": 59480,
+     "fav": 11441,
+     "fans": 8590,
+     "aiLabel": "作者声明",
+     "dur": 38
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "8590粉小号38秒短片24小时涨19万赞，蹭许嵩歌+三国梗情绪拉满",
+     "tip": "短剧集只做30-40秒高情绪片段，用热门BGM卡点，标题直接抛台词式提问",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 8043,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "dy:7697769322558606642",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "第1集 东方志怪美学与西方黑暗神话的碰撞系列剧集 中国驱魔大神和女徒作为驱魔雇佣兵身份踏上了全球猎魔之旅。本作品已严格遵循平台规则进行修正，Ai作品纯属虚构无不",
+    "url": "https://www.douyin.com/video/7697769322558606642",
+    "author": "羊 羽",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/edc769634afd48a7a871b41e27a587c2~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=MMy%2BuXNRcdh9hWLNwfl82dtBWoc%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172319B3D3B20F7E8C6C0A373E",
+    "desc": "第1集 东方志怪美学与西方黑暗神话的碰撞系列剧集 中国驱魔大神和女徒作为驱魔雇佣兵身份踏上了全球猎魔之旅。本作品已严格遵循平台规则进行修正，Ai作品纯属虚构无不良引导。……版本过低，升级后可展示全部信息",
+    "heat": 1422130,
+    "pubAt": 1792294200000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 30156031,
+     "playWin": 7,
+     "like": 1422130,
+     "like24": 175035,
+     "comment": 25273,
+     "share": 452770,
+     "fav": 353661,
+     "fans": 293771,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "141小时3015万播放、收藏35万，中西神话碰撞设定稀缺，长尾增长稳",
+     "tip": "世界观先立设定再出剧集，片头用一句话讲清设定，单集留钩子引导追更",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1,
+     "voice": "蹲更刷屏、惊叹分不清AI和现实、讨论道家雷法，也有人吐槽只推第一集",
+     "ask": {
+      "求更新": 2
+     }
+    },
+    "vel": 7293,
+    "pt": [
+     "收藏率高"
+    ]
+   }
+  ],
+  "bilibili": [
+   {
+    "id": "bili:BV1uxnA61ENS",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI全民制作人",
+    "title": "不烧心合集丨我的羊肉烩面，吃了不烧心【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1uxnA61ENS",
+    "author": "小柚漫剧",
+    "cover": "https://i0.hdslb.com/bfs/archive/a085dcf412d169b648a2d32c12df4d75f200d2c5.jpg",
+    "heat": 1592003,
+    "pubAt": 1792502460000,
+    "daysSeen": 1,
+    "firstSeen": 1792731672982,
+    "lastSeen": 1792769996198,
+    "m": {
+     "play": 1592003,
+     "like": 2071,
+     "danmaku": 13,
+     "fav": 12730,
+     "reply": 7,
+     "part": "明星综合",
+     "dur": 2679,
+     "mid": 30712241,
+     "aid": 117473294813885,
+     "fans": 1389
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "83小时159万播放、每小时7.4万，44分钟超长合集靠「反转」标签吃满完播",
+     "tip": "漫剧做长合集铺量，标题打反转+美食等生活化钩子，前10秒必须出冲突",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1
+    },
+    "vel": 73938,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "bili:BV16mJ96BEoL",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短片",
+    "title": "如果有一天，你因为伸出援手而受了伤，别怀疑自己，错的是黑暗，从来不是你。",
+    "url": "https://www.bilibili.com/video/BV16mJ96BEoL",
+    "author": "迷九探影",
+    "cover": "https://i2.hdslb.com/bfs/archive/ffe8748aeae48156b17ac2be35420ee7e4425b80.jpg",
+    "heat": 3339372,
+    "pubAt": 1792498500000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 3339372,
+     "like": 19708,
+     "danmaku": 1089,
+     "fav": 24632,
+     "reply": 360,
+     "part": "影视杂谈",
+     "dur": 399,
+     "mid": 563138989,
+     "aid": 117468160858290,
+     "fans": 143156
+    },
+    "ai": {
+     "type": "AI影视",
+     "checked": 1,
+     "why": "治愈系情感短片，金句标题戳人，转发率高",
+     "hook": "84小时333万播放，治愈金句标题+原创动画，情绪价值驱动收藏2.5万",
+     "tip": "标题写成一句治愈文案，正片用温暖画风讲小故事，结尾字幕升华主题",
+     "v": 2,
+     "top": 1,
+     "vv": 3
+    },
+    "vel": 59135
+   },
+   {
+    "id": "bili:BV1Cdni6AEQB",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI MV",
+    "title": "用寂静岭的画风打开《周处除三害》【AI MV大赛】",
+    "url": "https://www.bilibili.com/video/BV1Cdni6AEQB",
+    "author": "ByeByeBlueBerry",
+    "cover": "https://i2.hdslb.com/bfs/archive/9d89ec7364337217f081d94cc4e7590f9e330e49.jpg",
+    "desc": "当陈桂林扣下扳机的那一刻，时间突然静止。 原本庄严祥和的教堂瞬间腐朽，墙壁剥落，铁锈蔓延，死去的教众化作扭曲的怪物，而本该倒在枪口下的萧湘湘，却成为了这场噩梦的",
+    "heat": 2310672,
+    "pubAt": 1792576800000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 2310672,
+     "like": 100481,
+     "danmaku": 1462,
+     "fav": 20750,
+     "reply": 3024,
+     "part": "影视剪辑",
+     "dur": 245,
+     "mid": 1483869441,
+     "aid": 117478009080898,
+     "fans": 121330
+    },
+    "ai": {
+     "type": "AI MV",
+     "checked": 1,
+     "hook": "62小时231万播放、10万赞，经典IP+暗黑画风反差，蹭大赛流量",
+     "tip": "拿知名影视/歌曲做画风反差二创，MV按歌词分镜卡点，封面放最反差一帧",
+     "v": 2,
+     "vv": 3,
+     "top": 1
+    },
+    "vel": 54716
+   },
+   {
+    "id": "bili:BV1E8n46FEzB",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI漫剧",
+    "title": "《晴月女王》",
+    "url": "https://www.bilibili.com/video/BV1E8n46FEzB",
+    "author": "酒窝与酒111",
+    "cover": "https://i1.hdslb.com/bfs/archive/6e0c8476d384720caa788f512cf1f05cae1a52ea.jpg",
+    "desc": "《晴月女王》",
+    "heat": 569241,
+    "pubAt": 1792731225000,
+    "daysSeen": 2,
+    "firstSeen": 1792762822715,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 569241,
+     "like": 1402,
+     "danmaku": 0,
+     "fav": 8373,
+     "reply": 4,
+     "part": "影视剪辑",
+     "dur": 322,
+     "mid": 3546928159656438,
+     "aid": 117488427730434,
+     "fans": 30780
+    },
+    "ai": {
+     "type": "AI影视",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "hook": "19小时56万播放、每小时5万，二次元漫剧新号起量快",
+     "tip": "漫剧首集直接进冲突，角色立绘统一画风，标题用人名+身份制造好奇",
+     "noted": 1
+    },
+    "vel": 49970
+   },
+   {
+    "id": "bili:BV1bKnw6zEsV",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短剧",
+    "title": "大难不死的男孩爱上纯血家族的女孩【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1bKnw6zEsV",
+    "author": "Foyege弗曳哥",
+    "cover": "https://i1.hdslb.com/bfs/archive/9da3d2d1247f17a3f763397fc564d2c01061a4db.jpg",
+    "heat": 2459317,
+    "pubAt": 1792488600000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 2459317,
+     "like": 113716,
+     "danmaku": 2659,
+     "fav": 51733,
+     "reply": 11074,
+     "part": "财经商业",
+     "dur": 291,
+     "mid": 1383971575,
+     "aid": 117472019682726,
+     "fans": 85409
+    },
+    "ai": {
+     "type": "AI影视",
+     "checked": 1,
+     "why": "哈利波特同人AI剧情，IP借势+CP向，粉丝自带流量",
+     "hook": "87小时245万播放、11万赞，哈利波特同人+CP向，粉丝基本盘大",
+     "tip": "选有同人基础的IP做CP短剧，保留原作标志元素，标题点明CP关系",
+     "v": 2,
+     "top": 1,
+     "vv": 3
+    },
+    "vel": 31926
+   },
+   {
+    "id": "bili:BV1qTnG6UE9y",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·梦核怪诞美学",
+    "title": "月亮拉下来洗个澡，才发现，太阳藏在灰尘底下",
+    "url": "https://www.bilibili.com/video/BV1qTnG6UE9y",
+    "author": "Aismr_",
+    "cover": "https://i1.hdslb.com/bfs/archive/7bfe189a6e211ba9955b5fe3009d9bfa03cf5bc5.jpg",
+    "desc": "月亮拉下来洗个澡，才发现，太阳藏在灰尘底下。 难怪今天的天亮，来得晚了一点。 牵一朵云出门散步，顺便给路边的旧车下一场雨。 走到一半，遇见一个哭鼻子的小女孩。 ",
+    "heat": 3369010,
+    "pubAt": 1792319243000,
+    "daysSeen": 1,
+    "firstSeen": 1792801240051,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 3369010,
+     "like": 217130,
+     "danmaku": 616,
+     "fav": 43732,
+     "reply": 1593,
+     "part": "手工",
+     "dur": 55,
+     "mid": 8399798,
+     "aid": 117461416482064,
+     "fans": 655125
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "134小时336万播放、21万赞，梦核怪诞美学+治愈文案，视觉辨识度高",
+     "tip": "做统一美学风格的视觉短片，一句诗意文案贯穿，画面用超现实场景拼接",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 25156
+   }
+  ],
+  "douyinTop": [
+   {
+    "id": "dy:7691317217924861225",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "《困兽之战》1-10合集 终于也是把合集做出来了，1-10纯享版 ，修改了里面的一些片段，希望大家喜欢！！故事还没结束，我们下一集见！！另外提醒下所有说有全集的",
+    "url": "https://www.douyin.com/video/7691317217924861225",
+    "author": "艺一",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/363f5e877d064601a56d7d3241cb6bed~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=H72l6hQj2Zym2FsC46njMeD9UzA%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610231723295DA32F9E2FABA0007B1D",
+    "desc": "《困兽之战》1-10合集 终于也是把合集做出来了，1-10纯享版 ，修改了里面的一些片段，希望大家喜欢！！故事还没结束，我们下一集见！！另外提醒下所有说有全集的都是骗子！！ 本视频由LibTV制作 #ai创作浪潮计划#libtv创作者成长计",
+    "heat": 3814660,
+    "pubAt": 1790774350000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 11970175,
+     "playWin": 7,
+     "like": 3814660,
+     "comment": 52882,
+     "share": 2206543,
+     "fav": 1331936,
+     "fans": 1428985,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "合集+连载追更，381万赞靠爽感打斗和'下一集见'钩子，分享220万说明强社交传播",
+     "tip": "做系列短剧先立世界观，每集留悬念，合集打包发一次吃长尾流量",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "voice": "催更、讨论战力设定、哭独角兽、吐槽核弹打怪逻辑，还有求全集的"
+    },
+    "vel": 0,
+    "pt": [
+     "收藏率高"
+    ]
+   },
+   {
+    "id": "dy:7690507012228123904",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "如果人死后可以行动一段时间，你会做什么？ 本作品使用LibTV制作 《死亡观察员》从另一种角度观察“人生”",
+    "url": "https://www.douyin.com/video/7690507012228123904",
+    "author": "AIGC老梁",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/1f55eb1f1fba4802bb541bf46e4795f5~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793970000&x-signature=G0u9roW5RShPVNfv7jR67nLb4f4%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023210822AB926C870848C1100192",
+    "desc": "如果人死后可以行动一段时间，你会做什么？ 本作品使用LibTV制作#LibTV #LibTV创作者成长计划 《死亡观察员》从另一种角度观察“人生”#AI创作浪潮计划 #未来导……版本过低，升级后可展示全部信息",
+    "heat": 3485528,
+    "pubAt": 1790585704000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 5412761,
+     "playWin": 7,
+     "like": 3485528,
+     "comment": 28954,
+     "share": 1226285,
+     "fav": 235656,
+     "fans": 536206,
+     "aiLabel": "作者声明",
+     "dur": 285
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "死亡视角的哲学设定+4分45秒长片，348万赞靠情绪共鸣，收藏低说明看完即走",
+     "tip": "选一个反常识设定切入人生议题，用旁白串情绪，节奏慢但要有金句",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1,
+     "voice": "评论区集体倾诉人生遗憾，问意义、讲亲人离世，情绪共鸣远大于讨论技术",
+     "ask": {
+      "求教程": 1
+     }
+    },
+    "vel": 0
+   },
+   {
+    "id": "dy:7696114106826280242",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "人生不是每句都是punchline，十个“过来人”，唱给你听 十个古人，今天不battle，一起唱给你听。 他们也搬过家、被发配、被人看不起、输到最后。 不教你",
+    "url": "https://www.douyin.com/video/7696114106826280242",
+    "author": "喆FILM",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/cf93773063f2487c9ce571f43e375d59~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=Wy51Ac9ErSAxDmQGyEjHtqlUkwY%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172319EA32C7B7C5C3832AF713",
+    "desc": "人生不是每句都是punchline，十个“过来人”，唱给你听 十个古人，今天不battle，一起唱给你听。 他们也搬过家、被发配、被人看不起、输到最后。 不教你怎么活，就站在台上，……版本过低，升级后可展示全部信息",
+    "heat": 3013406,
+    "pubAt": 1791891206000,
+    "daysSeen": 3,
+    "firstSeen": 1792657453764,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 32490182,
+     "playWin": 7,
+     "like": 3013406,
+     "comment": 94328,
+     "share": 2459288,
+     "fav": 711095,
+     "fans": 822970,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI音乐",
+     "hook": "十个古人集体唱歌，把课本人物做成'过来人'，3249万播放靠反差+共情，分享245万",
+     "tip": "找大众熟悉的群体做群像音乐，歌词写他们的真实困境，卡点合唱",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "voice": "观众在评论区讲自己的苦难史，求幕后真人，也有人吐槽中英混唱",
+     "ask": {
+      "问BGM": 2
+     }
+    },
+    "vel": 444,
+    "pt": [
+     "收藏率高"
+    ]
+   },
+   {
+    "id": "dy:7695688530051431089",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "自制美高短剧《Shame》EP01 私家侦探X美高男神，看似完美的校园明星背后竟有这样不为人知的一面…",
+    "url": "https://www.douyin.com/video/7695688530051431089",
+    "author": "蓝莓鼠🐿️",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c000-ce/oIwAOEJ3qEACJzwoADCoG2pzFAPIoQf9fA0uZY~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=WLmYEj8EQ2Wwe2PcCnruQizG4Xc%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=2026102317231950FE27E00C78BE35E4CA",
+    "desc": "自制美高短剧《Shame》EP01 私家侦探X美高男神，看似完美的校园明星背后竟有这样不为人知的一面…#美剧 #ai短剧 #fpy #抖音AI创作者浪潮计划 #抖音AI创作大赛",
+    "heat": 2876360,
+    "pubAt": 1791792114000,
+    "daysSeen": 3,
+    "firstSeen": 1792657453764,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 21129594,
+     "playWin": 7,
+     "like": 2876360,
+     "like24": 88181,
+     "comment": 70918,
+     "share": 795603,
+     "fav": 593934,
+     "fans": 507548,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "美高短剧+悬疑人设，287万赞靠'完美男神背后秘密'的钩子，追剧欲强",
+     "tip": "短剧第一集必须抛悬念，人设立反差，结尾卡在揭秘前一秒",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "voice": "刷屏'美国人知道吗'、催更、蹲VIP席，全是求下集的"
+    },
+    "vel": 3674,
+    "pt": [
+     "收藏率高"
+    ]
+   },
+   {
+    "id": "dy:7690758245715433193",
+    "cat": "video",
+    "src": "douyin",
+    "board": "话题·#闪身步",
+    "title": "当我得到了闺蜜小时候的照片",
+    "url": "https://www.douyin.com/video/7690758245715433193",
+    "author": "YanY_",
+    "cover": "https://p11-sign.douyinpic.com/tos-cn-i-0813/oI8VPUa1PBogxAAzmWA7POEAiAriaIDzgIsCs~tplv-dy-resize-walign-adapt-aq:360:q75.heic?lk3s=138a59ce&x-expires=1793941200&x-signature=WhN4G0rXK6RzNB5W3vZD3zRqseQ%3D&from=327834062&s=PackSourceEnum_CHALLENGE_AWEME&se=false&sc=cover&biz_tag=aweme_images&l=20261023130220BBD58EBA11CB731AC952",
+    "desc": "当我得到了闺蜜小时候的照片#闪身步",
+    "heat": 2172764,
+    "pubAt": 1790644195000,
+    "daysSeen": 2,
+    "firstSeen": 1792665925885,
+    "lastSeen": 1792731672982,
+    "m": {
+     "like": 2172764,
+     "comment": 11147,
+     "share": 248267,
+     "fav": 66818,
+     "hint": null,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI特效玩法",
+     "hook": "闺蜜童年照变脸，217万赞靠熟人社交+怀旧情绪，操作简单易模仿",
+     "tip": "选有情感联结的旧照片做前后对比，配惊喜反应，引导@好友",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "voice": "夸可爱、问积分怎么攒、争论AI算不算否定真人努力",
+     "ask": {
+      "求教程": 1
+     }
+    },
+    "vel": 0
+   },
+   {
+    "id": "dy:7698977781489486566",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～",
+    "url": "https://www.douyin.com/video/7698977781489486566",
+    "author": "脑洞视界",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/owf7IBbUUsfsGAlwvMEfQvshAAFvBVAIssDEAE~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1794009600&x-signature=1Hkt3JL4cbDWcPW0gAMNeF1CGzs%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261024082113460CA25C854F3D2A9F3F",
+    "desc": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～ #美妖姐姐麾下全是呆瓜 #即梦AI创作者成长计划 #AIGC #AI创作浪潮计划 #原创",
+    "heat": 1982751,
+    "pubAt": 1792578600000,
+    "daysSeen": 2,
+    "firstSeen": 1792731672982,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 35085468,
+     "playWin": 7,
+     "like": 1982751,
+     "like24": 971979,
+     "comment": 22799,
+     "share": 2660415,
+     "fav": 262308,
+     "fans": 505156,
+     "aiLabel": "作者声明",
+     "dur": 531
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "3天3508万播放，超长合集+爆笑动画，分享266万，靠'一次看够'的爽感和转发安利",
+     "tip": "做搞笑动画攒够量再发合集，标题强调'超长''建议收藏'拉完播",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1,
+     "voice": "笑疯、夸水准高、玩销冠梗，也有人吐槽女主服装"
+    },
+    "vel": 40499
+   },
+   {
+    "id": "dy:7696047776953584922",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "《瑞草学院捉鬼师·东京篇》第一集",
+    "url": "https://www.douyin.com/video/7696047776953584922",
+    "author": "红桃桃",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/4cf4471bf9504b4288e7c9ae40c3d29e~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=8eJzeDrEw30nsFa%2B96sarX7D04I%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=2026102317232389E645983FB8420BE58A",
+    "desc": "《瑞草学院捉鬼师·东京篇》第一集 #瑞草学院捉鬼师 #即梦AI创作者成长计划 #AI浪潮创作计划",
+    "heat": 1729799,
+    "pubAt": 1791879976000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 8856494,
+     "playWin": 7,
+     "like": 1729799,
+     "comment": 27700,
+     "share": 481994,
+     "fav": 367358,
+     "fans": 690128,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "捉鬼师+东京篇，东方玄学撞日式怪谈，173万赞靠类型混搭新鲜感",
+     "tip": "选熟悉题材换地域背景制造新鲜感，每集一个怪谈单元剧",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "voice": "夸角色帅、问BGM、求上红果、催更，也有人感叹AI进化太快",
+     "ask": {
+      "问BGM": 1
+     }
+    },
+    "vel": 0,
+    "pt": [
+     "收藏率高"
+    ]
+   },
+   {
+    "id": "dy:7697769322558606642",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "第1集 东方志怪美学与西方黑暗神话的碰撞系列剧集 中国驱魔大神和女徒作为驱魔雇佣兵身份踏上了全球猎魔之旅。本作品已严格遵循平台规则进行修正，Ai作品纯属虚构无不",
+    "url": "https://www.douyin.com/video/7697769322558606642",
+    "author": "羊 羽",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/edc769634afd48a7a871b41e27a587c2~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=MMy%2BuXNRcdh9hWLNwfl82dtBWoc%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172319B3D3B20F7E8C6C0A373E",
+    "desc": "第1集 东方志怪美学与西方黑暗神话的碰撞系列剧集 中国驱魔大神和女徒作为驱魔雇佣兵身份踏上了全球猎魔之旅。本作品已严格遵循平台规则进行修正，Ai作品纯属虚构无不良引导。……版本过低，升级后可展示全部信息",
+    "heat": 1422130,
+    "pubAt": 1792294200000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 30156031,
+     "playWin": 7,
+     "like": 1422130,
+     "like24": 175035,
+     "comment": 25273,
+     "share": 452770,
+     "fav": 353661,
+     "fans": 293771,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "东方志怪VS西方黑暗神话，3015万播放靠'中国驱魔人全球猎魔'的爽点和中西碰撞",
+     "tip": "用文化对撞做卖点，主角强人设+单元式猎魔，标题点明碰撞",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1,
+     "voice": "蹲更刷屏、惊叹分不清AI和现实、讨论道家雷法，也有人吐槽只推第一集",
+     "ask": {
+      "求更新": 2
+     }
+    },
+    "vel": 7293,
+    "pt": [
+     "收藏率高"
+    ]
+   },
+   {
+    "id": "dy:7697854193024945448",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "《黑斑侠-MJ宇宙》第一集--被蜘蛛咬后的黑斑少年会遇到什么 违规修改重发一遍爸爸妈妈们，这次是偏正剧所以可能节奏没那么快，希望大家喜欢，是多人群像 ……版本过",
+    "url": "https://www.douyin.com/video/7697854193024945448",
+    "author": "咒语大王",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/a7f8a9dd7980416ab1663e52812c361e~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793970000&x-signature=JXB2PZZl3GTDZ3gEl4pJNGlETdU%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610232108165FA126E81FAE941B9409",
+    "desc": "《黑斑侠-MJ宇宙》第一集--被蜘蛛咬后的黑斑少年会遇到什么 违规修改重发一遍爸爸妈妈们，这次是偏正剧所以可能节奏没那么快，希望大家喜欢，是多人群像#水姐 #看海老师 #晚安姐姐 ……版本过低，升级后可展示全部信息",
+    "heat": 1272989,
+    "pubAt": 1792296355000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 25517332,
+     "playWin": 7,
+     "like": 1272989,
+     "comment": 17412,
+     "share": 1697169,
+     "fav": 135075,
+     "fans": 344401,
+     "aiLabel": "作者声明",
+     "dur": 423
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "被蜘蛛咬变黑斑侠，蹭超英宇宙梗，2551万播放靠IP联想+群像正剧",
+     "tip": "借大众熟悉的超英设定做本土化改编，多角色铺宇宙感",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1,
+     "top": 1,
+     "voice": "吹'半年内无人超越'、玩漫威记忆梗、吐槽显卡涨价"
+    },
+    "vel": 0
+   },
+   {
+    "id": "dy:7693114347963668644",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "瓦特工的假期日常 本视频由LibTV生成",
+    "url": "https://www.douyin.com/video/7693114347963668644",
+    "author": "老实本分的莱纳斯",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813/ogGhaI5QGXe1tE3wAIeXAgAAyLCeAVBBo6k7kG~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793970000&x-signature=PdVuVRdW9R4IQMu5M6XZPkPnEXc%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023210919F8B1DECAA4FED51A4660",
+    "desc": "瓦特工的假期日常 本视频由LibTV生成 #ai创作浪潮计划 #LibTV创作者成长计划 #无畏契约 #日常 #治愈",
+    "heat": 1213250,
+    "pubAt": 1791192766000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 636081,
+     "playWin": 7,
+     "like": 1213250,
+     "comment": 7625,
+     "share": 495517,
+     "fav": 78634,
+     "fans": 169811,
+     "aiLabel": "作者声明",
+     "dur": 103
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "游戏角色日常治愈向，121万赞但播放仅63万，点赞率极高说明粉丝向精准",
+     "tip": "做游戏角色生活化小剧场，走治愈路线，短平快抓核心粉",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1,
+     "voice": "玩家考据角色梗、聊暮蝶和芮娜、感叹情怀，圈层共鸣强"
+    },
+    "vel": 0
+   }
+  ],
+  "bilibiliTop": [
+   {
+    "id": "bili:BV1wiHj6uEsr",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短剧",
+    "title": "全 站 最 烧 心 版 本！！！",
+    "url": "https://www.bilibili.com/video/BV1wiHj6uEsr",
+    "author": "茶咩cc",
+    "cover": "https://i0.hdslb.com/bfs/archive/5138ce39155c3aaf9c6b9c23372ab117f74f00a2.jpg",
+    "desc": "-",
+    "heat": 8450619,
+    "pubAt": 1791099720000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 8450619,
+     "like": 176925,
+     "danmaku": 59120,
+     "fav": 42326,
+     "reply": 3925,
+     "part": "搞笑",
+     "dur": 70,
+     "mid": 6054967,
+     "aid": 117381489758691,
+     "fans": 733320
+    },
+    "ai": {
+     "type": "AI整活",
+     "hook": "'烧心'梗+洗脑小曲，845万播放靠魔性循环和鬼畜节奏，弹幕5.9万",
+     "tip": "抓一个洗脑旋律做视觉鬼畜，节奏卡点密集，越魔性越易二创",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "玩梗接龙、吐槽广告，评论区偏整活向"
+    },
+    "vel": 2609,
+    "pt": [
+     "弹幕多"
+    ]
+   },
+   {
+    "id": "bili:BV13Ja869EeZ",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短剧",
+    "title": "假如🤔...全世界发量下降一万倍，而俺不变！",
+    "url": "https://www.bilibili.com/video/BV13Ja869EeZ",
+    "author": "蔓迪官方",
+    "cover": "https://i0.hdslb.com/bfs/archive/f0b1334eee6405f2cba26cd11955123816174d38.jpg",
+    "desc": "谁cong想，走上人生巅峰竟只需从“头”做起😁～",
+    "heat": 7945044,
+    "pubAt": 1790507465000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 7945044,
+     "like": 271349,
+     "danmaku": 2161,
+     "fav": 27791,
+     "reply": 4438,
+     "part": "搞笑",
+     "dur": 161,
+     "mid": 1087531346,
+     "aid": 117342684122165,
+     "fans": 55610
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "发量下降一万倍的世界设定，794万播放靠荒诞反差+脱发共鸣，还带品牌植入",
+     "tip": "用一个夸张假设重构世界，把大众痛点放大成喜剧冲突",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "吐槽卤蛋长毛、嫌产品贵，讨论度一般偏玩梗"
+    },
+    "vel": 137
+   },
+   {
+    "id": "bili:BV1fZJ26mEiY",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短片",
+    "title": "科学家们用物理智斗爱因斯坦？",
+    "url": "https://www.bilibili.com/video/BV1fZJ26mEiY",
+    "author": "言吾言_",
+    "cover": "https://i2.hdslb.com/bfs/archive/64a0dad83048850dfbf41640201ebf85c2e5b6af.jpg",
+    "heat": 6400318,
+    "pubAt": 1792069723000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 6400318,
+     "like": 430758,
+     "danmaku": 10881,
+     "fav": 130330,
+     "reply": 7371,
+     "part": "校园学习",
+     "dur": 138,
+     "mid": 1157901692,
+     "aid": 117445058633721,
+     "fans": 67457
+    },
+    "ai": {
+     "type": "AI影视",
+     "checked": 1,
+     "why": "科学vs爱因斯坦脑洞对决，知识+爽感，选题可套用",
+     "hook": "科学家物理智斗爱因斯坦，640万播放靠知识梗+情景喜剧，把物理变段子",
+     "tip": "拿课本知识做喜剧冲突，让名人角色互怼，台词埋梗",
+     "v": 2,
+     "top": 1,
+     "vv": 3,
+     "voice": "玩'爱因斯坦不是单位'梗、薛定谔生死梗，理科生狂欢"
+    },
+    "vel": 14623
+   },
+   {
+    "id": "bili:BV1LCaA6pEyi",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI动画",
+    "title": "《雷霆一班的显眼包》【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1LCaA6pEyi",
+    "author": "蜗牛AI动画",
+    "cover": "https://i1.hdslb.com/bfs/archive/c96cf8993250c917e6a8221004c52df77ba893aa.jpg",
+    "heat": 6204367,
+    "pubAt": 1790236706000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 6204367,
+     "like": 10184,
+     "danmaku": 459,
+     "fav": 19075,
+     "reply": 149,
+     "part": "日常",
+     "dur": 603,
+     "mid": 3546785542834721,
+     "aid": 117324933762550,
+     "fans": 39110
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "校园显眼包群像，620万播放靠青春搞笑日常，10分钟长片吃'下饭'场景",
+     "tip": "做校园群像喜剧，角色标签鲜明，靠日常糗事堆笑点",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "讨论现实中显眼包会不会被孤立，代入感强但争议也多"
+    },
+    "vel": 330
+   },
+   {
+    "id": "bili:BV1tNab65EaX",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短片",
+    "title": "我的家有4亿平方米之深海水管工【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1tNab65EaX",
+    "author": "沈清雪和她家",
+    "cover": "https://i0.hdslb.com/bfs/archive/6d03d818baccfb02220de9565b9133bbebecb1dc.jpg",
+    "heat": 6192220,
+    "pubAt": 1790564553000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 6192220,
+     "like": 45165,
+     "danmaku": 805,
+     "fav": 32098,
+     "reply": 542,
+     "part": "预告·资讯",
+     "dur": 369,
+     "mid": 580014007,
+     "aid": 117341425764510,
+     "fans": 110814
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "4亿平方米深海之家，619万播放靠离谱设定+职业反差，脑洞即卖点",
+     "tip": "把普通职业放进极端环境，设定越离谱越有记忆点",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "骂小徒弟猪队友、想扇小姐，观众被剧情气到但停不下来"
+    },
+    "vel": 583
+   },
+   {
+    "id": "bili:BV1VRHr6AEZ6",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI音乐",
+    "title": "⚡️黄仁勋 世界巡演⚡️【AI MV大赛】",
+    "url": "https://www.bilibili.com/video/BV1VRHr6AEZ6",
+    "author": "王与也行",
+    "cover": "https://i1.hdslb.com/bfs/archive/e3cf3db69e88409839a7d5a7d44d8c86e872fbbe.jpg",
+    "heat": 6019959,
+    "pubAt": 1791089709000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 6019959,
+     "like": 230223,
+     "danmaku": 4643,
+     "fav": 61618,
+     "reply": 7603,
+     "part": "鬼畜剧场",
+     "dur": 86,
+     "mid": 474213246,
+     "aid": 117380835444456,
+     "fans": 428885
+    },
+    "ai": {
+     "type": "AI换人",
+     "hook": "黄仁勋鬼畜MV，602万播放靠名人梗+神曲改编，科技圈顶流自带话题",
+     "tip": "选当下最热名人做鬼畜MV，歌词贴其人设，节奏踩点",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "吐槽显卡涨价、催3050、玩'几百万制作费'梗"
+    },
+    "vel": 2051
+   },
+   {
+    "id": "bili:BV1xNH46gEkv",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短剧",
+    "title": "烧 心 大 赛 ！【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1xNH46gEkv",
+    "author": "伊介书生",
+    "cover": "https://i2.hdslb.com/bfs/archive/b8d7fa5f84d0a98dfbde4bc9bc5616ad4652a655.jpg",
+    "desc": "不烧心的视频我不看😡",
+    "heat": 5766006,
+    "pubAt": 1791205232000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 5766006,
+     "like": 245749,
+     "danmaku": 2211,
+     "fav": 31623,
+     "reply": 6076,
+     "part": "鬼畜剧场",
+     "dur": 93,
+     "mid": 91790758,
+     "aid": 117388418749707,
+     "fans": 554796
+    },
+    "ai": {
+     "type": "AI整活",
+     "hook": "烧心大赛跟风二创，576万播放靠梗的病毒式扩散，参与感强",
+     "tip": "蹭热梗做大赛式合集，降低参与门槛，鼓励投稿接龙",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "玩烧心梗、吐槽广告植入、调侃饭盒没化"
+    },
+    "vel": 1152
+   },
+   {
+    "id": "bili:BV1j3hd6wE1w",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI动画",
+    "title": "【立志成为恶兽】05 我有一个拯救村庄的计划【UP动画】【HiShorts! × updream AI短片大赛-剧情单元】",
+    "url": "https://www.bilibili.com/video/BV1j3hd6wE1w",
+    "author": "立志成为恶兽",
+    "cover": "https://i1.hdslb.com/bfs/archive/0a9dc4df47d796c6f7543fa3dd90dfe53b5b2d92.jpg",
+    "heat": 5528724,
+    "pubAt": 1790415776000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 5528724,
+     "like": 140648,
+     "danmaku": 2977,
+     "fav": 34017,
+     "reply": 2001,
+     "part": "小剧场",
+     "dur": 417,
+     "mid": 3707028432226554,
+     "aid": 117336593996321,
+     "fans": 342107
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "恶兽系列第5集，552万播放靠长线连载养出的追更习惯和原创世界观",
+     "tip": "坚持做原创系列，每集推进主线，靠世界观黏住观众",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "观众假装指导催更、争原创归属，互动欲强"
+    },
+    "vel": 1513
+   },
+   {
+    "id": "bili:BV1AjH96mEZ1",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短剧",
+    "title": "嘲笑他斗鸡眼是什么下场？一句话，直接把自己送上绝路",
+    "url": "https://www.bilibili.com/video/BV1AjH96mEZ1",
+    "author": "鳄鱼漫说",
+    "cover": "https://i1.hdslb.com/bfs/archive/628fa98f40beb65eebd3aa224bb3d1593e7f8388.jpg",
+    "heat": 5284132,
+    "pubAt": 1791467224000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 5284132,
+     "like": 5597,
+     "danmaku": 444,
+     "fav": 8590,
+     "reply": 168,
+     "part": "国产原创相关",
+     "dur": 757,
+     "mid": 3546648795941812,
+     "aid": 117405581903715,
+     "fans": 100048
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "缅北犯罪题材+斗鸡眼羞辱反转，528万播放靠社会热点和爽文复仇",
+     "tip": "蹭社会议题做犯罪短剧，开头抛冲突，结尾给反转爽感",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "讨论男主扫把星、剧情逻辑，追更党分析人物"
+    },
+    "vel": 273
+   },
+   {
+    "id": "bili:BV1RmpR6MEYp",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短片",
+    "title": "有些孩子不是不肯说自己难受。是他说了一遍又一遍，你却每次都以为，他在顶嘴。",
+    "url": "https://www.bilibili.com/video/BV1RmpR6MEYp",
+    "author": "迷九探影",
+    "cover": "https://i2.hdslb.com/bfs/archive/ffe8748aeae48156b17ac2be35420ee7e4425b80.jpg",
+    "heat": 5215041,
+    "pubAt": 1791894600000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 5215041,
+     "like": 36136,
+     "danmaku": 1356,
+     "fav": 43691,
+     "reply": 986,
+     "part": "影视杂谈",
+     "dur": 392,
+     "mid": 563138989,
+     "aid": 117428533073361,
+     "fans": 143156
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "亲子沟通痛点，521万播放靠'孩子顶嘴其实是求助'的情绪暴击，戳家长",
+     "tip": "选家庭痛点做情绪短片，用一句扎心文案当标题，结尾留反思",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "voice": "观众代入抑郁经历、骂家长，情绪共鸣强，也有人晒图互动"
+    },
+    "vel": 2831
+   }
+  ],
+  "douyinLow": [
+   {
+    "id": "dy:7697253301624081698",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "在此之前，奶道从未有过尊者 (本视频用OiiOii制作)",
+    "url": "https://www.douyin.com/video/7697253301624081698",
+    "author": "日整猫",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/517d9b1379e04dc6a19500ab299d2590~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793970000&x-signature=xR2Dth3dWWZkgXKFqhrLYia6PpU%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=2026102321081699A671B8AD96D01C2620",
+    "desc": "在此之前，奶道从未有过尊者 (本视频用OiiOii制作)#OiiOii #OiiOii创作者计划 #奶蛙 #风语咒 #AIGC",
+    "heat": 536889,
+    "pubAt": 1792156450000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 11035920,
+     "playWin": 7,
+     "like": 536889,
+     "comment": 6646,
+     "share": 842299,
+     "fav": 22397,
+     "fans": 35085,
+     "aiLabel": "作者声明",
+     "dur": 54
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "奶蛙+风语咒IP，54秒短平快，1100万播放，抽象萌系",
+     "tip": "OiiOii做IP二创短动画，蹭国漫IP+萌系人设",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "dy:7696742499260618367",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "让AI为《把回忆拼好给你》画了一支 MV 吓哭了 Opus5.5 神来了…非视频生成模型，代码手搓mv分镜、角色、画面全部由 Claude写代码生成，每一帧都是",
+    "url": "https://www.douyin.com/video/7696742499260618367",
+    "author": "杀死比赛",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/oEDi9ULoEd0ACUaCYQUBfAdelCAiAACgABk1I2~tplv-dy-resize-walign-adapt-aq:720:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=zATpH8h3GDCXF1ynBaSB%2FNtRuus%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=2026102317233205C64BA3AE62B230B0DC",
+    "desc": "让AI为《把回忆拼好给你》画了一支 MV 吓哭了 Opus5.5 神来了…非视频生成模型，代码手搓mv分镜、角色、画面全部由 Claude写代码生成，每一帧都是程序“画”出来 #C……版本过低，升级后可展示全部信息",
+    "heat": 490932,
+    "pubAt": 1792037511000,
+    "daysSeen": 1,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792760842613,
+    "m": {
+     "play": 7222320,
+     "playWin": 7,
+     "like": 490932,
+     "comment": 6288,
+     "share": 158590,
+     "fav": 81824,
+     "fans": 6651,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI MV",
+     "hook": "Claude写代码手搓MV，技术流炫技+「吓哭了」标题党",
+     "tip": "用代码生成MV做技术差异化，标题要夸张",
+     "vv": 3,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "dy:7696515279173537050",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "猴子 （本视频用OiiOii制作）",
+    "url": "https://www.douyin.com/video/7696515279173537050",
+    "author": "一颗煎蛋",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/a1bce9baec044419b3bc2d3691bd3c2b~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793970000&x-signature=mO160J0FuZaz9inxLciOEo5ofq4%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023210818D2BE08D5801C271B1636",
+    "desc": "猴子 （本视频用OiiOii制作） #孙悟空 #西游记 #齐天大圣 #OiiOii #OiiOii创作者计划",
+    "heat": 474983,
+    "pubAt": 1791984613000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 3287362,
+     "playWin": 7,
+     "like": 474983,
+     "comment": 4078,
+     "share": 65773,
+     "fav": 47345,
+     "fans": 31133,
+     "aiLabel": "作者声明",
+     "dur": 34
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "孙悟空猴子，34秒短平快，蹭西游IP，760万播放",
+     "tip": "OiiOii做西游IP短动画，短小精悍蹭国民IP",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "dy:7695832825324522761",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "终于把焚诀交出来了！",
+    "url": "https://www.douyin.com/video/7695832825324522761",
+    "author": "瓦瓦幻想局（无畏契约）",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/3431c80394004f9da05b086245034ccd~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=%2F2066eFr%2FshtYHWXh4X%2FUUSQPkQ%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172345704076CB6922A5007CE1",
+    "desc": "终于把焚诀交出来了！ #即梦AI创作者成长计划 #抖音精选App #ACG角色同好会 #斯凯 #夜凯",
+    "heat": 408255,
+    "pubAt": 1791860400000,
+    "daysSeen": 1,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792760842613,
+    "m": {
+     "play": 5129626,
+     "playWin": 7,
+     "like": 408255,
+     "comment": 957,
+     "share": 147452,
+     "fav": 14998,
+     "fans": 19543,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI整活",
+     "hook": "焚诀+夜凯ACG梗，动漫IP AI化",
+     "tip": "蹭ACG角色做AI二创，梗要准",
+     "vv": 3,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "dy:7697160897822854410",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "女生其实挺好哄的 本视频由OiiOii制作， （冰淇淋桥段 ）",
+    "url": "https://www.douyin.com/video/7697160897822854410",
+    "author": "不流浪日记",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/0589079d705a4526910193363f157e34~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=zJoqP69jsfme2kH1I4T1ySmZKEA%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610231723367E3CB08A27490609F948",
+    "desc": "女生其实挺好哄的 #OiiOii #OiiOii创作者计划 #猫meme #哈基米 #治愈系 本视频由OiiOii制作， （冰淇淋桥段 @猫侣日记 ）",
+    "heat": 392187,
+    "pubAt": 1792145160000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 4633113,
+     "playWin": 7,
+     "like": 392187,
+     "comment": 11162,
+     "share": 376044,
+     "fav": 21601,
+     "fans": 25101,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "女生挺好哄的，猫meme+情感话题，治愈",
+     "tip": "猫meme做情感内容，治愈系",
+     "vv": 3,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "dy:7697575840033760832",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "人，你好！你看见咪的朋友小橘了吗？（本视频由OiiOii AI制作）",
+    "url": "https://www.douyin.com/video/7697575840033760832",
+    "author": "Mer咪牛牛",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/o8HA9faTUgHeB3AIAL6iA4CDSAaiEKNr1SQnAD~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793970000&x-signature=mZEJo%2FYBaP42HltnZlY%2BNK1IJq0%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023210820006D0EA97213730F90A8",
+    "desc": "人，你好！你看见咪的朋友小橘了吗？（本视频由OiiOii AI制作）#OiiOii #OiiOii创作者计划#小猫摆摊 #哈基米 #奶牛猫",
+    "heat": 384373,
+    "pubAt": 1792231538000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 6050404,
+     "playWin": 7,
+     "like": 384373,
+     "comment": 19890,
+     "share": 102431,
+     "fav": 49777,
+     "fans": 47038,
+     "aiLabel": "作者声明",
+     "dur": 140
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "小猫摆摊找朋友，萌宠治愈+互动感，576万播放",
+     "tip": "OiiOii做萌宠第一人称动画，蹭哈基米标签",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "dy:7698706630485373160",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近3天",
+    "title": "老师，保佑我这次四级通过吧 不喜勿喷！ 内容为AI生成，没有丑化刘老师形象！",
+    "url": "https://www.douyin.com/video/7698706630485373160",
+    "author": "羊洋烊",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/okCbAoiaFiDAxA9AE1iB31fiIA3vgGAsADXuJe~tplv-dy-resize-walign-adapt-aq:720:q75.webp?lk3s=138a59ce&x-expires=1793955600&x-signature=w5Zi8xGEpKVqgNTWwObmrvZCV8g%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=20261023172338227C42BFD79C6D2EE82D",
+    "desc": "老师，保佑我这次四级通过吧 不喜勿喷！#当一回摇滚乐队主唱 #四级考试 #四级必过 #马拉松#渲染大赛 内容为AI生成，没有丑化刘老师形象！",
+    "heat": 370238,
+    "pubAt": 1792494821000,
+    "daysSeen": 2,
+    "firstSeen": 1792747369821,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 7170227,
+     "playWin": 3,
+     "like": 370238,
+     "comment": 4913,
+     "share": 242588,
+     "fav": 10802,
+     "fans": 1194,
+     "aiLabel": "作者声明"
+    },
+    "ai": {
+     "type": "AI整活",
+     "hook": "74小时672万播放，每小时+1.4万赞，蹭刘晓艳+四级考试热点，粉丝仅1199，纯靠梗破圈",
+     "tip": "抓考试/名师热点做AI整活，用即梦生成人物+对口型，文案带「保佑我」情绪钩子，结尾加免责声明",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "dy:7695302496436145442",
+    "cat": "video",
+    "src": "douyin",
+    "board": "热点宝·近7天",
+    "title": "个人原创短剧《这是一座熊猫城》第一集 食铁兽们能带给人类什么 本视频用OiiOii制作",
+    "url": "https://www.douyin.com/video/7695302496436145442",
+    "author": "阿凯老师",
+    "cover": "https://p3-sign.douyinpic.com/tos-cn-i-dy/03dd6c5980b94ba0b440254a1cac32d2~tplv-dy-resize-walign-adapt-aq:540:q75.webp?lk3s=138a59ce&x-expires=1793970000&x-signature=Iusbr0PI7Vhr1zaChp9FIYoLILw%3D&from=327834062&s=PackSourceEnum_AWEME_DETAIL&se=false&sc=cover&biz_tag=aweme_video&l=202610232108364CF5AD71551F14105C78",
+    "desc": "个人原创短剧《这是一座熊猫城》第一集 食铁兽们能带给人类什么 本视频用OiiOii制作#OiiOii #OiiOii创作者计划 #AI漫剧 #熊猫 #原创视频",
+    "heat": 364165,
+    "pubAt": 1791702241000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 3748791,
+     "playWin": 7,
+     "like": 364165,
+     "comment": 8018,
+     "share": 274159,
+     "fav": 16366,
+     "fans": 9885,
+     "aiLabel": "作者声明",
+     "dur": 218
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "熊猫城原创短剧，食铁兽设定，OiiOii制作，404万播放",
+     "tip": "OiiOii做原创萌系短剧，蹭熊猫IP+世界观设定",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 0,
+    "pt": [
+     "低粉爆款"
+    ]
+   }
+  ],
+  "bilibiliLow": [
+   {
+    "id": "bili:BV152pu6GEtS",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短片",
+    "title": "前方黑蝎镇，列车即将通过。",
+    "url": "https://www.bilibili.com/video/BV152pu6GEtS",
+    "author": "8号云端自在岛",
+    "cover": "https://i1.hdslb.com/bfs/archive/a905c9e8c16d3f43122b95ab3712e87f4043587f.jpg",
+    "desc": "一只关在转运笼里的实验体突然失控，撞开笼门冲进街区，感染随之蔓延。起初，街上只是多了几辆运送异变者的车；后来，医院里也传出了尖叫…… 而我，本来只想窝在卧铺里刷",
+    "heat": 5142128,
+    "pubAt": 1791638624000,
+    "daysSeen": 3,
+    "firstSeen": 1792609834094,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 5142128,
+     "like": 7585,
+     "danmaku": 13,
+     "fav": 24483,
+     "reply": 12,
+     "part": "国产动画",
+     "dur": 60,
+     "mid": 3546857626143493,
+     "aid": 117416822576973,
+     "fans": 29737
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "末日列车+丧尸实验体，沉浸式恐怖氛围，AI短片做出电影感",
+     "tip": "末日恐怖题材AI短片，氛围和音效比画面更重要",
+     "v": 2,
+     "checked": 1,
+     "vv": 3
+    },
+    "vel": 2180,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "bili:BV1yap16tEgD",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI电影",
+    "title": "mj神秘ai小视频合集（1）",
+    "url": "https://www.bilibili.com/video/BV1yap16tEgD",
+    "author": "--Frieren-",
+    "cover": "https://i2.hdslb.com/bfs/archive/ad940ba2bc55b44fd4fed2b10cfd8982c9b6d530.jpg",
+    "desc": "在抖海发了些神秘的ai小视频，大伙赤石赤得都挺乐呵的，也发来b站给大伙品鉴品鉴",
+    "heat": 1691276,
+    "pubAt": 1791978870000,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 1691276,
+     "like": 143504,
+     "danmaku": 2335,
+     "fav": 60573,
+     "reply": 10734,
+     "part": "单机游戏",
+     "dur": 424,
+     "mid": 39694855,
+     "aid": 117439102785522,
+     "fans": 2794
+    },
+    "ai": {
+     "type": "AI整活",
+     "hook": "神秘AI小视频合集，猎奇整活，B站用户爱看乐子，165万播放",
+     "tip": "收集魔性AI整活片段做合集，主打猎奇和乐呵",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 3689,
+    "pt": [
+     "低粉爆款",
+     "点赞率高",
+     "收藏率高"
+    ]
+   },
+   {
+    "id": "bili:BV1LYnm6UEtf",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI剧情大片",
+    "title": "当校长是你爸爸（没带作业版）【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1LYnm6UEtf",
+    "author": "棉衣",
+    "cover": "https://i0.hdslb.com/bfs/archive/d97e403aba0299af7886ecdf952020baaa2be1f7.jpg",
+    "heat": 1674897,
+    "pubAt": 1792662576000,
+    "daysSeen": 2,
+    "firstSeen": 1792759581398,
+    "lastSeen": 1792772373614,
+    "m": {
+     "play": 1674897,
+     "like": 2278,
+     "danmaku": 3,
+     "fav": 2265,
+     "reply": 5,
+     "part": "国产原创相关",
+     "dur": 64,
+     "mid": 374370601,
+     "aid": 117483914791632,
+     "fans": 20140
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "校园梗+父子身份反差，AI剧情大片标签下用日常荒诞感抓人，标题自带笑点。",
+     "tip": "用AI短剧工具做校园/家庭梗，前3秒抛冲突，标题用「当XX是你XX」句式。",
+     "vv": 3,
+     "noted": 1,
+     "v": 2,
+     "checked": 1
+    },
+    "vel": 8604,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "bili:BV1uxnA61ENS",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI全民制作人",
+    "title": "不烧心合集丨我的羊肉烩面，吃了不烧心【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1uxnA61ENS",
+    "author": "小柚漫剧",
+    "cover": "https://i0.hdslb.com/bfs/archive/a085dcf412d169b648a2d32c12df4d75f200d2c5.jpg",
+    "heat": 1592003,
+    "pubAt": 1792502460000,
+    "daysSeen": 1,
+    "firstSeen": 1792731672982,
+    "lastSeen": 1792769996198,
+    "m": {
+     "play": 1592003,
+     "like": 2071,
+     "danmaku": 13,
+     "fav": 12730,
+     "reply": 7,
+     "part": "明星综合",
+     "dur": 2679,
+     "mid": 30712241,
+     "aid": 117473294813885,
+     "fans": 1389
+    },
+    "ai": {
+     "type": "AI影视",
+     "hook": "72小时149万播放，每小时+16.3万，44分钟超长AI漫剧，B站「全民制作人」活动流量扶持",
+     "tip": "蹭B站官方AI活动标签，做长合集漫剧，标题带「不烧心」反差梗，用即梦批量生成分镜再剪辑",
+     "vv": 3,
+     "v": 2,
+     "checked": 1,
+     "top": 1
+    },
+    "vel": 73938,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "bili:BV1iVnq6DEAo",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI动画",
+    "title": "《一百分的家》合集【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1iVnq6DEAo",
+    "author": "铃溪AIGC",
+    "cover": "https://i2.hdslb.com/bfs/archive/7290c1429d231a4621a3967608e656fb9a2403c5.jpg",
+    "heat": 1487720,
+    "pubAt": 1792569251000,
+    "daysSeen": 3,
+    "firstSeen": 1792641711216,
+    "lastSeen": 1792772373614,
+    "m": {
+     "play": 1487720,
+     "like": 3658,
+     "danmaku": 96,
+     "fav": 12180,
+     "reply": 119,
+     "part": "影视剪辑",
+     "dur": 2160,
+     "mid": 486100813,
+     "aid": 117477807753106,
+     "fans": 21658
+    },
+    "ai": {
+     "type": "AI动画",
+     "hook": "治愈系AI动画合集，温馨画风+奶蛙IP，适合下饭",
+     "tip": "做系列合集养IP，统一画风，标题带合集便于追更",
+     "v": 2,
+     "checked": 1,
+     "vv": 3,
+     "top": 1
+    },
+    "vel": 1379,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "bili:BV1M7Ji6KEdT",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI全民制作人",
+    "title": "当你用铁拳教育制裁熊孩子【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1M7Ji6KEdT",
+    "author": "黄桃肥波已老实版",
+    "cover": "https://i2.hdslb.com/bfs/archive/862ad34619ed2ec4eaa1181b0ade9ab0d0b0b3a8.jpg",
+    "desc": "-",
+    "heat": 1467281,
+    "pubAt": 1792241299000,
+    "daysSeen": 2,
+    "firstSeen": 1792653352719,
+    "lastSeen": 1792769996198,
+    "m": {
+     "play": 1467281,
+     "like": 480,
+     "danmaku": 18,
+     "fav": 1539,
+     "reply": 11,
+     "part": "AI影像",
+     "dur": 82,
+     "mid": 3546610378213817,
+     "aid": 117456299363160,
+     "fans": 18232
+    },
+    "ai": {
+     "type": "AI整活",
+     "hook": "铁拳制裁熊孩子，教育话题+AI整活，解气",
+     "tip": "抓熊孩子话题做AI演绎，情绪要爽",
+     "v": 2,
+     "checked": 1,
+     "vv": 3
+    },
+    "vel": 1654,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "bili:BV1J9Jv6QE8f",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI短剧",
+    "title": "所有人都以为她是个不孝的女儿，竟逼着没有双臂的爸爸去搬货挣钱。直到爸爸发现了那张登记表，才知道女儿藏着怎样的秘密……",
+    "url": "https://www.bilibili.com/video/BV1J9Jv6QE8f",
+    "author": "小呆的书",
+    "cover": "https://i0.hdslb.com/bfs/archive/089547adf3fed7736278778620690aef5dab7c9f.jpg",
+    "desc": "所有人都以为她是个不孝的女儿，竟逼着没有双臂的爸爸去搬货挣钱。直到爸爸发现了那张登记表，才知道女儿藏着怎样的秘密……",
+    "heat": 1464350,
+    "pubAt": 1792250517000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 1464350,
+     "like": 2724,
+     "danmaku": 272,
+     "fav": 1709,
+     "reply": 314,
+     "part": "影视剪辑",
+     "dur": 187,
+     "mid": 3747558727880126,
+     "aid": 117456551021020,
+     "fans": 471
+    },
+    "ai": {
+     "type": "AI影视",
+     "checked": 1,
+     "hook": "不孝女反转催泪，标题把悬念写满，AI短剧典型情绪钩子",
+     "tip": "催泪反转短剧，标题先制造道德冲突再揭真相",
+     "v": 2,
+     "vv": 3
+    },
+    "vel": 3491,
+    "pt": [
+     "低粉爆款"
+    ]
+   },
+   {
+    "id": "bili:BV1nzJf6JEgh",
+    "cat": "video",
+    "src": "bilibili",
+    "board": "搜索·AI电影",
+    "title": "人民永远站在人民的一边【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1nzJf6JEgh",
+    "author": "QQ软糖丫",
+    "cover": "https://i0.hdslb.com/bfs/archive/aceb2ec5995a2e6bc32781c1ab05efda653027cf.jpg",
+    "desc": "-",
+    "heat": 1437796,
+    "pubAt": 1792472811000,
+    "daysSeen": 3,
+    "firstSeen": 1792606672422,
+    "lastSeen": 1792801240051,
+    "m": {
+     "play": 1437796,
+     "like": 5162,
+     "danmaku": 57,
+     "fav": 3040,
+     "reply": 46,
+     "part": "小剧场",
+     "dur": 187,
+     "mid": 3493259720526153,
+     "aid": 117471482745265,
+     "fans": 12327
+    },
+    "ai": {
+     "type": "AI整活",
+     "checked": 1,
+     "why": "主旋律情绪+AI剧情，正能量选题安全且易共鸣",
+     "hook": "卡车+人民主旋律的AI抽象表达，情绪和荒诞感对冲，123万播放",
+     "tip": "AI整活可以蹭社会情绪，但注意尺度，靠反差而非立场",
+     "v": 2,
+     "vv": 3
+    },
+    "vel": 4090,
+    "pt": [
+     "低粉爆款"
+    ]
+   }
+  ]
+ },
+ "memes": [
+  {
+   "id": "weibo:人一旦在有地铁的城市待久了",
+   "cat": "trend",
+   "src": "weibo",
+   "board": "微博热搜",
+   "title": "人一旦在有地铁的城市待久了",
+   "url": "https://s.weibo.com/weibo?q=%23%E4%BA%BA%E4%B8%80%E6%97%A6%E5%9C%A8%E6%9C%89%E5%9C%B0%E9%93%81%E7%9A%84%E5%9F%8E%E5%B8%82%E5%BE%85%E4%B9%85%E4%BA%86%23",
+   "heat": 875563,
+   "rank": 5,
+   "peakRank": 1,
+   "daysSeen": 2,
+   "firstSeen": 1792759581398,
+   "lastSeen": 1792772373614,
+   "ai": {
+    "why": "打工人共鸣梗，待久地铁城市就离不开便利也逃不掉内卷",
+    "tag": "热梗",
+    "idea": "AI生成地铁通勤众生相漫画，配扎心文案",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "bili:谭乔回应二仙桥大爷又被拦下",
+   "cat": "trend",
+   "src": "bilibili",
+   "board": "B站热搜",
+   "title": "谭乔回应二仙桥大爷又被拦下",
+   "url": "https://search.bilibili.com/all?keyword=%E8%B0%AD%E4%B9%94%E5%9B%9E%E5%BA%94%E4%BA%8C%E4%BB%99%E6%A1%A5%E5%A4%A7%E7%88%B7%E5%8F%88%E8%A2%AB%E6%8B%A6%E4%B8%8B",
+   "heat": 245523,
+   "rank": 43,
+   "peakRank": 2,
+   "daysSeen": 2,
+   "firstSeen": 1792664084307,
+   "lastSeen": 1792745805107,
+   "ai": {
+    "why": "谭乔重访二仙桥大爷，经典名场面再续，网友爱看老梗重逢",
+    "tag": "热梗",
+    "idea": "用AI复刻二仙桥名场面，生成新对话或动画版",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "douyin:抖音博主教你vibe知识大赏",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "抖音博主教你vibe知识大赏",
+   "url": "https://www.douyin.com/search/%E6%8A%96%E9%9F%B3%E5%8D%9A%E4%B8%BB%E6%95%99%E4%BD%A0vibe%E7%9F%A5%E8%AF%86%E5%A4%A7%E8%B5%8F",
+   "heat": 8301576,
+   "rank": 17,
+   "peakRank": 2,
+   "pubAt": 1792649735000,
+   "daysSeen": 2,
+   "firstSeen": 1792714155833,
+   "lastSeen": 1792772373614,
+   "m": {
+    "videos": 8,
+    "stag": 6000,
+    "fetched": 12
+   },
+   "ai": {
+    "why": "抖音推的知识类话题，博主用vibe讲人生容错率、专注力等软知识",
+    "tag": "热梗",
+    "idea": "用AI配音加图文做vibe风人生感悟短片，套话题标签",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "bili:刘晓艳 从四六级到科切拉",
+   "cat": "trend",
+   "src": "bilibili",
+   "board": "B站热搜",
+   "title": "刘晓艳 从四六级到科切拉",
+   "url": "https://search.bilibili.com/all?keyword=%E5%88%98%E6%99%93%E8%89%B3%20%E4%BB%8E%E5%9B%9B%E5%85%AD%E7%BA%A7%E5%88%B0%E7%A7%91%E5%88%87%E6%8B%89",
+   "heat": 468911,
+   "rank": 36,
+   "peakRank": 2,
+   "daysSeen": 2,
+   "firstSeen": 1792759581398,
+   "lastSeen": 1792801240051,
+   "ai": {
+    "why": "考研英语名师刘晓艳从四六级课堂火到科切拉，反差感拉满",
+    "tag": "热梗",
+    "idea": "AI做刘晓艳英语课混剪成音乐节舞台",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "bili:范德彪玉芬版Trouble Maker",
+   "cat": "trend",
+   "src": "bilibili",
+   "board": "B站热搜",
+   "title": "范德彪玉芬版Trouble Maker",
+   "url": "https://search.bilibili.com/all?keyword=%E8%8C%83%E5%BE%B7%E5%BD%AA%E7%8E%89%E8%8A%AC%E7%89%88Trouble%20Maker",
+   "heat": 208295,
+   "rank": 48,
+   "peakRank": 2,
+   "daysSeen": 2,
+   "firstSeen": 1792768717822,
+   "lastSeen": 1792801240051,
+   "ai": {
+    "why": "范德彪和玉芬的鬼畜CP被配上Trouble Maker，土味反差魔性上头。",
+    "tag": "热梗",
+    "idea": "用AI换脸让范德彪玉芬跳双人舞，或文生图做土味舞台背景，剪辑卡点。",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "weibo:美国姑娘来中国考英语倒数第一",
+   "cat": "trend",
+   "src": "weibo",
+   "board": "微博热搜",
+   "title": "美国姑娘来中国考英语倒数第一",
+   "url": "https://s.weibo.com/weibo?q=%23%E7%BE%8E%E5%9B%BD%E5%A7%91%E5%A8%98%E6%9D%A5%E4%B8%AD%E5%9B%BD%E8%80%83%E8%8B%B1%E8%AF%AD%E5%80%92%E6%95%B0%E7%AC%AC%E4%B8%80%23",
+   "heat": 412876,
+   "rank": 4,
+   "peakRank": 4,
+   "daysSeen": 1,
+   "firstSeen": 1792745805107,
+   "lastSeen": 1792747369821,
+   "ai": {
+    "why": "美国姑娘在中国考英语倒数第一，反差搞笑引热议。",
+    "tag": "热梗",
+    "idea": "用AI生成老外考中文/英语的搞笑对话视频。",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "bili:大类魂理论",
+   "cat": "trend",
+   "src": "bilibili",
+   "board": "B站热搜",
+   "title": "大类魂理论",
+   "url": "https://search.bilibili.com/all?keyword=%E5%A4%A7%E7%B1%BB%E9%AD%82%E7%90%86%E8%AE%BA",
+   "heat": 235009,
+   "rank": 33,
+   "peakRank": 5,
+   "daysSeen": 2,
+   "firstSeen": 1792759581398,
+   "lastSeen": 1792783902321,
+   "ai": {
+    "why": "B站UP主提出的抽象理论梗，网友玩梗二创扩散",
+    "tag": "热梗",
+    "idea": "AI把大类魂理论做成魔性动画解说",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "bili:三代鹿人深扒盛艾敬父母3.0",
+   "cat": "trend",
+   "src": "bilibili",
+   "board": "B站热搜",
+   "title": "三代鹿人深扒盛艾敬父母3.0",
+   "url": "https://search.bilibili.com/all?keyword=%E4%B8%89%E4%BB%A3%E9%B9%BF%E4%BA%BA%E6%B7%B1%E6%89%92%E7%9B%9B%E8%89%BE%E6%95%AC%E7%88%B6%E6%AF%8D3.0",
+   "heat": 692749,
+   "rank": 31,
+   "peakRank": 6,
+   "daysSeen": 2,
+   "firstSeen": 1792759581398,
+   "lastSeen": 1792801240051,
+   "ai": {
+    "why": "UP主深扒盛艾敬父母系列更新，吃瓜群众追更",
+    "tag": "热梗",
+    "idea": "AI做事件时间线梳理图，理性吃瓜",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "bili:后会友期震撼来袭",
+   "cat": "trend",
+   "src": "bilibili",
+   "board": "B站热搜",
+   "title": "后会友期震撼来袭",
+   "url": "https://search.bilibili.com/all?keyword=%E5%90%8E%E4%BC%9A%E5%8F%8B%E6%9C%9F%E9%9C%87%E6%92%BC%E6%9D%A5%E8%A2%AD",
+   "heat": 585337,
+   "rank": 8,
+   "peakRank": 8,
+   "daysSeen": 1,
+   "firstSeen": 1792731672982,
+   "lastSeen": 1792731672982,
+   "ai": {
+    "why": "推测：某综艺或影视「后会友期」名场面出圈，网友玩梗刷屏",
+    "tag": "热梗",
+    "idea": "推测：用AI复刻该名场面台词配音或做恶搞二创短视频",
+    "v": 2,
+    "checked": 1
+   }
+  },
+  {
+   "id": "bili:基米勇闯乌镇开放麦",
+   "cat": "trend",
+   "src": "bilibili",
+   "board": "B站热搜",
+   "title": "基米勇闯乌镇开放麦",
+   "url": "https://search.bilibili.com/all?keyword=%E5%9F%BA%E7%B1%B3%E5%8B%87%E9%97%AF%E4%B9%8C%E9%95%87%E5%BC%80%E6%94%BE%E9%BA%A6",
+   "heat": 241695,
+   "rank": 31,
+   "peakRank": 8,
+   "daysSeen": 2,
+   "firstSeen": 1792759581398,
+   "lastSeen": 1792783902321,
+   "ai": {
+    "why": "基米闯乌镇开放麦，脱口秀现场梗被传播",
+    "tag": "热梗",
+    "idea": "AI模仿开放麦段子生成脱口秀脚本",
+    "v": 2,
+    "checked": 1
+   }
+  }
+ ],
+ "challenges": [
+  {
+   "id": "douyin:在冬天来之前先唱一首iceman",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "在冬天来之前先唱一首iceman",
+   "url": "https://www.douyin.com/search/%E5%9C%A8%E5%86%AC%E5%A4%A9%E6%9D%A5%E4%B9%8B%E5%89%8D%E5%85%88%E5%94%B1%E4%B8%80%E9%A6%96iceman",
+   "heat": 7756815,
+   "rank": 20,
+   "peakRank": 16,
+   "pubAt": 1792638886000,
+   "daysSeen": 2,
+   "firstSeen": 1792653352719,
+   "lastSeen": 1792747369821,
+   "m": {
+    "videos": 10,
+    "stag": 1001,
+    "fetched": 12,
+    "aiVideos": 12
+   },
+   "ai": {
+    "why": "抖音挑战：用《iceman》BGM拍视频，网友玩梗创作。",
+    "tag": "热梗",
+    "idea": "用剪映AI生成说唱动画，跟拍挑战。",
+    "kv": 1,
+    "v": 2,
+    "checked": 1
+   },
+   "kind": "抖音挑战",
+   "top": [
+    {
+     "title": "🔥let's go🔥",
+     "url": "https://www.douyin.com/video/7698693199296153408",
+     "like": 140437,
+     "ai": 1
+    },
+    {
+     "title": "四六级宗主驾到",
+     "url": "https://www.douyin.com/video/7699448390056596465",
+     "like": 136760,
+     "ai": 1
+    },
+    {
+     "title": "#贾队长 #rap #经典名场面 #剪映#上热门",
+     "url": "https://www.douyin.com/video/7699100957195645819",
+     "like": 87697,
+     "ai": 1
+    }
+   ]
+  },
+  {
+   "id": "douyin:KDA神之八秒挑战",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "KDA神之八秒挑战",
+   "url": "https://www.douyin.com/search/KDA%E7%A5%9E%E4%B9%8B%E5%85%AB%E7%A7%92%E6%8C%91%E6%88%98",
+   "heat": 7655832,
+   "rank": 50,
+   "peakRank": 13,
+   "pubAt": 1792590438000,
+   "daysSeen": 2,
+   "firstSeen": 1792641711216,
+   "lastSeen": 1792747369821,
+   "m": {
+    "videos": 10,
+    "stag": 1001,
+    "fetched": 12,
+    "aiVideos": 10
+   },
+   "ai": {
+    "why": "KDA新歌八秒片段魔性，全网跟拍挑战",
+    "tag": "热梗",
+    "idea": "用AI做KDA风格虚拟女团MV或八秒卡点变装",
+    "v": 2,
+    "checked": 1
+   },
+   "kind": "抖音挑战",
+   "top": [
+    {
+     "title": "KDA新歌神之八秒！🐊（鳄鱼版） 🐊beat drop💃beat beat drop💃",
+     "url": "https://www.douyin.com/video/7698960686860274995",
+     "like": 129041,
+     "ai": 1
+    },
+    {
+     "title": "看我鳄鱼神之八秒！即梦网页大改版",
+     "url": "https://www.douyin.com/video/7699018541147720996",
+     "like": 59304,
+     "ai": 1
+    },
+    {
+     "title": "即梦网页大改版",
+     "url": "https://www.douyin.com/video/7699061605354876794",
+     "like": 52532,
+     "ai": 1
+    }
+   ]
+  },
+  {
+   "id": "douyin:秋叶飘落枝头",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "秋叶飘落枝头",
+   "url": "https://www.douyin.com/search/%E7%A7%8B%E5%8F%B6%E9%A3%98%E8%90%BD%E6%9E%9D%E5%A4%B4",
+   "heat": 7647056,
+   "rank": 45,
+   "peakRank": 35,
+   "pubAt": 1792654937000,
+   "daysSeen": 2,
+   "firstSeen": 1792731672982,
+   "lastSeen": 1792801240051,
+   "m": {
+    "videos": 10,
+    "stag": 1001,
+    "fetched": 12,
+    "aiVideos": 10
+   },
+   "ai": {
+    "why": "挑战拍秋叶飘落枝头唯美画面，配乐跟拍氛围感",
+    "tag": "热梗",
+    "idea": "用AI生成秋叶飘落唯美视频或图生视频跟拍",
+    "kv": 1,
+    "v": 2,
+    "checked": 1
+   },
+   "kind": "抖音挑战",
+   "top": [
+    {
+     "title": "",
+     "url": "https://www.douyin.com/video/7698643596580902245",
+     "like": 37666,
+     "ai": 1
+    },
+    {
+     "title": "",
+     "url": "https://www.douyin.com/video/7699267174581801445",
+     "like": 19023,
+     "ai": 1
+    },
+    {
+     "title": "",
+     "url": "https://www.douyin.com/video/7698050692683131802",
+     "like": 15382,
+     "ai": 1
+    }
+   ]
+  },
+  {
+   "id": "douyin:亲手捏个角色放主页",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "亲手捏个角色放主页",
+   "url": "https://www.douyin.com/search/%E4%BA%B2%E6%89%8B%E6%8D%8F%E4%B8%AA%E8%A7%92%E8%89%B2%E6%94%BE%E4%B8%BB%E9%A1%B5",
+   "heat": 8528452,
+   "rank": 16,
+   "peakRank": 16,
+   "pubAt": 1792766139000,
+   "daysSeen": 2,
+   "firstSeen": 1792768717822,
+   "lastSeen": 1792801240051,
+   "m": {
+    "videos": 10,
+    "stag": 1003,
+    "fetched": 12,
+    "aiVideos": 8
+   },
+   "ai": {
+    "why": "抖音挑战用AI生成宠物挂件放主页，萌宠+AI玩法易模仿。",
+    "tag": "AI相关",
+    "idea": "文生图出宠物角色→生成挂件动画→放主页展示，教程式跟拍。",
+    "kv": 1,
+    "v": 2,
+    "checked": 1
+   },
+   "kind": "抖音挑战",
+   "top": [
+    {
+     "title": "这个小挂件太可爱了，还没出镜的宝子，可以先用这个生成自家毛孩子，新系列快出了，大家的毛孩子我尽快给大",
+     "url": "https://www.douyin.com/video/7698686789385408483",
+     "like": 164018,
+     "ai": 1
+    },
+    {
+     "title": "抖音主页可爱萌宠教程来啦",
+     "url": "https://www.douyin.com/video/7699096166801114233",
+     "like": 29603,
+     "ai": 1
+    },
+    {
+     "title": "听听这像话吗",
+     "url": "https://www.douyin.com/video/7699369241297044431",
+     "like": 21846,
+     "ai": 0
+    }
+   ]
+  },
+  {
+   "id": "douyin:冷空气袭来 可能最近要变天了",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "冷空气袭来 可能最近要变天了",
+   "url": "https://www.douyin.com/search/%E5%86%B7%E7%A9%BA%E6%B0%94%E8%A2%AD%E6%9D%A5%20%E5%8F%AF%E8%83%BD%E6%9C%80%E8%BF%91%E8%A6%81%E5%8F%98%E5%A4%A9%E4%BA%86",
+   "heat": 7671085,
+   "rank": 37,
+   "peakRank": 14,
+   "pubAt": 1792673534000,
+   "daysSeen": 2,
+   "firstSeen": 1792697345618,
+   "lastSeen": 1792801240051,
+   "m": {
+    "videos": 10,
+    "stag": 1001,
+    "fetched": 7,
+    "aiVideos": 1
+   },
+   "ai": {
+    "why": "【抖音挑战】配合降温话题配《Marry》BGM晒穿搭与情绪文案，1/7条是AI视频，门槛低易跟风",
+    "tag": "热梗",
+    "idea": "用即梦生成降温氛围AI短片，套Marry BGM加外套文案",
+    "kv": 1,
+    "v": 2,
+    "checked": 1
+   },
+   "kind": "抖音挑战",
+   "top": [
+    {
+     "title": "冷空气袭来 最近急速降温",
+     "url": "https://www.douyin.com/video/7698589628522447867",
+     "like": 367717,
+     "ai": 0
+    },
+    {
+     "title": "幸福的一种",
+     "url": "https://www.douyin.com/video/7698722611614314698",
+     "like": 307970,
+     "ai": 0
+    },
+    {
+     "title": "冷空气袭来 可能最近要变天了 如果可以的话出门把我送的外套披着。",
+     "url": "https://www.douyin.com/video/7699124888262492598",
+     "like": 211800,
+     "ai": 0
+    }
+   ]
+  },
+  {
+   "id": "douyin:好想被风刮走 刮遍整个地球",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "好想被风刮走 刮遍整个地球",
+   "url": "https://www.douyin.com/search/%E5%A5%BD%E6%83%B3%E8%A2%AB%E9%A3%8E%E5%88%AE%E8%B5%B0%20%E5%88%AE%E9%81%8D%E6%95%B4%E4%B8%AA%E5%9C%B0%E7%90%83",
+   "heat": 7675402,
+   "rank": 34,
+   "peakRank": 29,
+   "pubAt": 1792740168000,
+   "daysSeen": 2,
+   "firstSeen": 1792759581398,
+   "lastSeen": 1792801240051,
+   "m": {
+    "videos": 4,
+    "stag": 1001,
+    "fetched": 3,
+    "aiVideos": 1
+   },
+   "ai": {
+    "why": "跟拍被风刮走遍地球的转场挑战，配乐魔性易模仿",
+    "tag": "热梗",
+    "idea": "用AI生成全球风景转场，卡点拼接成刮遍地球视频",
+    "kv": 1,
+    "v": 2,
+    "checked": 1
+   },
+   "kind": "抖音挑战",
+   "top": [
+    {
+     "title": "好想被风刮走 刮遍整个地球",
+     "url": "https://www.douyin.com/video/7699319192495112038",
+     "like": 398873,
+     "ai": 0
+    },
+    {
+     "title": "好想被风刮走 刮遍整个地球的那种pt2.",
+     "url": "https://www.douyin.com/video/7699061980637136249",
+     "like": 80820,
+     "ai": 1
+    },
+    {
+     "title": "好想被风刮走🥶刮遍整个地球的那种～",
+     "url": "https://www.douyin.com/video/7699371925504691633",
+     "like": 54586,
+     "ai": 0
+    }
+   ]
+  },
+  {
+   "id": "douyin:这首过渡期实在是太痛了",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "这首过渡期实在是太痛了",
+   "url": "https://www.douyin.com/search/%E8%BF%99%E9%A6%96%E8%BF%87%E6%B8%A1%E6%9C%9F%E5%AE%9E%E5%9C%A8%E6%98%AF%E5%A4%AA%E7%97%9B%E4%BA%86",
+   "heat": 7655411,
+   "rank": 39,
+   "peakRank": 8,
+   "pubAt": 1792658486000,
+   "daysSeen": 3,
+   "firstSeen": 1792680224508,
+   "lastSeen": 1792783902321,
+   "m": {
+    "videos": 10,
+    "stag": 1002,
+    "fetched": 12,
+    "aiVideos": 0
+   },
+   "ai": {
+    "why": "抖音挑战：跟唱宋念宇《过渡期》转音，难唱所以爱跟",
+    "tag": "热梗",
+    "idea": "用AI翻唱工具生成自己的《过渡期》转音版",
+    "kv": 1,
+    "v": 2,
+    "checked": 1
+   },
+   "kind": "抖音挑战",
+   "top": [
+    {
+     "title": "小宇《过渡期》好听🤩",
+     "url": "https://www.douyin.com/video/7698757063719430056",
+     "like": 164420,
+     "ai": 0
+    },
+    {
+     "title": "这个转音",
+     "url": "https://www.douyin.com/video/7699030219579433466",
+     "like": 83460,
+     "ai": 0
+    },
+    {
+     "title": "小宇的超绝转音 《过渡期》",
+     "url": "https://www.douyin.com/video/7697918260280431204",
+     "like": 80816,
+     "ai": 0
+    }
+   ]
+  },
+  {
+   "id": "douyin:拆最爱我的星座测试盲盒",
+   "cat": "trend",
+   "src": "douyin",
+   "board": "抖音热榜",
+   "title": "拆最爱我的星座测试盲盒",
+   "url": "https://www.douyin.com/search/%E6%8B%86%E6%9C%80%E7%88%B1%E6%88%91%E7%9A%84%E6%98%9F%E5%BA%A7%E6%B5%8B%E8%AF%95%E7%9B%B2%E7%9B%92",
+   "heat": 7689169,
+   "rank": 40,
+   "peakRank": 24,
+   "pubAt": 1792645128000,
+   "daysSeen": 2,
+   "firstSeen": 1792657453764,
+   "lastSeen": 1792747369821,
+   "m": {
+    "videos": 8,
+    "stag": 1003,
+    "fetched": 8,
+    "aiVideos": 0
+   },
+   "ai": {
+    "why": "测哪个星座最爱我的盲盒玩法，靠抽签结果配文案，玄学加互动易跟风",
+    "tag": "热梗",
+    "idea": "用AI生成星座盲盒开箱动画配玄学文案",
+    "kv": 1,
+    "v": 2,
+    "checked": 1
+   },
+   "kind": "抖音挑战",
+   "top": [
+    {
+     "title": "#原来神就是孤独的#抖音玩法达人挑战赛#抖音玩法合伙人计划",
+     "url": "https://www.douyin.com/video/7698676453320522074",
+     "like": 83190,
+     "ai": 0
+    },
+    {
+     "title": "应该挺准的，苍莹屎是水瓶座",
+     "url": "https://www.douyin.com/video/7698714376853438651",
+     "like": 46121,
+     "ai": 0
+    },
+    {
+     "title": "谁是双鱼座来着",
+     "url": "https://www.douyin.com/video/7699096571488919161",
+     "like": 44072,
+     "ai": 0
+    }
+   ]
+  }
+ ],
+ "trends": {
+  "douyin": [
+   {
+    "id": "douyin:西藏7.0级地震已致16死76伤",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "西藏7.0级地震已致16死76伤",
+    "url": "https://www.douyin.com/search/%E8%A5%BF%E8%97%8F7.0%E7%BA%A7%E5%9C%B0%E9%9C%87%E5%B7%B2%E8%87%B416%E6%AD%BB76%E4%BC%A4",
+    "heat": 12114547,
+    "rank": 1,
+    "peakRank": 1,
+    "pubAt": 1792708979000,
+    "daysSeen": 2,
+    "firstSeen": 1792745805107,
+    "lastSeen": 1792801240051,
+    "m": {
+     "videos": 15,
+     "stag": 4006,
+     "fetched": 12
+    },
+    "ai": {
+     "why": "地震伤亡数字更新，央视记者现场报道，救援情况受关注。",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:西藏7.0级地震已致16死54伤",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "西藏7.0级地震已致16死54伤",
+    "url": "https://www.douyin.com/search/%E8%A5%BF%E8%97%8F7.0%E7%BA%A7%E5%9C%B0%E9%9C%87%E5%B7%B2%E8%87%B416%E6%AD%BB54%E4%BC%A4",
+    "heat": 12167250,
+    "rank": 1,
+    "peakRank": 1,
+    "pubAt": 1792708979000,
+    "daysSeen": 1,
+    "firstSeen": 1792731672982,
+    "lastSeen": 1792731672982,
+    "m": {
+     "videos": 15,
+     "stag": 4003,
+     "fetched": 12
+    },
+    "ai": {
+     "why": "央视记者抵达震区直播，通信通畅、物资运抵，公众紧盯伤亡与救援",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:亚锦赛国乒女团决赛不敌日本",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "亚锦赛国乒女团决赛不敌日本",
+    "url": "https://www.douyin.com/search/%E4%BA%9A%E9%94%A6%E8%B5%9B%E5%9B%BD%E4%B9%92%E5%A5%B3%E5%9B%A2%E5%86%B3%E8%B5%9B%E4%B8%8D%E6%95%8C%E6%97%A5%E6%9C%AC",
+    "heat": 7749948,
+    "rank": 21,
+    "peakRank": 1,
+    "pubAt": 1792665964000,
+    "daysSeen": 2,
+    "firstSeen": 1792680224508,
+    "lastSeen": 1792747369821,
+    "m": {
+     "videos": 9,
+     "stag": 5000,
+     "fetched": 12
+    },
+    "ai": {
+     "why": "决胜盘王艺迪输桥本帆乃香，国乒女团丢冠刷屏",
+     "tag": "可借势",
+     "idea": "AI做王艺迪vs桥本技战术图解动画",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:LPL瑞士轮首轮全败",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "LPL瑞士轮首轮全败",
+    "url": "https://www.douyin.com/search/LPL%E7%91%9E%E5%A3%AB%E8%BD%AE%E9%A6%96%E8%BD%AE%E5%85%A8%E8%B4%A5",
+    "heat": 12110010,
+    "rank": 2,
+    "peakRank": 2,
+    "label": "新",
+    "pubAt": 1792797774000,
+    "daysSeen": 1,
+    "firstSeen": 1792801240051,
+    "lastSeen": 1792801240051,
+    "m": {
+     "videos": 5,
+     "stag": 12000,
+     "fetched": 7
+    },
+    "ai": {
+     "why": "LPL首日四战全败创历史，解说和玩家集体破防刷屏",
+     "tag": "可借势",
+     "idea": "AI生成'LPL四连败'悲情海报+解说金句配音混剪",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:IG对阵GEN",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "IG对阵GEN",
+    "url": "https://www.douyin.com/search/IG%E5%AF%B9%E9%98%B5GEN",
+    "heat": 12101884,
+    "rank": 2,
+    "peakRank": 2,
+    "label": "热",
+    "pubAt": 1792761177000,
+    "daysSeen": 2,
+    "firstSeen": 1792762822715,
+    "lastSeen": 1792783902321,
+    "m": {
+     "videos": 5,
+     "stag": 12000,
+     "fetched": 8
+    },
+    "ai": {
+     "why": "S16瑞士轮IG抽到GEN，赛前舆论和算分讨论炸锅",
+     "tag": "可借势",
+     "idea": "AI做IG对阵GEN赛前预测动画或选手数据可视化",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:美军公开两种太空杀器",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "美军公开两种太空杀器",
+    "url": "https://www.douyin.com/search/%E7%BE%8E%E5%86%9B%E5%85%AC%E5%BC%80%E4%B8%A4%E7%A7%8D%E5%A4%AA%E7%A9%BA%E6%9D%80%E5%99%A8",
+    "heat": 9529192,
+    "rank": 8,
+    "peakRank": 2,
+    "pubAt": 1792725864000,
+    "daysSeen": 2,
+    "firstSeen": 1792768717822,
+    "lastSeen": 1792801240051,
+    "m": {
+     "videos": 2,
+     "stag": 21000,
+     "fetched": 2
+    },
+    "ai": {
+     "why": "美军罕见公开太空电磁战武器，军事科技话题引热议。",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:李昌钰在扬州安葬",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "李昌钰在扬州安葬",
+    "url": "https://www.douyin.com/search/%E6%9D%8E%E6%98%8C%E9%92%B0%E5%9C%A8%E6%89%AC%E5%B7%9E%E5%AE%89%E8%91%AC",
+    "heat": 10664547,
+    "rank": 6,
+    "peakRank": 2,
+    "pubAt": 1792723982000,
+    "daysSeen": 2,
+    "firstSeen": 1792745805107,
+    "lastSeen": 1792783902321,
+    "m": {
+     "videos": 13,
+     "stag": 4007,
+     "fetched": 12
+    },
+    "ai": {
+     "why": "华人神探李昌钰安葬扬州，落叶归根引缅怀。",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:抖音博主教你vibe知识大赏",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "抖音博主教你vibe知识大赏",
+    "url": "https://www.douyin.com/search/%E6%8A%96%E9%9F%B3%E5%8D%9A%E4%B8%BB%E6%95%99%E4%BD%A0vibe%E7%9F%A5%E8%AF%86%E5%A4%A7%E8%B5%8F",
+    "heat": 8301576,
+    "rank": 17,
+    "peakRank": 2,
+    "pubAt": 1792649735000,
+    "daysSeen": 2,
+    "firstSeen": 1792714155833,
+    "lastSeen": 1792772373614,
+    "m": {
+     "videos": 8,
+     "stag": 6000,
+     "fetched": 12
+    },
+    "ai": {
+     "why": "抖音推的知识类话题，博主用vibe讲人生容错率、专注力等软知识",
+     "tag": "热梗",
+     "idea": "用AI配音加图文做vibe风人生感悟短片，套话题标签",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:中国创新指数增长6.4%",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "中国创新指数增长6.4%",
+    "url": "https://www.douyin.com/search/%E4%B8%AD%E5%9B%BD%E5%88%9B%E6%96%B0%E6%8C%87%E6%95%B0%E5%A2%9E%E9%95%BF6.4%25",
+    "heat": 12106734,
+    "rank": 3,
+    "peakRank": 3,
+    "label": "热",
+    "pubAt": 1792723925000,
+    "daysSeen": 2,
+    "firstSeen": 1792759968153,
+    "lastSeen": 1792801240051,
+    "m": {
+     "videos": 3,
+     "stag": 4003,
+     "fetched": 4
+    },
+    "ai": {
+     "why": "新华社发布2025创新指数涨6.4%，官媒集中推送",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "douyin:记者直击西藏地震灾区救援现场",
+    "cat": "trend",
+    "src": "douyin",
+    "board": "抖音热榜",
+    "title": "记者直击西藏地震灾区救援现场",
+    "url": "https://www.douyin.com/search/%E8%AE%B0%E8%80%85%E7%9B%B4%E5%87%BB%E8%A5%BF%E8%97%8F%E5%9C%B0%E9%9C%87%E7%81%BE%E5%8C%BA%E6%95%91%E6%8F%B4%E7%8E%B0%E5%9C%BA",
+    "heat": 11342687,
+    "rank": 3,
+    "peakRank": 3,
+    "pubAt": 1792741251000,
+    "daysSeen": 1,
+    "firstSeen": 1792745805107,
+    "lastSeen": 1792768717822,
+    "m": {
+     "videos": 9,
+     "stag": 3001,
+     "fetched": 9
+    },
+    "ai": {
+     "why": "记者直击西藏地震灾区救援，展现救援力量。",
+     "v": 2,
+     "checked": 1
+    }
+   }
+  ],
+  "bilibili": [
+   {
+    "id": "bili:西藏地震已致16死76伤",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "西藏地震已致16死76伤",
+    "url": "https://search.bilibili.com/all?keyword=%E8%A5%BF%E8%97%8F%E5%9C%B0%E9%9C%87%E5%B7%B2%E8%87%B416%E6%AD%BB76%E4%BC%A4",
+    "heat": 23908832,
+    "rank": 1,
+    "peakRank": 1,
+    "daysSeen": 2,
+    "firstSeen": 1792745805107,
+    "lastSeen": 1792801240051,
+    "ai": {
+     "why": "西藏地震灾情严重，伤亡数字牵动人心，全网关注救援进展。",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:西藏地震已致16死54伤",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "西藏地震已致16死54伤",
+    "url": "https://search.bilibili.com/all?keyword=%E8%A5%BF%E8%97%8F%E5%9C%B0%E9%9C%87%E5%B7%B2%E8%87%B416%E6%AD%BB54%E4%BC%A4",
+    "heat": 3440802,
+    "rank": 1,
+    "peakRank": 1,
+    "daysSeen": 1,
+    "firstSeen": 1792731672982,
+    "lastSeen": 1792731672982,
+    "ai": {
+     "why": "西藏那曲巴青县7.0级地震，伤亡数字持续更新，全网关注救援进展",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:食贫道和大漠叔叔聊柬埔寨电诈",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "食贫道和大漠叔叔聊柬埔寨电诈",
+    "url": "https://search.bilibili.com/all?keyword=%E9%A3%9F%E8%B4%AB%E9%81%93%E5%92%8C%E5%A4%A7%E6%BC%A0%E5%8F%94%E5%8F%94%E8%81%8A%E6%9F%AC%E5%9F%94%E5%AF%A8%E7%94%B5%E8%AF%88",
+    "heat": 274613,
+    "rank": 43,
+    "peakRank": 1,
+    "daysSeen": 3,
+    "firstSeen": 1792657453764,
+    "lastSeen": 1792801240051,
+    "ai": {
+     "why": "食贫道实地探访柬埔寨电诈园区，与大漠叔叔连麦对谈，硬核调查内容引发关注",
+     "tag": "可借势",
+     "idea": "用AI还原电诈园区场景做科普警示短片",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:中国女团2-3日本女团",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "中国女团2-3日本女团",
+    "url": "https://search.bilibili.com/all?keyword=%E4%B8%AD%E5%9B%BD%E5%A5%B3%E5%9B%A22-3%E6%97%A5%E6%9C%AC%E5%A5%B3%E5%9B%A2",
+    "heat": 694431,
+    "rank": 29,
+    "peakRank": 1,
+    "daysSeen": 2,
+    "firstSeen": 1792697345618,
+    "lastSeen": 1792801240051,
+    "ai": {
+     "why": "亚锦赛女团决赛中国队2-3惜败日本，丢冠引发热议",
+     "tag": "可借势",
+     "idea": "用AI做决赛关键球复盘动画或中日对决数据可视化",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:影之刃零最终预告",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "影之刃零最终预告",
+    "url": "https://search.bilibili.com/all?keyword=%E5%BD%B1%E4%B9%8B%E5%88%83%E9%9B%B6%E6%9C%80%E7%BB%88%E9%A2%84%E5%91%8A",
+    "heat": 679646,
+    "rank": 32,
+    "peakRank": 2,
+    "daysSeen": 3,
+    "firstSeen": 1792641711216,
+    "lastSeen": 1792801240051,
+    "ai": {
+     "why": "影之刃零发布最终预告，国产动作游戏期待拉满",
+     "tag": "可借势",
+     "idea": "AI生成影之刃零风格武侠角色或预告二创",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:BLG MKOI",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "MKOI战胜BLG S16瑞士轮",
+    "url": "https://search.bilibili.com/all?keyword=BLG%20MKOI",
+    "heat": 22027669,
+    "rank": 3,
+    "peakRank": 2,
+    "daysSeen": 1,
+    "firstSeen": 1792783902321,
+    "lastSeen": 1792801240051,
+    "ai": {
+     "why": "S16瑞士轮BLG对阵MKOI，LPL观众蹲赛果",
+     "tag": "可借势",
+     "idea": "AI生成赛前预测海报和选手数据对比图",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:IVL",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "GR vs ACT IVL",
+    "url": "https://search.bilibili.com/all?keyword=IVL",
+    "heat": 3130035,
+    "rank": 3,
+    "peakRank": 2,
+    "daysSeen": 1,
+    "firstSeen": 1792745805107,
+    "lastSeen": 1792747369821,
+    "ai": {
+     "why": "IVL第五人格职业联赛FPX.ZQ对WBG，电竞粉丝围观。",
+     "tag": "可借势",
+     "idea": "用AI生成比赛精彩瞬间的漫画或预测胜负。",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:谭乔回应二仙桥大爷又被拦下",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "谭乔回应二仙桥大爷又被拦下",
+    "url": "https://search.bilibili.com/all?keyword=%E8%B0%AD%E4%B9%94%E5%9B%9E%E5%BA%94%E4%BA%8C%E4%BB%99%E6%A1%A5%E5%A4%A7%E7%88%B7%E5%8F%88%E8%A2%AB%E6%8B%A6%E4%B8%8B",
+    "heat": 245523,
+    "rank": 43,
+    "peakRank": 2,
+    "daysSeen": 2,
+    "firstSeen": 1792664084307,
+    "lastSeen": 1792745805107,
+    "ai": {
+     "why": "谭乔重访二仙桥大爷，经典名场面再续，网友爱看老梗重逢",
+     "tag": "热梗",
+     "idea": "用AI复刻二仙桥名场面，生成新对话或动画版",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:TheShy赛前对话Zeus",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "TheShy赛前对话Zeus",
+    "url": "https://search.bilibili.com/all?keyword=TheShy%E8%B5%9B%E5%89%8D%E5%AF%B9%E8%AF%9DZeus",
+    "heat": 601078,
+    "rank": 22,
+    "peakRank": 2,
+    "daysSeen": 2,
+    "firstSeen": 1792745805107,
+    "lastSeen": 1792772373614,
+    "ai": {
+     "why": "电竞明星TheShy与Zeus赛前对话，粉丝期待对决。",
+     "tag": "可借势",
+     "idea": "用AI模拟两人对话或生成比赛预测动画。",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "bili:FPX DRG",
+    "cat": "trend",
+    "src": "bilibili",
+    "board": "B站热搜",
+    "title": "DRG战胜FPX VCT晋升赛",
+    "url": "https://search.bilibili.com/all?keyword=FPX%20DRG",
+    "heat": 349880,
+    "rank": 45,
+    "peakRank": 2,
+    "daysSeen": 2,
+    "firstSeen": 1792759581398,
+    "lastSeen": 1792772373614,
+    "ai": {
+     "why": "VCT晋升赛FPX对DRG，无畏契约玩家关注谁能升级",
+     "tag": "可借势",
+     "idea": "AI做赛前预测海报和选手数据可视化短片",
+     "v": 2,
+     "checked": 1
+    }
+   }
+  ],
+  "weibo": [
+   {
+    "id": "weibo:独生女继承2亿遗产1年后遭离婚分产",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "独生女继承2亿遗产1年后遭离婚分产",
+    "url": "https://s.weibo.com/weibo?q=%23%E7%8B%AC%E7%94%9F%E5%A5%B3%E7%BB%A7%E6%89%BF2%E4%BA%BF%E9%81%97%E4%BA%A71%E5%B9%B4%E5%90%8E%E9%81%AD%E7%A6%BB%E5%A9%9A%E5%88%86%E4%BA%A7%23",
+    "heat": 3324902,
+    "rank": 1,
+    "peakRank": 1,
+    "label": "热",
+    "daysSeen": 1,
+    "firstSeen": 1792772373614,
+    "lastSeen": 1792801240051,
+    "ai": {
+     "why": "独生女继承巨额遗产后离婚被分产，引发婚姻财产讨论。",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:西藏7级地震",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "西藏7级地震",
+    "url": "https://s.weibo.com/weibo?q=%23%E8%A5%BF%E8%97%8F7%E7%BA%A7%E5%9C%B0%E9%9C%87%23",
+    "heat": 416860,
+    "rank": 10,
+    "peakRank": 1,
+    "label": "沸",
+    "daysSeen": 1,
+    "firstSeen": 1792697345618,
+    "lastSeen": 1792731672982,
+    "ai": {
+     "why": "西藏那曲巴青县发生7.0级地震，震感强烈，全网关注灾情与救援",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:小城良方 剧情硬伤",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "小城良方 剧情硬伤",
+    "url": "https://s.weibo.com/weibo?q=%23%E5%B0%8F%E5%9F%8E%E8%89%AF%E6%96%B9%20%E5%89%A7%E6%83%85%E7%A1%AC%E4%BC%A4%23",
+    "desc": "剧集",
+    "heat": 1389432,
+    "rank": 1,
+    "peakRank": 1,
+    "label": "新",
+    "daysSeen": 1,
+    "firstSeen": 1792745805107,
+    "lastSeen": 1792747369821,
+    "ai": {
+     "why": "观众吐槽剧情逻辑漏洞，引发对剧集质量的讨论。",
+     "tag": "可借势",
+     "idea": "用AI生成剧情bug吐槽视频，或让AI续写合理剧情。",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:别再嫌再见朋友请来的咖糊了",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "别再嫌再见朋友请来的咖糊了",
+    "url": "https://s.weibo.com/weibo?q=%23%E5%88%AB%E5%86%8D%E5%AB%8C%E5%86%8D%E8%A7%81%E6%9C%8B%E5%8F%8B%E8%AF%B7%E6%9D%A5%E7%9A%84%E5%92%96%E7%B3%8A%E4%BA%86%23",
+    "desc": "综艺",
+    "heat": 182004,
+    "rank": 42,
+    "peakRank": 1,
+    "daysSeen": 1,
+    "firstSeen": 1792731672982,
+    "lastSeen": 1792747369821,
+    "ai": {
+     "why": "综艺《再见朋友》嘉宾被嫌咖位小，网友吵阵容与节目质量",
+     "tag": "可借势",
+     "idea": "用AI把糊咖嘉宾换成顶流阵容，做「如果这季请他们」假想海报",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:尚公主首播反响",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "尚公主首播反响",
+    "url": "https://s.weibo.com/weibo?q=%23%E5%B0%9A%E5%85%AC%E4%B8%BB%E9%A6%96%E6%92%AD%E5%8F%8D%E5%93%8D%23",
+    "desc": "剧集",
+    "heat": 76429,
+    "rank": 40,
+    "peakRank": 1,
+    "daysSeen": 2,
+    "firstSeen": 1792759581398,
+    "lastSeen": 1792783902321,
+    "ai": {
+     "why": "新剧开播观众实时吐槽剧情演技，首播口碑两极",
+     "tag": "可借势",
+     "idea": "AI生成剧情解说+角色关系图，蹭首播热度",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:人一旦在有地铁的城市待久了",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "人一旦在有地铁的城市待久了",
+    "url": "https://s.weibo.com/weibo?q=%23%E4%BA%BA%E4%B8%80%E6%97%A6%E5%9C%A8%E6%9C%89%E5%9C%B0%E9%93%81%E7%9A%84%E5%9F%8E%E5%B8%82%E5%BE%85%E4%B9%85%E4%BA%86%23",
+    "heat": 875563,
+    "rank": 5,
+    "peakRank": 1,
+    "daysSeen": 2,
+    "firstSeen": 1792759581398,
+    "lastSeen": 1792772373614,
+    "ai": {
+     "why": "打工人共鸣梗，待久地铁城市就离不开便利也逃不掉内卷",
+     "tag": "热梗",
+     "idea": "AI生成地铁通勤众生相漫画，配扎心文案",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:iPhoneDuo 华为",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "iPhoneDuo 华为",
+    "url": "https://s.weibo.com/weibo?q=%23iPhoneDuo%20%E5%8D%8E%E4%B8%BA%23",
+    "heat": 776571,
+    "rank": 26,
+    "peakRank": 1,
+    "daysSeen": 2,
+    "firstSeen": 1792760842613,
+    "lastSeen": 1792772373614,
+    "ai": {
+     "why": "iPhone新机与华为新机被拿来对比，站队话题引战",
+     "tag": "可借势",
+     "idea": "AI生成两派网友吵架小剧场，做对比测评开场",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:李昌钰发妻离世后与蒋霞萍频繁通信",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "李昌钰发妻离世后与蒋霞萍频繁通信",
+    "url": "https://s.weibo.com/weibo?q=%23%E6%9D%8E%E6%98%8C%E9%92%B0%E5%8F%91%E5%A6%BB%E7%A6%BB%E4%B8%96%E5%90%8E%E4%B8%8E%E8%92%8B%E9%9C%9E%E8%90%8D%E9%A2%91%E7%B9%81%E9%80%9A%E4%BF%A1%23",
+    "heat": 826467,
+    "rank": 15,
+    "peakRank": 1,
+    "daysSeen": 2,
+    "firstSeen": 1792759968153,
+    "lastSeen": 1792772373614,
+    "ai": {
+     "why": "李昌钰再婚家事被翻出，名人私生活引八卦",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:国际金价暴跌因获利了结",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "国际金价暴跌因获利了结",
+    "url": "https://s.weibo.com/weibo?q=%23%E5%9B%BD%E9%99%85%E9%87%91%E4%BB%B7%E6%9A%B4%E8%B7%8C%E5%9B%A0%E8%8E%B7%E5%88%A9%E4%BA%86%E7%BB%93%23",
+    "heat": 75678,
+    "rank": 50,
+    "peakRank": 1,
+    "daysSeen": 2,
+    "firstSeen": 1792765161034,
+    "lastSeen": 1792783902321,
+    "ai": {
+     "why": "金价高位回调，投资者获利了结引发市场关注",
+     "v": 2,
+     "checked": 1
+    }
+   },
+   {
+    "id": "weibo:lpl瑞士轮首轮全败",
+    "cat": "trend",
+    "src": "weibo",
+    "board": "微博热搜",
+    "title": "lpl瑞士轮首轮全败",
+    "url": "https://s.weibo.com/weibo?q=%23lpl%E7%91%9E%E5%A3%AB%E8%BD%AE%E9%A6%96%E8%BD%AE%E5%85%A8%E8%B4%A5%23",
+    "heat": 1923845,
+    "rank": 2,
+    "peakRank": 2,
+    "daysSeen": 1,
+    "firstSeen": 1792801240051,
+    "lastSeen": 1792801240051,
+    "ai": {
+     "why": "S16世界赛瑞士轮首日LPL四队全败，创历史最差开局，观众炸锅",
+     "tag": "可借势",
+     "idea": "用AI把四场败局做成悲情混剪，配史诗BGM卡点",
+     "v": 2,
+     "checked": 1
+    }
+   }
+  ]
+ },
+ "music": {
+  "QQ音乐": {
+   "热歌榜": [
+    {
+     "id": "qqmusic:热歌榜:733159779",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "NEON",
+     "url": "https://y.qq.com/n/ryqq/songDetail/001qilBV4GHXGJ",
+     "author": "A2O LITE/A2O",
+     "cover": "https://y.gtimg.cn/music/photo_new/T002R300x300M000001BLmVC0kTjAd_2.jpg",
+     "rank": 1,
+     "peakRank": 1,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "QQ音乐双榜第一，新歌上线冲榜",
+      "use": "AI MV/卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:4829554",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "天龙八部之宿敌",
+     "url": "https://y.qq.com/n/ryqq/songDetail/001bLkWD2EYA4P",
+     "author": "许嵩",
+     "cover": "https://y.gtimg.cn/music/photo_new/T002R300x300M000002JzRQD2zjvxG_3.jpg",
+     "rank": 2,
+     "peakRank": 2,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "许嵩老歌，天龙八部IP情怀+翻红",
+      "use": "AI国风MV",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:8136",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "我不难过",
+     "url": "https://y.qq.com/n/ryqq/songDetail/001fsNdn1zuZnA",
+     "author": "孙燕姿",
+     "cover": "https://y.gtimg.cn/music/photo_new/T002R300x300M000004VSvF52mQoQp_5.jpg",
+     "rank": 3,
+     "peakRank": 3,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "孙燕姿经典情歌，B站多榜在涨，怀旧情绪",
+      "use": "AI翻唱/情绪剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:696262512",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "甲乙丙丁 (你我怎么两清)",
+     "url": "https://y.qq.com/n/ryqq/songDetail/002AZauQ1UKQxe",
+     "author": "李佳薇",
+     "rank": 4,
+     "peakRank": 4,
+     "label": "↑1",
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "新歌上榜，苦情歌名梗+情绪共鸣",
+      "use": "AI翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:645819",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "雨爱",
+     "url": "https://y.qq.com/n/ryqq/songDetail/000rh0dE2TyUic",
+     "author": "杨丞琳",
+     "rank": 5,
+     "peakRank": 5,
+     "label": "↑2",
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "杨丞琳经典，B站Hi-res试听稿带动翻红",
+      "use": "AI翻唱/情绪剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:496054946",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "恋人",
+     "url": "https://y.qq.com/n/ryqq/songDetail/001auUcH4WQs2V",
+     "author": "李荣浩",
+     "rank": 6,
+     "peakRank": 5,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "李荣浩新歌，情歌题材自带传播",
+      "use": "AI MV",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:5211338",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "我怀念的",
+     "url": "https://y.qq.com/n/ryqq/songDetail/000BO3xy4fd8BJ",
+     "author": "孙燕姿",
+     "rank": 7,
+     "peakRank": 7,
+     "label": "↑1",
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "孙燕姿怀旧金曲，长期在榜",
+      "use": "AI翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:5646",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "开始懂了",
+     "url": "https://y.qq.com/n/ryqq/songDetail/003PSWcB4EDl6P",
+     "author": "孙燕姿",
+     "rank": 8,
+     "peakRank": 8,
+     "label": "↑2",
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "孙燕姿老歌，怀旧歌单带动",
+      "use": "AI翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:462188",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "情歌",
+     "url": "https://y.qq.com/n/ryqq/songDetail/0010BrWk2SucQr",
+     "author": "梁静茹",
+     "rank": 9,
+     "peakRank": 8,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "梁静茹经典情歌，怀旧向常青",
+      "use": "AI翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:热歌榜:8135137",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐热歌榜",
+     "title": "你不要那样看着我的眼睛",
+     "url": "https://y.qq.com/n/ryqq/songDetail/002SC1PR49asXB",
+     "author": "蔡琴",
+     "rank": 10,
+     "peakRank": 10,
+     "label": "↑3",
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "蔡琴老歌翻红，推测被短视频怀旧向使用",
+      "use": "AI复古翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    }
+   ],
+   "飙升榜": [
+    {
+     "id": "qqmusic:飙升榜:735014926",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "面目全非",
+     "url": "https://y.qq.com/n/ryqq/songDetail/003D7FdN168tR1",
+     "author": "张远",
+     "cover": "https://y.gtimg.cn/music/photo_new/T002R300x300M000004Sktpx4ZUPZK_1.jpg",
+     "rank": 1,
+     "peakRank": 1,
+     "label": "↑15%",
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "张远新歌上榜，粉丝打榜+情歌共鸣",
+      "use": "AI翻唱/情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:726724163",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "NEVER GOING BACK (别回头)",
+     "url": "https://y.qq.com/n/ryqq/songDetail/0045TvbY1mj0o5",
+     "author": "K/DA/英雄联盟/i-dle (아이들)/田小娟 (SOYEON)/曺薇娟 (MIYEON)",
+     "cover": "https://y.gtimg.cn/music/photo_new/T002R300x300M000003ovTeQ01zmyl_3.jpg",
+     "rank": 2,
+     "peakRank": 2,
+     "label": "↑11%",
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "英雄联盟K/DA新曲，游戏+女团流量带动",
+      "use": "AI翻唱/卡点变装",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:2548439",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "过渡期",
+     "url": "https://y.qq.com/n/ryqq/songDetail/002GnkGs2TknvY",
+     "author": "小宇-宋念宇",
+     "cover": "https://y.gtimg.cn/music/photo_new/T002R300x300M000001Uw5qE3Wjlo6_4.jpg",
+     "rank": 3,
+     "peakRank": 3,
+     "label": "↑11%",
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：新歌上榜，情歌向被短视频当BGM",
+      "use": "AI翻唱/情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:725461231",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "礼拜四",
+     "url": "https://y.qq.com/n/ryqq/songDetail/001yreba3kfYUt",
+     "author": "HENDERY (黄冠亨)",
+     "rank": 4,
+     "peakRank": 4,
+     "label": "↑10%",
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：偶像新歌粉丝冲榜",
+      "use": "AI翻唱/卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:735662963",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "当世界年纪小",
+     "url": "https://y.qq.com/n/ryqq/songDetail/000MCGCE2vTNt8",
+     "author": "任素汐",
+     "rank": 5,
+     "peakRank": 5,
+     "label": "↑10%",
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：影视或剧集OST带动，任素汐嗓音辨识度高",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:735420629",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "我护我",
+     "url": "https://y.qq.com/n/ryqq/songDetail/000vZbfe2HOCPt",
+     "author": "张碧晨",
+     "rank": 6,
+     "peakRank": 6,
+     "label": "↑10%",
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：张碧晨新歌，剧集OST或粉丝打榜",
+      "use": "AI翻唱/情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:736041729",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "今夜让我带你高飞远走",
+     "url": "https://y.qq.com/n/ryqq/songDetail/0021l8uU2eRXT9",
+     "author": "五月天 阿信/言承旭/吴建豪/周渝民/刘宇宁",
+     "rank": 7,
+     "peakRank": 7,
+     "label": "↑9%",
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "五月天阿信+F4阵容，情怀合唱话题度高",
+      "use": "AI合唱/怀旧剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:726724189",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "FIRESTARTER (燃)",
+     "url": "https://y.qq.com/n/ryqq/songDetail/002BYqTG4Qa3gg",
+     "author": "K/DA/英雄联盟/i-dle (아이들)/Mimi Webb/Sophie Powers/曺薇娟 (MIYEON)/田小娟 (SOYEON)",
+     "rank": 8,
+     "peakRank": 8,
+     "label": "↑8%",
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "K/DA系列曲，游戏赛事和女团热度带动",
+      "use": "AI翻唱/燃向卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:726724162",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "WATCH ME (登场)",
+     "url": "https://y.qq.com/n/ryqq/songDetail/003h83yO30b1Y1",
+     "author": "K/DA/英雄联盟/Mimi Webb/Sophie Powers",
+     "rank": 9,
+     "peakRank": 9,
+     "label": "↑8%",
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "K/DA新曲随英雄联盟相关热度上涨",
+      "use": "AI翻唱/卡点变装",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "qqmusic:飙升榜:734323486",
+     "cat": "music",
+     "src": "qqmusic",
+     "board": "QQ音乐飙升榜",
+     "title": "戒断 (BAD HABITS TONITE)",
+     "url": "https://y.qq.com/n/ryqq/songDetail/000JO2Y74N9mcH",
+     "author": "A2O MAY/A2O",
+     "rank": 10,
+     "peakRank": 7,
+     "label": "↑7%",
+     "daysSeen": 3,
+     "firstSeen": 1792641711216,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：新歌上线，短视频舞蹈/卡点带热",
+      "use": "卡点、变装剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    }
+   ]
+  },
+  "网易云": {
+   "热歌榜": [
+    {
+     "id": "netease:热歌榜:287398",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "我不难过",
+     "url": "https://music.163.com/#/song?id=287398",
+     "author": "孙燕姿",
+     "cover": "http://p2.music.126.net/Pzxy6py26NgNmhJjYMf2RQ==/109951169724216323.jpg?param=120y120",
+     "rank": 1,
+     "peakRank": 1,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "孙燕姿经典情歌，B站多榜在涨，怀旧情绪",
+      "use": "AI翻唱/情绪剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:1973665667",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "海屿你",
+     "url": "https://music.163.com/#/song?id=1973665667",
+     "author": "马也_Crabbit",
+     "cover": "http://p2.music.126.net/Enhy6dPn4gpyqrKhVEQvgA==/109951170483249998.jpg?param=120y120",
+     "rank": 2,
+     "peakRank": 2,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "被AI三角洲干员二创带火，游戏圈传播",
+      "use": "AI MV/游戏二创",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:1842728629",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "如果呢",
+     "url": "https://music.163.com/#/song?id=1842728629",
+     "author": "郑润泽",
+     "cover": "http://p2.music.126.net/-xMsNLpquZTmMZlIztTgHg==/109951165953469081.jpg?param=120y120",
+     "rank": 3,
+     "peakRank": 3,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "郑润泽情歌，网易云情绪歌单常客",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:167691",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "天龙八部之宿敌",
+     "url": "https://music.163.com/#/song?id=167691",
+     "author": "许嵩",
+     "cover": "http://p2.music.126.net/Ezo6K3rPFowvnkDtxf-w6Q==/109951172321459335.jpg?param=120y120",
+     "rank": 4,
+     "peakRank": 4,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "许嵩老歌，天龙八部IP情怀+翻红",
+      "use": "AI国风MV",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:2741144144",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "99",
+     "url": "https://music.163.com/#/song?id=2741144144",
+     "author": "TizzyT",
+     "cover": "http://p2.music.126.net/D-kiZM7mbHrqdB6X8Yoi8Q==/109951171947326885.jpg?param=120y120",
+     "rank": 5,
+     "peakRank": 5,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "TizzyT说唱，节奏感强适合短视频卡点",
+      "use": "AI卡点/说唱二创",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:2154520553",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "Marry",
+     "url": "https://music.163.com/#/song?id=2154520553",
+     "author": "Top Barry / INDEcompany",
+     "cover": "http://p2.music.126.net/XQgLpatV-LFMdx55WuV8bA==/109951169706853419.jpg?param=120y120",
+     "rank": 6,
+     "peakRank": 6,
+     "daysSeen": 3,
+     "firstSeen": 1792641711216,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：旋律洗脑被短视频当BGM",
+      "use": "卡点、情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:3399839173",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "甲乙丙丁 (你我怎么两清)",
+     "url": "https://music.163.com/#/song?id=3399839173",
+     "author": "李佳薇",
+     "cover": "http://p2.music.126.net/H9iDvukTit_jx-fmhhvXUQ==/109951173482378749.jpg?param=120y120",
+     "rank": 7,
+     "peakRank": 5,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "新歌上榜，苦情歌名梗+情绪共鸣",
+      "use": "AI翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:3342319503",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "明知故犯",
+     "url": "https://music.163.com/#/song?id=3342319503",
+     "author": "Max李玄",
+     "cover": "http://p2.music.126.net/H2DFRdwP2y5SuCAn-Tuikw==/109951172568091306.jpg?param=120y120",
+     "rank": 8,
+     "peakRank": 3,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：伤感情歌，网易云情绪向歌单传播",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:2600493765",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "恋人",
+     "url": "https://music.163.com/#/song?id=2600493765",
+     "author": "李荣浩",
+     "cover": "http://p2.music.126.net/0bk3Iqe2OZGBH2Iuyx7RzA==/109951170045577565.jpg?param=120y120",
+     "rank": 9,
+     "peakRank": 7,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "李荣浩新歌，情歌题材自带传播",
+      "use": "AI MV",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:热歌榜:3382908505",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云热歌榜",
+     "title": "玻璃",
+     "url": "https://music.163.com/#/song?id=3382908505",
+     "author": "Gareth.T",
+     "cover": "http://p2.music.126.net/MSKoQP60up7v3y1P1d3JIQ==/109951173234747322.jpg?param=120y120",
+     "rank": 10,
+     "peakRank": 10,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "Gareth.T粤语歌，网易云热榜靠前",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    }
+   ],
+   "飙升榜": [
+    {
+     "id": "netease:飙升榜:2078101758",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "时过境迁",
+     "url": "https://music.163.com/#/song?id=2078101758",
+     "author": "苏艺馨Chency",
+     "cover": "http://p1.music.126.net/A5J9gFuJgfzqravyuj184g==/109951168881933739.jpg?param=120y120",
+     "rank": 1,
+     "peakRank": 1,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：情感向新歌多平台飙升，失恋BGM",
+      "use": "AI情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:3451437046",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "停机前的独白",
+     "url": "https://music.163.com/#/song?id=3451437046",
+     "author": "赵一博",
+     "cover": "http://p1.music.126.net/IYOklP1lwglj67XjLP2ZRQ==/109951174140017168.jpg?param=120y120",
+     "rank": 2,
+     "peakRank": 2,
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：偶像新歌粉丝冲榜，标题自带故事感",
+      "use": "AI翻唱/情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:2741144144",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "99",
+     "url": "https://music.163.com/#/song?id=2741144144",
+     "author": "TizzyT",
+     "cover": "http://p1.music.126.net/D-kiZM7mbHrqdB6X8Yoi8Q==/109951171947326885.jpg?param=120y120",
+     "rank": 3,
+     "peakRank": 3,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "TizzyT说唱，节奏感强适合短视频卡点",
+      "use": "AI卡点/说唱二创",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:2067844613",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "甲乙丙丁",
+     "url": "https://music.163.com/#/song?id=2067844613",
+     "author": "王子明",
+     "cover": "http://p1.music.126.net/BO7XAJLSQIczIEL97_7Jgg==/109951168944119522.jpg?param=120y120",
+     "rank": 4,
+     "peakRank": 4,
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：情感向新歌被短视频文案带火",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:3450878202",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "骰子人生",
+     "url": "https://music.163.com/#/song?id=3450878202",
+     "author": "Spylent",
+     "cover": "http://p1.music.126.net/lRpWp1zPX3UbmnxKq5I7Vg==/109951174134284361.jpg?param=120y120",
+     "rank": 5,
+     "peakRank": 5,
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "Spylent说唱新作，说唱圈和粉丝带动",
+      "use": "卡点/变装",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:2075593054",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "林宛瑜",
+     "url": "https://music.163.com/#/song?id=2075593054",
+     "author": "Rapeter",
+     "cover": "http://p1.music.126.net/-RYv_KQ7OjQYENoqhoXDmg==/109951168899147692.jpg?param=120y120",
+     "rank": 6,
+     "peakRank": 6,
+     "daysSeen": 2,
+     "firstSeen": 1792731672982,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：以角色名做梗，被短视频玩梗带火",
+      "use": "AI翻唱/梗向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:3440961675",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "睡前别想太多",
+     "url": "https://music.163.com/#/song?id=3440961675",
+     "author": "李雨霏_晚饭",
+     "cover": "http://p1.music.126.net/CdAZ76__lHkE_HcjXgR_4w==/109951173999807018.jpg?param=120y120",
+     "rank": 7,
+     "peakRank": 2,
+     "daysSeen": 3,
+     "firstSeen": 1792641711216,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：治愈系歌名+短视频情绪BGM带热",
+      "use": "情绪向剪辑、AI MV",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:25780143",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "过渡期",
+     "url": "https://music.163.com/#/song?id=25780143",
+     "author": "宋念宇",
+     "cover": "http://p1.music.126.net/jzNo1mbaW2E0fr3ojs0Y3A==/109951166730782749.jpg?param=120y120",
+     "rank": 8,
+     "peakRank": 4,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：宋念宇新作上线，老粉回流带动飙升",
+      "use": "AI翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:3448554597",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "Stay",
+     "url": "https://music.163.com/#/song?id=3448554597",
+     "author": "尹浩宇Patrick",
+     "cover": "http://p1.music.126.net/qRM7XV1c9UgOB9oArzNzYw==/109951174111277871.jpg?param=120y120",
+     "rank": 9,
+     "peakRank": 9,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "尹浩宇新歌，偶像粉丝打榜+新歌榜双榜",
+      "use": "AI翻唱/粉丝向MV",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "netease:飙升榜:3449273923",
+     "cat": "music",
+     "src": "netease",
+     "board": "网易云飙升榜",
+     "title": "Masterpiece",
+     "url": "https://music.163.com/#/song?id=3449273923",
+     "author": "LNGSHOT",
+     "cover": "http://p1.music.126.net/UTshU5Ftc0WXjOTUMNuXwQ==/109951174118011730.jpg?param=120y120",
+     "rank": 10,
+     "peakRank": 8,
+     "daysSeen": 3,
+     "firstSeen": 1792641711216,
+     "lastSeen": 1792801240051,
+     "ai": {
+      "why": "推测：新歌上线，粉丝冲榜",
+      "use": "卡点剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    }
+   ]
+  },
+  "抖音": {
+   "飙升榜": [
+    {
+     "id": "douyin:飙升榜:7451592644307470377",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "谁会问我累不累（剪辑版5）",
+     "url": "https://www.douyin.com/music/7451592644307470377",
+     "author": "于洋",
+     "heat": 0,
+     "rank": 1,
+     "peakRank": 1,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 1403598
+     },
+     "ai": {
+      "why": "累不累共情梗，飙升榜第一",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7507219580100659994",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "Falling again （剪辑版）",
+     "url": "https://www.douyin.com/music/7507219580100659994",
+     "author": "Lunak",
+     "heat": 0,
+     "rank": 2,
+     "peakRank": 2,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 107234
+     },
+     "ai": {
+      "why": "推测：氛围电子曲被剪辑带涨",
+      "use": "氛围剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7500022718490839846",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "加绒摇",
+     "url": "https://www.douyin.com/music/7500022718490839846",
+     "author": "罗一刻",
+     "heat": 0,
+     "rank": 3,
+     "peakRank": 3,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 287226
+     },
+     "ai": {
+      "why": "加绒摇舞蹈梗，摇子BGM",
+      "use": "卡点变装",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7486396253049128999",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "妹似青山一枝梅（剪辑版2）",
+     "url": "https://www.douyin.com/music/7486396253049128999",
+     "author": "小田儿",
+     "heat": 0,
+     "rank": 4,
+     "peakRank": 4,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 48452
+     },
+     "ai": {
+      "why": "山歌风甜曲，乡土变装BGM",
+      "use": "变装卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7500947992883579657",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "九万字（我爱你苍凉双眼留有余温）",
+     "url": "https://www.douyin.com/music/7500947992883579657",
+     "author": "张靓颖",
+     "heat": 0,
+     "rank": 5,
+     "peakRank": 5,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 2163569
+     },
+     "ai": {
+      "why": "张靓颖翻唱九万字，古风虐向爆",
+      "use": "古风情绪剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7511325370465978387",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "Echo of You（剪辑版）",
+     "url": "https://www.douyin.com/music/7511325370465978387",
+     "author": "蓝爵醺调",
+     "heat": 0,
+     "rank": 6,
+     "peakRank": 6,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 958131
+     },
+     "ai": {
+      "why": "推测：氛围曲剪辑版带涨",
+      "use": "氛围剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7451815644134639651",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "笑一笑没烦恼（副歌）",
+     "url": "https://www.douyin.com/music/7451815644134639651",
+     "author": "小琢",
+     "heat": 0,
+     "rank": 7,
+     "peakRank": 7,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 1450457
+     },
+     "ai": {
+      "why": "没烦恼正能量副歌，治愈BGM",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7507601606154767123",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "亲爱的你啊（徐远书剪辑版）",
+     "url": "https://www.douyin.com/music/7507601606154767123",
+     "author": "徐远书",
+     "heat": 0,
+     "rank": 8,
+     "peakRank": 8,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 2087944
+     },
+     "ai": {
+      "why": "亲爱的你啊剪辑版，情感BGM",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7484078399695865906",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "对自己好点吧（剪辑版2）",
+     "url": "https://www.douyin.com/music/7484078399695865906",
+     "author": "导航哥",
+     "heat": 0,
+     "rank": 9,
+     "peakRank": 9,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 109099
+     },
+     "ai": {
+      "why": "对自己好点鸡汤向，共鸣剪辑",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:飙升榜:7486495923556584204",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音飙升榜",
+     "title": "爱河（如果晚霞绕过火车）",
+     "url": "https://www.douyin.com/music/7486495923556584204",
+     "author": "ZaZaZsu",
+     "heat": 0,
+     "rank": 10,
+     "peakRank": 10,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 3341362
+     },
+     "ai": {
+      "why": "爱河老歌翻红，晚霞浪漫梗",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    }
+   ],
+   "热歌榜": [
+    {
+     "id": "douyin:热歌榜:7541405105217914881",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "99（主歌段）",
+     "url": "https://www.douyin.com/music/7541405105217914881",
+     "author": "TizzyT",
+     "heat": 19153509,
+     "rank": 1,
+     "peakRank": 1,
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 392345
+     },
+     "ai": {
+      "why": "抖音热榜第一，说唱副歌易做卡点模板",
+      "use": "AI翻唱/卡点变装",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7696446524147714049",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "何必相逢（泪要第几颗才算浓）",
+     "url": "https://www.douyin.com/music/7696446524147714049",
+     "author": "李雨霏",
+     "heat": 18832936,
+     "rank": 2,
+     "peakRank": 2,
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 25281
+     },
+     "ai": {
+      "why": "苦情副歌歌词戳泪点，情绪向短视频传播",
+      "use": "AI翻唱/失恋情绪剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7694668844277368884",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "思念像一场重感冒（副歌）",
+     "url": "https://www.douyin.com/music/7694668844277368884",
+     "author": "余佳运",
+     "heat": 19065552,
+     "rank": 3,
+     "peakRank": 3,
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 7628
+     },
+     "ai": {
+      "why": "思念主题副歌共情强，适合emo向短视频",
+      "use": "AI翻唱/情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7612495195403487266",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "如果我一颗心被你俘虏",
+     "url": "https://www.douyin.com/music/7612495195403487266",
+     "author": "好久不见",
+     "heat": 17542190,
+     "rank": 4,
+     "peakRank": 1,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 487742
+     },
+     "ai": {
+      "why": "抖音热歌榜第一，情感向BGM，被大量短视频当配乐",
+      "use": "AI翻唱+情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7694669660609267713",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "她（你的名字）",
+     "url": "https://www.douyin.com/music/7694669660609267713",
+     "author": "周震南",
+     "heat": 15693952,
+     "rank": 5,
+     "peakRank": 5,
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 3200
+     },
+     "ai": {
+      "why": "周震南新歌，粉丝向传播冲榜",
+      "use": "AI翻唱/偶像向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7595207640864655369",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "咏春 (氛围版)（Cover 七朵组合）",
+     "url": "https://www.douyin.com/music/7595207640864655369",
+     "author": "图钉姐",
+     "heat": 17097339,
+     "rank": 6,
+     "peakRank": 2,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 966710
+     },
+     "ai": {
+      "why": "氛围版翻唱，国风旋律适合短视频配乐",
+      "use": "AI国风MV/翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7601122313841313793",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "心绪(我想要的只是你在我身边)",
+     "url": "https://www.douyin.com/music/7601122313841313793",
+     "author": "宇宙草",
+     "heat": 17095380,
+     "rank": 7,
+     "peakRank": 3,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 222613
+     },
+     "ai": {
+      "why": "氛围感情绪歌，抖音短视频常用BGM",
+      "use": "情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7599573295705688065",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "You And Me",
+     "url": "https://www.douyin.com/music/7599573295705688065",
+     "author": "Jamvana/ZEKEN",
+     "heat": 17045782,
+     "rank": 8,
+     "peakRank": 4,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 1458561
+     },
+     "ai": {
+      "why": "电子氛围曲，卡点/变装视频常用",
+      "use": "卡点变装剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7612694737677633551",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "忘了算了（Cover 范怡文）（主歌）",
+     "url": "https://www.douyin.com/music/7612694737677633551",
+     "author": "溫月月.",
+     "heat": 16925670,
+     "rank": 9,
+     "peakRank": 5,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 282986
+     },
+     "ai": {
+      "why": "老歌翻唱主歌片段，伤感BGM",
+      "use": "AI翻唱",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "douyin:热歌榜:7543081193115584539",
+     "cat": "music",
+     "src": "douyin",
+     "board": "抖音热歌榜",
+     "title": "ditto(氛围感)",
+     "url": "https://www.douyin.com/music/7543081193115584539",
+     "author": "@天子",
+     "heat": 16923027,
+     "rank": 10,
+     "peakRank": 6,
+     "daysSeen": 3,
+     "firstSeen": 1792606672422,
+     "lastSeen": 1792801240051,
+     "m": {
+      "week": "2026-10-23",
+      "users": 234845
+     },
+     "ai": {
+      "why": "ditto氛围版，K-pop原曲热度+氛围化改编",
+      "use": "AI翻唱/氛围MV",
+      "v": 2,
+      "checked": 1
+     }
+    }
+   ]
+  },
+  "B站": {
+   "热歌榜": [
+    {
+     "id": "bili:B站热歌榜:MA497368165664193113",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "新·与天齐",
+     "url": "https://www.bilibili.com/video/BV1zfcoeXEnL",
+     "author": "指尖笑",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/877775d13aa194304a08f5363a21c152.jpg",
+     "desc": "代表稿件：【新·与天齐】我命此生不渝 由我不由天，坐看这世道沧海桑田。",
+     "heat": 2930843,
+     "rank": 1,
+     "peakRank": 1,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "国风燃曲+我命由我不由天式热血文案，B站双榜登顶",
+      "use": "AI国风MV/热血混剪卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA642455038903475048",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "FIRESTARTER",
+     "url": "https://www.bilibili.com/video/BV1j5nj68E48",
+     "author": "K/DA,Mimi Webb,Sophie Powers,i-dle,曺薇娟 (MIYEON),田小娟 (SOYEON),英雄联盟",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/af911161c34918c08ff75884e1fdcf07.jpg",
+     "desc": "代表稿件：【英雄联盟】K/DA官方MV - “FIRESTARTER（燃）”正式上线",
+     "heat": 2245461,
+     "rank": 2,
+     "peakRank": 2,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "英雄联盟K/DA官方新MV上线，游戏IP自带流量",
+      "use": "AI虚拟女团MV/燃向卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA640033680777043825",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "雨爱",
+     "url": "https://www.bilibili.com/video/BV1mmJt6kEYW",
+     "author": "杨丞琳",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/670c2c5de34749f3bd3ac0adae41b105.jpg",
+     "desc": "代表稿件：真让她成气候了？这可能是全网最通透的⚡️‌雨 爱⚡️‌！",
+     "heat": 2142473,
+     "rank": 3,
+     "peakRank": 3,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 3
+     },
+     "ai": {
+      "why": "杨丞琳经典，B站Hi-res试听稿带动翻红",
+      "use": "AI翻唱/情绪剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA407125738060296474",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "朋友的酒",
+     "url": "https://www.bilibili.com/video/BV1HKWA6uEfZ",
+     "author": "李晓杰,玉萨",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/b1a4b952e76554069407c31d9b9819e4.jpg",
+     "desc": "代表稿件：【朋友的酒通透版】|“【通透の小曲】”",
+     "heat": 1860017,
+     "rank": 4,
+     "peakRank": 1,
+     "label": "↓3",
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 1
+     },
+     "ai": {
+      "why": "DJ版老歌，B站鬼畜和通透感梗视频带火",
+      "use": "AI鬼畜/卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA480115070962027904",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "海屿你",
+     "url": "https://www.bilibili.com/video/BV1oPGV6cEt5",
+     "author": "马也_Crabbit",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/fc468536f54e04ca526386b58ab64d95.jpg",
+     "desc": "代表稿件：【AI三角洲全干员】《海屿你》这回忆的漩涡，快要把我吞没",
+     "heat": 1040583,
+     "rank": 5,
+     "peakRank": 4,
+     "label": "↓1",
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 4
+     },
+     "ai": {
+      "why": "被AI三角洲干员二创带火，游戏圈传播",
+      "use": "AI MV/游戏二创",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA487501277299794131",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "We Never",
+     "url": "https://www.bilibili.com/video/BV1b7KK62EGw",
+     "author": "Hi Noise",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/a1a5df6a8b685b6ad1ccfd1bec404342.jpg",
+     "desc": "代表稿件：火柴人新手教学1.0",
+     "heat": 932127,
+     "rank": 6,
+     "peakRank": 6,
+     "label": "↑14",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 20
+     },
+     "ai": {
+      "why": "被火柴人教学类视频当BGM，节奏感强易传播",
+      "use": "火柴人/动画类卡点剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA406537173190327798",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "You",
+     "url": "https://www.bilibili.com/video/BV16L41117ZM",
+     "author": "Approaching Nirvana",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/9aab0a02423feabcfec137ccb0248284.jpg",
+     "desc": "代表稿件：“仿佛往事浮现脑海”—《Komorebi》",
+     "heat": 928236,
+     "rank": 7,
+     "peakRank": 7,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "治愈系纯音乐，常配风景情绪向视频",
+      "use": "AI风景MV/情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA575498206327094430",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "Montagem Nada Tropica",
+     "url": "https://www.bilibili.com/video/BV1u2Hk6tEA1",
+     "author": "Eternxlkz",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/c8a21be90d7f666fefcd27be649c0676.jpg",
+     "desc": "代表稿件：选手们的招牌动作",
+     "heat": 924294,
+     "rank": 8,
+     "peakRank": 8,
+     "label": "↑9",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 17
+     },
+     "ai": {
+      "why": "巴西放克风魔性节奏，被体育/动作类剪辑当BGM",
+      "use": "运动高光卡点/变装",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA602317721987742010",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "琵琶曲",
+     "url": "https://www.bilibili.com/video/BV1s5ab6ME9G",
+     "author": "冰洁,郑浩Z-Hao",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/cdfca578042b44ce0e6be6179299aeb1.jpg",
+     "desc": "代表稿件：强者对决，但是《琵琶曲》",
+     "heat": 881771,
+     "rank": 9,
+     "peakRank": 9,
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 9
+     },
+     "ai": {
+      "why": "琵琶元素配鬼畜梗，木头人梗视频带火",
+      "use": "AI鬼畜/卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站热歌榜:MA406539306346257074",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站热歌榜",
+     "title": "绿色",
+     "url": "https://www.bilibili.com/video/BV1eu4y1y7ZG",
+     "author": "陈雪凝",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/8c4848b285ff26ed8d65d7692b505d26.jpg",
+     "desc": "代表稿件：【Hi-Res无损】陈雪凝《绿色》“若不是你突然闯进我生活 我怎会把死守的寂寞放任了”| 音乐可视化 | 动态歌词",
+     "heat": 856534,
+     "rank": 10,
+     "peakRank": 2,
+     "label": "↓8",
+     "daysSeen": 3,
+     "firstSeen": 1792609834094,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 2
+     },
+     "ai": {
+      "why": "老歌翻红，歌词梗被短视频当BGM二次传播",
+      "use": "AI翻唱/情绪剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    }
+   ],
+   "飙升榜": [
+    {
+     "id": "bili:B站飙升榜:MA497368165664193113",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "新·与天齐",
+     "url": "https://www.bilibili.com/video/BV1zfcoeXEnL",
+     "author": "指尖笑",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/877775d13aa194304a08f5363a21c152.jpg",
+     "desc": "代表稿件：【新·与天齐】我命此生不渝 由我不由天，坐看这世道沧海桑田。",
+     "heat": 2930843,
+     "rank": 1,
+     "peakRank": 1,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "国风燃曲+我命由我不由天式热血文案，B站双榜登顶",
+      "use": "AI国风MV/热血混剪卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA642455038903475048",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "FIRESTARTER",
+     "url": "https://www.bilibili.com/video/BV1j5nj68E48",
+     "author": "K/DA,Mimi Webb,Sophie Powers,i-dle,曺薇娟 (MIYEON),田小娟 (SOYEON),英雄联盟",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/af911161c34918c08ff75884e1fdcf07.jpg",
+     "desc": "代表稿件：【英雄联盟】K/DA官方MV - “FIRESTARTER（燃）”正式上线",
+     "heat": 2245461,
+     "rank": 2,
+     "peakRank": 2,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "英雄联盟K/DA官方新MV上线，游戏IP自带流量",
+      "use": "AI虚拟女团MV/燃向卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA406537173190327798",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "You",
+     "url": "https://www.bilibili.com/video/BV16L41117ZM",
+     "author": "Approaching Nirvana",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/9aab0a02423feabcfec137ccb0248284.jpg",
+     "desc": "代表稿件：“仿佛往事浮现脑海”—《Komorebi》",
+     "heat": 928236,
+     "rank": 3,
+     "peakRank": 3,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "治愈系纯音乐，常配风景情绪向视频",
+      "use": "AI风景MV/情绪向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA409251429497235806",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "Bye Bye Beautiful",
+     "url": "https://www.bilibili.com/video/BV1mJ411379w",
+     "author": "Nightwish",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/429d1995b1a3062544d0be5636ed46f5.jpg",
+     "desc": "代表稿件：【斑爷/忍体幻/高燃盛宴】绝望吧！这就是宇智波斑！神的力量！",
+     "heat": 696467,
+     "rank": 4,
+     "peakRank": 4,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "Nightwish燃系战歌，被火影斑高燃剪辑带火",
+      "use": "动漫高燃混剪卡点",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA638156673734692178",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "嘉豪",
+     "url": "https://www.bilibili.com/video/BV1L1Yr6bExW",
+     "author": "崔乐",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/aae2a8893d5b4fd5ec095f3b6a7dcbe3.jpg",
+     "desc": "代表稿件：北电表演系全国第一，竟然是嘉豪 崔乐《嘉豪》|CDC LIVE",
+     "heat": 635581,
+     "rank": 5,
+     "peakRank": 5,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "北电第一话题人物崔乐作品，人设梗带热度",
+      "use": "AI翻唱/人物向剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA627429478238301366",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "啥也不好",
+     "url": "https://www.bilibili.com/video/BV1Mopu6vEg7",
+     "author": "M.R.Y麦尔彦",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/33c0d5f190f78554ef72f6af5c229998.jpg",
+     "desc": "代表稿件：\"JOJO史上上限最高的替身之一！\"",
+     "heat": 625378,
+     "rank": 6,
+     "peakRank": 6,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "被JOJO替身盘点类视频当BGM，二次元圈传播",
+      "use": "动漫燃向卡点剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA421978496756106732",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "Vision",
+     "url": "https://www.bilibili.com/video/BV1xK4y147WP",
+     "author": "Lost Sky",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/23420801f066440d7427d069e991498e.jpg",
+     "desc": "代表稿件：Lost Sky - Vision [NCS Release]",
+     "heat": 610794,
+     "rank": 7,
+     "peakRank": 7,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "NCS电子曲，常被游戏/剪辑类视频当BGM",
+      "use": "游戏高光卡点/混剪",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA406620512769296752",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "情非得已",
+     "url": "https://www.bilibili.com/video/BV1dj411t7Fy",
+     "author": "庾澄庆",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/17a30547f782e21c7d9a8de3af202ac1.jpg",
+     "desc": "代表稿件：在百万豪装录音棚大声听 流星花园ost 庾澄庆《情非得已》【Hi-res】",
+     "heat": 585472,
+     "rank": 8,
+     "peakRank": 8,
+     "label": "新",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 0
+     },
+     "ai": {
+      "why": "流星花园OST经典老歌，无损试听怀旧翻红",
+      "use": "AI翻唱/青春怀旧剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA487501277299794131",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "We Never",
+     "url": "https://www.bilibili.com/video/BV1b7KK62EGw",
+     "author": "Hi Noise",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/a1a5df6a8b685b6ad1ccfd1bec404342.jpg",
+     "desc": "代表稿件：火柴人新手教学1.0",
+     "heat": 932127,
+     "rank": 9,
+     "peakRank": 9,
+     "label": "↑14",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 20
+     },
+     "ai": {
+      "why": "被火柴人教学类视频当BGM，节奏感强易传播",
+      "use": "火柴人/动画类卡点剪辑",
+      "v": 2,
+      "checked": 1
+     }
+    },
+    {
+     "id": "bili:B站飙升榜:MA575498206327094430",
+     "cat": "music",
+     "src": "bilibili",
+     "board": "B站飙升榜",
+     "title": "Montagem Nada Tropica",
+     "url": "https://www.bilibili.com/video/BV1u2Hk6tEA1",
+     "author": "Eternxlkz",
+     "cover": "https://i0.hdslb.com/bfs/station_src/music_metadata/c8a21be90d7f666fefcd27be649c0676.jpg",
+     "desc": "代表稿件：选手们的招牌动作",
+     "heat": 924294,
+     "rank": 10,
+     "peakRank": 10,
+     "label": "↑9",
+     "daysSeen": 2,
+     "firstSeen": 1792759581398,
+     "lastSeen": 1792801240051,
+     "m": {
+      "period": 228,
+      "lastRank": 17
+     },
+     "ai": {
+      "why": "巴西放克风魔性节奏，被体育/动作类剪辑当BGM",
+      "use": "运动高光卡点/变装",
+      "v": 2,
+      "checked": 1
+     }
+    }
+   ]
+  }
+ },
+ "news": [
+  {
+   "title": "月之暗面发布 Kimi K3.1 Pro 三万级模型",
+   "summary": "国产模型编程智能体测评超 GPT-6，做编程/Agent 实测对比视频的最佳窗口期。",
+   "kind": "新模型",
+   "level": "重磅",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/017/291.htm",
+     "title": "IT早报 1024：月之暗面发布 Kimi K3.1 Pro；诋毁嘲讽尊界 S800 自媒体博主向尊界道歉；华为 Pura90 Plus 开启预订；iPhone Duo 内屏膜撕下秒变亮面屏...",
+     "url": "https://www.ithome.com/1/017/291.htm",
+     "src": "IT之家"
+    },
+    {
+     "id": "news:https://www.ithome.com/1/017/284.htm",
+     "title": "Kimi K3.1 Pro 正式发布：月之暗面最强 3 万亿级模型，编程智能体测评超 GPT-6",
+     "url": "https://www.ithome.com/1/017/284.htm",
+     "src": "IT之家"
+    },
+    {
+     "id": "news:hn:50213337",
+     "title": "Kimi K3.1 scores 55 on Artificial Analysis, placed on the Pareto line",
+     "url": "https://artificialanalysis.ai/models/kimi-k3-1-pro",
+     "src": "Hacker News"
+    },
+    {
+     "id": "news:hn:50212065",
+     "title": "Kimi K3.1 Pro and K3.1 Pro Highspeed",
+     "url": "https://www.kimi.ai/blog/kimi-k3-1-pro",
+     "src": "Hacker News"
+    },
+    {
+     "id": "news:https://www.ithome.com/1/017/098.htm",
+     "title": "月之暗面公布 Kimi K3.1 预热视频，发布日期暂未官宣",
+     "url": "https://www.ithome.com/1/017/098.htm",
+     "src": "IT之家"
+    }
+   ]
+  },
+  {
+   "title": "OpenAI 前沿模型训练全面断网",
+   "summary": "官方承认实时联网训练有越狱风险，AI 安全话题可做深度解读，也影响模型能力预期。",
+   "kind": "行业大事件",
+   "level": "重磅",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/017/289.htm",
+     "title": "OpenAI 为前沿 AI 训练 / 评估开启“断网闭关”模式，遏制其越狱攻击",
+     "url": "https://www.ithome.com/1/017/289.htm",
+     "src": "IT之家"
+    },
+    {
+     "id": "news:https://www.ithome.com/1/017/287.htm",
+     "title": "“行为难以预测”存在安全隐患，OpenAI 将不再在实时互联网上训练模型",
+     "url": "https://www.ithome.com/1/017/287.htm",
+     "src": "IT之家"
+    },
+    {
+     "id": "news:https://techcrunch.com/2026/10/23/openai-says-it-will-no-longer-train-its-ai-models-on-the-live-internet-citing-significant-risks/",
+     "title": "OpenAI says it will no longer train its AI models on the live internet, citing “significant risks”",
+     "url": "https://techcrunch.com/2026/10/23/openai-says-it-will-no-longer-train-its-ai-models-on-the-live-internet-citing-significant-risks/",
+     "src": "TechCrunch"
+    },
+    {
+     "id": "news:https://www.theverge.com/ai-artificial-intelligence/1018021/openai-training-top-ai-models-no-internet",
+     "title": "OpenAI now trains its frontier AI models with no internet access",
+     "url": "https://www.theverge.com/ai-artificial-intelligence/1018021/openai-training-top-ai-models-no-internet",
+     "src": "The Verge"
+    },
+    {
+     "id": "news:https://openai.com/index/securing-our-frontier-model-training-environment",
+     "title": "Securing our frontier model training environment",
+     "url": "https://openai.com/index/securing-our-frontier-model-training-environment",
+     "src": "OpenAI"
+    }
+   ]
+  },
+  {
+   "title": "DeepSeek 完成千亿元新一轮融资",
+   "summary": "联想系入局，国产大模型资本格局变化，适合做行业盘点与国产模型前景分析。",
+   "kind": "融资并购",
+   "level": "重磅",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/016/875.htm",
+     "title": "DeepSeek 完成千亿元人民币新一轮融资，消息称“联想系”投资者入局",
+     "url": "https://www.ithome.com/1/016/875.htm",
+     "src": "IT之家"
+    }
+   ]
+  },
+  {
+   "title": "OpenAI 拟 1.25 万亿美元估值融 300 亿",
+   "summary": "IPO 前巨额融资，AI 泡沫与资本叙事是天然的高播放选题。",
+   "kind": "融资并购",
+   "level": "重磅",
+   "refs": [
+    {
+     "id": "news:https://techcrunch.com/2026/10/22/openai-working-on-new-30b-raise-at-1-25t-valuation-ahead-of-ipo/",
+     "title": "OpenAI working on new $30B raise at $1.25T valuation ahead of IPO",
+     "url": "https://techcrunch.com/2026/10/22/openai-working-on-new-30b-raise-at-1-25t-valuation-ahead-of-ipo/",
+     "src": "TechCrunch"
+    }
+   ]
+  },
+  {
+   "title": "字节火山引擎发布 Seedance 2.5 4K 模型",
+   "summary": "面向影视级画面生成，视频创作者可第一时间做 4K 生成效果实测。",
+   "kind": "新模型",
+   "level": "重磅",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/017/078.htm",
+     "title": "字节火山引擎发布 Seedance 2.5 4K 模型，面向影视级画面生成",
+     "url": "https://www.ithome.com/1/017/078.htm",
+     "src": "IT之家"
+    }
+   ]
+  },
+  {
+   "title": "Canva 发布首个自研图像生成模型",
+   "summary": "先规划再生成的设计思路，适合做「设计工具自带 AI」对比测评。",
+   "kind": "新模型",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:https://www.theverge.com/ai-artificial-intelligence/1017151/canva-craft-in-house-ai-model",
+     "title": "Canva’s first AI image model plans designs before generating them",
+     "url": "https://www.theverge.com/ai-artificial-intelligence/1017151/canva-craft-in-house-ai-model",
+     "src": "The Verge"
+    },
+    {
+     "id": "news:https://techcrunch.com/2026/10/22/canva-releases-its-first-image-generation-model/",
+     "title": "Canva releases its first image generation model",
+     "url": "https://techcrunch.com/2026/10/22/canva-releases-its-first-image-generation-model/",
+     "src": "TechCrunch"
+    }
+   ]
+  },
+  {
+   "title": "OpenAI 开放决策 API，输入价极低",
+   "summary": "每百万 token 仅 0.1 美元，做 Agent/决策类应用的成本演示很有说服力。",
+   "kind": "产品功能",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/016/771.htm",
+     "title": "OpenAI 宣布全面开放决策 API：基于 GPT‑6 Luna，每百万 token 输入 0.1 美元",
+     "url": "https://www.ithome.com/1/016/771.htm",
+     "src": "IT之家"
+    },
+    {
+     "id": "news:https://techcrunch.com/2026/10/22/openai-makes-its-jev-competitor-widely-available-as-decision-model-competition-heats-up/",
+     "title": "OpenAI makes its Jev competitor widely available as decision model competition heats up",
+     "url": "https://techcrunch.com/2026/10/22/openai-makes-its-jev-competitor-widely-available-as-decision-model-competition-heats-up/",
+     "src": "TechCrunch"
+    },
+    {
+     "id": "news:https://openai.com/index/decisions-api",
+     "title": "Build more responsive apps with the Decisions API",
+     "url": "https://openai.com/index/decisions-api",
+     "src": "OpenAI"
+    }
+   ]
+  },
+  {
+   "title": "微软 MAI-DxO 医疗诊断准确率 83%",
+   "summary": "成果登《科学》，「AI 看病超过医生」是大众向高传播话题。",
+   "kind": "研究论文",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/016/765.htm",
+     "title": "微软推出 AI 医疗诊断系统 MAI-DxO：复杂病例准确率达 83%，成果登《科学》",
+     "url": "https://www.ithome.com/1/016/765.htm",
+     "src": "IT之家"
+    },
+    {
+     "id": "news:https://techcrunch.com/2026/10/22/microsofts-mustafa-suleyman-says-its-ai-outperforms-doctors-on-hard-cases-as-he-chases-medical-superintelligence/",
+     "title": "Microsoft’s Mustafa Suleyman says its AI outperforms doctors on hard cases as he chases ‘medical superintelligence’",
+     "url": "https://techcrunch.com/2026/10/22/microsofts-mustafa-suleyman-says-its-ai-outperforms-doctors-on-hard-cases-as-he-chases-medical-superintelligence/",
+     "src": "TechCrunch"
+    }
+   ]
+  },
+  {
+   "title": "1Password 让智能体代你登录不碰密码",
+   "summary": "解决 AI 代操作账号的授权痛点，可做 Agent 落地场景科普。",
+   "kind": "产品功能",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/016/772.htm",
+     "title": "让你安心用 AI 网购 / 订票 / 点外卖：1Password 推出智能体密码授权功能",
+     "url": "https://www.ithome.com/1/016/772.htm",
+     "src": "IT之家"
+    },
+    {
+     "id": "news:https://techcrunch.com/2026/10/22/1password-launches-a-way-for-ai-agents-to-log-in-on-your-behalf-without-seeing-your-password/",
+     "title": "1Password launches a way for AI agents to log in on your behalf without seeing your password",
+     "url": "https://techcrunch.com/2026/10/22/1password-launches-a-way-for-ai-agents-to-log-in-on-your-behalf-without-seeing-your-password/",
+     "src": "TechCrunch"
+    }
+   ]
+  },
+  {
+   "title": "谷歌 ACE 给 AI 智能体配独立工位",
+   "summary": "智能体空闲自动休眠、唤醒不到 500ms，适合讲 Agent 基础设施演进。",
+   "kind": "产品功能",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/016/853.htm",
+     "title": "谷歌推出 ACE 服务：为 AI 智能体配“独立工位”，空闲时自动下班 / 唤醒不到 500 毫秒",
+     "url": "https://www.ithome.com/1/016/853.htm",
+     "src": "IT之家"
+    }
+   ]
+  },
+  {
+   "title": "Anthropic 捐赠 Agent Skills 开放标准",
+   "summary": "智能体「说明书」转社区共治，做 Agent 教程的博主可跟进生态动向。",
+   "kind": "行业大事件",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/016/811.htm",
+     "title": "AI 智能体的“说明书”转为社区共治：Anthropic 捐赠 Agent Skills 开放标准",
+     "url": "https://www.ithome.com/1/016/811.htm",
+     "src": "IT之家"
+    }
+   ]
+  },
+  {
+   "title": "国内首部 AI 院线长片上映首日 12.5 万",
+   "summary": "AI 长片进院线但票房惨淡，是「AI 影视能不能打」的现成案例。",
+   "kind": "行业大事件",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/017/123.htm",
+     "title": "国内首部 AI 院线长片《三星堆：未来往事》上映，首日票房超 12.5 万元",
+     "url": "https://www.ithome.com/1/017/123.htm",
+     "src": "IT之家"
+    }
+   ]
+  },
+  {
+   "title": "国务院发文缓减 AI 就业替代影响",
+   "summary": "政策明确要放大 AI 就业正面效应，就业焦虑类选题有了官方口径。",
+   "kind": "政策监管",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:https://www.ithome.com/1/017/113.htm",
+     "title": "国务院办公厅：积极增强人工智能创造就业机会等正面效应，有效减缓人工智能应用就业替代影响",
+     "url": "https://www.ithome.com/1/017/113.htm",
+     "src": "IT之家"
+    }
+   ]
+  },
+  {
+   "title": "瑞典政府机构将禁用 ChatGPT 和 Claude",
+   "summary": "政府级禁用案例，可做各国 AI 监管态度对比盘点。",
+   "kind": "政策监管",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "news:hn:50207405",
+     "title": "Swedish government offices to ban ChatGPT and Claude",
+     "url": "https://www.sverigesradio.se/artikel/chat-gpt-och-claude-forbjuder-regeringskansliet",
+     "src": "Hacker News"
+    }
+   ]
+  },
+  {
+   "title": "HF 热榜：DeepSeek-V4.1-Flash 与 FLUX 3 图像模型",
+   "summary": "新模型下载量领跑，做本地部署/出图实测的选题素材现成。",
+   "kind": "新模型",
+   "level": "值得关注",
+   "refs": [
+    {
+     "id": "hf:deepseek-ai/DeepSeek-V4.1-Flash-1017",
+     "title": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+     "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017",
+     "src": "Hugging Face"
+    },
+    {
+     "id": "hf:black-forest-labs/flux-3-image-klein-comfy",
+     "title": "black-forest-labs/flux-3-image-klein-comfy",
+     "url": "https://huggingface.co/black-forest-labs/flux-3-image-klein-comfy",
+     "src": "Hugging Face"
+    },
+    {
+     "id": "hf:dealignai/DeepSeek-V4.1-Flash-1017-UNCENSORED-FP8",
+     "title": "dealignai/DeepSeek-V4.1-Flash-1017-UNCENSORED-FP8",
+     "url": "https://huggingface.co/dealignai/DeepSeek-V4.1-Flash-1017-UNCENSORED-FP8",
+     "src": "Hugging Face"
+    }
+   ]
+  }
+ ]
+}
