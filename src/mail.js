@@ -80,7 +80,9 @@ export function render(d, { siteUrl, archive = false } = {}) {
     const side = (p) => {
       const mv = p.main;
       if (!mv?.url) return '';
-      const img = mv.cover ? (mv.src === 'bilibili' && /hdslb\.com/.test(mv.cover) && !mv.cover.includes('@') ? `${mv.cover}@320w_200h_1c.jpg` : mv.cover) : '';
+      // 邮件客户端（QQ 邮箱等）显示不了 webp / heic，这种封面不放图，直接给「看视频」链接，免得一片空白
+      const raw = mv.cover && !/\.(webp|heic)(\?|$)/i.test(mv.cover) ? mv.cover : '';
+      const img = raw ? (mv.src === 'bilibili' && /hdslb\.com/.test(raw) && !raw.includes('@') ? `${raw}@320w_200h_1c.jpg` : raw) : '';
       return `<td class="pc" valign="top">${a(mv.url, img ? `<img src="${esc(img)}" width="104" alt="">` : '<span class="up">▶ 看视频</span>')}<div class="m c">${img ? '▶ ' : ''}主要依据</div></td>`;
     };
     return `<div class="bx bx-${k}"><div class="bh bh-${k}">${PLATFORM[s]} · 今日选题 ${list.length} 个</div>${list.map((p, i) => `

@@ -20,8 +20,12 @@ export function aiLabel(a) {
 }
 
 export const hashtags = (a) => (a.text_extra || []).map((t) => t.hashtag_name).filter(Boolean);
-// 封面：url_list 里有时是 heic 格式（苹果的图片格式，Chrome / Edge 显示不了），挑浏览器能显示的那个
-export const coverOf = (a) => [...(a?.video?.cover?.url_list || []), ...(a?.video?.origin_cover?.url_list || [])].find((u) => u && !/\.heic/i.test(u)) || '';
+// 封面：url_list 里同一张图有几种格式。heic 浏览器显示不了；webp 浏览器能显示，但 QQ 邮箱等邮件客户端显示不了（邮件里是空白）
+// 所以优先 jpeg / png，其次 webp，不要 heic
+export const coverOf = (a) => {
+  const list = [...(a?.video?.cover?.url_list || []), ...(a?.video?.origin_cover?.url_list || [])].filter((u) => u && !/\.heic/i.test(u));
+  return list.find((u) => !/\.webp/i.test(u)) || list[0] || '';
+};
 // 文案去掉 #话题 和 @，留下正文当标题
 export const plain = (desc = '') => clean(desc.replace(/#\S+/g, ' ').replace(/@\S+/g, ' ')) || clean(desc);
 

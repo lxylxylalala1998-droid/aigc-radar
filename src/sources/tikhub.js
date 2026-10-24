@@ -67,7 +67,8 @@ function toItem(x, label, a, c = {}) {
     title: plain(title || '').slice(0, 80) || '（无文案）',
     url: `https://www.douyin.com/video/${x.item_id}`,
     author: x.nick_name || a?.author?.nickname || '',
-    cover: coverOf(a) || (c.cv && !/\.heic/i.test(c.cv) ? c.cv : '') || x.item_cover_url || undefined, // 约 14 天有效
+    // 热点宝榜单自带的封面是 jpeg、每天刷新，邮件里也能显示，优先用；其次详情里的（已挑过 jpeg）、上次记下的
+    cover: x.item_cover_url || coverOf(a) || (c.cv && !/\.heic/i.test(c.cv) ? c.cv : '') || undefined, // 约 14 天有效
     heat: like,
     pubAt: (x.publish_time || a?.create_time || 0) * 1000 || idTime(x.item_id),
     tags: (a ? hashtags(a) : (x.item_title || '').match(/#([^#\s]+)/g)?.map((t) => t.slice(1)) || []).slice(0, 8).join(','),
