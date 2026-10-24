@@ -27,7 +27,7 @@ const withCovers = (picks) => (!picks || Array.isArray(picks) ? picks : Object.f
   const hit = coverIdx.get(mv.url);
   return { ...p, main: { url: mv.url, src: hit?.src || mv.src || s, title: mv.title || hit?.title, heat: hit?.heat ?? mv.heat, cover: [hit?.cover, mv.cover].find(okCover) } };
 })])));
-const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: withCovers(d.picks), news: d.news, trendKeywords: d.trendKeywords || [], gaps: d.gaps, review: d.review, brief: d.brief });
+const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: withCovers(d.picks), news: d.news, trendKeywords: d.trendKeywords || [], gaps: d.gaps, review: d.review, brief: d.brief, rising: d.rising });
 
 function digestsIn(days, now) {
   const out = [];
@@ -105,7 +105,7 @@ const leanTrend = (x) => ({
 const leanSong = (x) => ({ ...keep(x, ['src', 'board', 'title', 'author', 'url', 'rank', 'peakRank', 'label', 'daysSeen']), ai: keep(x.ai, ['why', 'use']) });
 const leanNews = (x) => ({ ...keep(x, ['src', 'title', 'url', 'pubAt', 'firstSeen', 'heat', 'board']), ...(x.board === 'HF 热门模型' && x.desc ? { desc: x.desc } : {}), ai: keep(x.ai, ['level', 'kind']) });
 // 一份日报在网页上要用的部分（选题区）
-const pickPart = (g) => (g ? keep(g, ['date', 'generatedAt', 'ai', 'picks', 'gaps', 'review', 'brief']) : undefined);
+const pickPart = (g) => (g ? keep(g, ['date', 'generatedAt', 'ai', 'picks', 'gaps', 'review', 'brief', 'rising']) : undefined);
 
 // base：不带 .json 的路径。写出 base.json（核心）+ base.v / .t / .m / .n.json（各板块），返回总字节数
 function writeSplit(base, w) {

@@ -181,7 +181,7 @@
         ${target ? `<a class="pm-cover th ph ${s}" href="${esc(target.url)}" target="_blank" rel="noopener" title="${esc(`${mv ? '主要依据：' : ''}${target.title}`)}">${inner}</a>` : `<div class="pm-cover th ph ${s}">${inner}</div>`}
         <div class="pm-body">
           <h3>${esc(p.title)}</h3>
-          <div class="tags">${tag(p.horizon, 'line')}${p.timing ? `<span class="tag ${TIMING_CLS[p.timing.label] ?? ''}" title="${esc(p.timing.basis)}" data-tip="时效依据：${esc(p.timing.basis)}">${esc(p.timing.label)}</span>` : ''}${p.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${p.form === '系列' ? tag('系列追更') : ''}${p.level ? tag(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}</div>
+          <div class="tags">${tag(p.horizon, 'line')}${p.timing ? `<span class="tag ${TIMING_CLS[p.timing.label] ?? ''}" title="${esc(p.timing.basis)}" data-tip="时效依据：${esc(p.timing.basis)}">${esc(p.timing.label)}</span>` : ''}${p.repeat ? `<span class="tag line" data-tip="前几天推荐过，但还在加速涨，今天新题材不够所以继续推">连续推荐</span>` : ''}${p.kind === '教程测评' ? tag('教程测评', 'solid') : ''}${p.form === '系列' ? tag('系列追更') : ''}${p.level ? tag(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}</div>
           <p><span class="mk">为什么能火</span>${esc(p.why)}</p>
           <div class="pm-more">
             <p><span class="mk">怎么做</span>${esc(p.how)}</p>
@@ -207,6 +207,7 @@
         <header class="pbox-h"><h3>${PLAT[s]} · 今日选题</h3><span><b class="num">${list.length}</b> 个</span></header>
         ${list.length ? `<div class="pbox-list">${list.slice(0, 5).map((p, k) => item(p, k, s)).join('')}<div class="pbox-more ${open ? 'open' : ''}">${list.slice(5).map((p, k) => item(p, k + 5, s)).join('')}</div></div>
         ${list.length > 5 ? `<button class="more picks-toggle" data-picks="${s}">${open ? '收起' : `展开其余 ${list.length - 5} 个`}</button>` : ''}` : '<div class="none">这一天没有生成选题（AI 分析未开启或出错）</div>'}
+        ${dg.rising?.[s]?.length ? `<div class="pbox-rising"><span class="mk">前几天推过 · 还在涨</span>${dg.rising[s].map((r) => (r.url ? link(r.url, esc(r.title)) : esc(r.title))).join('<i>·</i>')}</div>` : ''}
       </section>`;
     };
     // 跨平台信息差：一个平台爆了、另一个平台还没人做的题材

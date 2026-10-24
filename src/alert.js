@@ -9,7 +9,7 @@ const OUTCOME = { success: '成功', failure: '失败', skipped: '没跑', cance
 const bjTime = () => new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }).format(Date.now());
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-function page(title, lines) {
+export function page(title, lines) {
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:16px 8px;background:#f5f6f8;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;color:#191c22">
 <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e6e8ec;border-left:4px solid #f0820f;border-radius:10px;padding:18px 20px">

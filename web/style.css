@@ -368,6 +368,11 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 
 .pbox .picks-toggle { display: none; }
 .pbox-more .pm:first-child { border-top: 1px solid var(--rule); }
+/* 选题框底部：前几天推过、还在涨的老题材，一行带过 */
+.pbox-rising { padding: 10px 18px 12px; border-top: 1px dashed var(--rule); font-size: 13px; line-height: 1.8; color: var(--ink-2); }
+.pbox-rising .mk { margin-right: 8px; }
+.pbox-rising a { color: var(--ink); }
+.pbox-rising i { font-style: normal; color: var(--ink-3); margin: 0 6px; }
 @media (max-width: 860px) {
   .pick-cols { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .pbox-more { display: none; }

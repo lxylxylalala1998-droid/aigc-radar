@@ -53,7 +53,10 @@ const items = (arr, fn) => arr.map((x, i) => `<div class="it">${fn(x, i)}</div>`
 const rk = (n) => `<span class="r ${n <= 3 ? 'top' : ''}">${n}</span>`;
 
 // archive：存成网页版往期日报时用，不显示「本次未采集到」、余额这类只对当时有意义的提醒，按钮改成回到网页看这天的完整数据
-export function render(d, { siteUrl, archive = false } = {}) {
+// compact：邮件快超过 Gmail 的 102KB 截断线时用的精简版，热搜 / 热歌 / 飙升等次要列表少放几条（完整版在网页）
+export const MAIL_LIMIT = 95 * 1024;
+export function render(d, { siteUrl, archive = false, compact = false } = {}) {
+  const L = compact ? { trend: 4, ch: 3, meme: 3, song: 2, low: 2, vel: 2 } : { trend: 6, ch: 5, meme: 5, song: 3, low: 3, vel: 3 };
   const site = siteUrl || process.env.SITE_URL || '';
   const parts = [];
 
@@ -87,12 +90,12 @@ export function render(d, { siteUrl, archive = false } = {}) {
     };
     return `<div class="bx bx-${k}"><div class="bh bh-${k}">${PLATFORM[s]} · 今日选题 ${list.length} 个</div>${list.map((p, i) => `
       <div class="bi"><table class="pkt" role="presentation"><tr><td valign="top">
-        <div class="t"><span class="bn bn-${k}">${String(i + 1).padStart(2, '0')}</span>${p.horizon ? b(p.horizon, 'ai') : ''}${esc(p.title)}</div>
+        <div class="t"><span class="bn bn-${k}">${String(i + 1).padStart(2, '0')}</span>${p.horizon ? b(p.horizon, 'ai') : ''}${p.repeat ? b('连续推荐') : ''}${esc(p.title)}</div>
         <div class="m">${p.kind === '教程测评' ? b('教程测评', 'hz') : ''}${p.form === '系列' ? b('系列追更') : ''}${p.level ? b(`难度${p.level}${p.time ? ` · ${p.time}` : ''}`) : ''}${p.timing ? `${b(p.timing.label, TIMING_B[p.timing.label] ?? '')}${esc(p.timing.basis)}` : ''}</div>
         ${an('为什么能火', p.why)}${an('怎么做', p.how)}${an(p.flow ? '工作流程' : '工具链', p.flow || p.tools)}${an('公式', p.formula)}
         ${p.risk ? `<div class="a rs"><b>⚠ 风险</b>${esc(p.risk)}</div>` : ''}
         ${(() => { const rest = (p.refs || []).filter((r) => r.url !== p.main?.url).slice(0, 2); return rest.length ? `<div class="refs">${rest.map((r) => a(r.url, `↗ ${esc(cut(r.title, 16))}`)).join(' ')}</div>` : ''; })()}
-      </td>${side(p)}</tr></table></div>`).join('')}</div>`;
+      </td>${side(p)}</tr></table></div>`).join('')}${d.rising?.[s]?.length ? `<div class="bi"><div class="m"><b style="color:#5b5bd6">前几天推过 · 还在涨：</b>${d.rising[s].map((r) => (r.url ? a(r.url, esc(cut(r.title, 18))) : esc(cut(r.title, 18)))).join('　')}</div></div>` : ''}</div>`;
   };
   // 跨平台信息差：一个平台爆了、另一个平台还没人做的题材（各 3 个）
   const gapBox = (list, from, to) => (list?.length ? `<div class="sub">${PLATFORM[from]}爆了 · ${PLATFORM[to]}还没人做</div>${list.slice(0, 3).map((x) => `<div class="gp">
@@ -120,7 +123,7 @@ export function render(d, { siteUrl, archive = false } = {}) {
     ${v.m?.bgm ? `<div class="m">♪ ${esc(cut(v.m.bgm, 30))}</div>` : ''}
     ${an('爆点', v.ai?.hook)}${an('参考', v.ai?.tip)}`;
   const vSection = (s, emoji, topTitle, topNote, velNote) => {
-    const html = [[`${s}Top`, topTitle, topNote, 10], [`${s}Low`, '低粉爆款 · 近 14 天', s === 'douyin' ? '作者粉丝不到 5 万、点赞过 10 万：小号也能做' : 'UP 主粉丝不到 3 万、播放过 30 万：小号也能做', 3], [s, '24 小时飙升', velNote, 3]]
+    const html = [[`${s}Top`, topTitle, topNote, 10], [`${s}Low`, '低粉爆款 · 近 14 天', s === 'douyin' ? '作者粉丝不到 5 万、点赞过 10 万：小号也能做' : 'UP 主粉丝不到 3 万、播放过 30 万：小号也能做', L.low], [s, '24 小时飙升', velNote, L.vel]]
       .filter(([k]) => vids[k]?.length)
       .map(([k, title, n, max]) => `<div class="sub">${title} ${note(n)}</div>` + items(vids[k].slice(0, max), (v) => vRow(v, s))).join('');
     if (html) parts.push(sec(`${emoji} ${PLATFORM[s]}热点`, `${PLATFORM[s]}上的 AIGC 爆款`, html));
@@ -131,17 +134,17 @@ export function render(d, { siteUrl, archive = false } = {}) {
   // 4. 热梗热搜：抖音 / B站 / 微博各自一张榜，再是抖音挑战、热梗精选（和网页同序）
   const tr = d.trends || {};
   // 邮件只放精简版（Gmail 超过 102KB 会截断），完整榜单在网页
-  const trendHtml = ['douyin', 'bilibili', 'weibo'].filter((s) => tr[s]?.length).map((s) => `<div class="sub">${pb(s)}${PLATFORM[s]}热搜 · 前 ${Math.min(6, tr[s].length)}</div>` + items(tr[s].slice(0, 6), (t, i) => `
+  const trendHtml = ['douyin', 'bilibili', 'weibo'].filter((s) => tr[s]?.length).map((s) => `<div class="sub">${pb(s)}${PLATFORM[s]}热搜 · 前 ${Math.min(L.trend, tr[s].length)}</div>` + items(tr[s].slice(0, L.trend), (t, i) => `
     <div class="tt">${rk(i + 1)}${a(t.url, esc(t.title))}${t.kind ? ` ${b(t.kind, 'warm')}` : ''}${t.ai?.tag ? ` ${b(t.ai.tag, 'ai')}` : ''}</div>
     ${t.ai?.why ? `<div class="a">${esc(t.ai.why)}</div>` : ''}`)).join('');
   const ch = d.challenges || [];
-  const chHtml = ch.length ? `<div class="sub">${pb('douyin')}抖音挑战 / 玩法 ${note('抖音热榜里官方归类为玩法的词条')}</div>` + items(ch.slice(0, 5), (t) => `
+  const chHtml = ch.length ? `<div class="sub">${pb('douyin')}抖音挑战 / 玩法 ${note('抖音热榜里官方归类为玩法的词条')}</div>` + items(ch.slice(0, L.ch), (t) => `
     <div class="tt">${b(t.kind, t.kind === '抖音挑战' ? 'warm' : 'ai')}${a(t.url, esc(t.title))}${t.rank ? ` <span class="m">热榜第 ${t.rank}</span>` : ''}</div>
     ${t.m?.fetched ? `<div class="m">参与视频里 ${t.m.aiVideos || 0}/${t.m.fetched} 条是 AI 做的</div>` : ''}
     ${an('为什么火', t.ai?.why)}${an('AI 跟拍', t.ai?.idea)}
     ${(t.top || []).slice(0, 1).map((v) => `<div class="m">${a(v.url, `❤ ${fmtNum(v.like)}　${v.ai ? b('AI', 'ai') : ''}${esc(cut(v.title || '（无文案）', 36))}`)}</div>`).join('')}`) : '';
   const memes = d.memes || [];
-  const memeHtml = memes.length ? `<div class="sub">热梗精选 ${note('AI 从三个平台里挑的热梗 / AI 相关 / 可借势')}</div>` + items(memes.slice(0, 5), (t) => `
+  const memeHtml = memes.length ? `<div class="sub">热梗精选 ${note('AI 从三个平台里挑的热梗 / AI 相关 / 可借势')}</div>` + items(memes.slice(0, L.meme), (t) => `
     <div class="tt">${b(t.ai.tag, t.ai.tag === '热梗' ? 'warm' : 'ai')}${a(t.url, esc(t.title))} ${pb(t.src)}</div>
     ${an('为什么火', t.ai.why)}${an('AI 做法', t.ai.idea)}`) : '';
   if (trendHtml || chHtml || memeHtml) parts.push(sec('😂 热梗热搜', '抖音 / B站 / 微博 / 抖音挑战 / 热梗精选', trendHtml + chHtml + memeHtml));
@@ -151,7 +154,7 @@ export function render(d, { siteUrl, archive = false } = {}) {
   const musicHtml = ['抖音', 'B站', 'QQ音乐', '网易云'].filter((p) => mu[p]).map((p) => ['热歌榜', '飙升榜'].filter((k) => mu[p][k]?.length).map((k) => {
     const src = mu[p][k][0].src;
     const weekly = p === '抖音' || p === 'B站' ? '（周榜）' : '';
-    return `<div class="sub">${pb(src)}${k}${weekly}</div>` + items(mu[p][k].slice(0, 3), (m) => `
+    return `<div class="sub">${pb(src)}${k}${weekly}</div>` + items(mu[p][k].slice(0, L.song), (m) => `
       <div class="tt">${rk(m.rank)}${a(m.url, esc(m.title))} <small>— ${esc(cut(m.author || '', 24))}</small>${m.label ? ` <span class="up">${esc(m.label)}</span>` : ''}</div>
       ${m.ai?.why ? `<div class="a">${esc(m.ai.why)}${m.ai.use ? `　<b>可以做</b>${esc(m.ai.use)}` : ''}</div>` : ''}`);
   }).join('')).join('');
@@ -252,8 +255,14 @@ export async function sendHtml(to, subj, html) {
   if (fails.length === to.length) throw new Error('全部发送失败');
 }
 
+// 超过 95KB 就发精简版（发信前自检也会提前算一遍）
+export function mailHtml(d) {
+  const full = render(d);
+  return Buffer.byteLength(full) > MAIL_LIMIT ? render(d, { compact: true }) : full;
+}
+
 export async function send(d) {
-  await sendHtml(recipients(), subject(d), render(d));
+  await sendHtml(recipients(), subject(d), mailHtml(d));
 }
 
 function latestDigest() {
@@ -271,7 +280,7 @@ if (isMain(import.meta.url)) {
     const d = latestDigest();
     if (args.includes('--dry')) {
       fs.mkdirSync(path.join(ROOT, 'out'), { recursive: true });
-      fs.writeFileSync(path.join(ROOT, 'out', 'mail.html'), render(d));
+      fs.writeFileSync(path.join(ROOT, 'out', 'mail.html'), mailHtml(d));
       console.log(`主题：${subject(d)}\n预览已写到 out/mail.html（${(fs.statSync(path.join(ROOT, 'out', 'mail.html')).size / 1024).toFixed(0)}KB）`);
       return;
     }

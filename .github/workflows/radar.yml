@@ -115,6 +115,12 @@ jobs:
         if: startsWith(steps.mode.outputs.mode, 'daily')
         run: node src/curate.js digest
 
+      # 发信前自检：能自动修的修好写回日报（比如邮件显示不了的封面），修不了的给管理员发报警；自检出错不影响发早报
+      - name: 发信前自检
+        id: check
+        if: startsWith(steps.mode.outputs.mode, 'daily')
+        run: node src/check.js
+
       - name: 周报
         id: weekly
         if: steps.mode.outputs.mode == 'weekly'

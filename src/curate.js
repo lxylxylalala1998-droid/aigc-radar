@@ -437,10 +437,12 @@ const PLATFORM_STYLE = {
 async function makePicks(blocks, s) {
   const name = PLATFORM[s];
   const r = await ask(`下面是${name}上 AIGC 相关的热点数据，按时间段分组（方括号里是编号）。
-请给出「今天最值得在${name}上做的 14 个选题」，按值得做的程度从高到低排：
+请给出「今天最值得在${name}上做的 16 个选题」，按值得做的程度从高到低排：
+- 【最近 3 天已经推荐过的选题】里的题材不要再出（同一条作品、同一个系列、换个说法的同一个题材都算），除非它有了明显的新进展；把位置留给新题材
+- 标了「时效:已饱和」的作品尽量不选，实在要选就排到最后；「时效:刚起势」的优先
 - 每个选题必须直接来自下面列出的某个具体作品或热点：refs 填的就是这个选题要参考的那几条（标题、内容要能对上），不要引用跟选题主题无关的素材凑数；下面没有对应作品的题材不要出。题材是 AIGC 内容，优先这几类：AI音乐、AI MV、AI歌手/艺人、AI鬼畜、AI影视、AI换人（比如让名人替换明星开演唱会），其次 AI 特效玩法、AI 整活；可以结合热梗、热歌借势
 - 选题要覆盖不同时间段：至少 3 个来自「24小时飙升」，至少 2 个来自「近3天爆款」，至少 2 个来自「本周热点」或「长期热点」
-- 一视同仁：14 个选题分散到不同作品、不同题材，同一个系列 / 同一种玩法最多出 1 个，不要因为某个题材热就反复出
+- 一视同仁：16 个选题分散到不同作品、不同题材，同一个系列 / 同一种玩法最多出 1 个，不要因为某个题材热就反复出
 - 选题分两类（kind）：「作品」= 自己做一条 AIGC 作品；「教程测评」= 教别人怎么做某类爆款，或测评新工具新模型。14 个里要有 1~2 个教程测评，并且至少 1 个排进前 10，来源：【新工具 / 新模型】、【爆款工具热度】里正在涨的工具、门槛低但数据好的爆款（教大家怎么做）；没有这些素材就不出
 - 标了「低粉爆款」的作品说明小号也能做，同等条件下优先；标了「分享率高 / 收藏率高 / 评论多」的，做法要顺着这个特点设计
 - 做法要贴合平台：${PLATFORM_STYLE[s]}
@@ -461,7 +463,7 @@ async function makePicks(blocks, s) {
 
 输出格式：{"picks":[{"title":"","kind":"","horizon":"","form":"","why":"","how":"","flow":"","level":"","time":"","formula":"","variants":[],"risk":"","refs":[]}]}
 
-${blocks}`, { maxTokens: 12000 });
+${blocks}`, { maxTokens: 14000 });
   return r.picks || [];
 }
 
@@ -538,7 +540,7 @@ function timing(refs, pool, now) {
   const similar = pool.filter((x) => !refs.some((r) => r.id === x.id) && sharePhrase(keyGrams(themeText(x)), g)).length;
   const label = similar >= 12 || (accel < 0.4 && ageD >= 5) ? '已饱和' : ageD <= 3 && similar <= 4 && accel >= 0.8 ? '刚起势' : '高峰期';
   const basis = [`最早的爆款${ageD < 1 ? '不到 1 天' : ` ${Math.round(ageD)} 天`}前`, `近 3 天同题材 AI 作品 ${similar} 条`, accel >= 1 ? '还在加速' : accel >= 0.5 ? '增速平稳' : '增速放缓'].join(' · ');
-  return { label, basis };
+  return { label, basis, accel: +accel.toFixed(2) };
 }
 
 // 跨平台信息差候选：from 平台近 7 天的 AIGC 爆款，在 to 平台近 30 天的 AI 稿件里找不到同题材的
@@ -627,6 +629,21 @@ async function makeBrief(picks, extra) {
 ${lines.join('\n')}
 
 ${extra}`, { maxTokens: 800 });
+}
+
+// 最近几天日报里推荐过的选题（今天之前），用来跨天去重：记下每个选题参考过的作品链接
+function recentPicks(now, days) {
+  const out = [];
+  for (let k = 1; k <= days; k++) {
+    const dg = readJSON(path.join(DATA, 'digests', `${bjDate(now - k * DAY)}.json`));
+    if (!dg?.picks || Array.isArray(dg.picks)) continue;
+    for (const s of ['douyin', 'bilibili']) {
+      for (const p of dg.picks[s] || []) {
+        out.push({ date: dg.date, src: s, title: p.title, urls: [p.main?.url, ...(p.refs || []).filter((r) => r.kind === 'video').map((r) => r.url)].filter(Boolean) });
+      }
+    }
+  }
+  return out;
 }
 
 // 取前 10 个选题；AI 出了教程测评但排在 10 名以后时，换掉第 10 个，保证至少有 1 个
@@ -754,9 +771,15 @@ export async function digest(now = Date.now()) {
   const toolNews = newsOut.filter((e) => ['新模型', '模型升级', '产品功能'].includes(e.kind)).slice(0, 6);
 
   // 抖音、B站各准备一份素材：只放本平台的作品 / 热搜 / 热歌，微博热梗两边都可以借势
+  // 时效判断用：近 3 天同平台的 AIGC 作品
+  const pool3 = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, all7.filter((x) => isWork(x) && x.src === s && x.pubAt > now - 3 * DAY)]));
+  // 最近 3 天推荐过的选题：告诉 AI 别再出，出了也按参考作品去重
+  const recent = recentPicks(now, 3);
+
   function platformBlocks(s) {
     const refs = {};
-    const vExtra = (x) => [toolsOf(x).length && `工具:${toolsOf(x).join('、')}`, lowFan(x) && '低粉爆款', ...portrait(x, med).filter((t) => t !== '低粉爆款')].filter(Boolean).join('｜');
+    // 每条作品先算好时效，让 AI 出选题时就知道哪些已经饱和
+    const vExtra = (x) => [(() => { const t = x.cat === 'video' && timing([x], pool3[s], now); return t && `时效:${t.label}`; })(), toolsOf(x).length && `工具:${toolsOf(x).join('、')}`, lowFan(x) && '低粉爆款', ...portrait(x, med).filter((t) => t !== '低粉爆款')].filter(Boolean).join('｜');
     const line = (code, x) => {
       refs[code] = x;
       const what = x.cat === 'video' ? `${typeOf(x)}｜${x.title}｜${stats(x)}${x.vel ? `｜每小时+${fmtNum(x.vel)}` : ''}${vExtra(x) ? `｜${vExtra(x)}` : ''}${x.ai.hook ? `｜爆点：${x.ai.hook}` : ''}`
@@ -795,6 +818,7 @@ export async function digest(now = Date.now()) {
 
       tn.length ? `【新工具 / 新模型】可以做首发测评、教程\n${tn.map((x, i) => line(`N${i}`, x)).join('\n')}` : '',
       tools.length ? `【爆款工具热度】近 7 天 AIGC 爆款里提到各工具的作品数（括号里是上 7 天）：${tools.slice(0, 10).map((t) => `${t.name} ${t.n}（${t.prev}）`).join('，')}` : '',
+      recent.some((r) => r.src === s) ? `【最近 3 天已经推荐过的选题】不要再出这些题材\n${[...new Set(recent.filter((r) => r.src === s).map((r) => `${r.date.slice(5)}｜${r.title}`))].join('\n')}` : '',
     ].filter(Boolean).join('\n\n');
     console.log(`${PLATFORM[s]}选题素材：24h ${h24.length}+热梗 ${pm.length}+挑战 ${pc.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lt.length}，30天 ${h30.length}，热歌 ${songs.length}，新工具 ${tn.length}`);
     return { blocks, refs };
@@ -827,14 +851,15 @@ export async function digest(now = Date.now()) {
     ((music[plat] ||= {})[kind] ||= []).length < 10 && music[plat][kind].push(slim(x, now));
   }
 
-  // 时效判断用：近 3 天同平台的 AIGC 作品
-  const pool3 = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, all7.filter((x) => isWork(x) && x.src === s && x.pubAt > now - 3 * DAY)]));
   const LEVELS = ['低', '中', '高'];
 
   // 今日选题：抖音 10 个、B站 10 个
-  // 每个平台 AI 出 14 个，参考对不上标题的删掉，一个都对不上的选题整条丢弃；同题材的只留一个，取前 10
+  // 每个平台 AI 出 16 个，参考对不上标题的删掉，一个都对不上的选题整条丢弃；同题材的只留一个
+  // 再跨天去重：和前 3 天推过的选题参考了同一条作品的，不占选题位——还在加速的放进「前几天推过、还在涨」，没在涨的直接去掉
+  // 剩下的「已饱和」排到后面，取前 10（新选题不够 10 个时，才用还在涨的老选题补，标上「连续推荐」）
   // 参考作品记下当时的热度，第二天复盘看它后来又涨了多少
-  const picks = Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, keepTutorial(dedupePicks(list.map((p) => {
+  const rising = {};
+  const built = Object.fromEntries([['douyin', dyPicks], ['bilibili', blPicks]].map(([s, list]) => [s, dedupePicks(list.map((p) => {
       const refs = (p.refs || []).map((c) => pb[s].refs[c]).filter(Boolean).filter((x) => related(p.title, x));
       if (!refs.length) return null;
       return {
@@ -847,7 +872,20 @@ export async function digest(now = Date.now()) {
         main: (({ url, cover, src, title, heat } = {}) => (url ? { url, cover, src, title, heat } : undefined))(refs.find((x) => x.cat === 'video')),
         refs: refs.map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url, id: x.id, heat: x.cat === 'video' ? x.heat : undefined })),
       };
-    }).filter(Boolean)))]));
+    }).filter(Boolean))]));
+  const picks = {};
+  for (const s of ['douyin', 'bilibili']) {
+    const seen = new Set(recent.filter((r) => r.src === s).flatMap((r) => r.urls));
+    const isRepeat = (p) => !!p.main?.url && seen.has(p.main.url); // 主要依据就是前几天推过的作品
+    const fresh = built[s].filter((p) => !isRepeat(p));
+    const repeats = built[s].filter(isRepeat).filter((p) => (p.timing?.accel ?? 0) >= 1); // 还在加速的老选题
+    const ordered = [...fresh.filter((p) => p.timing?.label !== '已饱和'), ...fresh.filter((p) => p.timing?.label === '已饱和')];
+    const top = keepTutorial(ordered);
+    while (top.length < 10 && repeats.length) top.push({ ...repeats.shift(), repeat: true });
+    picks[s] = top;
+    rising[s] = repeats.slice(0, 3).map((p) => ({ title: p.title, url: p.main?.url, cover: p.main?.cover, heat: p.main?.heat, timing: p.timing?.label }));
+    console.log(`${PLATFORM[s]}选题：AI 出 ${(s === 'douyin' ? dyPicks : blPicks).length} 个，去重后 ${built[s].length}，和前 3 天重复 ${built[s].length - fresh.length}（还在涨 ${built[s].filter(isRepeat).filter((p) => (p.timing?.accel ?? 0) >= 1).length}），最终 ${top.length}`);
+  }
 
   // ---- 3 分钟速览：从 20 个选题里挑今天最该做的 3 个 + 一句话风向，再配 1 个低粉爆款、1 个信息差 ----
   const review = reviewPicks(now, all7);
@@ -883,6 +921,7 @@ export async function digest(now = Date.now()) {
     date: bjDate(now), generatedAt: now, window: [since, now],
     ai: hasKey() ? DEEPSEEK_MODEL : null, errors,
     picks,
+    rising,
     brief,
     gaps,
     review,
