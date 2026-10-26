@@ -1,0 +1,25 @@
+{
+  "name": "aigc-radar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AIGC 热点雷达：每天采集 AI 圈大事件、AI 爆款稿件、热梗热搜、热歌，AI 点评后发邮件 + 网页查询",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "collect": "node src/collect.js",
+    "curate": "node src/curate.js",
+    "build": "node src/build.js",
+    "mail": "node src/mail.js",
+    "daily": "node src/collect.js && node src/curate.js && node src/build.js && node src/mail.js",
+    "serve": "node src/serve.js"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.2.0",
+    "nodemailer": "^7.0.0"
+  },
+  "devDependencies": {
+    "libsodium-wrappers": "^0.8.4"
+  }
+}

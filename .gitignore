@@ -1,0 +1,8 @@
+node_modules/
+.env
+*.log
+site/
+out/
+# 数据存在 data 分支，主分支只放代码
+data/
+.deploy.json

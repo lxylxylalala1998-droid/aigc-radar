@@ -1,0 +1,130 @@
+// 采集：跑所有数据源，合并进当天的数据文件 data/days/YYYY-MM-DD.json
+// 每条内容记录首次/最近出现时间、最高排名、热度曲线（用来算蹿升速度）
+import fs from 'node:fs';
+import path from 'node:path';
+import { DATA, DAY, bjDate, readJSON, writeJSON, loadEnv, isMain } from './util.js';
+import { KEEP_DAYS } from './config.js';
+import { weibo } from './sources/weibo.js';
+import { douyinHot, douyinMusic } from './sources/douyin.js';
+import { biliHot, biliAI, biliMusic } from './sources/bilibili.js';
+import { qqMusic, netease } from './sources/music.js';
+import { rss, hackerNews, hfTrending } from './sources/news.js';
+import { douyinAigc } from './sources/tikhub.js';
+import { xhsAigc } from './sources/xhs.js';
+
+export const SOURCES = [
+  { key: 'weibo', name: '微博热搜', fn: weibo },
+  { key: 'douyinHot', name: '抖音热榜+话题视频', fn: douyinHot },
+  { key: 'biliHot', name: 'B站热搜', fn: biliHot },
+  { key: 'biliAI', name: 'B站 AI 稿件', fn: (o) => biliAI({ long: o.daily }) },
+  // 付费源：超时也不能半路放弃（请求照样扣费），所以给足 10 分钟
+  { key: 'tikhub', name: '抖音高赞 AIGC（每天一次）', fn: (o) => douyinAigc({ daily: o.daily }), timeout: 600e3 },
+  { key: 'xhs', name: '小红书 AIGC + 热点（每天一次）', fn: (o) => xhsAigc({ daily: o.daily }), timeout: 600e3 },
+  { key: 'qqmusic', name: 'QQ音乐榜', fn: qqMusic },
+  { key: 'netease', name: '网易云音乐榜', fn: netease },
+  { key: 'douyinMusic', name: '抖音热歌榜', fn: douyinMusic },
+  { key: 'biliMusic', name: 'B站音乐榜', fn: biliMusic },
+  { key: 'rss', name: 'AI 资讯 RSS', fn: rss },
+  { key: 'hn', name: 'Hacker News', fn: hackerNews },
+  { key: 'hf', name: 'Hugging Face 热门模型', fn: hfTrending },
+];
+
+const dayFile = (d) => path.join(DATA, 'days', `${d}.json`);
+// 计时器要清掉，否则源跑完了进程还会干等到超时才退出
+const withTimeout = (p, ms) => {
+  let t;
+  return Promise.race([p, new Promise((_, rej) => { t = setTimeout(() => rej(new Error(`超时 ${ms / 1000}s`)), ms); })]).finally(() => clearTimeout(t));
+};
+
+async function runSources(only, opts = {}) {
+  const list = only ? SOURCES.filter((s) => only.includes(s.key)) : SOURCES;
+  const status = {};
+  const items = [];
+  await Promise.all(list.map(async (s) => {
+    const t0 = Date.now();
+    try {
+      const got = await withTimeout(s.fn(opts), s.timeout || 240e3);
+      // 每天只拉一次的付费源，其余几次运行直接跳过：状态沿用拉的那次，不改成「0 条」
+      if (got.skipped) { console.log(`· ${s.name.padEnd(14)} 跳过（今天已经拉过，或不是早报那次运行）`); return; }
+      items.push(...got);
+      status[s.key] = { name: s.name, ok: true, count: got.length, ms: Date.now() - t0, warnings: got.warnings?.slice(0, 5), info: got.info };
+    } catch (e) {
+      status[s.key] = { name: s.name, ok: false, count: 0, ms: Date.now() - t0, error: e.message.slice(0, 300) };
+    }
+    const st = status[s.key];
+    console.log(`${st.ok ? '✓' : '✗'} ${s.name.padEnd(14)} ${String(st.count).padStart(4)} 条  ${(st.ms / 1000).toFixed(1)}s ${st.error || (st.warnings?.length ? `（${st.warnings.length} 个子请求失败）` : '')}${st.info ? ` ${st.info}` : ''}`);
+  }));
+  return { items, status };
+}
+
+function merge(items, now) {
+  const today = bjDate(now);
+  const store = readJSON(dayFile(today), { date: today, items: {} });
+  const prev = [1, 2, 3].map((n) => readJSON(dayFile(bjDate(now - n * DAY)), null)).filter(Boolean);
+  const prior = (id) => store.items[id] || prev.find((p) => p.items[id])?.items[id];
+
+  // 同一次采集里同一条内容可能被多个关键词搜到，合并成一条
+  const run = new Map();
+  for (const it of items) {
+    const had = run.get(it.id);
+    if (!had) { run.set(it.id, { ...it, boards: [it.board] }); continue; }
+    if (!had.boards.includes(it.board)) had.boards.push(it.board);
+    if ((it.heat || 0) > (had.heat || 0)) Object.assign(had, { ...it, board: had.board, boards: had.boards });
+  }
+
+  for (const it of run.values()) {
+    const old = prior(it.id);
+    const cur = store.items[it.id];
+    const rec = {
+      ...it,
+      boards: [...new Set([...(old?.boards || []), ...it.boards])],
+      firstSeen: old?.firstSeen ?? now,
+      lastSeen: now,
+      seen: (cur?.seen || 0) + 1,
+      peakRank: Math.min(old?.peakRank ?? Infinity, it.rank ?? Infinity),
+      peakHeat: Math.max(old?.peakHeat ?? 0, it.heat ?? 0),
+      hist: [...(old?.hist || []), [now, it.heat || 0, it.rank || 0]].slice(-16),
+      ai: cur?.ai ?? old?.ai, // AI 标注跨天沿用，不重复花钱
+    };
+    if (!Number.isFinite(rec.peakRank)) delete rec.peakRank;
+    for (const k of Object.keys(rec)) if (rec[k] === undefined || rec[k] === '') delete rec[k];
+    store.items[it.id] = rec;
+  }
+  store.updatedAt = now;
+  writeJSON(dayFile(today), store);
+  return { today, total: Object.keys(store.items).length, added: run.size };
+}
+
+function prune(now) {
+  const dir = path.join(DATA, 'days');
+  const cutoff = bjDate(now - KEEP_DAYS * DAY);
+  for (const f of fs.existsSync(dir) ? fs.readdirSync(dir) : []) {
+    if (f.endsWith('.json') && f.slice(0, 10) < cutoff) fs.unlinkSync(path.join(dir, f));
+  }
+}
+
+export async function collect(only, opts = {}) {
+  const now = Date.now();
+  const { items, status } = await runSources(only, opts);
+  const r = merge(items, now);
+  // 状态文件：记录每个源这次是否成功、上次成功是什么时候
+  const old = readJSON(path.join(DATA, 'status.json'), { sources: {} });
+  for (const [k, st] of Object.entries(status)) {
+    st.lastOk = st.ok ? now : old.sources[k]?.lastOk;
+  }
+  // 只保留现在还在用的数据源（删掉的源不再挂在状态里）
+  const live = Object.fromEntries(SOURCES.map((s) => [s.key, status[s.key] || old.sources[s.key]]).filter(([, v]) => v));
+  writeJSON(path.join(DATA, 'status.json'), { runAt: now, sources: live }, true);
+  prune(now);
+  const failed = Object.values(status).filter((s) => !s.ok).map((s) => s.name);
+  console.log(`\n${r.today}：本次 ${r.added} 条，当天累计 ${r.total} 条${failed.length ? `；失败：${failed.join('、')}` : ''}`);
+  return r;
+}
+
+if (isMain(import.meta.url)) {
+  loadEnv();
+  // node src/collect.js [源1,源2] [--daily]   --daily：早报那次运行，B站多查近 30 天
+  const args = process.argv.slice(2);
+  const only = args.find((a) => !a.startsWith('--'))?.split(',');
+  collect(only, { daily: args.includes('--daily') }).catch((e) => { console.error(e); process.exit(1); });
+}

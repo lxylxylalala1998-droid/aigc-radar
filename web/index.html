@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<!-- 不让搜索引擎收录：网页是公开的，但不希望被搜到 -->
+<meta name="robots" content="noindex, nofollow">
+<title>AIGC 热点雷达</title>
+<meta name="description" content="每天汇总抖音 / B站 / 小红书 AIGC 爆款、热梗热搜、抖音热门挑战、热歌飙升和 AI 圈大事件，每条附「为什么能火」的分析和 AI 选题建议">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%2315171c'/%3E%3Cpath d='M16 16 L16 2 A14 14 0 0 1 29 11 Z' fill='%23ffe14d'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23ffffff' stroke-opacity='.35' stroke-width='1.5'/%3E%3Ccircle cx='22' cy='9' r='2.2' fill='%23ff3b30'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/big-shoulders-display-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<script>/* 先套上用户选过的外观（深色 / 浅色），避免页面先闪一下另一个颜色 */try{var t=localStorage.getItem('aigc-radar-theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap mast-in">
+    <div class="brand">
+      <span class="radar" aria-hidden="true"><i></i></span>
+      <div class="brand-text">
+        <h1>AIGC 热点雷达</h1>
+        <p class="dateline" id="updated">正在读取最新一次扫描…</p>
+      </div>
+    </div>
+    <div class="mast-side">
+      <p class="scope">扫描 <b>抖音</b> <b>B站</b> <b>小红书</b> <b>微博</b> <b>QQ音乐</b> <b>网易云</b> 和十几家 AI 媒体<br>每 3 小时一次，每条热点都附 AI 写的「为什么能火」</p>
+      <div class="mast-links">
+        <button class="arch" id="theme-btn" data-theme-toggle>外观：跟随系统</button>
+        <button class="arch" data-guide>怎么看这份报告</button>
+        <a class="arch" id="week-link" hidden>本周周报 →</a>
+        <button class="arch" data-arch>往期日报 · 按日期查 →</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 一级菜单：通栏深色条，固定在页面顶部；点哪个就只显示哪个板块，不用往下翻 -->
+<div class="bar" id="bar"><div class="wrap bar-in">
+    <nav class="tabs" id="tabs" role="tablist" aria-label="分类">
+      <button data-tab="picks" class="on">今日选题</button>
+      <button data-tab="douyin">抖音热点</button>
+      <button data-tab="bilibili">B站热点</button>
+      <button data-tab="xiaohongshu">小红书热点</button>
+      <button data-tab="trend">热梗热搜</button>
+      <button data-tab="music">热歌飙升</button>
+      <button data-tab="news">AI 大事件</button>
+    </nav>
+    <div class="seg" id="win" role="tablist" aria-label="时间范围">
+      <button data-w="1" class="on"><b>24</b>小时</button>
+      <button data-w="3"><b>3</b>天</button>
+      <button data-w="7"><b>7</b>天</button>
+      <button data-w="30"><b>30</b>天</button>
+      <button data-arch>往期</button>
+    </div>
+    <div class="days" id="days" role="tablist" aria-label="选择日期" hidden></div>
+</div></div>
+
+<main class="wrap">
+  <section id="picks" class="picks" aria-label="今日选题"></section>
+
+  <div id="listing" hidden>
+    <div class="subnav" id="subnav" role="tablist" aria-label="二级分类"></div>
+    <p class="lede" id="lede"></p>
+
+    <div class="tools">
+      <div class="chips sub" id="chips"></div>
+      <div class="search">
+        <input id="q" type="search" placeholder="在当前分类里搜：标题、作者、分析…" autocomplete="off" aria-label="搜索">
+        <select id="sort" aria-label="排序"></select>
+      </div>
+    </div>
+
+    <div id="list" class="list"></div>
+  </div>
+</main>
+
+<section id="guide" class="guide wrap" hidden aria-label="怎么看这份报告">
+  <div class="guide-h"><h2>怎么看这份报告</h2><button class="more" data-guide-close>收起</button></div>
+  <div class="guide-grid">
+    <div>
+      <h3>每天怎么用</h3>
+      <ol>
+        <li>页面顶部那一排是菜单，一直固定在顶上：<b>今日选题</b>（打开默认就是它）、抖音热点、B站热点、小红书热点、热梗热搜、热歌飙升、AI 大事件，点哪个看哪个。</li>
+        <li>先看今日选题最上面的<b>3 分钟速览</b>：今天最该做的 3 个选题、一句话风向。</li>
+        <li>想做哪个，点它跳到<b>今日选题</b>；选题默认只显示为什么能火，点「展开做法」看怎么做、工作流程、公式和风险。右边的封面是这个选题的主要依据，点开直接看视频。</li>
+        <li>要找参考，点菜单里的<b>抖音热点 / B站热点 / 小红书热点</b>，按类型、低粉爆款筛。</li>
+        <li>觉得不错的选题、视频点「☆ 待做」，右下角的清单可以一键复制发给团队。</li>
+        <li>前几天没看的，点页头「往期日报」按日期查；每周一还有一封<b>周报</b>。</li>
+        <li>晚上看嫌刺眼，点页头「外观」切换深色 / 浅色。</li>
+      </ol>
+    </div>
+    <div>
+      <h3>选题上的标签</h3>
+      <dl>
+        <dt>24小时飙升 / 近3天爆款 / 本周热点 / 长期热点</dt><dd>这个选题来自哪个时间段的数据。复盘显示「24 小时飙升」类的后劲最足。</dd>
+        <dt>刚起势（橙）/ 高峰期（红）/ 已饱和（灰）</dt><dd>现在跟还来不来得及。看最早的爆款是几天前、还在不在加速、近 3 天同题材的 AI 作品有多少条。点标签能看依据。</dd>
+        <dt>工作流程</dt><dd>按步骤写怎么做出来。不写具体用哪家平台 / 哪个模型：从作品本身看不出来，写了容易误导。</dd>
+        <dt>难度低 / 中 / 高</dt><dd>低 = 套模板、一键特效；中 = 自己写提示词、剪辑；高 = 写剧本分镜、多工具配合、保持角色一致。</dd>
+        <dt>不重复推荐</dt><dd>前 3 天推过的同一条作品不会再占选题位；还在加速涨的，放在选题框底部「前几天推过 · 还在涨」一行带过。新题材实在不够时才会用它补位，标「连续推荐」。</dd>
+        <dt>教程测评 / 系列追更</dt><dd>教程测评 = 教别人做某类爆款或测评新工具；系列追更 = 适合连续更新、做合集。</dd>
+        <dt>公式 / 换皮</dt><dd>这类爆款的可复用套路，以及同一套路换题材、换 IP 的方向，避免和原作撞车。</dd>
+        <dt>风险</dt><dd>涉及真人肖像、影视 IP、历史人物、敏感领域时的提醒和规避方法。</dd>
+      </dl>
+    </div>
+    <div>
+      <h3>视频上的标签</h3>
+      <dl>
+        <dt>低粉爆款</dt><dd>作者粉丝很少也爆了（抖音粉丝不到 5 万、点赞过 10 万；B站粉丝不到 3 万、播放过 30 万；小红书粉丝不到 1 万、点赞过 5 万）：靠内容本身，小号也能做。</dd>
+        <dt>分享率高</dt><dd>分享 / 点赞排进同类前 10%：大家想转给朋友，适合情绪共鸣、反差、梗。</dd>
+        <dt>收藏率高</dt><dd>收藏排进同类前 10%：干货或想反复看，适合教程、合集。</dd>
+        <dt>评论多 / 弹幕多</dt><dd>互动排进同类前 10%：有争议、有名场面，适合抛问题、二创。</dd>
+
+        <dt>作者声明AI / 平台识别AI / AI特效角标</dt><dd>平台官方的 AI 标。抖音只收带这个标的视频；小红书只收作者声明了「内容含 AI 生成」的笔记。</dd>
+      </dl>
+    </div>
+    <div>
+      <h3>数字怎么算</h3>
+      <dl>
+        <dt>抖音点赞</dt><dd>累计点赞。播放是热点宝给的「近 N 天播放」，抖音不公开累计播放。</dd>
+        <dt>小红书点赞 / 阅读</dt><dd>累计点赞和累计阅读，来自蒲公英内容广场，每天早上更新一次（数据大约晚一天）。</dd>
+        <dt>+N/小时</dt><dd>最近 24 小时平均每小时新增的点赞（抖音、小红书）/ 播放（B站）。小红书每天只更新一次，按两天之间的差算。</dd>
+        <dt>跨平台信息差</dt><dd>一个平台近 7 天的爆款，在另一个平台近 30 天的 AI 稿件里没找到同题材的。是「我们没抓到」，不代表那边完全没有。</dd>
+        <dt>选题复盘</dt><dd>前几天推荐的选题，参考作品之后每天又涨了多少，用来看哪类信号更准。</dd>
+        <dt>爆款工具榜</dt><dd>只统计标题、话题、简介里写了工具名的作品，大多数作品不写，看相对热度。</dd>
+        <dt>更新时间</dt><dd>每 3 小时扫描一次；早报每天 9 点；周报每周一早上。</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<footer class="foot wrap">
+  <details>
+    <summary>数据源状态</summary>
+    <div id="status"></div>
+  </details>
+  <p>热搜和爆款约每 3 小时扫描一次，AI 选题每天早上更新。抖音视频来自抖音热榜话题和抖音热点宝视频热榜（经 TikHub），只收官方标了 AI 的；热度按累计点赞，播放是热点宝给的近 N 天播放。抖音、B站音乐榜是周榜。小红书视频来自蒲公英内容广场「小红书热门」榜（经 TikHub），只收作者声明了 AI 生成的；小红书热点来自创作者中心的热点榜；都是每天早上更新一次。「往期」可以查最近 30 天每一天的完整数据和当天早报原文。标「推测」的分析是 AI 根据有限信息做的判断。</p>
+</footer>
+
+<div id="toast" class="toast" role="status" hidden></div>
+<button id="todo-btn" class="todo-btn" data-todo hidden>待做清单 <b id="todo-n">0</b></button>
+<aside id="todo" class="todo" hidden aria-label="待做清单">
+  <div class="todo-h"><h3>待做清单</h3><button class="more" data-todo>收起</button></div>
+  <p class="todo-note">存在你这台设备的浏览器里，换手机 / 换浏览器看不到。</p>
+  <div id="todo-list" class="todo-list"></div>
+  <textarea id="todo-text" class="todo-text" rows="6" hidden readonly></textarea>
+  <div class="todo-act"><button class="more" data-todo-copy>复制为选题单</button><button class="more" data-todo-clear>清空</button></div>
+</aside>
+<script src="app.js"></script>
+</body>
+</html>
