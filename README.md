@@ -101,7 +101,7 @@ QQ 邮箱网页版 → 设置 → 账号与安全 → 安全设置 → 开启「
 
 **最省事：双击项目文件夹里的「一键设置.cmd」**，它会打开预先填好的网页，一步步告诉你点哪里，长期授权码和下面的准点触发都会自动配好、自动测试。下面是手动做法，留作参考。
 
-`立即推送.cmd` 和下面的「准点触发」都要用一个能触发运行的授权码。部署时用的 `GITHUB_TOKEN` 会过期（当前这个 2026-11-20 过期），所以单独生成一个只能触发运行、有效期最长的：
+`立即推送.cmd` 和下面的「准点触发」都要用一个能触发运行的授权码。部署用的 `GITHUB_TOKEN` 权限大（能改代码、改 Secrets），不适合放进 cron-job.org 这类第三方服务，所以单独生成一个只能触发运行、有效期最长的：
 
 1. 打开 https://github.com/settings/personal-access-tokens/new （需要能打开 github.com）
 2. Token name 填 `aigc-radar-trigger`；Expiration 选最长（有 No expiration 就选它，没有就选 Custom 填一年后）
