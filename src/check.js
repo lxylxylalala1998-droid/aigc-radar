@@ -32,6 +32,10 @@ export async function check(now = Date.now(), { dry = false } = {}) {
     if (rep) notes.push(`${name}有 ${rep} 个选题是前几天推过、还在涨的（新题材不够，标了「连续推荐」）`);
   }
 
+  // 1b. 选题封面：主要依据有封面，或者后台给没挂作品的选题找到了配图（covers.js）。都没有的网页上只能显示文字封面
+  const noPic = ['douyin', 'bilibili'].flatMap((s) => (d.picks?.[s] || []).filter((p) => !(p.main?.cover && !/\.heic/i.test(p.main.cover)) && !p.cover?.img));
+  if (noPic.length) issues.push(`有 ${noPic.length} 个选题没找到封面图，网页上显示的是文字封面：${noPic.map((p) => p.title).join('、')}`);
+
   // 2. 和前 3 天重复（主要依据是同一条作品），正常情况下已经在出选题时去掉了
   const seen = new Set();
   for (let k = 1; k <= 3; k++) {

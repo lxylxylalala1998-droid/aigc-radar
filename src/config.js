@@ -81,6 +81,11 @@ export const DY_VERIFY_PER_DAY = 150;
 export const DY_REFRESH_PER_DAY = 50;
 // 余额低于这个数就暂停，不会把钱扣成负数
 export const TIKHUB_MIN_BALANCE = 0.1;
+// 网页的时间窗口（天）和每个窗口每个平台最多展示的视频数（covers.js 按同样的规则算哪些视频要保证有封面）
+export const WEB_WINDOWS = [1, 3, 7, 30];
+export const WEB_VIDEO_LIMIT = 500;
+// 抖音封面续期：链接约 14 天过期，网页上还在展示、封面快过期（或没有 / heic）的视频重新查一次详情换封面。每天最多查这么多条（每条 0.001 美元）
+export const DY_COVER_PER_DAY = 80;
 
 // ---------- 小红书（TikHub，付费，每天早报那次运行拉一次，同一天不重复拉）----------
 // 蒲公英·内容广场「小红书热门」榜：按关键词搜，每个榜只给 Top 100，每页 34 条，0.02 美元一页

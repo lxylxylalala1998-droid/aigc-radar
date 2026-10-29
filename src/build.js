@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, DATA, DAY, bjDate, readJSON, writeJSON, isMain } from './util.js';
+import { WEB_WINDOWS, WEB_VIDEO_LIMIT } from './config.js';
 import { loadWindow, slim, labelOk } from './rank.js';
 import { render as renderMail } from './mail.js';
 import { renderWeekly } from './weekly.js';
@@ -11,8 +12,8 @@ import { AIGC_TYPES } from './curate.js';
 import { ratioMedians, portrait, withFans, toolRank, bgmRank } from './insight.js';
 
 const SITE = path.join(ROOT, 'site');
-const WINDOWS = [1, 3, 7, 30];
-const LIMIT = { news: 400, video: 500, trend: 120, music: 50 };
+const WINDOWS = WEB_WINDOWS;
+const LIMIT = { news: 400, video: WEB_VIDEO_LIMIT, trend: 120, music: 50 };
 const ARCHIVE_DAYS = 30;
 
 const readDigest = (date) => readJSON(path.join(DATA, 'digests', `${date}.json`));
@@ -27,7 +28,10 @@ const withCovers = (picks) => (!picks || Array.isArray(picks) ? picks : Object.f
   const hit = coverIdx.get(mv.url);
   return { ...p, main: { url: mv.url, src: hit?.src || mv.src || s, title: mv.title || hit?.title, heat: hit?.heat ?? mv.heat, cover: [hit?.cover, mv.cover].find(okCover) } };
 })])));
-const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: withCovers(d.picks), news: d.news, trendKeywords: d.trendKeywords || [], gaps: d.gaps, review: d.review, brief: d.brief, rising: d.rising });
+// 「还在涨」「信息差」里的作品封面也换成数据里最新的（日报里存的抖音封面两周后就过期了）
+const fresher = (x) => (x?.url && okCover(coverIdx.get(x.url)?.cover) ? { ...x, cover: coverIdx.get(x.url).cover } : x);
+const freshLists = (o) => (o && typeof o === 'object' && !Array.isArray(o) ? Object.fromEntries(Object.entries(o).map(([k, l]) => [k, Array.isArray(l) ? l.map(fresher) : l])) : o);
+const webDigest = (d) => ({ date: d.date, generatedAt: d.generatedAt, ai: d.ai, picks: withCovers(d.picks), news: d.news, trendKeywords: d.trendKeywords || [], gaps: freshLists(d.gaps), review: d.review, brief: d.brief, rising: freshLists(d.rising) });
 
 function digestsIn(days, now) {
   const out = [];
@@ -44,7 +48,8 @@ const isWork = (x) => x.cat === 'video' && AIGC_TYPES.includes(OLD_TYPE[x.ai?.ty
 
 // ctx：{ fans: B站 UP 主粉丝数缓存, med: 互动率中位数 }，整次生成共用
 function windowData(days, now, ctx) {
-  const all = loadWindow(days, now).map((x) => slim(withFans(x, ctx.fans), now));
+  // gone：查详情时发现视频已经删了 / 设了私密（covers.js 标的），封面换不回来、点进去也打不开，不展示
+  const all = loadWindow(days, now).filter((x) => !x.gone).map((x) => slim(withFans(x, ctx.fans), now));
   const by = (cat) => all.filter((x) => x.cat === cat);
 
   const news = by('news').sort((a, b) => (b.pubAt || b.firstSeen) - (a.pubAt || a.firstSeen)).slice(0, LIMIT.news);
@@ -56,6 +61,8 @@ function windowData(days, now, ctx) {
     .filter((x) => x.src === s && x.pubAt >= now - 31 * DAY && x.ai?.type !== '非AIGC' && labelOk(x))
     .sort(days === 1 ? (a, b) => (b.vel || 0) - (a.vel || 0) : (a, b) => (b.heat || 0) - (a.heat || 0))
     .slice(0, LIMIT.video))
+    // 封面用数据里最新的那个（抖音封面两周过期，covers.js 会续期；往期按天看的是当天的旧数据，不换就是过期的）
+    .map((x) => (okCover(coverIdx.get(x.url)?.cover) ? { ...x, cover: coverIdx.get(x.url).cover } : x))
     // 数据画像标签：低粉爆款、分享率高……
     .map((x) => { const pt = portrait(x, ctx.med); return pt.length ? { ...x, pt } : x; });
 

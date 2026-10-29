@@ -82,12 +82,13 @@ export function render(d, { siteUrl, archive = false, compact = false } = {}) {
     const k = s === 'douyin' ? 'dy' : 'bl';
     // 邮件不放封面：抖音封面在 QQ 邮箱等邮件客户端里经常显示不了，只有 B站有图两边不齐，主要依据改成下面一行文字链接
     // 网页版往期（archive，浏览器里看）右边照常放主要依据那条作品的封面，点开看视频（B站封面用缩略图，10KB 左右）
+    // 没挂作品的选题用后台找好的配图（p.cover：新闻配图 / 同题材作品）
     const side = (p) => {
-      const mv = p.main;
-      if (!archive || !mv?.url || !mv.cover || /\.heic/i.test(mv.cover)) return '';
-      const img = mv.src === 'bilibili' && /hdslb\.com/.test(mv.cover) && !mv.cover.includes('@') ? `${mv.cover}@320w_200h_1c.jpg` : mv.cover;
+      const mv = p.main?.url && p.main.cover && !/\.heic/i.test(p.main.cover) ? { ...p.main, img: p.main.cover } : p.cover?.img ? { ...p.cover, src: p.cover.src } : null;
+      if (!archive || !mv) return '';
+      const img = mv.src === 'bilibili' && /hdslb\.com/.test(mv.img) && !mv.img.includes('@') ? `${mv.img}@320w_200h_1c.jpg` : mv.img;
       // 和网页一样不带 referer：B站 / 抖音的图片防盗链，带着别的网站的 referer 会打不开
-      return `<td class="pc" valign="top">${a(mv.url, `<img src="${esc(img)}" width="104" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`)}<div class="m c">▶ 主要依据</div></td>`;
+      return `<td class="pc" valign="top">${a(mv.url, `<img src="${esc(img)}" width="104" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`)}<div class="m c">${p.main?.url ? '▶ 主要依据' : p.cover.kind === 'news' ? '↗ 配图来自新闻' : '▶ 同题材作品'}</div></td>`;
     };
     const refLinks = (p, withMain) => {
       const rest = (p.refs || []).filter((r) => r.url !== p.main?.url).slice(0, 2).map((r) => a(r.url, `↗ ${esc(cut(r.title, 16))}`));

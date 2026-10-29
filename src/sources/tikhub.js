@@ -45,7 +45,7 @@ export function tikhubState() {
 }
 
 // 返回结构层层嵌套，递归找视频对象（带 aweme_id + statistics 的）
-function awemes(j) {
+export function awemes(j) {
   const out = [];
   (function walk(o) {
     if (!o || typeof o !== 'object') return;

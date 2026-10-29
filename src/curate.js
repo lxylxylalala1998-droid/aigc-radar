@@ -11,6 +11,7 @@ import { DEEPSEEK_BASE, DEEPSEEK_MODEL, ANALYZE_TOP_VIDEOS, ANALYZE_TOP_SONGS } 
 import { biliFans } from './sources/bilibili.js';
 import { lowFan, ratioMedians, portrait, withFans, toolsOf, toolRank, bgmRank } from './insight.js';
 import { loadWindow, velocity, slim, PLATFORM, unitOf, LABELED, labelOk } from './rank.js';
+import { refreshDouyinCovers, backfillPickCovers, fixPickCovers, worksBySrc } from './covers.js';
 
 // 标注版本号。分析内容的格式变了就加 1，旧数据会被重新标注一次
 const V = 2;
@@ -331,6 +332,10 @@ export async function annotate(now = Date.now()) {
     }, () => {}, errors);
   }
 
+  // 封面保障（covers.js）：抖音封面快过期 / 没有的换新；没挂作品的选题找配图。当天数据上面已经写完了，这里直接改文件
+  const coverInfo = [await safe('抖音封面续期', () => refreshDouyinCovers(now), ''), await safe('选题封面', () => backfillPickCovers(now), '')];
+  for (const s of coverInfo.filter(Boolean)) console.log(`    ${s}`);
+
   const n = Object.values(day.items);
   console.log(`  当天 AIGC 作品 ${n.filter(isWork).length}（抖音 ${n.filter((x) => isWork(x) && x.src === 'douyin').length}、小红书 ${n.filter((x) => isWork(x) && x.src === 'xiaohongshu').length}），有分析的热搜 ${n.filter((x) => x.cat === 'trend' && x.ai?.why).length}，有分析的歌 ${n.filter((x) => x.cat === 'music' && x.ai?.why).length}`);
   return errors;
@@ -496,7 +501,7 @@ async function safe(name, fn, fallback) {
 }
 
 // 题材比对用的关键词：去掉【活动标签】和 #话题，去掉泛词
-const keyGrams = (text) => [...grams(String(text || '').replace(/【[^】]*】|#[^#\s]+/g, ' '))].filter((g) => !COMMON.has(g));
+export const keyGrams = (text) => [...grams(String(text || '').replace(/【[^】]*】|#[^#\s]+/g, ' '))].filter((g) => !COMMON.has(g));
 // 话题标签只留跟题材有关的：把 AI、工具名、泛词剔掉后还剩实际内容的才算
 //   「#抖音AI创作浪潮计划」「#即梦AI」「#AI短剧推荐」剔完是空的，不算；「#AI小黑猫卡点练舞」剩「小黑猫卡点练舞」，算
 const GENERIC_WORDS = /aigc|ai|即梦|可灵|豆包|海螺|seedance|oiioii|libtv|剪映|必剪|updream|deepseek|抖音|创作|浪潮|计划|激励|征集|挑战赛|全宇宙|上热门|热门|推荐|原创|作品|视频|动画|动漫|二次元|短剧|漫剧|剧情|大片|短片|影视|剪辑|音乐|翻唱|特效|模板|全民制作人|mv|大赛|生成|绘画|精选|合集|热点|搞笑|鬼畜|可爱|娱乐|人工智能|此视频由|爱生成|dou/gi;
@@ -514,13 +519,13 @@ function countCommonTags(works) {
 const themeTag = (t) => t.replace(GENERIC_WORDS, '').length >= 2 && !commonTags.has(t.toLowerCase());
 const themeText = (x) => `${x.title || ''} ${(x.tags || '').split(',').filter(themeTag).join(' ')}`;
 // 共享专有词：有一对首尾相接的两字词都相同（≈ 共有一个 3 字以上的词，比如「过来人」）
-function sharePhrase(ga, gb) {
+export function sharePhrase(ga, gb) {
   for (const g of ga) if (gb.has(g)) for (const h of ga) if (h !== g && h[0] === g[1] && gb.has(h)) return true;
   return false;
 }
 // 热搜说的就是这条作品：热搜词的关键词至少 6 成出现在作品标题里
 //   只共享一个专有词不够——「瑞士轮」「影之刃零」这类词会把一串不相干的热搜都挂到同一条作品上
-function trendIsWork(trend, x) {
+export function trendIsWork(trend, x) {
   const a = keyGrams(trend);
   if (a.length < 3) return false;
   const b = new Set(keyGrams(x.title));
@@ -964,6 +969,8 @@ export async function digest(now = Date.now()) {
     music,
     news: newsOut,
   };
+  // 没挂作品的选题（教程测评挂新闻、偶尔只借热搜）当场找好封面，早报一出来网页上就有图
+  await safe('选题封面', () => fixPickCovers(out, worksBySrc(all30), now), false);
   writeJSON(path.join(DATA, 'digests', `${out.date}.json`), out, true);
 
   // 爆款的精修点评、评论区洞察、事件归属写回当天数据，网页上也能看到
