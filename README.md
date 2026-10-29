@@ -172,7 +172,7 @@ GitHub 自带的定时还留着当兜底，两边谁先跑都行，不会重复�
 - `RSS_FEEDS`：AI 资讯源
 - `QQ_TOPS` / `NETEASE_TOPS`：音乐榜单
 
-收件人直接改 GitHub 上的 `MAIL_TO` Secret，不用改代码。
+收件人：**双击项目文件夹里的 `改收件人.cmd`**，按菜单添加 / 删除，会同时改本机 `.env` 和 GitHub 上的 `MAIL_TO` Secret，不用改代码也不用重新部署（命令行：`node scripts/mail-to.mjs list | add 邮箱 | remove 序号或邮箱 | sync`）。Secret 是在每次运行开始时读的：早上 6 点前改好，当天的早报就按新名单发；6 点以后改，可能要从第二天开始。直接在 GitHub 网页上改 `MAIL_TO` 也行，但要记得把 `.env` 改成一样的，否则下次部署会被 `.env` 里的旧名单覆盖。
 
 ## 本地运行
 

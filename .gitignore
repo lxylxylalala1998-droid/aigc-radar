@@ -6,3 +6,5 @@ out/
 # 数据存在 data 分支，主分支只放代码
 data/
 .deploy.json
+# 运维手册等本地文档：仓库是公开的，不要提交
+*.docx
