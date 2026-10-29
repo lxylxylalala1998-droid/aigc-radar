@@ -464,7 +464,7 @@ async function makePicks(blocks, s) {
   - formula：这类爆款的可复用公式，如「经典 IP × 反差画风 × 名场面卡点」，≤24 字
   - variants：2~3 个换皮方向（同一个公式换题材 / IP / 人物，避免和原作撞车），每个 ≤16 字
   - risk：风险提示——涉及真人肖像（明星、企业家、政要）、影视动漫游戏 IP、历史人物戏说、未成年人、医疗金融等敏感领域时，说清楚风险和怎么规避（比如发布时声明 AI 生成、不商用、换成原创角色），≤36 字；没有明显风险就留空
-  - refs：参考素材编号数组，如 ["A1","C3"]。第一个必须是这个选题最主要依据的那条具体作品（视频，A / B / C / D / X 开头的编号），后面可以再跟热搜、热歌等
+  - refs：参考素材编号数组，如 ["A1","C3"]。第一个必须是这个选题最主要依据的那条具体作品（视频，A / B / C / D / R / X 开头的编号），后面可以再跟热搜、热歌等
 
 输出格式：{"picks":[{"title":"","kind":"","horizon":"","form":"","why":"","how":"","flow":"","level":"","time":"","formula":"","variants":[],"risk":"","refs":[]}]}
 
@@ -517,6 +517,14 @@ const themeText = (x) => `${x.title || ''} ${(x.tags || '').split(',').filter(th
 function sharePhrase(ga, gb) {
   for (const g of ga) if (gb.has(g)) for (const h of ga) if (h !== g && h[0] === g[1] && gb.has(h)) return true;
   return false;
+}
+// 热搜说的就是这条作品：热搜词的关键词至少 6 成出现在作品标题里
+//   只共享一个专有词不够——「瑞士轮」「影之刃零」这类词会把一串不相干的热搜都挂到同一条作品上
+function trendIsWork(trend, x) {
+  const a = keyGrams(trend);
+  if (a.length < 3) return false;
+  const b = new Set(keyGrams(x.title));
+  return a.filter((g) => b.has(g)).length / a.length >= 0.6;
 }
 
 // 时效：这个题材现在跟还来不来得及
@@ -812,6 +820,16 @@ export async function digest(now = Date.now()) {
     const xhs = byHeat(all7.filter((x) => x.src === 'xiaohongshu' && isWork(x) && x.pubAt > now - 7 * DAY).map(withVel), 8, used);
     // 本平台正在飙升的歌（借势做 AI 翻唱 / MV）+ 长期在榜的歌
     const songs = [...all1.filter((x) => x.cat === 'music' && mine(x) && x.board.includes('飙升') && (x.rank || 99) <= 6), ...lastingSongs.filter(mine).slice(0, 4)];
+    // 热搜说的那条作品常常发布超过 7 天、热度又排不进 30 天前 12，上面几组里没有，AI 只能光引用热搜词，选题就没有封面、跨天去重也认不出来
+    // → 按热搜词在 30 天作品里找原作，单独列一组
+    const listed = new Set([...used, ...h30.map((x) => x.id)]);
+    const trendWorks = [];
+    for (const t of [...pm, ...pc, ...lt]) {
+      const w = w30.filter((x) => !listed.has(x.id) && trendIsWork(t.title, x)).sort((a, b) => (b.heat || 0) - (a.heat || 0))[0];
+      if (!w || trendWorks.length >= 8) continue;
+      listed.add(w.id);
+      trendWorks.push({ ...withVel(w), trend: t.title });
+    }
     const tags7 = s === 'douyin' ? topTags(w7) : [];
     const typeCount = Object.entries(w30.reduce((c, x) => ((c[typeOf(x)] = (c[typeOf(x)] || 0) + 1), c), {})).sort((a, b) => b[1] - a[1]);
     // 评论区有人求教程 / 求更新的高赞作品
@@ -822,6 +840,7 @@ export async function digest(now = Date.now()) {
       `【近3天爆款】\n${h3.map((x, i) => line(`B${i}`, x)).join('\n') || '（无）'}`,
       `【本周热点】\n${[...h7.map((x, i) => line(`C${i}`, x)), ...lt.map((x, i) => line(`L${i}`, x))].join('\n') || '（无）'}${tags7.length ? `\n抖音 AIGC 话题标签（7天内视频数/总赞）：${tags7.map(([t, e]) => `#${t} ${e.n}条/${fmtNum(e.likes)}赞`).join('，')}` : ''}`,
       `【长期热点（30天）】\n${h30.map((x, i) => line(`D${i}`, x)).join('\n') || '（无）'}${typeCount.length ? `\n30 天 AIGC 作品类型分布：${typeCount.map(([t, n]) => `${t} ${n}`).join('，')}` : ''}`,
+      trendWorks.length ? `【热搜对应的作品】上面热搜说的就是这些作品（发布得早，或热度没排进上面几组）；借这条热搜出选题时，refs 第一个填这里的编号\n${trendWorks.map((x, i) => `${line(`R${i}`, x)}｜对应热搜：${x.trend}`).join('\n')}` : '',
       songs.length ? `【可借势的热歌】\n${songs.map((x, i) => line(`S${i}`, x)).join('\n')}` : '',
       xhs.length ? `【小红书 AIGC 爆款（近 7 天）】可以借鉴题材，改成适合${PLATFORM[s]}的原创\n${xhs.map((x, i) => line(`X${i}`, x)).join('\n')}` : '',
 
@@ -829,7 +848,7 @@ export async function digest(now = Date.now()) {
       tools.length ? `【爆款工具热度】近 7 天 AIGC 爆款里提到各工具的作品数（括号里是上 7 天）：${tools.slice(0, 10).map((t) => `${t.name} ${t.n}（${t.prev}）`).join('，')}` : '',
       recent.some((r) => r.src === s) ? `【最近 3 天已经推荐过的选题】不要再出这些题材\n${[...new Set(recent.filter((r) => r.src === s).map((r) => `${r.date.slice(5)}｜${r.title}`))].join('\n')}` : '',
     ].filter(Boolean).join('\n\n');
-    console.log(`${PLATFORM[s]}选题素材：24h ${h24.length}+热梗 ${pm.length}+挑战 ${pc.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lt.length}，30天 ${h30.length}，热歌 ${songs.length}，小红书 ${xhs.length}，新工具 ${tn.length}`);
+    console.log(`${PLATFORM[s]}选题素材：24h ${h24.length}+热梗 ${pm.length}+挑战 ${pc.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lt.length}，30天 ${h30.length}，热搜原作 ${trendWorks.length}，热歌 ${songs.length}，小红书 ${xhs.length}，新工具 ${tn.length}`);
     return { blocks, refs };
   }
   const pb = { douyin: platformBlocks('douyin'), bilibili: platformBlocks('bilibili') };

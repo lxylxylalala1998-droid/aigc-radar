@@ -168,7 +168,7 @@
     const refs = (p) => (p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : '');
     // 选题卡片：左边是主要依据那条作品的封面（抖音竖版、B站横版），编号压在封面左上角，点封面直接看视频；
     // 右边从上到下：标题 → 标签 → 为什么能火 → 底部一行（展开做法 / 主要依据的数据 / 待做）。完整做法默认收起
-    // 没有作品参考的选题（只借热搜 / 热歌的势），封面位置显示平台色块，写「热搜」「热歌」，点开是那条热搜 / 热歌
+    // 没有作品参考的选题（只借热搜 / 热歌的势，或新工具测评），封面位置显示平台色块，写「热搜」「热歌」「新工具」，点开是那条热搜 / 热歌 / 新闻
     const item = (p, k, s) => {
       const key = `${dg.date}:${s}:${k}`;
       const open = state.pickOpen.has(key);
@@ -176,7 +176,7 @@
       const r0 = p.refs?.[0];
       const src = mv?.src || s;
       const target = mv || r0;
-      const label = mv ? PLAT[src] : r0?.kind === 'music' ? '热歌' : r0?.kind === 'trend' ? '热搜' : '选题';
+      const label = mv ? PLAT[src] : r0?.kind === 'music' ? '热歌' : r0?.kind === 'trend' ? '热搜' : r0?.kind === 'news' ? '新工具' : '选题';
       const inner = `<span class="ph-l">${label}</span>${mv?.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(mv.cover, src))}" alt="" onerror="this.remove()" onload="if(this.naturalWidth>this.naturalHeight)this.classList.add('wide')">` : ''}<b class="pm-no">${pad(k + 1)}</b>${mv ? '<i class="play" aria-hidden="true">▶</i>' : ''}`;
       return `
       <article class="pm ${open ? 'open' : ''}" id="pick-${s}-${k}">
