@@ -87,7 +87,9 @@ function cleanAlias(labels, label) {
 }
 
 // videos：同一平台、同一时间窗口里网页会展示的作品（build.js windowData 的 videos 按平台筛出来的）
-export function findClusters(videos, now = Date.now()) {
+// context：判断时效用的更大范围（build 传网页 24 小时 + 30 天两份列表的并集）。每个窗口只取前 500 条，
+//   24 小时按增速排、新发的小视频进得来，3 天以上按总热度排就进不来——只看窗口自己会把还在出新作品的题材误判成「已饱和」
+export function findClusters(videos, now = Date.now(), context = videos) {
   if (videos.length < MIN_AUTHORS) return [];
   // 窗口里 2 成以上作品都带的标签算通用标签（#ai创作 #抖音ai创作 这类）
   const tagN = new Map();
@@ -127,8 +129,13 @@ export function findClusters(videos, now = Date.now()) {
     else clusters.push({ keys: [e], vids: new Set(e.vids) });
   }
 
+  const ctxKeys = context === videos ? null : context.map((x) => [x, new Set(keysOf(x, genericTags).map((o) => o.k))]);
   return clusters.map((c) => {
     const vids = [...c.vids].sort((a, b) => (b.heat || 0) - (a.heat || 0));
+    // 时效用的作品：窗口里的 + 更大范围里带同样关键词的（按 id 去重）
+    const ks = c.keys.map((k) => k.k);
+    const span = new Map(vids.map((x) => [x.id, x]));
+    if (ctxKeys) for (const [x, s] of ctxKeys) if (!span.has(x.id) && ks.some((k) => s.has(k))) span.set(x.id, x);
     // 题材名：覆盖了一半以上作品的词里，书名号 / 英文歌名 > 标签 > 中文短语 > BGM；同类里作者数差不多（7 成以上）的取字数长的
     //   （AI 会另起名字，这里只是 AI 还没看过时的临时名字，也是缓存的键）
     const wide = c.keys.filter((k) => k.vids.size >= c.vids.size * 0.5);
@@ -138,9 +145,9 @@ export function findClusters(videos, now = Date.now()) {
     const top = Math.max(...same.map((k) => k.authors));
     const main = same.filter((k) => k.authors >= top * 0.7).sort((a, b) => b.k.length - a.k.length || b.authors - a.authors)[0];
     const label = [...main.labels].sort((a, b) => b[1].n - a[1].n)[0][0];
-    const pubs = vids.map((x) => x.pubAt || 0).filter(Boolean);
+    const pubs = [...span.values()].map((x) => x.pubAt || 0).filter(Boolean);
     const first = Math.min(...pubs), last = Math.max(...pubs);
-    const new3 = vids.filter((x) => x.pubAt > now - 3 * DAY).length;
+    const new3 = [...span.values()].filter((x) => x.pubAt > now - 3 * DAY).length;
     const authors = authorsOf(vids).size;
     // 时效：最早一条不超过 3 天 = 刚起势；近 3 天没有新作品，或者已经很多人做了一周以上 = 已饱和；其余 = 高峰期
     const stage = now - first <= 3 * DAY ? '刚起势' : !new3 || (authors >= 15 && now - first > 7 * DAY) ? '已饱和' : '高峰期';

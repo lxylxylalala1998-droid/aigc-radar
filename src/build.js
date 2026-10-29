@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, DATA, DAY, bjDate, readJSON, writeJSON, isMain } from './util.js';
 import { WEB_WINDOWS, WEB_VIDEO_LIMIT } from './config.js';
-import { findClusters, withClusterAI, CLUSTER_FILE } from './clusters.js';
+import { findClusters, withClusterAI, webVideos, CLUSTER_FILE } from './clusters.js';
 import { loadWindow, slim, labelOk } from './rank.js';
 import { render as renderMail } from './mail.js';
 import { renderWeekly } from './weekly.js';
@@ -88,7 +88,9 @@ function windowData(days, now, ctx) {
       .slice(0, LIMIT.music));
 
   // 大家都在做：抖音、B站各自在这个窗口里扎堆的题材（clusters.js 聚类 + AI 确认过的名字和说明）
-  const clusters = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, withClusterAI(findClusters(videos.filter((x) => x.src === s), now), s, ctx.clusterAI)
+  //   时效按「24 小时 + 30 天」两份列表的并集判断，各窗口一致（往期按天的视图用当天自己的作品）
+  const span = (s) => (ctx.spanAt === now ? ctx.span[s] : undefined);
+  const clusters = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, withClusterAI(findClusters(videos.filter((x) => x.src === s), now, span(s)), s, ctx.clusterAI)
     .map(({ key, ids, ...c }) => ({ ...c, ids: ids.slice(0, 40) }))]));
 
   return { days, generatedAt: now, digests: digestsIn(days, now), news, videos, trends, music, tools, bgms, clusters };
@@ -188,6 +190,8 @@ export function build(now = Date.now()) {
   const history = fs.existsSync(path.join(DATA, 'days')) ? fs.readdirSync(path.join(DATA, 'days')).filter((f) => f.endsWith('.json')).length : 0;
   coverIdx = new Map(loadWindow(31, now).filter((x) => x.cat === 'video' && okCover(x.cover)).map((x) => [x.url, { cover: x.cover, heat: x.heat, src: x.src, title: x.title }]));
   const ctx = { fans, history, med: ratioMedians(loadWindow(30, now).map((x) => withFans(x, fans))), clusterAI: readJSON(CLUSTER_FILE, {}) };
+  ctx.spanAt = now;
+  ctx.span = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, [...new Map([...webVideos(1, now, s), ...webVideos(30, now, s)].map((x) => [x.id, x])).values()]]));
   for (const d of WINDOWS) {
     const w = windowData(d, now, ctx);
     const { bytes, core } = writeSplit(path.join(SITE, 'data', `w${d}`), w);
