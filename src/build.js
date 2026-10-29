@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, DATA, DAY, bjDate, readJSON, writeJSON, isMain } from './util.js';
 import { WEB_WINDOWS, WEB_VIDEO_LIMIT } from './config.js';
+import { findClusters, withClusterAI, CLUSTER_FILE } from './clusters.js';
 import { loadWindow, slim, labelOk } from './rank.js';
 import { render as renderMail } from './mail.js';
 import { renderWeekly } from './weekly.js';
@@ -86,7 +87,11 @@ function windowData(days, now, ctx) {
       .sort(days === 1 ? (a, b) => (a.rank || 99) - (b.rank || 99) : (a, b) => (a.peakRank || 99) - (b.peakRank || 99) || (b.daysSeen || 0) - (a.daysSeen || 0))
       .slice(0, LIMIT.music));
 
-  return { days, generatedAt: now, digests: digestsIn(days, now), news, videos, trends, music, tools, bgms };
+  // 大家都在做：抖音、B站各自在这个窗口里扎堆的题材（clusters.js 聚类 + AI 确认过的名字和说明）
+  const clusters = Object.fromEntries(['douyin', 'bilibili'].map((s) => [s, withClusterAI(findClusters(videos.filter((x) => x.src === s), now), s, ctx.clusterAI)
+    .map(({ key, ids, ...c }) => ({ ...c, ids: ids.slice(0, 40) }))]));
+
+  return { days, generatedAt: now, digests: digestsIn(days, now), news, videos, trends, music, tools, bgms, clusters };
 }
 
 // ---------- 网页数据按板块拆开 ----------
@@ -128,7 +133,7 @@ function writeSplit(base, w) {
         trend: w.trends.length, music: w.music.length, news: events.length || w.news.length,
       },
     },
-    '.v': { videos: w.videos.map(leanVideo) },
+    '.v': { videos: w.videos.map(leanVideo), clusters: w.clusters },
     '.t': { trends: w.trends.map(leanTrend) },
     '.m': { music: w.music.map(leanSong), bgms: w.bgms },
     '.n': { news: w.news.map(leanNews), events, tools: w.tools },
@@ -182,7 +187,7 @@ export function build(now = Date.now()) {
   const fans = Object.fromEntries(Object.entries(readJSON(path.join(DATA, 'bili-fans.json'), {})).map(([k, v]) => [k, v.f]));
   const history = fs.existsSync(path.join(DATA, 'days')) ? fs.readdirSync(path.join(DATA, 'days')).filter((f) => f.endsWith('.json')).length : 0;
   coverIdx = new Map(loadWindow(31, now).filter((x) => x.cat === 'video' && okCover(x.cover)).map((x) => [x.url, { cover: x.cover, heat: x.heat, src: x.src, title: x.title }]));
-  const ctx = { fans, history, med: ratioMedians(loadWindow(30, now).map((x) => withFans(x, fans))) };
+  const ctx = { fans, history, med: ratioMedians(loadWindow(30, now).map((x) => withFans(x, fans))), clusterAI: readJSON(CLUSTER_FILE, {}) };
   for (const d of WINDOWS) {
     const w = windowData(d, now, ctx);
     const { bytes, core } = writeSplit(path.join(SITE, 'data', `w${d}`), w);

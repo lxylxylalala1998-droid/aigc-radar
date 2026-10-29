@@ -8,8 +8,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DATA, DAY, UA, bjDate, readJSON, writeJSON } from './util.js';
-import { DY_COVER_PER_DAY, TIKHUB_MIN_BALANCE, WEB_WINDOWS, WEB_VIDEO_LIMIT } from './config.js';
-import { loadWindow, labelOk, slim } from './rank.js';
+import { DY_COVER_PER_DAY, TIKHUB_MIN_BALANCE, WEB_WINDOWS } from './config.js';
+import { loadWindow } from './rank.js';
+import { webVideos } from './clusters.js';
 import { th, awemes, tikhubState } from './sources/tikhub.js';
 import { coverOf } from './sources/douyin.js';
 import { isWork, keyGrams, sharePhrase, trendIsWork } from './curate.js';
@@ -58,14 +59,7 @@ function writeBack(covers, gone, now) {
 // 网页各时间窗口列表里的抖音视频：和 build.js windowData 的挑法一致（近 31 天发布、带官方 AI 标，24 小时按增速、其余按热度，各取前 WEB_VIDEO_LIMIT 条）
 function shownDouyin(now) {
   const ids = new Set();
-  for (const days of WEB_WINDOWS) {
-    loadWindow(days, now)
-      .filter((x) => x.cat === 'video' && x.src === 'douyin' && !x.gone && x.pubAt >= now - 31 * DAY && x.ai?.type !== '非AIGC' && labelOk(x))
-      .map((x) => slim(x, now))
-      .sort(days === 1 ? (a, b) => (b.vel || 0) - (a.vel || 0) : byHeat)
-      .slice(0, WEB_VIDEO_LIMIT)
-      .forEach((x) => ids.add(x.id));
-  }
+  for (const days of WEB_WINDOWS) webVideos(days, now, 'douyin').forEach((x) => ids.add(x.id));
   return ids;
 }
 

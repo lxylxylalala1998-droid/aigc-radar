@@ -7,11 +7,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DATA, HOUR, DAY, bjDate, readJSON, writeJSON, loadEnv, isMain, isAI, fmtNum } from './util.js';
-import { DEEPSEEK_BASE, DEEPSEEK_MODEL, ANALYZE_TOP_VIDEOS, ANALYZE_TOP_SONGS } from './config.js';
+import { DEEPSEEK_BASE, DEEPSEEK_MODEL, ANALYZE_TOP_VIDEOS, ANALYZE_TOP_SONGS, WEB_WINDOWS } from './config.js';
 import { biliFans } from './sources/bilibili.js';
 import { lowFan, ratioMedians, portrait, withFans, toolsOf, toolRank, bgmRank } from './insight.js';
 import { loadWindow, velocity, slim, PLATFORM, unitOf, LABELED, labelOk } from './rank.js';
 import { refreshDouyinCovers, backfillPickCovers, fixPickCovers, worksBySrc } from './covers.js';
+import { findClusters, webVideos, CLUSTER_FILE } from './clusters.js';
 
 // 标注版本号。分析内容的格式变了就加 1，旧数据会被重新标注一次
 const V = 2;
@@ -332,6 +333,9 @@ export async function annotate(now = Date.now()) {
     }, () => {}, errors);
   }
 
+  // 大家都在做：网页各时间窗口里扎堆的题材，新冒出来的交给 AI 起名、写说明、剔掉碰巧撞词的
+  if (hasKey()) { const s = await safe('大家都在做', () => nameClusters(now), ''); if (s) console.log(`    ${s}`); }
+
   // 封面保障（covers.js）：抖音封面快过期 / 没有的换新；没挂作品的选题找配图。当天数据上面已经写完了，这里直接改文件
   const coverInfo = [await safe('抖音封面续期', () => refreshDouyinCovers(now), ''), await safe('选题封面', () => backfillPickCovers(now), '')];
   for (const s of coverInfo.filter(Boolean)) console.log(`    ${s}`);
@@ -523,6 +527,52 @@ export function sharePhrase(ga, gb) {
   for (const g of ga) if (gb.has(g)) for (const h of ga) if (h !== g && h[0] === g[1] && gb.has(h)) return true;
   return false;
 }
+// ---- 大家都在做（clusters.js 聚出来的扎堆题材）：AI 判断是不是真的「很多人在做同一种东西」，起名、写说明 ----
+//   按「平台|题材键」缓存在 data/clusters.json，网页还在展示的每次续上时间，30 天没再出现的删掉；只有新题材才问 AI
+export async function nameClusters(now) {
+  const cache = readJSON(CLUSTER_FILE, {});
+  for (const [k, v] of Object.entries(cache)) if (!(v.t > now - 30 * DAY)) delete cache[k];
+  const done = [];
+  for (const s of ['douyin', 'bilibili']) {
+    const todo = new Map();
+    for (const days of WEB_WINDOWS) {
+      const vids = webVideos(days, now, s);
+      const byId = new Map(vids.map((x) => [x.id, x]));
+      for (const c of findClusters(vids, now)) {
+        const key = `${s}|${c.key}`;
+        if (cache[key]) { cache[key].t = now; continue; }
+        if (todo.get(key)?.c.authors >= c.authors) continue; // 同一个题材在几个时间窗口里都有，给 AI 看作者最多的那份
+        // 示例标题：每位作者最多一条，按热度取前 8
+        const seen = new Set();
+        const titles = c.ids.map((id) => byId.get(id)).filter((x) => x && !seen.has(x.author) && seen.add(x.author)).slice(0, 8).map((x) => x.title.slice(0, 40));
+        todo.set(key, { c, titles });
+      }
+    }
+    const list = [...todo.values()].slice(0, 40);
+    if (!list.length) continue;
+    const lines = list.map(({ c, titles }, i) => `[${i}] 关键词：${c.label}${c.alias.length ? `（也出现：${c.alias.join('、')}）` : ''}｜${c.n} 条作品 / ${c.authors} 位作者｜标题：${titles.join('；')}`);
+    const r = await ask(`下面是${PLATFORM[s]}上按「标题里共同的词」自动聚出来的 AIGC 作品题材候选，每组都有好几位不同作者。逐组判断，并给真正扎堆的题材起名、写说明：
+- ok：是不是「很多人在做同一种东西」——同一首歌、同一个 IP / 人物、同一个梗、同一种玩法模板、同一个热点事件的二创，填 true；同一个流行梗 / 句式套在各种不同内容上（大家都在玩这个梗），也算 true；作者越多越说明是真扎堆，6 位以上的除非那个词明显是日常普通词，否则判 true；只是标题里碰巧都有某个普通词（比如「中国人」「越来越」），内容其实各做各的，填 false
+- name：题材名，≤12 字，让人一眼看懂大家在做什么（写出共同的那首歌 / 那个梗 / 那种玩法，比如「名人换脸合唱同一首歌」这种说法，但要换成具体的歌名 / 梗名）
+- what：大家具体在怎么做（拿什么素材、做成什么形式），≤30 字
+- why：为什么会扎堆、为什么能火，≤30 字
+- how：现在跟着做，怎么做出差异（换什么人物 / IP / 角度），≤30 字
+- 不要点名具体用的哪家 AI 平台 / 模型；ok 为 false 的其余字段留空
+
+${lines.join('\n')}
+
+输出格式：{"items":[{"i":0,"ok":true,"name":"","what":"","why":"","how":""}]}`, { maxTokens: 6000 });
+    for (const it of r.items || []) {
+      const t = list[+it.i];
+      if (!t) continue;
+      cache[`${s}|${t.c.key}`] = { ok: !!it.ok, name: it.name || '', what: it.what || '', why: it.why || '', how: it.how || '', t: now };
+    }
+    done.push(`${PLATFORM[s]}新题材 ${list.length} 个（AI 确认 ${(r.items || []).filter((it) => it.ok).length} 个）`);
+  }
+  writeJSON(CLUSTER_FILE, cache, true);
+  return done.length ? `大家都在做：${done.join('，')}` : '';
+}
+
 // 热搜说的就是这条作品：热搜词的关键词至少 6 成出现在作品标题里
 //   只共享一个专有词不够——「瑞士轮」「影之刃零」这类词会把一串不相干的热搜都挂到同一条作品上
 export function trendIsWork(trend, x) {

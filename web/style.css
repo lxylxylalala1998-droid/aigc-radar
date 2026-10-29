@@ -276,6 +276,24 @@ h1 { font: 400 clamp(30px, 6vw, 44px)/1.05 var(--font-display); margin: 0; lette
 
 /* 名次：记分牌数字 */
 .row { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 12px; align-items: start; }
+/* 大家都在做：题材卡片，代表作品封面一排，「看全部」展开完整列表 */
+.cl-lede { margin: 2px 0 12px; font-size: 13px; line-height: 1.6; color: var(--ink-3); max-width: 80ch; }
+.cl .tt { font-size: 16.5px; font-weight: 700; }
+.cl-vs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 10px; max-width: 660px; }
+.cl-v { display: block; min-width: 0; color: inherit; text-decoration: none; }
+.cl-v .th.douyin, .cl-v .th.xiaohongshu { aspect-ratio: 3 / 4; }
+.cl-v .th .ph-t { font-size: 11px; }
+.cl-v small { display: block; margin-top: 3px; font-size: 12px; color: var(--ink-3); }
+.cl-v:hover img { transform: scale(1.04); }
+.cl-v img { transition: transform .25s ease; }
+.cl-ft { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 8px; font-size: 12px; color: var(--ink-3); }
+.cl-more { font: inherit; font-size: 12.5px; padding: 3px 11px; border: 1px solid var(--rule); border-radius: 999px; background: var(--sheet); color: var(--ink); cursor: pointer; }
+.cl-more:hover { border-color: var(--ink-3); }
+.cl-all { display: none; margin-top: 10px; border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.cl-all > .item:first-child { border-top: 0; }
+.cl.open .cl-all { display: block; }
+@media (prefers-reduced-motion: reduce) { .cl-v img { transition: none; } .cl-v:hover img { transform: none; } }
+@media (max-width: 640px) { .cl-vs { grid-template-columns: repeat(3, minmax(0, 1fr)); } .cl-vs .cl-v:nth-child(n+4) { display: none; } }
 .rk { font-family: var(--font-num); font-weight: 800; font-size: 30px; line-height: 1; text-align: right; color: var(--ink-3); padding-top: 1px; font-variant-numeric: tabular-nums; }
 .rk.top { color: var(--hot); }
 .rk.up { font-size: 18px; color: var(--hot); padding-top: 4px; }

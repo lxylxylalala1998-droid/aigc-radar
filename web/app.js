@@ -9,7 +9,7 @@
 
   // day：在看哪一天的往期数据（'' = 不在往期模式）。往期按 24 小时的方式展示，所以 w 固定为 1
   // picksOpen：手机上某个平台的选题框展开了后 5 个；pickOpen：哪些选题点开了完整做法
-  const state = { w: 1, day: '', tab: 'picks', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: {}, pickOpen: new Set(), shown: PAGE };
+  const state = { w: 1, day: '', tab: 'picks', sub: '', chip: '', q: '', sort: '', pickDay: 0, picksOpen: {}, pickOpen: new Set(), clOpen: new Set(), shown: PAGE };
   const cache = {};
 
   // ---------- 工具 ----------
@@ -267,6 +267,39 @@
   const VIDEO_LEDE = {
     xiaohongshu: '小红书上的 AIGC 爆款，只收作者声明了「内容含 AI 生成」的视频笔记。来源：蒲公英内容广场「小红书热门」榜（近 7 天、标题或正文含 AI 的视频笔记 Top 100，经 TikHub），每天早上更新一次。热度按累计点赞，阅读量是小红书公开的累计阅读。「低粉爆款」= 作者粉丝不到 1 万、点赞过 5 万；「收藏率高 / 评论多」= 这项比例排进同类作品前 10%。',
   };
+  // ---------- 大家都在做：同一个时间段里很多不同作者在做的同一个题材 / 模板（build.js 聚类 + AI 起名写说明）----------
+  const CL = '大家都在做';
+  const byIdOf = (d) => d._byId || (d._byId = new Map(d.videos.map((x) => [x.id, x])));
+  // 每位作者只算最火的一条（和题材热度的算法一样），用来按「飙升最快」排
+  const clVel = (c, d) => { const best = new Map(); for (const x of c.ids.map((id) => byIdOf(d).get(id)).filter(Boolean)) best.set(x.author || x.id, Math.max(best.get(x.author || x.id) || 0, x.vel || 0)); return [...best.values()].reduce((s, v) => s + v, 0); };
+  function clusterCard(c, i, d, src) {
+    const vids = c.ids.map((id) => byIdOf(d).get(id)).filter(Boolean);
+    const key = `${src}:${c.name}`;
+    const open = state.clOpen.has(key);
+    const thumbs = vids.slice(0, 5).map((x) => `
+          <a class="cl-v" href="${esc(x.url)}" target="_blank" rel="noopener" title="${esc(`${x.author ? `${x.author}：` : ''}${x.title}`)}"><span class="th ph ${x.src}"><span>${PLAT[x.src]}</span><span class="ph-t">${esc(x.title)}</span>${x.cover ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(cover(x.cover, x.src))}" alt="" onerror="this.remove()" onload="if(this.naturalWidth>this.naturalHeight)this.classList.add('wide')">` : ''}</span><small>${N(x.heat)}${unit(x.src)}</small></a>`).join('');
+    return `
+      <article class="item row cl ${open ? 'open' : ''}">
+        <div class="rk ${i < 3 ? 'top' : ''}">${i + 1}</div>
+        <div>
+          <div class="tt">${esc(c.name)}</div>
+          <div class="meta"><span class="tag ${TIMING_CLS[c.stage] ?? ''}" data-tip="刚起势：最早一条不到 3 天；已饱和：近 3 天没有新作品，或者已经十几个人做了一周以上；其余是高峰期">${esc(c.stage)}</span><span><b class="num">${c.authors}</b> 位作者 · <b class="num">${c.n}</b> 条作品</span><span>合计 ${N(c.heat)}${unit(src)}</span><span>最早 ${ago(c.first)} · 最新 ${ago(c.last)}</span>${c.new3 ? `<span>近 3 天新增 ${c.new3} 条</span>` : ''}</div>
+          ${ana('大家在做', c.what)}${ana('为什么扎堆', c.why)}${ana('怎么跟', c.how)}
+          <div class="cl-vs">${thumbs}</div>
+          <div class="cl-ft"><span class="kw">共同关键词：${esc([c.label, ...(c.alias || [])].join(' / '))}</span>${vids.length > 5 ? `<button class="cl-more" data-clexp="${esc(key)}" aria-expanded="${open}">${open ? '收起 ▴' : `看全部 ${vids.length} 条 ▾`}</button>` : ''}</div>
+          ${vids.length > 5 ? `<div class="cl-all">${vids.map(videoRow).join('')}</div>` : ''}
+        </div>
+      </article>`;
+  }
+  function clusterList(d, src) {
+    const s = state.sort || (state.w === 1 ? 'vel' : 'heat');
+    const key = s === 'vel' ? (c) => clVel(c, d) : s === 'heat' ? (c) => c.heat : (c) => c.last;
+    const q = state.q;
+    const list = (d.clusters?.[src] || []).filter((c) => !q || [c.name, c.label, ...(c.alias || []), c.what, c.why, c.how].join(' ').toLowerCase().includes(q)).sort((a, b) => key(b) - key(a));
+    return `<p class="cl-lede">这个时间段里，至少 3 位不同作者在做的同一个题材 / 模板（同一首歌、同一个 IP、同一个梗或玩法）。按「每位作者最火那条的${unit(src) === '赞' ? '点赞' : '播放'}」加总排序，同一个作者自己更新的系列不算。</p>`
+      + sheet(list.slice(0, state.shown).map((c, i) => clusterCard(c, i, d, src)).join('')) + more(list.length, '个');
+  }
+
   function videoTab(src) {
     const dy = src === 'douyin';
     return {
@@ -276,10 +309,12 @@
       subs: (d) => {
         const list = d.videos.filter((x) => x.src === src);
         const low = list.filter((x) => x.pt?.includes('低粉爆款')).length;
-        return [['', '全部', list.length], ...(low ? [['低粉爆款', '低粉爆款', low]] : []), ...VTYPES.concat('未分类').map((t) => [t, t, list.filter((x) => vtype(x) === t).length]).filter(([, , n]) => n)];
+        const cl = d.clusters?.[src]?.length || 0;
+        return [['', '全部', list.length], ...(cl ? [[CL, CL, cl]] : []), ...(low ? [['低粉爆款', '低粉爆款', low]] : []), ...VTYPES.concat('未分类').map((t) => [t, t, list.filter((x) => vtype(x) === t).length]).filter(([, , n]) => n)];
       },
       sorts: [['vel', '飙升最快'], ['heat', `${unit(src) === '赞' ? '点赞' : '播放'}最高`], ['time', '最新发布']],
       render(d) {
+        if (state.sub === CL) return clusterList(d, src);
         const s = state.sort || (state.w === 1 ? 'vel' : 'heat');
         const key = s === 'vel' ? (x) => x.vel || 0 : s === 'heat' ? (x) => x.heat || 0 : (x) => x.pubAt || 0;
         const inSub = (x) => !state.sub || (state.sub === '低粉爆款' ? x.pt?.includes('低粉爆款') : vtype(x) === state.sub);
@@ -533,7 +568,15 @@
     const b = e.target.closest('button');
     if (!b) return;
     if ('save' in b.dataset) toggleSave(b.dataset.save);
-    else if (b.dataset.pexp) {
+    else if (b.dataset.clexp) {
+      // 大家都在做：展开 / 收起一个题材的全部作品
+      const key = b.dataset.clexp;
+      const open = !state.clOpen.has(key);
+      if (open) state.clOpen.add(key); else state.clOpen.delete(key);
+      b.closest('.cl').classList.toggle('open', open);
+      b.setAttribute('aria-expanded', open);
+      b.textContent = open ? '收起 ▴' : `看全部 ${b.closest('.cl').querySelectorAll('.cl-all > .item').length} 条 ▾`;
+    } else if (b.dataset.pexp) {
       // 展开 / 收起一个选题的完整做法：只改这一条，不重画整页
       const key = b.dataset.pexp;
       const open = !state.pickOpen.has(key);
