@@ -1,0 +1,114 @@
+{
+ "runAt": 1793467298532,
+ "sources": {
+  "weibo": {
+   "name": "微博热搜",
+   "ok": true,
+   "count": 50,
+   "ms": 912,
+   "lastOk": 1793467298532
+  },
+  "douyinHot": {
+   "name": "抖音热榜+话题视频",
+   "ok": true,
+   "count": 113,
+   "ms": 62567,
+   "warnings": [],
+   "lastOk": 1793467298532
+  },
+  "biliHot": {
+   "name": "B站热搜",
+   "ok": true,
+   "count": 50,
+   "ms": 992,
+   "lastOk": 1793467298532
+  },
+  "biliAI": {
+   "name": "B站 AI 稿件",
+   "ok": true,
+   "count": 758,
+   "ms": 79768,
+   "warnings": [
+    "rank 1001: B站接口 code=-352 -352",
+    "rank 1003: B站接口 code=-352 -352",
+    "rank 1007: B站接口 code=-352 -352",
+    "rank 1005: B站接口 code=-352 -352",
+    "rank 1012: B站接口 code=-352 -352"
+   ],
+   "lastOk": 1793467298532
+  },
+  "tikhub": {
+   "name": "抖音高赞 AIGC（每天一次）",
+   "ok": true,
+   "count": 411,
+   "ms": 103625,
+   "warnings": [
+    "详情 7698287665296215323：TikHub 400 Request failed. Please retry. Check the docs below to verify your parameters, test with the default demo parameters, and send the response JSON to support. You won't be charged for this request.",
+    "详情 7701744303076330795：TikHub 400 Request failed. Please retry. Check the docs below to verify your parameters, test with the default demo parameters, and send the response JSON to support. You won't be charged for this request.",
+    "详情 7701645404252753195：TikHub 400 Request failed. Please retry. Check the docs below to verify your parameters, test with the default demo parameters, and send the response JSON to support. You won't be charged for this request.",
+    "详情 7701934702084590899：TikHub 400 Request failed. Please retry. Check the docs below to verify your parameters, test with the default demo parameters, and send the response JSON to support. You won't be charged for this request."
+   ],
+   "info": "热榜 616 条，查详情 150 条（新视频 100、刷新老视频累计赞 50），带 AI 标 411 条；本次约花 0.167 美元，余额约 10.482",
+   "lastOk": 1793406035512
+  },
+  "xhs": {
+   "name": "小红书 AIGC + 热点（每天一次）",
+   "ok": true,
+   "count": 59,
+   "ms": 15161,
+   "warnings": [],
+   "info": "内容广场 102 条，查详情 15 条，带 AI 标 39 条；热点 20 条；本次约花 0.22 美元，余额约 10.43",
+   "lastOk": 1793406035512
+  },
+  "qqmusic": {
+   "name": "QQ音乐榜",
+   "ok": true,
+   "count": 100,
+   "ms": 2119,
+   "lastOk": 1793467298532
+  },
+  "netease": {
+   "name": "网易云音乐榜",
+   "ok": true,
+   "count": 100,
+   "ms": 2794,
+   "lastOk": 1793467298532
+  },
+  "douyinMusic": {
+   "name": "抖音热歌榜",
+   "ok": true,
+   "count": 79,
+   "ms": 2727,
+   "lastOk": 1793467298532
+  },
+  "biliMusic": {
+   "name": "B站音乐榜",
+   "ok": true,
+   "count": 35,
+   "ms": 1922,
+   "lastOk": 1793467298532
+  },
+  "rss": {
+   "name": "AI 资讯 RSS",
+   "ok": true,
+   "count": 60,
+   "ms": 4280,
+   "warnings": [],
+   "lastOk": 1793467298532
+  },
+  "hn": {
+   "name": "Hacker News",
+   "ok": true,
+   "count": 18,
+   "ms": 2336,
+   "lastOk": 1793467298532
+  },
+  "hf": {
+   "name": "Hugging Face 热门模型",
+   "ok": true,
+   "count": 25,
+   "ms": 1940,
+   "lastOk": 1793467298532
+  }
+ }
+}
