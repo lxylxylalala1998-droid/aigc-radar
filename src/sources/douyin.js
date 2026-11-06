@@ -137,6 +137,8 @@ export async function douyinMusic() {
         cat: 'music', src: 'douyin', board: `抖音${c.name}`,
         title: clean(mi.title), author: clean(mi.author),
         url: `https://www.douyin.com/music/${mid}`,
+        // 歌曲封面（热歌选题当封面用；热歌榜本身不配图）
+        cover: (() => { const l = (mi.cover_large || mi.cover_medium || mi.cover_hd)?.url_list || []; return l.find((u) => /\.jpe?g/i.test(u)) || l.find((u) => !/\.heic/i.test(u)) || undefined; })(),
         heat: x.heat || 0, rank: i + 1,
         label: x.is_new ? '新' : '',
         m: { week: j.release_date, users: mi.user_count || 0 },

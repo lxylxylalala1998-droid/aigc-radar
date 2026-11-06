@@ -168,7 +168,7 @@
     const refs = (p) => (p.refs?.length ? `<div class="refs">${p.refs.map((r) => link(r.url, esc(r.title))).join('')}</div>` : '');
     // 选题卡片：左边是主要依据那条作品的封面（抖音竖版、B站横版），编号压在封面左上角，点封面直接看视频；
     // 右边从上到下：标题 → 标签 → 为什么能火 → 底部一行（展开做法 / 主要依据的数据 / 待做）。完整做法默认收起
-    // 封面：主要依据那条作品的封面；没挂作品的（新工具测评、只借热搜 / 热歌）用后台找好的配图（p.cover：新闻配图或同题材作品）
+    // 封面：主要依据那条作品的封面；没挂作品的（新工具测评、只借热搜 / 热歌）用后台找好的配图（p.cover：歌曲封面、新闻配图或同题材作品）
     // 都没有、或者图片打不开，露出底下的文字封面（「热搜」「新工具」+ 选题标题），不会是空色块
     const item = (p, k, s) => {
       const key = `${dg.date}:${s}:${k}`;
@@ -178,7 +178,7 @@
       const src = mv?.src || s;
       const pic = mv?.cover ? cover(mv.cover, src) : p.cover?.img ? cover(p.cover.img, p.cover.src) : '';
       const target = mv || (p.cover?.url && p.cover) || r0;
-      const tip = mv ? `主要依据：${mv.title || ''}` : p.cover?.url ? `${p.cover.kind === 'news' ? '配图来自' : '同题材作品'}：${p.cover.title || ''}` : r0?.title || '';
+      const tip = mv ? `主要依据：${mv.title || ''}` : p.cover?.url ? `${{ news: '配图来自', music: '借势的歌' }[p.cover.kind] || '同题材作品（配图）'}：${p.cover.title || ''}` : r0?.title || '';
       const label = mv ? PLAT[src] : r0?.kind === 'music' ? '热歌' : r0?.kind === 'trend' ? '热搜' : r0?.kind === 'news' ? '新工具' : '选题';
       const inner = `<span class="ph-l">${label}</span><span class="ph-t">${esc(p.title)}</span>${pic ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(pic)}" alt="" onerror="this.remove()" onload="if(this.naturalWidth>this.naturalHeight)this.classList.add('wide')">` : ''}<b class="pm-no">${pad(k + 1)}</b>${mv ? '<i class="play" aria-hidden="true">▶</i>' : ''}`;
       return `

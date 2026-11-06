@@ -25,6 +25,12 @@ async function bili(url) {
   return j.data;
 }
 
+// 一条稿件的封面（热歌选题用这首歌代表稿件的封面，多是官方 MV）
+export async function biliPic(bvid) {
+  const d = await bili(`https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`);
+  return d?.pic ? fixPic(d.pic) : '';
+}
+
 // wbi 签名（w_rid + wts）：B站网页端接口的防爬签名。网页端调分区排行接口是带签名的，这里照做（GitHub 上不带签名时返回过 -352 风控）
 // 算法见 bilibili-API-collect 的 wbi 文档；密钥从 nav 接口取（没登录也给），每次运行取一次
 const MIXIN = [46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45, 35, 27, 43, 5, 49, 33, 9, 42, 19, 29, 28, 14, 39, 12, 38, 41, 13, 37, 48, 7, 16, 24, 55, 40, 61, 26, 17, 0, 1, 60, 51, 30, 4, 22, 25, 54, 21, 56, 59, 6, 63, 57, 62, 11, 36, 20, 34, 44, 52];

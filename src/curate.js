@@ -7,7 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DATA, HOUR, DAY, bjDate, readJSON, writeJSON, loadEnv, isMain, isAI, fmtNum } from './util.js';
-import { DEEPSEEK_BASE, DEEPSEEK_MODEL, ANALYZE_TOP_VIDEOS, ANALYZE_TOP_SONGS, WEB_WINDOWS } from './config.js';
+import { DEEPSEEK_BASE, DEEPSEEK_MODEL, ANALYZE_TOP_VIDEOS, ANALYZE_TOP_SONGS, WEB_WINDOWS, COVER_THEME_MIN } from './config.js';
 import { biliFans } from './sources/bilibili.js';
 import { lowFan, ratioMedians, portrait, withFans, toolsOf, toolRank, bgmRank } from './insight.js';
 import { loadWindow, velocity, slim, PLATFORM, unitOf, LABELED, labelOk } from './rank.js';
@@ -699,7 +699,11 @@ ${lines.join('\n')}
 ${extra}`, { maxTokens: 800 });
 }
 
-// 最近几天日报里推荐过的选题（今天之前），用来跨天去重：记下每个选题参考过的作品链接
+// 选题借的热歌 / 热搜：同一首歌在热歌榜、飙升榜上 id 不同，按链接认；热搜按词条认（去掉空格标点、不分大小写）
+const borrowKeys = (refs = []) => refs.flatMap((r) => (r.kind === 'music' && r.url ? [`music:${r.url}`]
+  : r.kind === 'trend' && r.title ? [`trend:${String(r.title).toLowerCase().replace(/[\s\p{P}\p{S}]/gu, '')}`] : []));
+
+// 最近几天日报里推荐过的选题（今天之前），用来跨天去重：记下每个选题参考过的作品链接、借过的热歌 / 热搜
 function recentPicks(now, days) {
   const out = [];
   for (let k = 1; k <= days; k++) {
@@ -707,7 +711,12 @@ function recentPicks(now, days) {
     if (!dg?.picks || Array.isArray(dg.picks)) continue;
     for (const s of ['douyin', 'bilibili']) {
       for (const p of dg.picks[s] || []) {
-        out.push({ date: dg.date, src: s, title: p.title, urls: [p.main?.url, ...(p.refs || []).filter((r) => r.kind === 'video').map((r) => r.url)].filter(Boolean) });
+        out.push({
+          date: dg.date, src: s, title: p.title,
+          urls: [p.main?.url, ...(p.refs || []).filter((r) => r.kind === 'video').map((r) => r.url)].filter(Boolean),
+          borrowed: borrowKeys(p.refs),
+          borrowedTitles: (p.refs || []).filter((r) => r.kind === 'music' || r.kind === 'trend').map((r) => r.title),
+        });
       }
     }
   }
@@ -880,7 +889,8 @@ export async function digest(now = Date.now()) {
     const listed = new Set([...used, ...h30.map((x) => x.id)]);
     const trendWorks = [];
     for (const t of [...pm, ...pc, ...lt]) {
-      const w = w30.filter((x) => !listed.has(x.id) && trendIsWork(t.title, x)).sort((a, b) => (b.heat || 0) - (a.heat || 0))[0];
+      // 对上的作品太冷门（不到 COVER_THEME_MIN）就不是热搜说的那条，不给 AI，免得成了选题的主要依据
+      const w = w30.filter((x) => !listed.has(x.id) && (x.heat || 0) >= COVER_THEME_MIN[s] && trendIsWork(t.title, x)).sort((a, b) => (b.heat || 0) - (a.heat || 0))[0];
       if (!w || trendWorks.length >= 8) continue;
       listed.add(w.id);
       trendWorks.push({ ...withVel(w), trend: t.title });
@@ -902,6 +912,7 @@ export async function digest(now = Date.now()) {
       tn.length ? `【新工具 / 新模型】可以做首发测评、教程\n${tn.map((x, i) => line(`N${i}`, x)).join('\n')}` : '',
       tools.length ? `【爆款工具热度】近 7 天 AIGC 爆款里提到各工具的作品数（括号里是上 7 天）：${tools.slice(0, 10).map((t) => `${t.name} ${t.n}（${t.prev}）`).join('，')}` : '',
       recent.some((r) => r.src === s) ? `【最近 3 天已经推荐过的选题】不要再出这些题材\n${[...new Set(recent.filter((r) => r.src === s).map((r) => `${r.date.slice(5)}｜${r.title}`))].join('\n')}` : '',
+      (() => { const t = [...new Set(recent.filter((r) => r.src === s).flatMap((r) => r.borrowedTitles))]; return t.length ? `【最近 3 天已经借过的热歌 / 热搜】不要再拿它们出选题：${t.join('、')}` : ''; })(),
     ].filter(Boolean).join('\n\n');
     console.log(`${PLATFORM[s]}选题素材：24h ${h24.length}+热梗 ${pm.length}+挑战 ${pc.length}，3天 ${h3.length}，本周 ${h7.length}+长热搜 ${lt.length}，30天 ${h30.length}，热搜原作 ${trendWorks.length}，热歌 ${songs.length}，小红书 ${xhs.length}，新工具 ${tn.length}`);
     return { blocks, refs };
@@ -953,21 +964,24 @@ export async function digest(now = Date.now()) {
         risk: p.risk || undefined, timing: timing(refs, pool3[s], now),
         // 主要依据：AI 排在第一的那条作品（没有作品参考就没有），选题旁边显示它的封面，点开看视频
         main: (({ url, cover, src, title, heat } = {}) => (url ? { url, cover, src, title, heat } : undefined))(refs.find((x) => x.cat === 'video')),
-        refs: refs.map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url, id: x.id, heat: x.cat === 'video' ? x.heat : undefined })),
+        refs: refs.map((x) => ({ kind: x.cat, title: x.cat === 'music' ? `${x.title} - ${x.author}` : x.title, url: x.url, id: x.id, heat: x.cat === 'video' ? x.heat : undefined, cover: x.cat === 'music' ? x.cover : undefined })),
       };
     }).filter(Boolean))]));
   const picks = {};
   for (const s of ['douyin', 'bilibili']) {
     const seen = new Set(recent.filter((r) => r.src === s).flatMap((r) => r.urls));
-    const isRepeat = (p) => !!p.main?.url && seen.has(p.main.url); // 主要依据就是前几天推过的作品
+    const seenBorrow = new Set(recent.filter((r) => r.src === s).flatMap((r) => r.borrowed));
+    // 主要依据就是前几天推过的作品；没挂作品的（只借热歌 / 热搜），借的歌 / 热搜前几天借过
+    const isRepeat = (p) => (p.main?.url ? seen.has(p.main.url) : borrowKeys(p.refs).some((k) => seenBorrow.has(k)));
     const fresh = built[s].filter((p) => !isRepeat(p));
-    const repeats = built[s].filter(isRepeat).filter((p) => (p.timing?.accel ?? 0) >= 1); // 还在加速的老选题
+    // 还在加速的老选题（只有挂了作品的才算；同一首歌、同一条热搜 3 天内只推一次）
+    const repeats = built[s].filter(isRepeat).filter((p) => p.main?.url && (p.timing?.accel ?? 0) >= 1);
     const ordered = [...fresh.filter((p) => p.timing?.label !== '已饱和'), ...fresh.filter((p) => p.timing?.label === '已饱和')];
     const top = keepTutorial(ordered);
     while (top.length < 10 && repeats.length) top.push({ ...repeats.shift(), repeat: true });
     picks[s] = top;
     rising[s] = repeats.slice(0, 3).map((p) => ({ title: p.title, url: p.main?.url, cover: p.main?.cover, heat: p.main?.heat, timing: p.timing?.label }));
-    console.log(`${PLATFORM[s]}选题：AI 出 ${(s === 'douyin' ? dyPicks : blPicks).length} 个，去重后 ${built[s].length}，和前 3 天重复 ${built[s].length - fresh.length}（还在涨 ${built[s].filter(isRepeat).filter((p) => (p.timing?.accel ?? 0) >= 1).length}），最终 ${top.length}`);
+    console.log(`${PLATFORM[s]}选题：AI 出 ${(s === 'douyin' ? dyPicks : blPicks).length} 个，去重后 ${built[s].length}，和前 3 天重复 ${built[s].length - fresh.length}（还在涨 ${repeats.length + top.filter((p) => p.repeat).length}），最终 ${top.length}`);
   }
 
   // ---- 3 分钟速览：从 20 个选题里挑今天最该做的 3 个 + 一句话风向，再配 1 个低粉爆款、1 个信息差 ----

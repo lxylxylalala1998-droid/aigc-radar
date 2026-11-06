@@ -2,17 +2,19 @@
 //   1. 抖音视频封面：链接带签名，约 14 天过期；热榜上掉下去的视频不会再被刷新，10-23 以前抓的还有 heic（浏览器显示不了）
 //      → 网页会展示的抖音视频（各时间窗口的列表 + 近 31 天日报里引用的），封面没有 / heic / 3 天内过期的，
 //        经 TikHub 查一次详情换新封面，写回数据（每天最多 DY_COVER_PER_DAY 条）
-//   2. 选题封面：没挂视频的选题（只借了热搜，或者教程测评挂的是新闻）
-//      → 热搜对应的原作（补成主要依据）→ 新闻网页的配图（分享配图或正文第一张图，国内打不开的站不用）→ 同题材作品的封面；找到的写回日报，以后不用再找
+//   2. 选题封面：没挂视频的选题（只借了热搜 / 热歌，或者教程测评挂的是新闻）
+//      → 热搜对应的原作（补成主要依据）→ 热歌的封面（B站是官方 MV）→ 新闻网页的配图（分享配图或正文第一张图，国内打不开的站不用）
+//      → 够火的同题材作品的封面；找到的写回日报，以后不用再找
 //   都找不到的，网页上显示文字封面（选题标题），不会是空色块
 import fs from 'node:fs';
 import path from 'node:path';
 import { DATA, DAY, UA, bjDate, readJSON, writeJSON } from './util.js';
-import { DY_COVER_PER_DAY, TIKHUB_MIN_BALANCE, WEB_WINDOWS } from './config.js';
+import { DY_COVER_PER_DAY, TIKHUB_MIN_BALANCE, WEB_WINDOWS, COVER_THEME_MIN } from './config.js';
 import { loadWindow } from './rank.js';
 import { webVideos } from './clusters.js';
 import { th, awemes, tikhubState } from './sources/tikhub.js';
 import { coverOf } from './sources/douyin.js';
+import { biliPic } from './sources/bilibili.js';
 import { isWork, keyGrams, sharePhrase, trendIsWork } from './curate.js';
 
 const STATE = path.join(DATA, 'covers.json'); // { day, used: 今天查了几条, failed: { 视频 id: 时间 } }
@@ -161,19 +163,41 @@ function sameTheme(text, x) {
   return false;
 }
 
+// 热歌选题的封面：B站用这首歌代表稿件的封面（多是官方 MV），查不到用歌曲封面；点开就是这首歌
+async function songCover(r) {
+  const bv = /bilibili\.com\/video\/(BV\w+)/.exec(r.url || '')?.[1];
+  if (bv) {
+    try { const u = await biliPic(bv); if (u) return u; } catch {}
+  }
+  return r.cover || '';
+}
+
+// 同题材作品要够火才拿来当封面
+const themeOk = (x, s) => (x?.heat || 0) >= COVER_THEME_MIN[s];
+// 已经找好的配图还用不用：按现在的规则找的（v: 2）、新闻配图照用；
+// 以前找的同题材作品，挂了热歌的选题改用歌曲封面，作品不够火的重新找
+function keepCover(p, pool, s) {
+  if (!p.cover?.img) return false;
+  if (p.cover.v === 2 || p.cover.kind === 'news') return true;
+  if (p.refs?.some((r) => r.kind === 'music')) return false;
+  return themeOk(pool.find((x) => x.url === p.cover.url), s);
+}
+
 // 给日报里没有封面的选题找封面，有改动返回 true
 //   works：{ douyin: [...], bilibili: [...] } 近 30 天的 AIGC 作品（封面能用的）
 export async function fixPickCovers(dg, works, now = Date.now()) {
   if (!dg?.picks || Array.isArray(dg.picks)) return false;
   let changed = false;
   for (const s of ['douyin', 'bilibili']) {
+    const pool = works[s] || [];
     for (const p of dg.picks[s] || []) {
-      if (p.main?.url || p.refs?.some((r) => r.kind === 'video') || p.cover?.img) continue; // 有作品的，封面由 build 用最新数据补
+      if (p.main?.url || p.refs?.some((r) => r.kind === 'video')) continue; // 有作品的，封面由 build 用最新数据补
+      if (keepCover(p, pool, s)) continue;
+      if (p.cover) { delete p.cover; delete p.coverTried; changed = true; } // 旧规则找的配图不要了，下面重新找
       if (p.coverTried > now - DAY) continue; // 找过没找到，一天最多再找一次
-      const pool = works[s] || [];
-      // 1. 只借了热搜：热搜说的就是哪条作品，补成主要依据（跨天去重也靠它）
+      // 1. 只借了热搜：热搜说的就是哪条作品，补成主要依据（跨天去重也靠它）；对上的作品太冷门就不是热搜说的那条
       const w = (p.refs || []).filter((r) => r.kind === 'trend')
-        .map((t) => pool.filter((x) => trendIsWork(t.title, x)).sort(byHeat)[0]).find(Boolean);
+        .map((t) => pool.filter((x) => themeOk(x, s) && trendIsWork(t.title, x)).sort(byHeat)[0]).find(Boolean);
       if (w) {
         p.main = { url: w.url, cover: w.cover, src: w.src, title: w.title, heat: w.heat };
         p.refs = [{ kind: 'video', title: w.title, url: w.url, id: w.id, heat: w.heat }, ...(p.refs || [])];
@@ -181,20 +205,29 @@ export async function fixPickCovers(dg, works, now = Date.now()) {
         changed = true;
         continue;
       }
-      // 2. 挂的是新闻（新工具测评）：用新闻网页的配图
-      const news = (p.refs || []).find((r) => r.kind === 'news');
-      const img = news ? await pageImage(news.url) : '';
-      if (img && await imageOk(img)) {
-        p.cover = { img, url: news.url, title: news.title, kind: 'news' };
+      // 2. 借的是热歌：用这首歌的封面
+      const song = (p.refs || []).find((r) => r.kind === 'music');
+      const songImg = song ? await songCover(song) : '';
+      if (songImg && await imageOk(songImg)) {
+        p.cover = { img: songImg, url: song.url, title: song.title, src: s, kind: 'music', v: 2 };
         delete p.coverTried;
         changed = true;
         continue;
       }
-      // 3. 同题材作品的封面（只当配图，不算主要依据）
+      // 3. 挂的是新闻（新工具测评）：用新闻网页的配图
+      const news = (p.refs || []).find((r) => r.kind === 'news');
+      const img = news ? await pageImage(news.url) : '';
+      if (img && await imageOk(img)) {
+        p.cover = { img, url: news.url, title: news.title, kind: 'news', v: 2 };
+        delete p.coverTried;
+        changed = true;
+        continue;
+      }
+      // 4. 同题材作品的封面（只当配图，不算主要依据）：要够火，几千播放的冷门稿件不用，宁可显示文字封面
       const text = [p.title, ...(p.refs || []).map((r) => r.title)].join(' ');
-      const v = pool.filter((x) => sameTheme(text, x)).sort(byHeat)[0];
+      const v = pool.filter((x) => themeOk(x, s) && sameTheme(text, x)).sort(byHeat)[0];
       if (v) {
-        p.cover = { img: v.cover, url: v.url, title: v.title, src: v.src, kind: 'video' };
+        p.cover = { img: v.cover, url: v.url, title: v.title, src: v.src, heat: v.heat, kind: 'video', v: 2 };
         delete p.coverTried;
       } else p.coverTried = now;
       changed = true;
