@@ -1,0 +1,109 @@
+{
+ "runAt": 1794073847680,
+ "sources": {
+  "weibo": {
+   "name": "微博热搜",
+   "ok": true,
+   "count": 50,
+   "ms": 948,
+   "lastOk": 1794073847680
+  },
+  "douyinHot": {
+   "name": "抖音热榜+话题视频",
+   "ok": true,
+   "count": 124,
+   "ms": 63563,
+   "warnings": [],
+   "lastOk": 1794073847680
+  },
+  "biliHot": {
+   "name": "B站热搜",
+   "ok": true,
+   "count": 50,
+   "ms": 1029,
+   "lastOk": 1794073847680
+  },
+  "biliAI": {
+   "name": "B站 AI 稿件",
+   "ok": true,
+   "count": 961,
+   "ms": 127802,
+   "warnings": [
+    "详情 BV1Mk4z6wE6j: B站接口 code=-404 啥都木有",
+    "详情 BV1Mk4z6wE6j: B站接口 code=-404 啥都木有"
+   ],
+   "lastOk": 1794073847680
+  },
+  "tikhub": {
+   "name": "抖音高赞 AIGC（每天一次）",
+   "ok": true,
+   "count": 400,
+   "ms": 97326,
+   "warnings": [
+    "详情 7700527929784432569：TikHub 400 Request failed. Please retry. Check the docs below to verify your parameters, test with the default demo parameters, and send the response JSON to support. You won't be charged for this request.",
+    "详情 7702766524586752122：TikHub 400 Request failed. Please retry. Check the docs below to verify your parameters, test with the default demo parameters, and send the response JSON to support. You won't be charged for this request."
+   ],
+   "info": "热榜 610 条，查详情 150 条（新视频 100、刷新老视频累计赞 50），带 AI 标 400 条；本次约花 0.168 美元，余额约 7.768",
+   "lastOk": 1794010837648
+  },
+  "xhs": {
+   "name": "小红书 AIGC + 热点（每天一次）",
+   "ok": true,
+   "count": 75,
+   "ms": 12207,
+   "warnings": [],
+   "info": "内容广场 102 条，查详情 8 条，带 AI 标 55 条；热点 20 条；本次约花 0.15 美元，余额约 7.79",
+   "lastOk": 1794010837648
+  },
+  "qqmusic": {
+   "name": "QQ音乐榜",
+   "ok": true,
+   "count": 100,
+   "ms": 2192,
+   "lastOk": 1794073847680
+  },
+  "netease": {
+   "name": "网易云音乐榜",
+   "ok": true,
+   "count": 100,
+   "ms": 3035,
+   "lastOk": 1794073847680
+  },
+  "douyinMusic": {
+   "name": "抖音热歌榜",
+   "ok": true,
+   "count": 79,
+   "ms": 2378,
+   "lastOk": 1794073847680
+  },
+  "biliMusic": {
+   "name": "B站音乐榜",
+   "ok": true,
+   "count": 33,
+   "ms": 2105,
+   "lastOk": 1794073847680
+  },
+  "rss": {
+   "name": "AI 资讯 RSS",
+   "ok": true,
+   "count": 66,
+   "ms": 3059,
+   "warnings": [],
+   "lastOk": 1794073847680
+  },
+  "hn": {
+   "name": "Hacker News",
+   "ok": true,
+   "count": 11,
+   "ms": 2306,
+   "lastOk": 1794073847680
+  },
+  "hf": {
+   "name": "Hugging Face 热门模型",
+   "ok": true,
+   "count": 25,
+   "ms": 1998,
+   "lastOk": 1794073847680
+  }
+ }
+}
