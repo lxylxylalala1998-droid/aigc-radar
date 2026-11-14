@@ -1,0 +1,105 @@
+{
+ "runAt": 1794680912432,
+ "sources": {
+  "weibo": {
+   "name": "微博热搜",
+   "ok": true,
+   "count": 50,
+   "ms": 998,
+   "lastOk": 1794680912432
+  },
+  "douyinHot": {
+   "name": "抖音热榜+话题视频",
+   "ok": true,
+   "count": 115,
+   "ms": 61199,
+   "warnings": [],
+   "lastOk": 1794680912432
+  },
+  "biliHot": {
+   "name": "B站热搜",
+   "ok": true,
+   "count": 50,
+   "ms": 972,
+   "lastOk": 1794680912432
+  },
+  "biliAI": {
+   "name": "B站 AI 稿件",
+   "ok": true,
+   "count": 1009,
+   "ms": 130714,
+   "warnings": [],
+   "lastOk": 1794680912432
+  },
+  "tikhub": {
+   "name": "抖音高赞 AIGC（每天一次）",
+   "ok": true,
+   "count": 378,
+   "ms": 100062,
+   "warnings": [
+    "详情 7703799985782983951：TikHub 400 Request failed. Please retry. Check the docs below to verify your parameters, test with the default demo parameters, and send the response JSON to support. You won't be charged for this request."
+   ],
+   "info": "热榜 592 条，查详情 150 条（新视频 100、刷新老视频累计赞 50），带 AI 标 378 条；本次约花 0.170 美元，余额约 5.245",
+   "lastOk": 1794615639169
+  },
+  "xhs": {
+   "name": "小红书 AIGC + 热点（每天一次）",
+   "ok": true,
+   "count": 75,
+   "ms": 15404,
+   "warnings": [],
+   "info": "内容广场 102 条，查详情 15 条，带 AI 标 55 条；热点 20 条；本次约花 0.22 美元，余额约 5.20",
+   "lastOk": 1794615639169
+  },
+  "qqmusic": {
+   "name": "QQ音乐榜",
+   "ok": true,
+   "count": 100,
+   "ms": 2188,
+   "lastOk": 1794680912432
+  },
+  "netease": {
+   "name": "网易云音乐榜",
+   "ok": true,
+   "count": 100,
+   "ms": 2870,
+   "lastOk": 1794680912432
+  },
+  "douyinMusic": {
+   "name": "抖音热歌榜",
+   "ok": true,
+   "count": 100,
+   "ms": 2304,
+   "lastOk": 1794680912432
+  },
+  "biliMusic": {
+   "name": "B站音乐榜",
+   "ok": true,
+   "count": 33,
+   "ms": 1778,
+   "lastOk": 1794680912432
+  },
+  "rss": {
+   "name": "AI 资讯 RSS",
+   "ok": true,
+   "count": 65,
+   "ms": 3226,
+   "warnings": [],
+   "lastOk": 1794680912432
+  },
+  "hn": {
+   "name": "Hacker News",
+   "ok": true,
+   "count": 17,
+   "ms": 2415,
+   "lastOk": 1794680912432
+  },
+  "hf": {
+   "name": "Hugging Face 热门模型",
+   "ok": true,
+   "count": 25,
+   "ms": 2206,
+   "lastOk": 1794680912432
+  }
+ }
+}

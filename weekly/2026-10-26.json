@@ -1,0 +1,486 @@
+{
+ "date": "2026-10-26",
+ "generatedAt": 1792977030171,
+ "range": [
+  "2026-10-19",
+  "2026-10-25"
+ ],
+ "errors": [],
+ "summary": "AI动画长合集与AI影视系列剧持续霸榜，24小时飙升内容后劲最足，AI整活向IP角色借势爆发。",
+ "themes": [
+  {
+   "title": "AI动画长合集",
+   "platform": "抖音",
+   "why": "超长合集满足爽看需求，收藏分享高，持续产出爆款。"
+  },
+  {
+   "title": "AI影视系列剧",
+   "platform": "双平台",
+   "why": "悬疑惊悚、同人恋爱等系列化内容粘性强，多集持续引流。"
+  },
+  {
+   "title": "AI整活玩梗",
+   "platform": "双平台",
+   "why": "结合热点IP、抽象新闻，低成本高传播，易引发二创。"
+  },
+  {
+   "title": "AI特效玩法",
+   "platform": "抖音",
+   "why": "短平快视觉冲击，模板化易模仿，用户参与度高。"
+  },
+  {
+   "title": "AI MV/鬼畜",
+   "platform": "B站",
+   "why": "经典IP+画风混搭，音乐节奏感强，社区传播力足。"
+  }
+ ],
+ "directions": [
+  {
+   "title": "AI动画系列剧大肥鱼",
+   "platform": "双平台",
+   "why": "大肥鱼相关作品多次上榜，IP热度高，系列化可延续流量。",
+   "how": "文生图定角色形象→图生视频做剧情片段→剪辑加配音配乐，每集留悬念。"
+  },
+  {
+   "title": "AI整活抽象新闻大赏",
+   "platform": "B站",
+   "why": "抽象新闻类播放418万，结合时效热点易引发共鸣。",
+   "how": "收集近期迷惑行为→AI生成夸张画面→剪辑配解说，节奏紧凑笑点密集。"
+  },
+  {
+   "title": "AI影视同人恋爱短剧",
+   "platform": "双平台",
+   "why": "哈利波特同人、白切黑小狗等恋爱题材播放高，受众广。",
+   "how": "选热门IP或原创人设→文生图出角色→图生视频做互动场景→剪辑加情感BGM。"
+  },
+  {
+   "title": "AI特效玩法模板挑战",
+   "platform": "抖音",
+   "why": "特效玩法类多次爆款，时长极短易传播，适合追热点。",
+   "how": "用AI生成视觉奇观→设计简单动作模板→引导用户合拍，配洗脑BGM。"
+  },
+  {
+   "title": "AI MV画风混搭经典",
+   "platform": "B站",
+   "why": "寂静岭画风周处除三害播放341万，画风反差吸引点击。",
+   "how": "选经典影视或歌曲→AI转换画风生成画面→卡点剪辑，突出反差感。"
+  }
+ ],
+ "top": {
+  "douyin": [
+   {
+    "title": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～",
+    "url": "https://www.douyin.com/video/7698977781489486566",
+    "src": "douyin",
+    "heat": 2858712,
+    "author": "脑洞视界",
+    "type": "AI动画",
+    "fans": 683954,
+    "pubAt": 1792578600000
+   },
+   {
+    "title": "猫猫教你做人——那些看不起你的人，其实也在装",
+    "url": "https://www.douyin.com/video/7698287665296215323",
+    "src": "douyin",
+    "heat": 1273329,
+    "author": "小弹簧晓丹",
+    "type": "AI动画",
+    "fans": 101042,
+    "pubAt": 1792397278000
+   },
+   {
+    "title": "梁文锋是个外行！我要给大肥鱼完整的一生！",
+    "url": "https://www.douyin.com/video/7700098529120767272",
+    "src": "douyin",
+    "heat": 892326,
+    "author": "游戏观察猿",
+    "type": "AI整活",
+    "fans": 65440,
+    "pubAt": 1792818903000
+   },
+   {
+    "title": "十万天兵只是些许风霜罢了",
+    "url": "https://www.douyin.com/video/7699418404045720867",
+    "src": "douyin",
+    "heat": 654220,
+    "author": "不想走动的蒙多",
+    "type": "AI特效玩法",
+    "fans": 551,
+    "pubAt": 1792660548000,
+    "low": true
+   },
+   {
+    "title": "中式悬疑惊悚《阴案录：纸新娘》第一幕，搜查 本片纯AI制作，未宣言任何封建迷信，无任何不良引导，请勿过度曲解画面内容，相信科学，从你我做起！",
+    "url": "https://www.douyin.com/video/7699788489050574090",
+    "src": "douyin",
+    "heat": 650092,
+    "author": "饭团鱼子酱（钱叔_）",
+    "type": "AI影视",
+    "fans": 256207,
+    "pubAt": 1792746714000
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "以前的小孩vs现在的小孩【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1TGnB63EAm",
+    "src": "bilibili",
+    "heat": 4556637,
+    "author": "夕颜AI剧场",
+    "type": "AI整活",
+    "fans": 58151,
+    "pubAt": 1792587067000
+   },
+   {
+    "title": "如果有一天，你因为伸出援手而受了伤，别怀疑自己，错的是黑暗，从来不是你。",
+    "url": "https://www.bilibili.com/video/BV16mJ96BEoL",
+    "src": "bilibili",
+    "heat": 4358488,
+    "author": "迷九探影",
+    "type": "AI影视",
+    "fans": 143156,
+    "pubAt": 1792498500000
+   },
+   {
+    "title": "抽象新闻：10月人类迷惑行为大赏（上）",
+    "url": "https://www.bilibili.com/video/BV1E4ns6WE3R",
+    "src": "bilibili",
+    "heat": 4182533,
+    "author": "我是M菌",
+    "type": "AI整活",
+    "fans": 1178878,
+    "pubAt": 1792726242000
+   },
+   {
+    "title": "大难不死的男孩爱上纯血家族的女孩【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1bKnw6zEsV",
+    "src": "bilibili",
+    "heat": 3749772,
+    "author": "Foyege弗曳哥",
+    "type": "AI影视",
+    "fans": 85409,
+    "pubAt": 1792488600000
+   },
+   {
+    "title": "用寂静岭的画风打开《周处除三害》【AI MV大赛】",
+    "url": "https://www.bilibili.com/video/BV1Cdni6AEQB",
+    "src": "bilibili",
+    "heat": 3418586,
+    "author": "ByeByeBlueBerry",
+    "type": "AI MV",
+    "fans": 121330,
+    "pubAt": 1792576800000
+   }
+  ]
+ },
+ "low": {
+  "douyin": [
+   {
+    "title": "十万天兵只是些许风霜罢了",
+    "url": "https://www.douyin.com/video/7699418404045720867",
+    "src": "douyin",
+    "heat": 654220,
+    "author": "不想走动的蒙多",
+    "type": "AI特效玩法",
+    "fans": 551,
+    "pubAt": 1792660548000,
+    "low": true
+   },
+   {
+    "title": "《怪奇世界》系列剧-它在门外（OPEN UP） 万圣节深夜，门外一直有人在敲。它说：“是我，快开门。”",
+    "url": "https://www.douyin.com/video/7699454627057569034",
+    "src": "douyin",
+    "heat": 518661,
+    "author": "小许Anduin",
+    "type": "AI影视",
+    "fans": 16247,
+    "pubAt": 1792676400000,
+    "low": true
+   },
+   {
+    "title": "今天只写一张试卷",
+    "url": "https://www.douyin.com/video/7699462414584288953",
+    "src": "douyin",
+    "heat": 482263,
+    "author": "依依有个姐姐",
+    "type": "AI特效玩法",
+    "fans": 22987,
+    "pubAt": 1792670790000,
+    "low": true
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "奶蛙突然回来的妈妈【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV14jnb62EMn",
+    "src": "bilibili",
+    "heat": 2980368,
+    "author": "牢中牢的牢猫",
+    "type": "AI动画",
+    "fans": 21109,
+    "pubAt": 1792743030000,
+    "low": true
+   },
+   {
+    "title": "善良让人愿意伸手，急救技能让双手更有力量！【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV19Knb6WEVr",
+    "src": "bilibili",
+    "heat": 2614553,
+    "author": "AIGC纸箱",
+    "type": "AI影视",
+    "fans": 27243,
+    "pubAt": 1792748255000,
+    "low": true
+   },
+   {
+    "title": "招豆包当客服也是没救了",
+    "url": "https://www.bilibili.com/video/BV1UznF6MEop",
+    "src": "bilibili",
+    "heat": 2128374,
+    "author": "王高兴A",
+    "type": "AI整活",
+    "fans": 21761,
+    "pubAt": 1792490400000,
+    "low": true
+   }
+  ]
+ },
+ "review": {
+  "n": 73,
+  "days": [
+   "2026-10-22",
+   "2026-10-23",
+   "2026-10-24",
+   "2026-10-25"
+  ],
+  "byHorizon": [
+   {
+    "k": "24小时飙升",
+    "n": 39,
+    "avg": 0.154
+   },
+   {
+    "k": "近3天爆款",
+    "n": 17,
+    "avg": 0.121
+   },
+   {
+    "k": "本周热点",
+    "n": 9,
+    "avg": 0.06
+   },
+   {
+    "k": "长期热点",
+    "n": 8,
+    "avg": 0.015
+   }
+  ],
+  "byTiming": [
+   {
+    "k": "没判断",
+    "n": 16,
+    "avg": 0.157
+   },
+   {
+    "k": "高峰期",
+    "n": 25,
+    "avg": 0.138
+   },
+   {
+    "k": "刚起势",
+    "n": 23,
+    "avg": 0.091
+   },
+   {
+    "k": "已饱和",
+    "n": 9,
+    "avg": 0.073
+   }
+  ],
+  "best": [
+   {
+    "date": "2026-10-25",
+    "src": "bilibili",
+    "title": "AI漫剧：晴月女王开更",
+    "horizon": "近3天爆款",
+    "timing": "高峰期",
+    "growth": 1.4371127287625778,
+    "perDay": 1.3875777605248363,
+    "from": 986066,
+    "to": 2403154,
+    "url": "https://www.bilibili.com/video/BV1E8n46FEzB"
+   },
+   {
+    "date": "2026-10-22",
+    "src": "douyin",
+    "title": "AI小黑猫跳KDA神之八秒，舞技瞒不住了",
+    "horizon": "24小时飙升",
+    "timing": "没判断",
+    "growth": 2.903440110504506,
+    "perDay": 0.8079348984829791,
+    "from": 15203,
+    "to": 59344,
+    "url": "https://www.douyin.com/video/7699420626197306353"
+   },
+   {
+    "date": "2026-10-22",
+    "src": "douyin",
+    "title": "KDA八秒挑战，AI换脸让本尊来跳",
+    "horizon": "24小时飙升",
+    "timing": "没判断",
+    "growth": 2.741144414168937,
+    "perDay": 0.7627731758530889,
+    "from": 9542,
+    "to": 35698,
+    "url": "https://www.douyin.com/video/7699419531572244155"
+   },
+   {
+    "date": "2026-10-25",
+    "src": "bilibili",
+    "title": "AI整活：招AI客服当员工，翻车实录",
+    "horizon": "24小时飙升",
+    "timing": "高峰期",
+    "growth": 0.5009753214752671,
+    "perDay": 0.48370750654293587,
+    "from": 1417994,
+    "to": 2128374,
+    "url": "https://www.bilibili.com/video/BV1UznF6MEop"
+   },
+   {
+    "date": "2026-10-25",
+    "src": "bilibili",
+    "title": "AI鬼畜：思老凤乐队的故事",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 0.4156364504932129,
+    "perDay": 0.40131012941792976,
+    "from": 983855,
+    "to": 1392781,
+    "url": "https://www.bilibili.com/video/BV1zSnt6NEai"
+   }
+  ]
+ },
+ "tools": [
+  {
+   "name": "DeepSeek",
+   "n": 89,
+   "douyin": 11,
+   "bilibili": 78,
+   "best": {
+    "title": "梁文锋是个外行！我要给大肥鱼完整的一生！",
+    "url": "https://www.douyin.com/video/7700098529120767272",
+    "src": "douyin",
+    "heat": 892326
+   }
+  },
+  {
+   "name": "即梦",
+   "n": 83,
+   "douyin": 64,
+   "bilibili": 19,
+   "best": {
+    "title": "爽看《美妖姐姐麾下全是呆瓜》超长精选合集 建议收藏一次看个够，高清4K爆笑来袭～",
+    "url": "https://www.douyin.com/video/7698977781489486566",
+    "src": "douyin",
+    "heat": 2858712
+   }
+  },
+  {
+   "name": "Seedance",
+   "n": 67,
+   "douyin": 23,
+   "bilibili": 44,
+   "best": {
+    "title": "叹人间",
+    "url": "https://www.douyin.com/video/7699062585774376427",
+    "src": "douyin",
+    "heat": 217073
+   }
+  },
+  {
+   "name": "Suno",
+   "n": 62,
+   "douyin": 1,
+   "bilibili": 61,
+   "best": {
+    "title": "时间加速の小曲⚡通透版⚡",
+    "url": "https://www.douyin.com/video/7698686810888637736",
+    "src": "douyin",
+    "heat": 40669
+   }
+  },
+  {
+   "name": "可灵",
+   "n": 59,
+   "douyin": 5,
+   "bilibili": 54,
+   "best": {
+    "title": "［魏无涯］能不能体谅一下老派元婴修士啊！一个一个跑这么快！还有黄毛！你给我个胶带！",
+    "url": "https://www.douyin.com/video/7699283270719061594",
+    "src": "douyin",
+    "heat": 28142
+   }
+  },
+  {
+   "name": "豆包",
+   "n": 40,
+   "douyin": 10,
+   "bilibili": 30,
+   "best": {
+    "title": "豆奶虫之殇",
+    "url": "https://www.douyin.com/video/7699469191232982335",
+    "src": "douyin",
+    "heat": 166393
+   }
+  },
+  {
+   "name": "OiiOii",
+   "n": 28,
+   "douyin": 22,
+   "bilibili": 6,
+   "best": {
+    "title": "小时候总嫌对方笨，长大才发现...... 那段美好的时光，再也回不来了。 本视频由OiiOii制作。",
+    "url": "https://www.douyin.com/video/7699954422336250825",
+    "src": "douyin",
+    "heat": 408676
+   }
+  },
+  {
+   "name": "Sora",
+   "n": 23,
+   "douyin": 0,
+   "bilibili": 23,
+   "best": {
+    "title": "档案682特殊收容措施只有一句话：必须被尽快消灭#伪纪录片 #科幻短片 #惊悚 #怪物 #微恐 #AI影像 #档案",
+    "url": "https://www.bilibili.com/video/BV1hgnb6DEVa",
+    "src": "bilibili",
+    "heat": 90114
+   }
+  },
+  {
+   "name": "LibTV",
+   "n": 21,
+   "douyin": 18,
+   "bilibili": 3,
+   "best": {
+    "title": "全校粉笔大作战！用粉笔画出的任何东西都能变成现实",
+    "url": "https://www.douyin.com/video/7698188306948902171",
+    "src": "douyin",
+    "heat": 399210
+   }
+  },
+  {
+   "name": "剪映",
+   "n": 20,
+   "douyin": 18,
+   "bilibili": 2,
+   "best": {
+    "title": "高尔夫球和跳舞要结合一下是不是更帅",
+    "url": "https://www.douyin.com/video/7699442270109726451",
+    "src": "douyin",
+    "heat": 152823
+   }
+  }
+ ],
+ "sent": 1792977050149
+}
