@@ -41,7 +41,7 @@ jobs:
     timeout-minutes: 240
     environment:
       name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      url: ${{ steps.deploy_try.outputs.page_url || steps.deploy_retry.outputs.page_url }}
     env:
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
       SMTP_HOST: ${{ secrets.SMTP_HOST }}
@@ -148,9 +148,19 @@ jobs:
         if: steps.mode.outputs.mode != 'check'
         with:
           path: site
+      # GitHub 偶尔刚传完网页包、马上去取会取不到（报 No artifacts named "github-pages" were found，其实已经传上去了），
+      # 所以第一次发布失败先不算数，等 60 秒再发一次，两次都失败才算失败、发报警
       - name: 发布网页
-        id: deploy
+        id: deploy_try
         if: steps.mode.outputs.mode != 'check'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: 发布失败，等 60 秒重试
+        if: steps.mode.outputs.mode != 'check' && steps.deploy_try.outcome == 'failure'
+        run: sleep 60
+      - name: 发布网页（重试）
+        id: deploy_retry
+        if: steps.mode.outputs.mode != 'check' && steps.deploy_try.outcome == 'failure'
         uses: actions/deploy-pages@v4
 
       - name: 发邮件
@@ -176,7 +186,7 @@ jobs:
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: >-
-          node src/alert.js fail "模式 ${{ steps.mode.outputs.mode || '未知' }}｜采集 ${{ steps.collect.outcome || '-' }}｜AI 标注 ${{ steps.annotate.outcome || '-' }}｜AI 日报 ${{ steps.digest.outcome || '-' }}｜周报 ${{ steps.weekly.outcome || '-' }}｜保存数据 ${{ steps.save.outcome || '-' }}｜生成网页 ${{ steps.build.outcome || '-' }}｜发布网页 ${{ steps.deploy.outcome || '-' }}｜发邮件 ${{ steps.mail.outcome || '-' }}"
+          node src/alert.js fail "模式 ${{ steps.mode.outputs.mode || '未知' }}｜采集 ${{ steps.collect.outcome || '-' }}｜AI 标注 ${{ steps.annotate.outcome || '-' }}｜AI 日报 ${{ steps.digest.outcome || '-' }}｜周报 ${{ steps.weekly.outcome || '-' }}｜保存数据 ${{ steps.save.outcome || '-' }}｜生成网页 ${{ steps.build.outcome || '-' }}｜发布网页 ${{ steps.deploy_try.outcome == 'failure' && steps.deploy_retry.outcome || steps.deploy_try.outcome || '-' }}｜发邮件 ${{ steps.mail.outcome || '-' }}"
 
       - name: 定时任务续命（防止 60 天无提交被 GitHub 自动停用）
         if: always()
