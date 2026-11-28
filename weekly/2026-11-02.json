@@ -1,0 +1,493 @@
+{
+ "date": "2026-11-02",
+ "generatedAt": 1793581833562,
+ "range": [
+  "2026-10-26",
+  "2026-11-01"
+ ],
+ "errors": [],
+ "summary": "AI长合集短剧霸榜，萌宠治愈和整活二创持续吸量，24小时飙升内容后劲最足。",
+ "themes": [
+  {
+   "title": "AI长合集短剧",
+   "platform": "双平台",
+   "why": "40分钟、31分钟合集在抖音B站都爆，用户追更粘性强，完播和分享高。"
+  },
+  {
+   "title": "萌宠治愈动画",
+   "platform": "抖音",
+   "why": "毛茸茸小狗、猫咪日常多次上榜，治愈系需求稳定，制作门槛低易量产。"
+  },
+  {
+   "title": "整活二创玩梗",
+   "platform": "双平台",
+   "why": "灭霸、笑点下降等梗持续出爆款，反差和幽默自带传播，二创空间大。"
+  },
+  {
+   "title": "AI音乐MV",
+   "platform": "双平台",
+   "why": "童年告别、婚车等MV播放高，情绪+旋律易共鸣，适合批量做系列。"
+  },
+  {
+   "title": "悬疑刑侦短剧",
+   "platform": "抖音",
+   "why": "美人鱼之死等悬疑合集数据好，强钩子剧情提升追看和分享。"
+  }
+ ],
+ "directions": [
+  {
+   "title": "24小时飙升梗二创",
+   "platform": "双平台",
+   "why": "复盘显示24小时飙升类后续平均涨20%，刚起势标签涨19%，后劲最足。",
+   "how": "盯实时热梗→文生图出角色→图生视频做动作→剪辑卡点加字幕，24小时内发布。"
+  },
+  {
+   "title": "萌宠治愈连续剧",
+   "platform": "抖音",
+   "why": "萌宠动画多次上榜且粉丝少的号也能爆，治愈系需求稳定。",
+   "how": "定人设和世界观→文生图出角色→图生视频做日常动作→配治愈旁白，做成系列日更。"
+  },
+  {
+   "title": "AI长合集短剧",
+   "platform": "双平台",
+   "why": "40分钟、31分钟合集在双平台都爆，长内容追更和分享强。",
+   "how": "先写强钩子分集大纲→文生图出场景→图生视频做表演→剪辑成合集，结尾留悬念。"
+  },
+  {
+   "title": "情绪向AI音乐MV",
+   "platform": "双平台",
+   "why": "童年告别、婚车等MV播放高，情绪+旋律易共鸣，适合批量做。",
+   "how": "选共鸣主题写词→生成歌曲→文生图出分镜→图生视频做动态→剪辑卡点对歌词。"
+  },
+  {
+   "title": "反差萌整活短剧",
+   "platform": "抖音",
+   "why": "灭霸、剃须刀等反差整活多次爆，笑点密集易传播。",
+   "how": "找经典角色或日常物品→设定离谱反差情境→文生图出夸张画面→图生视频做动作→剪辑加音效。"
+  }
+ ],
+ "top": {
+  "douyin": [
+   {
+    "title": "《和樱花妹互换身体の日常》1-6纯享版合集 来啦来啦，40分钟超长续航，修修补补了一些剧情设定和画面，希望大家喜欢！主角团的故事才刚刚开始，我们下一集见！放心，",
+    "url": "https://www.douyin.com/video/7702387728096169251",
+    "src": "douyin",
+    "heat": 1588665,
+    "author": "我不知豆啊！",
+    "type": "AI影视",
+    "fans": 801749,
+    "pubAt": 1793351899000
+   },
+   {
+    "title": "是谁的二创图啊，快来认领",
+    "url": "https://www.douyin.com/video/7701937317162663539",
+    "src": "douyin",
+    "heat": 922660,
+    "author": "英语老师晓艳",
+    "type": "AI整活",
+    "fans": 6929736,
+    "pubAt": 1793247024000
+   },
+   {
+    "title": "一场成人礼，一份爱的回应。长大后的肩膀，开始有了担当，也让曾 经为他撑起一片天的人，有了依靠。一肩母恩，一步成人，寒门有孝子，爷们有担当。",
+    "url": "https://www.douyin.com/video/7702422092326636834",
+    "src": "douyin",
+    "heat": 849084,
+    "author": "人间帧",
+    "type": "AI影视",
+    "fans": 120495,
+    "pubAt": 1793359902000
+   },
+   {
+    "title": "原创AI刑侦悬疑短剧《蚀爱•美人鱼之死》1-4合集 全片由 短剧工作室制作",
+    "url": "https://www.douyin.com/video/7702679855258815794",
+    "src": "douyin",
+    "heat": 670766,
+    "author": "AIGC KK",
+    "type": "AI影视",
+    "fans": 260931,
+    "pubAt": 1793419915000
+   },
+   {
+    "title": "噜噜毛茸茸的工作日常 带你进入毛茸茸的世界 本视频由LibTV制作",
+    "url": "https://www.douyin.com/video/7702384136945749288",
+    "src": "douyin",
+    "heat": 636671,
+    "author": "拉k兔",
+    "type": "AI动画",
+    "fans": 63406,
+    "pubAt": 1793351062000
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "1944滇缅竹林：远征军教盟军吃虎皮笋，油手把风笛吹成妖笛【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1q8x56uEDU",
+    "src": "bilibili",
+    "heat": 6380112,
+    "author": "墨八分钱",
+    "type": "AI影视",
+    "fans": 242776,
+    "pubAt": 1793158589000
+   },
+   {
+    "title": "全球笑点下降2000倍而我不变【第二集】",
+    "url": "https://www.bilibili.com/video/BV1TxxC6vEo4",
+    "src": "bilibili",
+    "heat": 5157757,
+    "author": "逗比的雀巢",
+    "type": "AI整活",
+    "fans": 11447916,
+    "pubAt": 1793436980000
+   },
+   {
+    "title": "《与梦摊牌》【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1DWnZ6eEe7",
+    "src": "bilibili",
+    "heat": 3887606,
+    "author": "恰口奥利奥l",
+    "type": "AI影视",
+    "fans": 67535,
+    "pubAt": 1793022716000
+   },
+   {
+    "title": "动物成精后我躺平了",
+    "url": "https://www.bilibili.com/video/BV1wbxT6oEnK",
+    "src": "bilibili",
+    "heat": 3645040,
+    "author": "徐晚日记",
+    "type": "AI影视",
+    "fans": 44770,
+    "pubAt": 1793094562000
+   },
+   {
+    "title": "\"最孤独的婚车，也是最不孤独的婚车！\"",
+    "url": "https://www.bilibili.com/video/BV19sso6UEZg",
+    "src": "bilibili",
+    "heat": 3567178,
+    "author": "上邪aa",
+    "type": "AI音乐",
+    "fans": 235203,
+    "pubAt": 1793249820000
+   }
+  ]
+ },
+ "low": {
+  "douyin": [
+   {
+    "title": "一首歌，唱尽了我们和童年的告别。 本视频由OiiOii制作",
+    "url": "https://www.douyin.com/video/7702414508752375049",
+    "src": "douyin",
+    "heat": 557471,
+    "author": "Vibe Killer",
+    "type": "AI MV",
+    "fans": 21496,
+    "pubAt": 1793358133000,
+    "low": true
+   },
+   {
+    "title": "后来吃过很多次蛋糕，却总想起被通报的那次 本视频由OiiOii制作",
+    "url": "https://www.douyin.com/video/7702392254186523919",
+    "src": "douyin",
+    "heat": 449936,
+    "author": "杨水文",
+    "type": "AI影视",
+    "fans": 27244,
+    "pubAt": 1793352951000,
+    "low": true
+   },
+   {
+    "title": "\"你怎么知道我把李婷娶到了\"原本出发只有一辆婚车，结果整条高速都是车队",
+    "url": "https://www.douyin.com/video/7702405520921070889",
+    "src": "douyin",
+    "heat": 430611,
+    "author": "星河有梦",
+    "type": "AI影视",
+    "fans": 12528,
+    "pubAt": 1793356046000,
+    "low": true
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "【原创烧心短剧】《我家包子，吃了就烧心》十八元包子少一个褶就倒一笼？【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1FexT6WELU",
+    "src": "bilibili",
+    "heat": 3461132,
+    "author": "秋桔-",
+    "type": "AI影视",
+    "fans": 23503,
+    "pubAt": 1793097731000,
+    "low": true
+   },
+   {
+    "title": "忙着跟生活对线的你，有多久没上号了？谨以此片，致和游戏一起长大的我们。【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1uGxj68EKt",
+    "src": "bilibili",
+    "heat": 3341081,
+    "author": "我是日行一扇",
+    "type": "AI影视",
+    "fans": 4278,
+    "pubAt": 1793181600000,
+    "low": true
+   },
+   {
+    "title": "开学第一天点名belike【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1kXsf6MEC7",
+    "src": "bilibili",
+    "heat": 2793231,
+    "author": "王楠b",
+    "type": "AI整活",
+    "fans": 20307,
+    "pubAt": 1793272206000,
+    "low": true
+   }
+  ]
+ },
+ "review": {
+  "n": 126,
+  "days": [
+   "2026-10-26",
+   "2026-10-27",
+   "2026-10-28",
+   "2026-10-29",
+   "2026-10-30",
+   "2026-10-31",
+   "2026-11-01"
+  ],
+  "byHorizon": [
+   {
+    "k": "24小时飙升",
+    "n": 94,
+    "avg": 0.2
+   },
+   {
+    "k": "近3天爆款",
+    "n": 25,
+    "avg": 0.064
+   },
+   {
+    "k": "本周热点",
+    "n": 6,
+    "avg": 0.022
+   },
+   {
+    "k": "长期热点",
+    "n": 1,
+    "avg": 0
+   }
+  ],
+  "byTiming": [
+   {
+    "k": "已饱和",
+    "n": 7,
+    "avg": 0.296
+   },
+   {
+    "k": "刚起势",
+    "n": 78,
+    "avg": 0.187
+   },
+   {
+    "k": "高峰期",
+    "n": 41,
+    "avg": 0.094
+   }
+  ],
+  "best": [
+   {
+    "date": "2026-10-29",
+    "src": "bilibili",
+    "title": "远征军教盟军吃虎皮笋，AI战争荒诞剧",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 12.247520805302237,
+    "perDay": 3.0365696813356076,
+    "from": 481608,
+    "to": 6380112,
+    "url": "https://www.bilibili.com/video/BV1q8x56uEDU"
+   },
+   {
+    "date": "2026-11-01",
+    "src": "bilibili",
+    "title": "AI整活：全世界笑点下降2000倍而我不变",
+    "horizon": "24小时飙升",
+    "timing": "已饱和",
+    "growth": 1.806760813857497,
+    "perDay": 1.7495027085337735,
+    "from": 1837619,
+    "to": 5157757,
+    "url": "https://www.bilibili.com/video/BV1TxxC6vEo4"
+   },
+   {
+    "date": "2026-10-30",
+    "src": "bilibili",
+    "title": "AI让吴站长和梅姐跳Trouble Maker，反差萌拉满",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 3.6336625331813557,
+    "perDay": 1.197979725163387,
+    "from": 653605,
+    "to": 3028585,
+    "url": "https://www.bilibili.com/video/BV1dEsX6TEGx"
+   },
+   {
+    "date": "2026-10-28",
+    "src": "bilibili",
+    "title": "AI鬼畜：疯狂十六强，启动！",
+    "horizon": "24小时飙升",
+    "timing": "高峰期",
+    "growth": 5.211388705490691,
+    "perDay": 1.0354189629052395,
+    "from": 464987,
+    "to": 2888215,
+    "url": "https://www.bilibili.com/video/BV1kaxT6RETB"
+   },
+   {
+    "date": "2026-10-29",
+    "src": "bilibili",
+    "title": "赛博朋克鲸鲸跑起来，情怀名场面AI还原",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 4.035378309909154,
+    "perDay": 1.00050513270282,
+    "from": 371838,
+    "to": 1872345,
+    "url": "https://www.bilibili.com/video/BV1Qwx56bEig"
+   }
+  ]
+ },
+ "tools": [
+  {
+   "name": "即梦",
+   "n": 118,
+   "douyin": 92,
+   "bilibili": 26,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "一场成人礼，一份爱的回应。长大后的肩膀，开始有了担当，也让曾 经为他撑起一片天的人，有了依靠。一肩母恩，一步成人，寒门有孝子，爷们有担当。",
+    "url": "https://www.douyin.com/video/7702422092326636834",
+    "src": "douyin",
+    "heat": 849084
+   }
+  },
+  {
+   "name": "DeepSeek",
+   "n": 70,
+   "douyin": 0,
+   "bilibili": 70,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "可观测宇宙最可爱的古风大肥鱼",
+    "url": "https://www.bilibili.com/video/BV16VxM6dEeb",
+    "src": "bilibili",
+    "heat": 2772807
+   }
+  },
+  {
+   "name": "Seedance",
+   "n": 65,
+   "douyin": 11,
+   "bilibili": 54,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "监控下的秘密七：吴家村暗访 【本视频由即梦Seedance 2.5生成】",
+    "url": "https://www.douyin.com/video/7702660855334812745",
+    "src": "douyin",
+    "heat": 53449
+   }
+  },
+  {
+   "name": "Suno",
+   "n": 62,
+   "douyin": 1,
+   "bilibili": 61,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "老款小孩到底又多抗造belike",
+    "url": "https://www.bilibili.com/video/BV1GPxq6xEWy",
+    "src": "bilibili",
+    "heat": 190470
+   }
+  },
+  {
+   "name": "可灵",
+   "n": 57,
+   "douyin": 3,
+   "bilibili": 54,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "细思极恐：多渴望这顿饭，只是顿平常的晚餐",
+    "url": "https://www.douyin.com/video/7701329838029076096",
+    "src": "douyin",
+    "heat": 10059
+   }
+  },
+  {
+   "name": "豆包",
+   "n": 27,
+   "douyin": 8,
+   "bilibili": 19,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "女星豆泡参加宇宙选美比赛的一天",
+    "url": "https://www.douyin.com/video/7702410964750167281",
+    "src": "douyin",
+    "heat": 223318
+   }
+  },
+  {
+   "name": "Sora",
+   "n": 25,
+   "douyin": 0,
+   "bilibili": 25,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "deepseek翻唱「脑洞学生会」,大肥鱼对不起，哈基米太可爱放封面了【AI MV大赛】",
+    "url": "https://www.bilibili.com/video/BV1VqxW6xELH",
+    "src": "bilibili",
+    "heat": 5786
+   }
+  },
+  {
+   "name": "LibTV",
+   "n": 25,
+   "douyin": 23,
+   "bilibili": 2,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "《和樱花妹互换身体の日常》1-6纯享版合集 来啦来啦，40分钟超长续航，修修补补了一些剧情设定和画面，希望大家喜欢！主角团的故事才刚刚开始，我们下一集见！放心，",
+    "url": "https://www.douyin.com/video/7702387728096169251",
+    "src": "douyin",
+    "heat": 1588665
+   }
+  },
+  {
+   "name": "OiiOii",
+   "n": 24,
+   "douyin": 24,
+   "bilibili": 0,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "一首歌，唱尽了我们和童年的告别。 本视频由OiiOii制作",
+    "url": "https://www.douyin.com/video/7702414508752375049",
+    "src": "douyin",
+    "heat": 557471
+   }
+  },
+  {
+   "name": "Udio",
+   "n": 14,
+   "douyin": 0,
+   "bilibili": 14,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "怪人复制了King的技能变成了普通人，叹了口气，“原来我的复制能力也是有上限的啊”",
+    "url": "https://www.bilibili.com/video/BV1WLxv6gEDC",
+    "src": "bilibili",
+    "heat": 631959
+   }
+  }
+ ],
+ "sent": 1793581866620
+}

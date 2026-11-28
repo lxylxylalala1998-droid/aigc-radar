@@ -1,0 +1,500 @@
+{
+ "date": "2026-11-16",
+ "generatedAt": 1794791440970,
+ "range": [
+  "2026-11-09",
+  "2026-11-15"
+ ],
+ "errors": [],
+ "summary": "AI短剧长片化爆发，覆面系变装与萌宠模板双线刷屏，B站AI MV大赛催生千万播放",
+ "themes": [
+  {
+   "title": "AI短剧长片连载",
+   "platform": "双平台",
+   "why": "驱魔团、隳邪、第201单等长片持续吸量，追更钩子强，收藏分享双高"
+  },
+  {
+   "title": "覆面系变装特效",
+   "platform": "抖音",
+   "why": "12秒神秘感转场，模板化易复制，分享率极高，小号也能起量"
+  },
+  {
+   "title": "萌宠拟人短剧",
+   "platform": "双平台",
+   "why": "橘猫、猫猫比我富等低门槛高治愈，7秒模板反复出爆款"
+  },
+  {
+   "title": "AI MV二创",
+   "platform": "B站",
+   "why": "大赛带动，经典IP配洗脑旋律，收藏率远超点赞，长尾足"
+  },
+  {
+   "title": "鬼畜整活抽象",
+   "platform": "双平台",
+   "why": "灭霸家谱、抽象新闻等梗密度高，弹幕互动强，易形成系列"
+  }
+ ],
+ "directions": [
+  {
+   "title": "覆面系转场模板二创",
+   "platform": "抖音",
+   "why": "覆面系597万赞且教程类小号频爆，模板化信号强",
+   "how": "定神秘角色设定→文生图出覆面造型→图生视频做揭面转场→卡点配乐，前3秒留悬念"
+  },
+  {
+   "title": "AI短剧长片连载开新坑",
+   "platform": "抖音",
+   "why": "驱魔团、隳邪长片播放高，24小时飙升类后劲足",
+   "how": "先写3集钩子大纲→固定角色形象批量出图→分段图生视频→每集结尾留反转钩子"
+  },
+  {
+   "title": "经典IP鬼畜MV",
+   "platform": "B站",
+   "why": "灭霸全家福1163万播放，大赛流量仍在，收藏率高",
+   "how": "选国民级IP→改歌词写家谱式梗→AI配音演唱→对口型生成画面→快切卡点剪辑"
+  },
+  {
+   "title": "萌宠拟人7秒模板",
+   "platform": "抖音",
+   "why": "橘猫、奶牛猫模板千粉小号也能爆，复制成本低",
+   "how": "定猫咪人设和一句反差台词→图生视频做拟人动作→加字幕音效→做成可套用模板"
+  },
+  {
+   "title": "小人物温情短片",
+   "platform": "双平台",
+   "why": "第201单、以后就幸福了均高赞，情感类24小时涨幅猛",
+   "how": "抓一个职业或亲情切口→写3个反转节点→文生图定调→图生视频补动作→配旁白卡情绪点"
+  }
+ ],
+ "top": {
+  "douyin": [
+   {
+    "title": "这么久了 你还是逃不过覆面系.",
+    "url": "https://www.douyin.com/video/7706509875039865562",
+    "src": "douyin",
+    "heat": 5973437,
+    "author": "建鹏🇨🇳",
+    "type": "AI特效玩法",
+    "fans": 4688498,
+    "pubAt": 1794311655000
+   },
+   {
+    "title": "「逃？」 即梦网页大改版",
+    "url": "https://www.douyin.com/video/7707233929015789235",
+    "src": "douyin",
+    "heat": 1534775,
+    "author": "天夜",
+    "type": "AI特效玩法",
+    "fans": 617349,
+    "pubAt": 1794480236000
+   },
+   {
+    "title": "《第201单:这是我看过最特别的一场“见面”…》",
+    "url": "https://www.douyin.com/video/7707497039923252489",
+    "src": "douyin",
+    "heat": 1521698,
+    "author": "热月是我！",
+    "type": "AI影视",
+    "fans": 8777056,
+    "pubAt": 1794560400000
+   },
+   {
+    "title": "#橘猫臭臭",
+    "url": "https://www.douyin.com/video/7707908689990267365",
+    "src": "douyin",
+    "heat": 1211481,
+    "author": "我不是薯条！（有教程）",
+    "type": "AI特效玩法",
+    "fans": 2720,
+    "pubAt": 1794637342000,
+    "low": true
+   },
+   {
+    "title": "《欧洲驱魔团》第一集：神秘青铜佛现世 全片由即梦短剧制作",
+    "url": "https://www.douyin.com/video/7706107929258216754",
+    "src": "douyin",
+    "heat": 989841,
+    "author": "片场状元郎",
+    "type": "AI影视",
+    "fans": 354570,
+    "pubAt": 1794218075000
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "他真的太优雅了！灰太狼&红太狼【非凡之爱】【AI MV大赛】",
+    "url": "https://www.bilibili.com/video/BV1aNWm6UEeC",
+    "src": "bilibili",
+    "heat": 14896983,
+    "author": "可口的红糖",
+    "type": "AI动画",
+    "fans": 121764,
+    "pubAt": 1794456000000
+   },
+   {
+    "title": "这才是《灭霸全家福》原版MV，灭霸的爸爸是灭建国【AIMV大赛】",
+    "url": "https://www.bilibili.com/video/BV1FcWg6dEpa",
+    "src": "bilibili",
+    "heat": 11637583,
+    "author": "音乐老友",
+    "type": "AI MV",
+    "fans": 528072,
+    "pubAt": 1794295253000
+   },
+   {
+    "title": "间谍过家家·福杰夫妇：非凡之爱",
+    "url": "https://www.bilibili.com/video/BV1wMW56qENB",
+    "src": "bilibili",
+    "heat": 5277891,
+    "author": "蔚蓝丶羽翼",
+    "type": "AI动画",
+    "fans": 25202,
+    "pubAt": 1794352550000,
+    "low": true
+   },
+   {
+    "title": "冬日宿舍之零下六十度？",
+    "url": "https://www.bilibili.com/video/BV1vqWe6EEKQ",
+    "src": "bilibili",
+    "heat": 4407763,
+    "author": "小新博主",
+    "type": "AI影视",
+    "fans": 93859,
+    "pubAt": 1794555717000
+   },
+   {
+    "title": "辽阔的土地生不出狭隘的爱",
+    "url": "https://www.bilibili.com/video/BV1hrW367Emp",
+    "src": "bilibili",
+    "heat": 4382677,
+    "author": "小王不爱干正事",
+    "type": "AI影视",
+    "fans": 45264,
+    "pubAt": 1794311473000
+   }
+  ]
+ },
+ "low": {
+  "douyin": [
+   {
+    "title": "#橘猫臭臭",
+    "url": "https://www.douyin.com/video/7707908689990267365",
+    "src": "douyin",
+    "heat": 1211481,
+    "author": "我不是薯条！（有教程）",
+    "type": "AI特效玩法",
+    "fans": 2720,
+    "pubAt": 1794637342000,
+    "low": true
+   },
+   {
+    "title": "@同款教程👉🏻蛋挞只是经过 #宇宙第一萌猫 #猫咪统治世界需要多久",
+    "url": "https://www.douyin.com/video/7707851845784152250",
+    "src": "douyin",
+    "heat": 729112,
+    "author": "芒果果🥭（主页有教程）",
+    "type": "AI特效玩法",
+    "fans": 1160,
+    "pubAt": 1794624107000,
+    "low": true
+   },
+   {
+    "title": "修勾 宝宝你就是一个小熊",
+    "url": "https://www.douyin.com/video/7707886139621991354",
+    "src": "douyin",
+    "heat": 540586,
+    "author": "僭越",
+    "type": "AI特效玩法",
+    "fans": 872,
+    "pubAt": 1794632091000,
+    "low": true
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "间谍过家家·福杰夫妇：非凡之爱",
+    "url": "https://www.bilibili.com/video/BV1wMW56qENB",
+    "src": "bilibili",
+    "heat": 5277891,
+    "author": "蔚蓝丶羽翼",
+    "type": "AI动画",
+    "fans": 25202,
+    "pubAt": 1794352550000,
+    "low": true
+   },
+   {
+    "title": "小时候对各省的刻板印象完整版",
+    "url": "https://www.bilibili.com/video/BV1xGWC64EGe",
+    "src": "bilibili",
+    "heat": 1628676,
+    "author": "月半猫之猫神",
+    "type": "AI整活",
+    "fans": 21664,
+    "pubAt": 1794633358000,
+    "low": true
+   },
+   {
+    "title": "那些年玩家眼里的稀罕物，你拥有过哪些？【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1Bcs56KEkC",
+    "src": "bilibili",
+    "heat": 1040675,
+    "author": "我是日行一扇",
+    "type": "AI影视",
+    "fans": 7773,
+    "pubAt": 1794661448000,
+    "low": true
+   }
+  ]
+ },
+ "review": {
+  "n": 121,
+  "days": [
+   "2026-11-09",
+   "2026-11-10",
+   "2026-11-11",
+   "2026-11-12",
+   "2026-11-13",
+   "2026-11-14",
+   "2026-11-15"
+  ],
+  "byHorizon": [
+   {
+    "k": "24小时飙升",
+    "n": 77,
+    "avg": 0.166
+   },
+   {
+    "k": "近3天爆款",
+    "n": 36,
+    "avg": 0.131
+   },
+   {
+    "k": "本周热点",
+    "n": 8,
+    "avg": 0.051
+   }
+  ],
+  "byTiming": [
+   {
+    "k": "已饱和",
+    "n": 10,
+    "avg": 0.41
+   },
+   {
+    "k": "高峰期",
+    "n": 52,
+    "avg": 0.125
+   },
+   {
+    "k": "刚起势",
+    "n": 59,
+    "avg": 0.124
+   }
+  ],
+  "best": [
+   {
+    "date": "2026-11-13",
+    "src": "bilibili",
+    "title": "AI动画：灰太狼红太狼的非凡之爱",
+    "horizon": "24小时飙升",
+    "timing": "已饱和",
+    "growth": 10.407471645926133,
+    "perDay": 3.4313283296236445,
+    "from": 1305897,
+    "to": 14896983,
+    "url": "https://www.bilibili.com/video/BV1aNWm6UEeC"
+   },
+   {
+    "date": "2026-11-15",
+    "src": "bilibili",
+    "title": "AI整活：回应「用AI就取关」，22秒表态",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 1.1632177041999119,
+    "perDay": 1.126385775837354,
+    "from": 632799,
+    "to": 1368882,
+    "url": "https://www.bilibili.com/video/BV1wUs36iEBX"
+   },
+   {
+    "date": "2026-11-11",
+    "src": "bilibili",
+    "title": "AI做的地牢酒馆，追更的人比弹幕还多",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 4.504065888889581,
+    "perDay": 0.8949820033321917,
+    "from": 642172,
+    "to": 3534557,
+    "url": "https://www.bilibili.com/video/BV1bwWu6KEaS"
+   },
+   {
+    "date": "2026-11-15",
+    "src": "bilibili",
+    "title": "AI整活：抽象新闻11月人类迷惑行为大赏",
+    "horizon": "近3天爆款",
+    "timing": "高峰期",
+    "growth": 0.7946724829821301,
+    "perDay": 0.7695101080808421,
+    "from": 2175948,
+    "to": 3905114,
+    "url": "https://www.bilibili.com/video/BV1bQWi62EGk"
+   },
+   {
+    "date": "2026-11-15",
+    "src": "bilibili",
+    "title": "AI影视：冬日宿舍零下六十度，生存挑战",
+    "horizon": "近3天爆款",
+    "timing": "高峰期",
+    "growth": 0.7412105224070449,
+    "perDay": 0.7177409579701384,
+    "from": 2531436,
+    "to": 4407763,
+    "url": "https://www.bilibili.com/video/BV1vqWe6EEKQ"
+   }
+  ]
+ },
+ "tools": [
+  {
+   "name": "即梦",
+   "n": 118,
+   "prev": 116,
+   "douyin": 98,
+   "bilibili": 19,
+   "xiaohongshu": 1,
+   "best": {
+    "title": "「逃？」 即梦网页大改版",
+    "url": "https://www.douyin.com/video/7707233929015789235",
+    "src": "douyin",
+    "heat": 1534775
+   }
+  },
+  {
+   "name": "Suno",
+   "n": 64,
+   "prev": 78,
+   "douyin": 0,
+   "bilibili": 64,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "⚡️若不是砾突然闯进 我生活⚡️【卫戍金曲】",
+    "url": "https://www.bilibili.com/video/BV1dPsG6sEBW",
+    "src": "bilibili",
+    "heat": 461766
+   }
+  },
+  {
+   "name": "Seedance",
+   "n": 57,
+   "prev": 78,
+   "douyin": 10,
+   "bilibili": 47,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "在哈尔滨千万别小看一个遛弯大爷 83岁还在街头唱歌开口就是王炸 \"音乐之城”的称号不是白叫的 本视频由“seedance 2.5制作",
+    "url": "https://www.douyin.com/video/7707919793931734272",
+    "src": "douyin",
+    "heat": 140740
+   }
+  },
+  {
+   "name": "可灵",
+   "n": 54,
+   "prev": 61,
+   "douyin": 4,
+   "bilibili": 50,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "清理日 中篇九 “诶，你们知道吗，今天好像会发生人类清除事件哦” “啊？？什么鬼？” “诶…...你又看什么奇怪的网站啦”” “真的啦，就是那个被封的论坛，我记",
+    "url": "https://www.douyin.com/video/7707991720721468687",
+    "src": "douyin",
+    "heat": 41292
+   }
+  },
+  {
+   "name": "DeepSeek",
+   "n": 41,
+   "prev": 110,
+   "douyin": 1,
+   "bilibili": 40,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "#AI #DeepSeek #梁文锋 #高尔夫 #白幼瘦天花板",
+    "url": "https://www.douyin.com/video/7706787662825039807",
+    "src": "douyin",
+    "heat": 45576
+   }
+  },
+  {
+   "name": "LibTV",
+   "n": 39,
+   "prev": 78,
+   "douyin": 35,
+   "bilibili": 4,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "《非妖哉》-愚民阿昌：就是你们心不够诚，我才变不出来！ 本视频由LibTV生成",
+    "url": "https://www.douyin.com/video/7707157324145708298",
+    "src": "douyin",
+    "heat": 485403
+   }
+  },
+  {
+   "name": "OiiOii",
+   "n": 28,
+   "prev": 79,
+   "douyin": 22,
+   "bilibili": 5,
+   "xiaohongshu": 1,
+   "best": {
+    "title": "爱吃东西的人到底该怎么减肥啊！！ 本视频由OiiOii AI制作",
+    "url": "https://www.douyin.com/video/7706830469895055033",
+    "src": "douyin",
+    "heat": 595516
+   }
+  },
+  {
+   "name": "豆包",
+   "n": 18,
+   "prev": 38,
+   "douyin": 7,
+   "bilibili": 11,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "AI短片《以后就幸福了》 ｜昨天已经过去，明天还没到来，不如今天先幸福吧。",
+    "url": "https://www.douyin.com/video/7707553573690085541",
+    "src": "douyin",
+    "heat": 714650
+   }
+  },
+  {
+   "name": "剪映",
+   "n": 18,
+   "prev": 12,
+   "douyin": 17,
+   "bilibili": 1,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "猪之舞",
+    "url": "https://www.douyin.com/video/7707935521334899889",
+    "src": "douyin",
+    "heat": 525211
+   }
+  },
+  {
+   "name": "Sora",
+   "n": 10,
+   "prev": 17,
+   "douyin": 0,
+   "bilibili": 10,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "丁亮翻遍了所有文件都没找到这集",
+    "url": "https://www.bilibili.com/video/BV1PDWr6XESY",
+    "src": "bilibili",
+    "heat": 1627
+   }
+  }
+ ],
+ "sent": 1794791470213
+}

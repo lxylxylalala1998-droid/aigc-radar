@@ -1,0 +1,503 @@
+{
+ "date": "2026-11-23",
+ "generatedAt": 1795396248305,
+ "range": [
+  "2026-11-16",
+  "2026-11-22"
+ ],
+ "errors": [],
+ "summary": "AI短剧靠爽文IP人设持续霸榜，鬼畜二创和7秒萌宠模板起量最快，工具热度向即梦、Sora集中。",
+ "themes": [
+  {
+   "title": "AI爽文短剧",
+   "platform": "双平台",
+   "why": "妖兽女明星、恋爱脑等强人设+反转，2分钟完播高、分享猛，追更黏性强"
+  },
+  {
+   "title": "IP鬼畜二创",
+   "platform": "B站",
+   "why": "灭霸、蜘蛛侠、爱情公寓等熟IP改词混搭，制作门槛低、弹幕互动高"
+  },
+  {
+   "title": "7秒萌宠模板",
+   "platform": "抖音",
+   "why": "猫狗跳舞短循环，完播和跟拍双高，低粉账号也能起量"
+  },
+  {
+   "title": "灭霸宇宙日常",
+   "platform": "双平台",
+   "why": "金融课堂、带娃、班主任多场景复用，反差梗稳定出爆款"
+  },
+  {
+   "title": "治愈系AI音乐短片",
+   "platform": "B站",
+   "why": "情绪价值拉满，收藏率高，长尾播放持续涨"
+  }
+ ],
+ "directions": [
+  {
+   "title": "爽文短剧新一集追更",
+   "platform": "抖音",
+   "why": "24小时飙升类涨幅+23%最高，妖兽女明星、双向单恋均在榜，追更后劲足",
+   "how": "选强人设爽文钩子→文生图定角色→图生视频做对手戏→前3秒抛反转，结尾留悬念"
+  },
+  {
+   "title": "熟IP鬼畜改词混搭",
+   "platform": "B站",
+   "why": "蜘蛛侠、灭霸、爱情公寓二创持续爆，弹幕互动高，刚起势信号强",
+   "how": "挑一个国民IP→改词写荒诞剧本→AI配音翻唱→卡点剪辑，梗密度每5秒一个"
+  },
+  {
+   "title": "7秒萌宠跳舞模板",
+   "platform": "抖音",
+   "why": "萌宠模板连续多天在选题池，跟拍属性强，低粉易爆",
+   "how": "生成萌宠形象→图生视频做循环动作→配洗脑BGM卡点→做成可复用模板引导跟拍"
+  },
+  {
+   "title": "情绪治愈AI音乐短片",
+   "platform": "B站",
+   "why": "无血缘同妈妈类小曲播放477万，收藏高，长尾稳定",
+   "how": "定一个催泪主题→AI生成歌词与演唱→文生图出情绪画面→慢剪配合副歌卡点"
+  },
+  {
+   "title": "伪纪录片悬疑钩子",
+   "platform": "抖音",
+   "why": "镜化、看见自己的车等悬疑钩子起势快，24小时涨幅高",
+   "how": "设一个日常异常设定→第一人称伪记录拍摄感→AI生成画面→结尾留未解悬念"
+  }
+ ],
+ "top": {
+  "douyin": [
+   {
+    "title": "我，妖兽娱乐圈最爱装的女明星。（全片由即梦短剧制作）",
+    "url": "https://www.douyin.com/video/7709401042437377315",
+    "src": "douyin",
+    "heat": 1793030,
+    "author": "鹤砚声",
+    "type": "AI影视",
+    "fans": 1112136,
+    "pubAt": 1794992491000
+   },
+   {
+    "title": "天空怎么突然变红了？！我要去囤物资了…",
+    "url": "https://www.douyin.com/video/7710156633883910075",
+    "src": "douyin",
+    "heat": 1290311,
+    "author": "热爱干饭饭饭",
+    "type": "AI整活",
+    "fans": 4548759,
+    "pubAt": 1795166218000
+   },
+   {
+    "title": "我甚至需要去公司食堂出差！",
+    "url": "https://www.douyin.com/video/7709576258123762987",
+    "src": "douyin",
+    "heat": 1089441,
+    "author": "西红柿导演",
+    "type": "AI影视",
+    "fans": 203026,
+    "pubAt": 1795042800000
+   },
+   {
+    "title": "好言难劝恋爱脑?",
+    "url": "https://www.douyin.com/video/7709089786669092139",
+    "src": "douyin",
+    "heat": 1055749,
+    "author": "别闹了豆刨",
+    "type": "AI影视",
+    "fans": 3897606,
+    "pubAt": 1794919317000
+   },
+   {
+    "title": "个人原创剧目《双向单恋》EP01 单恋影帝的第七年他回应了他的恋情，让我想到了第一次在高中见他的时候…这个故事会详细地讲完林栀、 （白切黑CP）两条线的故事，希",
+    "url": "https://www.douyin.com/video/7710183043047087759",
+    "src": "douyin",
+    "heat": 851216,
+    "author": "林小栀的世界",
+    "type": "AI影视",
+    "fans": 299038,
+    "pubAt": 1795166881000
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "【蜘蛛侠/MJ】非凡之爱真人版",
+    "url": "https://www.bilibili.com/video/BV1xFs36uEvE",
+    "src": "bilibili",
+    "heat": 12283964,
+    "author": "Crazy-face",
+    "type": "AI影视",
+    "fans": 1058504,
+    "pubAt": 1794885746000
+   },
+   {
+    "title": "非凡魔丸",
+    "url": "https://www.bilibili.com/video/BV1LLsr66EC6",
+    "src": "bilibili",
+    "heat": 7275576,
+    "author": "伊介书生",
+    "type": "AI鬼畜",
+    "fans": 568367,
+    "pubAt": 1794923656000
+   },
+   {
+    "title": "陈翔六点半：假如上学是修仙",
+    "url": "https://www.bilibili.com/video/BV1Ahsc6ME4o",
+    "src": "bilibili",
+    "heat": 6175552,
+    "author": "陈翔六点半",
+    "type": "AI影视",
+    "fans": 3814752,
+    "pubAt": 1794825300000
+   },
+   {
+    "title": "【非凡之爱】⚡️但都是正常人⚡️",
+    "url": "https://www.bilibili.com/video/BV1wLs465EWe",
+    "src": "bilibili",
+    "heat": 5764998,
+    "author": "酸奶煎个蛋",
+    "type": "AI鬼畜",
+    "fans": 322152,
+    "pubAt": 1795063259000
+   },
+   {
+    "title": "当我用AI续写爱情公寓4关谷悠悠婚礼【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1atse6EEfx",
+    "src": "bilibili",
+    "heat": 4948037,
+    "author": "Nero_闪灵",
+    "type": "AI影视",
+    "fans": 191864,
+    "pubAt": 1795168800000
+   }
+  ]
+ },
+ "low": {
+  "douyin": [
+   {
+    "title": "全片由即梦AI制作",
+    "url": "https://www.douyin.com/video/7708949525171309878",
+    "src": "douyin",
+    "heat": 383614,
+    "author": "庄生梦蝶",
+    "type": "AI影视",
+    "fans": 7811,
+    "pubAt": 1794911400000,
+    "low": true
+   },
+   {
+    "title": "灭霸也要自己剪刘海",
+    "url": "https://www.douyin.com/video/7709917604999145851",
+    "src": "douyin",
+    "heat": 339753,
+    "author": "差不多星了",
+    "type": "AI整活",
+    "fans": 444,
+    "pubAt": 1795105079000,
+    "low": true
+   },
+   {
+    "title": "00后从来不是垮掉的一代，知识分子永远和劳动人民站在一起！全片由即梦AI制作",
+    "url": "https://www.douyin.com/video/7709434061202181402",
+    "src": "douyin",
+    "heat": 330536,
+    "author": "枕边有只猫",
+    "type": "AI影视",
+    "fans": 40925,
+    "pubAt": 1794992500000,
+    "low": true
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "灭霸金融小课堂：应届生小浣熊的疑惑，什么是五险一金？",
+    "url": "https://www.bilibili.com/video/BV1JRsw66E1s",
+    "src": "bilibili",
+    "heat": 4593891,
+    "author": "灭霸金融小课堂",
+    "type": "AI影视",
+    "fans": 27228,
+    "pubAt": 1794802292000,
+    "low": true
+   },
+   {
+    "title": "「第一人称」真实的《西游记》有多恐怖？你一觉醒来变成了唐僧，你还敢继续取经吗？【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1g4sr6AEU5",
+    "src": "bilibili",
+    "heat": 3690231,
+    "author": "Sora_Vex",
+    "type": "AI整活",
+    "fans": 26050,
+    "pubAt": 1794918021000,
+    "low": true
+   },
+   {
+    "title": "灭霸金融小课堂：灭霸玉米大丰收，什么是卖出套期保值？",
+    "url": "https://www.bilibili.com/video/BV1WUsw6yEHF",
+    "src": "bilibili",
+    "heat": 2217778,
+    "author": "灭霸金融小课堂",
+    "type": "AI影视",
+    "fans": 27228,
+    "pubAt": 1794803414000,
+    "low": true
+   }
+  ]
+ },
+ "review": {
+  "n": 109,
+  "days": [
+   "2026-11-16",
+   "2026-11-17",
+   "2026-11-18",
+   "2026-11-19",
+   "2026-11-20",
+   "2026-11-21",
+   "2026-11-22"
+  ],
+  "byHorizon": [
+   {
+    "k": "24小时飙升",
+    "n": 63,
+    "avg": 0.226
+   },
+   {
+    "k": "近3天爆款",
+    "n": 31,
+    "avg": 0.061
+   },
+   {
+    "k": "本周热点",
+    "n": 9,
+    "avg": 0.047
+   },
+   {
+    "k": "长期热点",
+    "n": 6,
+    "avg": 0.041
+   }
+  ],
+  "byTiming": [
+   {
+    "k": "刚起势",
+    "n": 51,
+    "avg": 0.238
+   },
+   {
+    "k": "已饱和",
+    "n": 12,
+    "avg": 0.108
+   },
+   {
+    "k": "高峰期",
+    "n": 46,
+    "avg": 0.072
+   }
+  ],
+  "best": [
+   {
+    "date": "2026-11-21",
+    "src": "bilibili",
+    "title": "AI续写爱情公寓：关谷悠悠婚礼HE",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 10.520592789205928,
+    "perDay": 5.175671205170138,
+    "from": 429495,
+    "to": 4948037,
+    "url": "https://www.bilibili.com/video/BV1atse6EEfx"
+   },
+   {
+    "date": "2026-11-20",
+    "src": "bilibili",
+    "title": "灭霸家庭伦理剧：霸爸去哪儿了？",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 4.922517235653026,
+    "perDay": 1.6231789107884236,
+    "from": 746708,
+    "to": 4422391,
+    "url": "https://www.bilibili.com/video/BV1sKs16AEWv"
+   },
+   {
+    "date": "2026-11-16",
+    "src": "bilibili",
+    "title": "伪纪录片：镜化，看完不敢照镜子",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 8.83060072730412,
+    "perDay": 1.2556660089129907,
+    "from": 463355,
+    "to": 4555058,
+    "url": "https://www.bilibili.com/video/BV1Uesp6yEsM"
+   },
+   {
+    "date": "2026-11-19",
+    "src": "bilibili",
+    "title": "第一人称西游记恐怖版：你变成唐僧还敢取经吗",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 2.1950300911435674,
+    "perDay": 0.544376984513143,
+    "from": 1154991,
+    "to": 3690231,
+    "url": "https://www.bilibili.com/video/BV1g4sr6AEU5"
+   },
+   {
+    "date": "2026-11-18",
+    "src": "bilibili",
+    "title": "钢铁侠给贾维斯装了病娇插件",
+    "horizon": "24小时飙升",
+    "timing": "高峰期",
+    "growth": 2.561079015042097,
+    "perDay": 0.5088854516451025,
+    "from": 567740,
+    "to": 2021767,
+    "url": "https://www.bilibili.com/video/BV1fDsu6xEyA"
+   }
+  ]
+ },
+ "tools": [
+  {
+   "name": "即梦",
+   "n": 145,
+   "prev": 166,
+   "douyin": 106,
+   "bilibili": 37,
+   "xiaohongshu": 2,
+   "best": {
+    "title": "我，妖兽娱乐圈最爱装的女明星。（全片由即梦短剧制作）",
+    "url": "https://www.douyin.com/video/7709401042437377315",
+    "src": "douyin",
+    "heat": 1793030
+   }
+  },
+  {
+   "name": "Seedance",
+   "n": 66,
+   "prev": 74,
+   "douyin": 20,
+   "bilibili": 46,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "起飞？它不会飞啊！ 【本视频由即梦Seedance 2.5生成】",
+    "url": "https://www.douyin.com/video/7710198251475994811",
+    "src": "douyin",
+    "heat": 115703
+   }
+  },
+  {
+   "name": "Suno",
+   "n": 57,
+   "prev": 75,
+   "douyin": 0,
+   "bilibili": 57,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "当我在学校时的belike",
+    "url": "https://www.bilibili.com/video/BV1f9su6WESD",
+    "src": "bilibili",
+    "heat": 1098387
+   }
+  },
+  {
+   "name": "DeepSeek",
+   "n": 52,
+   "prev": 63,
+   "douyin": 0,
+   "bilibili": 52,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "大肥鱼捅穿AZ3？！带着大肥鱼猛攻三角洲是什么感觉？",
+    "url": "https://www.bilibili.com/video/BV16GsF6hEKf",
+    "src": "bilibili",
+    "heat": 3754430
+   }
+  },
+  {
+   "name": "可灵",
+   "n": 43,
+   "prev": 66,
+   "douyin": 3,
+   "bilibili": 40,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "【来自天堂的魔鬼】豚馒版 这个从下定决心开始做以后真的耗费了好多精力，因为这个要参考两个人的动作，我的好朋友可灵经常搞不懂哪个是哪个，很抱歉还是没有那么精致，今",
+    "url": "https://www.douyin.com/video/7708647413234224463",
+    "src": "douyin",
+    "heat": 88655
+   }
+  },
+  {
+   "name": "LibTV",
+   "n": 36,
+   "prev": 84,
+   "douyin": 23,
+   "bilibili": 13,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "「本作品使用LibTV制作」AI微电影《风水组合》 一个爱自由一个占有欲强，却莫名适配",
+    "url": "https://www.douyin.com/video/7709106356686441728",
+    "src": "douyin",
+    "heat": 442780
+   }
+  },
+  {
+   "name": "Sora",
+   "n": 29,
+   "prev": 12,
+   "douyin": 0,
+   "bilibili": 29,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "【A2OSOUL】261121更新｜今日的晚餐推荐是…芝士泡菜炒饭｜排骨汤｜寿司｜咖喱饭",
+    "url": "https://www.bilibili.com/video/BV1jbyazUEUo",
+    "src": "bilibili",
+    "heat": 17611
+   }
+  },
+  {
+   "name": "OiiOii",
+   "n": 26,
+   "prev": 48,
+   "douyin": 12,
+   "bilibili": 14,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "老虎能坐高铁吗？！ （本视频由OiiOii AI制作）",
+    "url": "https://www.douyin.com/video/7709114901125561265",
+    "src": "douyin",
+    "heat": 267350
+   }
+  },
+  {
+   "name": "豆包",
+   "n": 24,
+   "prev": 40,
+   "douyin": 2,
+   "bilibili": 22,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "#豆包AI",
+    "url": "https://www.douyin.com/video/7710114097911917051",
+    "src": "douyin",
+    "heat": 30718
+   }
+  },
+  {
+   "name": "GPT",
+   "n": 13,
+   "prev": 5,
+   "douyin": 0,
+   "bilibili": 13,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "【补档】中国车能飞",
+    "url": "https://www.bilibili.com/video/BV1T4sN64EAf",
+    "src": "bilibili",
+    "heat": 850108
+   }
+  }
+ ],
+ "sent": 1795396283835
+}

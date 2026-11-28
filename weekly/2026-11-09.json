@@ -1,0 +1,500 @@
+{
+ "date": "2026-11-09",
+ "generatedAt": 1794186634486,
+ "range": [
+  "2026-11-02",
+  "2026-11-08"
+ ],
+ "errors": [],
+ "summary": "AI影视长片化爆发，抗战怀旧题材单条破2000万，萌宠拟人成B站新增长点",
+ "themes": [
+  {
+   "title": "AI抗战怀旧片",
+   "platform": "抖音",
+   "why": "家国情怀+童年记忆双情绪叠加，分享率极高，小号也能爆"
+  },
+  {
+   "title": "萌宠拟人长片",
+   "platform": "B站",
+   "why": "猫狗拟人+连续剧日更，低粉高播放，追更黏性强"
+  },
+  {
+   "title": "AI鬼畜热梗MV",
+   "platform": "双平台",
+   "why": "经典IP配魔性音乐，制作门槛低，二创空间大易裂变"
+  },
+  {
+   "title": "AI志怪驱魔短剧",
+   "platform": "抖音",
+   "why": "中式恐怖+连续剧集，视觉爽感强，单集完播高带追更"
+  },
+  {
+   "title": "AI情感共鸣短片",
+   "platform": "双平台",
+   "why": "亲情遗憾类情绪钩子，评论区自发故事接龙，分享拉动大"
+  }
+ ],
+ "directions": [
+  {
+   "title": "抗战少年守护系列续集",
+   "platform": "抖音",
+   "why": "同题材两条破千万，近3天爆款涨幅稳，情绪红利未吃完",
+   "how": "定少年群像→文生图统一年代质感→图生视频做冲锋慢镜→配旁白+老歌卡点"
+  },
+  {
+   "title": "萌宠拟人连续剧日更",
+   "platform": "B站",
+   "why": "猫狗长片低粉爆500万+，追更属性强，B站供给仍不足",
+   "how": "设固定角色人设→单集一个生活冲突→图生视频保角色一致性→片尾留钩子"
+  },
+  {
+   "title": "经典IP鬼畜热梗MV",
+   "platform": "双平台",
+   "why": "鬼畜MV多条上榜，制作快、蹭现成热梗，起势信号强",
+   "how": "选热梗BGM→角色图生视频对口型→卡点剪辑+字幕特效→标题埋梗"
+  },
+  {
+   "title": "亲情遗憾类情绪短片",
+   "platform": "抖音",
+   "why": "亲情题材分享率最高，24小时飙升类涨幅最猛",
+   "how": "写一句扎心台词开场→文生图出生活场景→图生视频做微表情→结尾留白"
+  },
+  {
+   "title": "AI还原真实人物故事",
+   "platform": "双平台",
+   "why": "英烈、走失儿童类公益片持续上榜，正能量易获推荐",
+   "how": "查公开资料写脚本→老照片修复转动态→补环境镜头→配纪实旁白"
+  }
+ ],
+ "top": {
+  "douyin": [
+   {
+    "title": "如果我们相遇的时间换一下 结局会不一样吗",
+    "url": "https://www.douyin.com/video/7705315222298816896",
+    "src": "douyin",
+    "heat": 1935222,
+    "author": "拾光故事馆",
+    "type": "AI影视",
+    "fans": 1054866,
+    "pubAt": 1794040203000
+   },
+   {
+    "title": "烽火早已远去，但那些少年的守护从未结束 本视频由OiiOii AI制作",
+    "url": "https://www.douyin.com/video/7703519766308261174",
+    "src": "douyin",
+    "heat": 1148140,
+    "author": "爱开小差的史官",
+    "type": "AI影视",
+    "fans": 43908,
+    "pubAt": 1793615470000,
+    "low": true
+   },
+   {
+    "title": "世界上最后一个00后 2027年，所有的00后都将成年！致敬这绝版的童年，致敬终于圆满的句号，致敬永不褪色的我们！",
+    "url": "https://www.douyin.com/video/7704972254752378153",
+    "src": "douyin",
+    "heat": 1033908,
+    "author": "炖捣像素",
+    "type": "AI影视",
+    "fans": 749673,
+    "pubAt": 1793957909000
+   },
+   {
+    "title": "“少年人，我可以帮你”",
+    "url": "https://www.douyin.com/video/7703529589276785778",
+    "src": "douyin",
+    "heat": 817395,
+    "author": "北方.",
+    "type": "AI特效玩法",
+    "fans": 305973,
+    "pubAt": 1793617754000
+   },
+   {
+    "title": "辽阔的黑土地，养不出狭隘的人民",
+    "url": "https://www.douyin.com/video/7704626768245804330",
+    "src": "douyin",
+    "heat": 659621,
+    "author": "今天不熬夜",
+    "type": "AI影视",
+    "fans": 399981,
+    "pubAt": 1793873218000
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "二饼不见了？",
+    "url": "https://www.bilibili.com/video/BV1ixx96LE5T",
+    "src": "bilibili",
+    "heat": 6810087,
+    "author": "喵汪角",
+    "type": "AI动画",
+    "fans": 20457,
+    "pubAt": 1793790125000,
+    "low": true
+   },
+   {
+    "title": "阿黄有房了【AI全民制作人】",
+    "url": "https://www.bilibili.com/video/BV17d4g6fEAi",
+    "src": "bilibili",
+    "heat": 5376159,
+    "author": "阿黄和这个村",
+    "type": "AI影视",
+    "fans": 55017,
+    "pubAt": 1793695352000
+   },
+   {
+    "title": "近十几年的梗都在这里了",
+    "url": "https://www.bilibili.com/video/BV1mv4Y6rESW",
+    "src": "bilibili",
+    "heat": 4654955,
+    "author": "怠惰的一休",
+    "type": "AI鬼畜",
+    "fans": 455804,
+    "pubAt": 1793955600000
+   },
+   {
+    "title": "抽象新闻：10月人类迷惑行为大赏（下）",
+    "url": "https://www.bilibili.com/video/BV14g4u6rEeH",
+    "src": "bilibili",
+    "heat": 4601300,
+    "author": "我是M菌",
+    "type": "AI整活",
+    "fans": 1193295,
+    "pubAt": 1793676663000
+   },
+   {
+    "title": "“这是给孩子的，不是给你的”",
+    "url": "https://www.bilibili.com/video/BV1Wx4i6LEmf",
+    "src": "bilibili",
+    "heat": 4550751,
+    "author": "上邪aa",
+    "type": "AI音乐",
+    "fans": 241588,
+    "pubAt": 1793940714000
+   }
+  ]
+ },
+ "low": {
+  "douyin": [
+   {
+    "title": "烽火早已远去，但那些少年的守护从未结束 本视频由OiiOii AI制作",
+    "url": "https://www.douyin.com/video/7703519766308261174",
+    "src": "douyin",
+    "heat": 1148140,
+    "author": "爱开小差的史官",
+    "type": "AI影视",
+    "fans": 43908,
+    "pubAt": 1793615470000,
+    "low": true
+   },
+   {
+    "title": "和心选姐上节目，全网磕疯了…… 本视频由OiiOii AI制作",
+    "url": "https://www.douyin.com/video/7704356866100317475",
+    "src": "douyin",
+    "heat": 601387,
+    "author": "张张章鱼哥",
+    "type": "AI动画",
+    "fans": 5174,
+    "pubAt": 1793837400000,
+    "low": true
+   },
+   {
+    "title": "大圣！斗胆借您威名，护我痴儿一世平安！全片由 短剧工作室制作",
+    "url": "https://www.douyin.com/video/7703465625254972687",
+    "src": "douyin",
+    "heat": 585753,
+    "author": "Z世代AI玩家",
+    "type": "AI影视",
+    "fans": 13272,
+    "pubAt": 1793602865000,
+    "low": true
+   }
+  ],
+  "bilibili": [
+   {
+    "title": "二饼不见了？",
+    "url": "https://www.bilibili.com/video/BV1ixx96LE5T",
+    "src": "bilibili",
+    "heat": 6810087,
+    "author": "喵汪角",
+    "type": "AI动画",
+    "fans": 20457,
+    "pubAt": 1793790125000,
+    "low": true
+   },
+   {
+    "title": "《小七的家》1-6超长合集纯享版，一口气看到爽【全民制作人】",
+    "url": "https://www.bilibili.com/video/BV1fZxQ6yEio",
+    "src": "bilibili",
+    "heat": 2815119,
+    "author": "戚风aigc",
+    "type": "AI动画",
+    "fans": 17453,
+    "pubAt": 1793776073000,
+    "low": true
+   },
+   {
+    "title": "灭霸在学校住宿两个星期后终于放假了",
+    "url": "https://www.bilibili.com/video/BV1uU486KEMT",
+    "src": "bilibili",
+    "heat": 2720679,
+    "author": "只因寄太美哦",
+    "type": "AI影视",
+    "fans": 27230,
+    "pubAt": 1793898703000,
+    "low": true
+   }
+  ]
+ },
+ "review": {
+  "n": 120,
+  "days": [
+   "2026-11-02",
+   "2026-11-03",
+   "2026-11-04",
+   "2026-11-05",
+   "2026-11-06",
+   "2026-11-07",
+   "2026-11-08"
+  ],
+  "byHorizon": [
+   {
+    "k": "本周热点",
+    "n": 14,
+    "avg": 0.109
+   },
+   {
+    "k": "24小时飙升",
+    "n": 72,
+    "avg": 0.107
+   },
+   {
+    "k": "近3天爆款",
+    "n": 33,
+    "avg": 0.065
+   },
+   {
+    "k": "长期热点",
+    "n": 1,
+    "avg": 0
+   }
+  ],
+  "byTiming": [
+   {
+    "k": "刚起势",
+    "n": 74,
+    "avg": 0.097
+   },
+   {
+    "k": "高峰期",
+    "n": 46,
+    "avg": 0.09
+   }
+  ],
+  "best": [
+   {
+    "date": "2026-11-07",
+    "src": "bilibili",
+    "title": "早期人工智能翻车实录，笑不活了",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 2.078052659740457,
+    "perDay": 1.0222403506037832,
+    "from": 1291423,
+    "to": 3975068,
+    "url": "https://www.bilibili.com/video/BV1NU4t6tERV"
+   },
+   {
+    "date": "2026-11-04",
+    "src": "bilibili",
+    "title": "AI整活：10月人类迷惑行为大赏（下），抽象新闻合集",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 4.216656840959594,
+    "perDay": 0.8377996332081775,
+    "from": 882040,
+    "to": 4601300,
+    "url": "https://www.bilibili.com/video/BV14g4u6rEeH"
+   },
+   {
+    "date": "2026-11-08",
+    "src": "bilibili",
+    "title": "2万粉做出385万播放的猫猫长片",
+    "horizon": "本周热点",
+    "timing": "高峰期",
+    "growth": 0.7650719277060656,
+    "perDay": 0.7406112026296583,
+    "from": 3858249,
+    "to": 6810087,
+    "url": "https://www.bilibili.com/video/BV1ixx96LE5T"
+   },
+   {
+    "date": "2026-11-07",
+    "src": "bilibili",
+    "title": "末日列车停靠黑湖站，没人敢下车",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 1.2461317306284165,
+    "perDay": 0.6129999310870166,
+    "from": 1372513,
+    "to": 3082845,
+    "url": "https://www.bilibili.com/video/BV18Fx96AEMY"
+   },
+   {
+    "date": "2026-11-04",
+    "src": "bilibili",
+    "title": "AI影视：打雪仗，极简标题下的AI画面情绪",
+    "horizon": "24小时飙升",
+    "timing": "刚起势",
+    "growth": 3.010542409666744,
+    "perDay": 0.598159020690541,
+    "from": 743663,
+    "to": 2982492,
+    "url": "https://www.bilibili.com/video/BV16Dx46VEZr"
+   }
+  ]
+ },
+ "tools": [
+  {
+   "name": "即梦",
+   "n": 81,
+   "prev": 167,
+   "douyin": 60,
+   "bilibili": 20,
+   "xiaohongshu": 1,
+   "best": {
+    "title": "如果我们相遇的时间换一下 结局会不一样吗",
+    "url": "https://www.douyin.com/video/7705315222298816896",
+    "src": "douyin",
+    "heat": 1935222
+   }
+  },
+  {
+   "name": "DeepSeek",
+   "n": 81,
+   "prev": 125,
+   "douyin": 0,
+   "bilibili": 81,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "少年与鲸鲸的奇遇：开源只为再见你【联名2AI MV】",
+    "url": "https://www.bilibili.com/video/BV1dM4b6CEi9",
+    "src": "bilibili",
+    "heat": 1069398
+   }
+  },
+  {
+   "name": "Suno",
+   "n": 63,
+   "prev": 80,
+   "douyin": 0,
+   "bilibili": 63,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "大学生的反向攀比belike",
+    "url": "https://www.bilibili.com/video/BV1Cm4v63E1W",
+    "src": "bilibili",
+    "heat": 1195410
+   }
+  },
+  {
+   "name": "Seedance",
+   "n": 58,
+   "prev": 86,
+   "douyin": 10,
+   "bilibili": 48,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "你酒驾的时候怎么不怕死呢？ 【离谱动画《柴来了》】",
+    "url": "https://www.douyin.com/video/7703863117196889380",
+    "src": "douyin",
+    "heat": 511655
+   }
+  },
+  {
+   "name": "可灵",
+   "n": 53,
+   "prev": 69,
+   "douyin": 6,
+   "bilibili": 47,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "龙族学院毕业新要求/魔法少女魔杖升级/末日派遣公司等热点 下方滚动文字框有惊喜，已更新32篇热点，欢迎互动，留言都会看哦。",
+    "url": "https://www.douyin.com/video/7705090128594701603",
+    "src": "douyin",
+    "heat": 64964
+   }
+  },
+  {
+   "name": "LibTV",
+   "n": 43,
+   "prev": 68,
+   "douyin": 27,
+   "bilibili": 16,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "AI微电影《当风象遇上火象》「本视频由LibTV生成」",
+    "url": "https://www.douyin.com/video/7703913237548436771",
+    "src": "douyin",
+    "heat": 541048
+   }
+  },
+  {
+   "name": "OiiOii",
+   "n": 36,
+   "prev": 63,
+   "douyin": 26,
+   "bilibili": 10,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "烽火早已远去，但那些少年的守护从未结束 本视频由OiiOii AI制作",
+    "url": "https://www.douyin.com/video/7703519766308261174",
+    "src": "douyin",
+    "heat": 1148140
+   }
+  },
+  {
+   "name": "豆包",
+   "n": 29,
+   "prev": 38,
+   "douyin": 5,
+   "bilibili": 24,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "你我都自由了 【本内容由OiiOii AI制作】 萧家，萧蛙。 纳兰家，纳兰豆包。三年之约结束了",
+    "url": "https://www.douyin.com/video/7704702864794406184",
+    "src": "douyin",
+    "heat": 185906
+   }
+  },
+  {
+   "name": "Sora",
+   "n": 17,
+   "prev": 27,
+   "douyin": 0,
+   "bilibili": 17,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "[补档][巨大娘]只有尾巴大未免有点乏味了",
+    "url": "https://www.bilibili.com/video/BV1pe4B6mESv",
+    "src": "bilibili",
+    "heat": 31151
+   }
+  },
+  {
+   "name": "Udio",
+   "n": 10,
+   "prev": 14,
+   "douyin": 0,
+   "bilibili": 10,
+   "xiaohongshu": 0,
+   "best": {
+    "title": "《原神》动画短片：钟摆与蒲公英·夜语",
+    "url": "https://www.bilibili.com/video/BV1C74864EU9",
+    "src": "bilibili",
+    "heat": 745812
+   }
+  }
+ ],
+ "sent": 1794186665963
+}
